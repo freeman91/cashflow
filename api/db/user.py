@@ -126,15 +126,25 @@ def get_expense_types():
 
 
 def update_expense_types(types: list):
-    pass
+    assert_list_str(types)
+
+    user = get()
+    user["expense"]["types"] = types
+
+    set(user)
 
 
 def get_expense_vendors():
     return get()["expense"]["vendors"]
 
 
-def update_expense_vendors():
-    pass
+def update_expense_vendors(vendors: list):
+    assert_list_str(vendors)
+
+    user = get()
+    user["expense"]["vendors"] = vendors
+
+    set(user)
 
 
 """
@@ -153,7 +163,12 @@ def get_asset_types():
 
 
 def update_asset_types(types: list):
-    pass
+    assert_list_str(types)
+
+    user = get()
+    user["asset"]["types"] = types
+
+    set(user)
 
 
 """
@@ -172,7 +187,12 @@ def get_debt_types():
 
 
 def update_debt_types(types: list):
-    pass
+    assert_list_str(types)
+
+    user = get()
+    user["debt"]["types"] = types
+
+    set(user)
 
 
 """
@@ -190,5 +210,10 @@ def get_networth():
     return get()["networth"]
 
 
-def update_networth():
-    pass
+def update_networth(networth: float):
+    assert type(networth) == float or type(networth) == int
+
+    user = get()
+    user["networth"] = networth
+
+    set(user)
