@@ -1,17 +1,21 @@
 from api.db import database as db
 
+class Income:
+    def __init__(self):
+        pass
+    
+    def __repr__(self):
+        pass
 
-def get():
-    pass
-
-
-def create():
-    pass
-
-
-def update():
-    pass
-
-
-def delete():
-    pass
+    def create(self):
+        pass
+    
+    def update(self):
+        pass
+    
+    def set(self):
+        pass
+    
+    def delete(self):
+        pass
+    

@@ -1,19 +1,22 @@
 from api.db import database as db
 
 
-def get():
-    pass
+class Expense:
+    def __init__(self):
+        pass
+    
+    def __repr__(self):
+        pass
 
-
-def create():
-    # add expense type if not exist
-    pass
-
-
-def update():
-    # add expense type if not exist
-    pass
-
-
-def delete():
-    pass
+    def create(self):
+        pass
+    
+    def update(self):
+        pass
+    
+    def set(self):
+        pass
+    
+    def delete(self):
+        pass
+    
