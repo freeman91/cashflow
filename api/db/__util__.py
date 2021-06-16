@@ -1,3 +1,3 @@
-def assert_list_str(l: list):
+def assert_list(_type: type, l: list):
     for elem in l:
-        assert type(elem) == str
+        assert type(elem) == _type
