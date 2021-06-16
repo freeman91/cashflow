@@ -1,89 +1,91 @@
 from pprint import pprint
-from api.db import database as db
+from api.db import database as db, NAME, EMAIL, INCOME_TYPES, INCOME_SOURCES, INCOME_DEDUCTIONS, EXPENSE_TYPES, EXPENSE_VENDORS, ASSET_TYPES, DEBT_TYPES 
 from api.db.__util__ import assert_list
 
-
 class User:
+    income_attrs = ["types", "sources", "deductions"]
+    expense_attrs = ["types", "vendors"]
+    assets_attrs = ["types"]
+    debts_attrs = ["types"]
+
     def __init__(self):
-        self.user = db.users.find_one()
+        self.item = db.users.find_one()
 
-        if not self.user:
-            user_item = {
-                "name": "Addison Freeman",
-                "email": "addisonmellow@hotmail.com",
-                "networth": -10638.81,
-                "income": {
-                    "types": ["paycheck", "sale"],
-                    "sources": ["DES", "Government", "broker", "other"],
-                    "deductions": ["401k", "tax", "benefits", "other"],
-                },
-                "expense": {
-                    "types": [],
-                    "vendors": [],
-                },
-                "asset": {
-                    "types": [
-                        "cash",
-                        "checking",
-                        "stock",
-                        "crypto",
-                        "owed",
-                        "savings",
-                        "vehicle",
-                    ],
-                },
-                "debt": {
-                    "types": ["credit", "loan", "tuition"],
-                },
-            }
-
-            db.users.insert_one(user_item)
-            self.user = db.users.find_one()
+        if not self.item:
+            self.create()
 
     def __repr__(self) -> str:
         self._print()
         return ""
 
     def _print(self):
-        pprint(self.user)
+        pprint(self.item)
 
-    def set(self):
-        db.users.update_one({"_id": self.user["_id"]}, {"$set": self.user})
-        self.user = db.users.find_one()
+    def create(self):
+        self.delete()
+        user_item = {
+            "name": NAME,
+            "email": EMAIL,
+            "networth": 0,
+            "income": {
+                "types": INCOME_TYPES,
+                "sources": INCOME_SOURCES,
+                "deductions": INCOME_DEDUCTIONS,
+            },
+            "expense": {
+                "types": EXPENSE_TYPES,
+                "vendors": EXPENSE_VENDORS,
+            },
+            "asset": {
+                "types": ASSET_TYPES,
+            },
+            "debt": {
+                "types": DEBT_TYPES,
+            },
+        }
+        db.users.insert_one(user_item)
+        self.item = db.users.find_one()
+
+    def update(self):
+        db.users.update_one({"_id": self.item["_id"]}, {"$set": self.item})
+        self.item = db.users.find_one()
 
     def delete(self):
-        db.users.delete_one({"_id": self.user["_id"]})
+        db.users.delete_one({"_id": self.item["_id"]})
 
-    def set_networth(self, networth: float):
-        assert type(networth) == float or type(networth) == int
+    def update_networth(self, networth: float):
+        assert type(networth) in [float, int]
 
-        self.user["networth"] = networth
-        self.set()
+        self.item["networth"] = networth
+        self.update()
 
-    def set_income(self, c: str, l: list):
+    def update_income(self, attr: str, l: list):
         assert_list(str, l)
-        assert c == "types" or c == "sources" or c == "deductions"
+        assert attr in self.income_attrs
 
-        self.user["income"][c] = l
-        self.set()
+        self.item["income"][attr] = l
+        self.update()
 
-    def set_expense(self, c: str, l: list):
+    def update_expense(self, attr: str, l: list):
         assert_list(str, l)
-        assert c == "types" or c == "vendors"
+        assert attr in self.expense_attrs
 
-        self.user["expense"][c] = l
-        self.set()
+        self.item["expense"][attr] = l
+        self.update()
 
-    def set_asset(self, c: str, l: list):
+    def update_asset(self, attr: str, l: list):
         assert_list(str, l)
-        assert c == "types"
+        assert attr in self.assets_attrs
 
-        self.user["asset"][c] = l
-        self.set()
+        self.item["asset"][attr] = l
+        self.update()
 
-    def set_debt(self, c: str, l: list):
+    def update_debt(self, attr: str, l: list):
         assert_list(str, l)
-        assert c == "types"
+        assert attr in self.debts_attrs
 
-        self.user["debt"][c] = l
-        self.set()
+        self.item["debt"][attr] = l
+        self.update()
+
+
+user = User()

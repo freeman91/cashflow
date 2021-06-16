@@ -1,4 +1,4 @@
-import os
+import os, json
 
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -13,7 +13,15 @@ MONGO_INITDB_DATABASE = os.getenv("MONGO_INITDB_DATABASE")
 MONGO_INITDB_ROOT_USERNAME = os.getenv("MONGO_INITDB_ROOT_USERNAME")
 MONGO_INITDB_ROOT_PASSWORD = os.getenv("MONGO_INITDB_ROOT_PASSWORD")
 MONGO_URI = os.getenv("MONGO_URI")
-
+NAME = os.getenv("NAME")
+EMAIL = os.getenv("EMAIL")
+INCOME_TYPES = json.loads(os.getenv("INCOME_TYPES"))
+INCOME_SOURCES = json.loads(os.getenv("INCOME_SOURCES"))
+INCOME_DEDUCTIONS = json.loads(os.getenv("INCOME_DEDUCTIONS"))
+EXPENSE_TYPES = json.loads(os.getenv("EXPENSE_TYPES"))
+EXPENSE_VENDORS = json.loads(os.getenv("EXPENSE_VENDORS"))
+ASSET_TYPES = json.loads(os.getenv("ASSET_TYPES"))
+DEBT_TYPES = json.loads(os.getenv("DEBT_TYPES"))
 
 def connect() -> MongoClient:
     try:
