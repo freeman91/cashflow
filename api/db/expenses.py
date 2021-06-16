@@ -6,10 +6,12 @@ def get():
 
 
 def create():
+    # add expense type if not exist
     pass
 
 
 def update():
+    # add expense type if not exist
     pass
 
 

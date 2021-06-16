@@ -17,6 +17,10 @@ def buy_shares():
     pass
 
 
+def update_shares():
+    pass
+
+
 def sell_shares():
     pass
 

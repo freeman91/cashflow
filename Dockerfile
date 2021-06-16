@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9
 
 RUN apt update
 RUN apt install -y python3-dev python3-openssl libpq-dev

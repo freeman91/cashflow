@@ -5,7 +5,9 @@ python -m venv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
 pip3 install -r requirements-dev.txt
-script/db_workbench.py dev
+
+# run db workbench
+python -i db_workbench.py
 ```
 
 .env file
