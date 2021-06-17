@@ -1,6 +1,18 @@
 from pprint import pprint
-from api.db import database as db, NAME, EMAIL, INCOME_TYPES, INCOME_SOURCES, INCOME_DEDUCTIONS, EXPENSE_TYPES, EXPENSE_VENDORS, ASSET_TYPES, DEBT_TYPES 
+from api.db import (
+    database as db,
+    NAME,
+    EMAIL,
+    INCOME_TYPES,
+    INCOME_SOURCES,
+    INCOME_DEDUCTIONS,
+    EXPENSE_TYPES,
+    EXPENSE_VENDORS,
+    ASSET_TYPES,
+    DEBT_TYPES,
+)
 from api.db.__util__ import assert_list
+
 
 class User:
     income_attrs = ["types", "sources", "deductions"]

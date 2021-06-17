@@ -23,6 +23,7 @@ EXPENSE_VENDORS = json.loads(os.getenv("EXPENSE_VENDORS"))
 ASSET_TYPES = json.loads(os.getenv("ASSET_TYPES"))
 DEBT_TYPES = json.loads(os.getenv("DEBT_TYPES"))
 
+
 def connect() -> MongoClient:
     try:
         client = None
@@ -36,7 +37,7 @@ def connect() -> MongoClient:
         else:
             client = MongoClient(MONGO_URI)
 
-        print("server version:", client.server_info()["version"])
+        # print("server version:", client.server_info()["version"])
         return client[MONGO_INITDB_DATABASE]
 
     except ServerSelectionTimeoutError as err:

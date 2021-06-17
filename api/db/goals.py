@@ -1,4 +1,13 @@
 from api.db import database as db
+from api.db.user import user
+
+
+class Goals:
+    pass
+
+
+class Goal:
+    pass
 
 
 def create(month: int, year: int, goals: dict):

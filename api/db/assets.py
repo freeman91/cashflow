@@ -1,4 +1,15 @@
+from datetime import datetime
+
 from api.db import database as db
+from api.db.user import user
+
+
+class Assets:
+    pass
+
+
+class Asset:
+    pass
 
 
 def get():
