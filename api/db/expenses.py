@@ -5,68 +5,65 @@ from api.db.user import user
 
 
 class ExpensesModel:
-    name = "expenses"
+    name = "expense"
+    types = user.item[name]["types"]
+    vendors = user.item[name]["vendors"]
+    attributes = {
+        "date": datetime,
+        "amount": float,
+        "dedutctions": dict,
+        "type": str,
+        "vendor": str,
+        "asset": str,
+        "debt": str,
+        "desc": str,
+    }
 
-    def get_all(self):
-        return [expense for expense in db.expenses.find()]
+    def get(self, id):
+        return db.expenses.find_one({"_id": id})
 
-    def delete_all(self):
-        return db.expenses.delete_many({})
+    def find_one(self):
+        return db.expenses.find_one()
 
     def in_range(self, start: str, end: str):
         pass
 
-class ExpenseModel:
-    name = "expense"
-    types = user.item[name]["types"]
-    vendors = user.item[name]["vendors"]
-
-    def get(self, id):
-        expense = db.expenses.find_one({"_id": id})
-        return db.expenses.find_one(self.__validate__(**expense))
+    def get_all(self):
+        return [expense for expense in db.expenses.find()]
 
     def create(self, expense: dict):
-        new_exp = self.__validate__(**expense)
-        del new_exp["_id"]
-        return db.expenses.insert_one(new_exp)
+        return db.expenses.insert_one(self.__validate__(**expense))
 
     def update(self, expense: dict):
-        return db.expense.update_one(self.__validate__(**expense))
+        return db.expenses.replace_one(
+            {"_id": expense["_id"]}, self.__validate__(**expense)
+        )
 
     def delete(self, id):
         return db.expenses.delete_one({"_id": id})
 
-    def __validate__(self, **kwargs):
-        assert type(kwargs["date"]) == datetime
-        assert type(kwargs["amount"]) == int or type(kwargs["amount"]) == float
-        assert type(kwargs["type"]) == str
-        assert type(kwargs["vendor"]) == str
-        assert type(kwargs["asset"]) == str
-        assert type(kwargs["debt"]) == str
-        assert type(kwargs["desc"]) == str
+    def delete_all(self):
+        return db.expenses.delete_many({})
 
-        self.__verify_type__(kwargs["type"])
-        self.__verify_vendor__(kwargs["vendor"])
+    def __validate__(self, **expense):
+        for attr in expense:
+            if attr == "_id":
+                continue
+            assert attr in self.attributes
+            assert type(expense[attr]) == self.attributes[attr]
 
-        return {
-            "_id": kwargs["_id"] if "id" in list(kwargs.keys()) else None,
-            "date": kwargs["date"],
-            "amount": kwargs["amount"],
-            "type": kwargs["type"],
-            "vendor": kwargs["vendor"],
-            "asset": kwargs["asset"],
-            "debt": kwargs["debt"],
-            "desc": kwargs["desc"],
-        }
+        self.__verify_type__(expense["type"])
+        self.__verify_vendor__(expense["vendor"])
+
+        return expense
 
     def __verify_type__(self, _type: str):
         if _type not in self.types:
             user.update_expense("types", self.types + [_type])
 
-    def __verify_vendor__(self, _vendor: str):
-        if _vendor not in self.vendors:
-            user.update_expense("vendors", self.vendors + [_vendor])
+    def __verify_vendor__(self, vendor: str):
+        if vendor not in self.vendors:
+            user.update_expense("vendors", self.vendors + [vendor])
 
 
-Expense = ExpenseModel()
 Expenses = ExpensesModel()
