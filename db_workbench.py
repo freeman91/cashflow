@@ -161,5 +161,15 @@ def get_stock_price(ticker: str):
     return stock_info.get_live_price(ticker.upper())
 
 
+def print_all():
+    pprint(Expenses.get_all())
+    pprint(Incomes.get_all())
+    pprint(Hours.get_all())
+    pprint(Goals.get_all())
+    pprint(Networths.get_all())
+    pprint(Assets.get_all())
+    pprint(Debts.get_all())
+
+
 if __name__ == "__main__":
     pass

@@ -1,4 +1,5 @@
 from datetime import datetime
+from bson.objectid import ObjectId
 
 from api.db import database as db
 from api.db.user import user
@@ -7,6 +8,7 @@ from api.db.user import user
 class GoalsModel:
     name = "goal"
     attributes = {
+        "_id": ObjectId,
         "date": datetime,
         "month": int,
         "year": int,
@@ -15,34 +17,47 @@ class GoalsModel:
     }
 
     def get(self, id):
-        return db.goals.find_one({"_id": id})
+        return db.goals.find_one({"_id": ObjectId(id)})
 
     def find_one(self):
         return db.goals.find_one()
 
-    def in_range(self, start: datetime, end: datetime):
-        return [goal for goal in db.goals.find({"date": {"$gt": start, "$lt": end}})]
+    def in_range(self, start: int, end: int):
+        return [
+            goal
+            for goal in db.goals.find(
+                {
+                    "date": {
+                        "$gt": datetime.fromtimestamp(start),
+                        "$lt": datetime.fromtimestamp(end),
+                    }
+                }
+            )
+        ]
 
     def get_all(self):
         return [goal for goal in db.goals.find()]
 
     def create(self, goal: dict):
-        new_exp = self.__validate__(**goal)
-        return db.goals.insert_one(new_exp)
+        return db.goals.insert_one(self.__serialize__(**goal))
 
     def update(self, goal: dict):
-        return db.goals.replace_one({"_id": goal["_id"]}, self.__validate__(**goal))
+        return db.goals.replace_one(
+            {"_id": ObjectId(goal["_id"])}, self.__serialize__(**goal)
+        )
 
     def delete(self, id):
-        return db.goals.delete_one({"_id": id})
+        return db.goals.delete_one({"_id": ObjectId(id)})
 
     def delete_all(self):
         return db.goals.delete_many({})
 
-    def __validate__(self, **goal):
+    def __serialize__(self, **goal):
         for attr in goal:
-            if attr == "_id":
-                continue
+            if attr == "_id" and type(goal[attr]) == str:
+                goal["_id"] = ObjectId(goal["_id"])
+            elif attr == "date" and type(goal[attr]) == int:
+                goal[attr] = datetime.fromtimestamp(goal[attr])
             assert attr in self.attributes
             assert type(goal[attr]) == self.attributes[attr]
 

@@ -1,4 +1,5 @@
 from datetime import datetime
+from bson.objectid import ObjectId
 
 from api.db import database as db
 from api.db.user import user
@@ -14,6 +15,7 @@ class AssetsModel:
     name = "asset"
     types = user.item[name]["types"]
     attributes = {
+        "_id": ObjectId,
         "name": str,
         "value": float,
         "type": str,
@@ -22,6 +24,7 @@ class AssetsModel:
         "ticker": str,
         "debt": str,
         "desc": str,
+        "last_update": datetime,
     }
 
     def get(self, name):
@@ -34,25 +37,30 @@ class AssetsModel:
         return [asset for asset in db.assets.find()]
 
     def create(self, asset: dict):
-        return db.assets.insert_one(self.__validate__(**asset))
+        asset["last_update"] = datetime.now()
+        return db.assets.insert_one(self.__serialize__(**asset))
 
     def update(self, asset: dict):
-        return db.assets.replace_one({"_id": asset["_id"]}, self.__validate__(**asset))
+        asset["last_update"] = datetime.now()
+        return db.assets.replace_one(
+            {"_id": ObjectId(asset["_id"])}, self.__serialize__(**asset)
+        )
 
     def delete(self, id):
-        return db.assets.delete_one({"_id": id})
+        return db.assets.delete_one({"_id": ObjectId(id)})
 
     def delete_all(self):
         return db.assets.delete_many({})
 
-    def __validate__(self, **asset):
+    def __serialize__(self, **asset):
         for attr in asset:
-            if attr == "_id" or attr == "last_update":
-                continue
+            if attr == "_id" and type(asset[attr]) == str:
+                asset["_id"] = ObjectId(asset["_id"])
+            elif attr == "last_update" and type(asset[attr]) == int:
+                asset[attr] = datetime.fromtimestamp(asset[attr])
             assert attr in self.attributes
             assert type(asset[attr]) == self.attributes[attr]
         assert asset["type"] in self.types
-        asset["last_update"] = datetime.now()
         return asset
 
 

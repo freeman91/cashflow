@@ -1,4 +1,5 @@
 from datetime import datetime
+from bson.objectid import ObjectId
 
 from api.db import database as db
 from api.db.user import user
@@ -8,11 +9,13 @@ class DebtsModel:
     name = "debt"
     types = user.item[name]["types"]
     attributes = {
+        "_id": ObjectId,
         "name": str,
         "value": float,
         "type": str,
         "asset": str,
         "desc": str,
+        "last_update": datetime,
     }
 
     def get(self, name):
@@ -25,25 +28,30 @@ class DebtsModel:
         return [debt for debt in db.debts.find()]
 
     def create(self, debt: dict):
-        return db.debts.insert_one(self.__validate__(**debt))
+        debt["last_update"] = datetime.now()
+        return db.debts.insert_one(self.__serialize__(**debt))
 
     def update(self, debt: dict):
-        return db.debts.replace_one({"_id": debt["_id"]}, self.__validate__(**debt))
+        debt["last_update"] = datetime.now()
+        return db.debts.replace_one(
+            {"_id": ObjectId(debt["_id"])}, self.__serialize__(**debt)
+        )
 
     def delete(self, id):
-        return db.debts.delete_one({"_id": id})
+        return db.debts.delete_one({"_id": ObjectId(id)})
 
     def delete_all(self):
         return db.debts.delete_many({})
 
-    def __validate__(self, **debt):
+    def __serialize__(self, **debt):
         for attr in debt:
-            if attr == "_id" or attr == "last_update":
-                continue
+            if attr == "_id" and type(debt[attr]) == str:
+                debt["_id"] = ObjectId(debt["_id"])
+            elif attr == "last_update" and type(debt[attr]) == int:
+                debt[attr] = datetime.fromtimestamp(debt[attr])
             assert attr in self.attributes
             assert type(debt[attr]) == self.attributes[attr]
         assert debt["type"] in self.types
-        debt["last_update"] = datetime.now()
         return debt
 
 

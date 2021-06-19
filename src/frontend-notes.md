@@ -1,6 +1,7 @@
-## Model CRUD
-
-- verify new attrs on all models
+```js
+// parse json string
+Object.keys(payload.user);
+```
 
 ## Work Hours
 

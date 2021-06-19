@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request
 from flask_meter import FlaskMeter
 
 from api.controllers.users import users
+from api.controllers.expenses import expenses
 from api.config import app_config
 from api.db import database
 
@@ -22,9 +23,15 @@ def create_app():
     flask_meter.init_app(app)
 
     app.register_blueprint(users)
+    app.register_blueprint(expenses)
 
     @app.route("/")
     def index():
+        payload = {"result": "success"}
+        return jsonify(payload)
+
+    @app.route("/_health")
+    def health():
         payload = {"result": "success"}
         return jsonify(payload)
 

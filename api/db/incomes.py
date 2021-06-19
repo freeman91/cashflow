@@ -1,4 +1,5 @@
 from datetime import datetime
+from bson.objectid import ObjectId
 
 from api.db import database as db
 from api.db.user import user
@@ -10,6 +11,7 @@ class IncomesModel:
     sources = user.item[name]["sources"]
     deduction_types = user.item[name]["deductions"]
     attributes = {
+        "_id": ObjectId,
         "date": datetime,
         "amount": float,
         "deductions": dict,
@@ -20,37 +22,47 @@ class IncomesModel:
     }
 
     def get(self, id):
-        return db.incomes.find_one({"_id": id})
+        return db.incomes.find_one({"_id": ObjectId(id)})
 
     def find_one(self):
         return db.incomes.find_one()
 
-    def in_range(self, start: datetime, end: datetime):
+    def in_range(self, start: int, end: int):
         return [
-            income for income in db.incomes.find({"date": {"$gt": start, "$lt": end}})
+            income
+            for income in db.incomes.find(
+                {
+                    "date": {
+                        "$gt": datetime.fromtimestamp(start),
+                        "$lt": datetime.fromtimestamp(end),
+                    }
+                }
+            )
         ]
 
     def get_all(self):
         return [income for income in db.incomes.find()]
 
     def create(self, income: dict):
-        return db.incomes.insert_one(self.__validate__(**income))
+        return db.incomes.insert_one(self.__serialize__(**income))
 
     def update(self, income: dict):
         return db.incomes.replace_one(
-            {"_id": income["_id"]}, self.__validate__(**income)
+            {"_id": ObjectId(income["_id"])}, self.__serialize__(**income)
         )
 
     def delete(self, id):
-        return db.incomes.delete_one({"_id": id})
+        return db.incomes.delete_one({"_id": ObjectId(id)})
 
     def delete_all(self):
         return db.incomes.delete_many({})
 
-    def __validate__(self, **income):
+    def __serialize__(self, **income):
         for attr in income:
-            if attr == "_id":
-                continue
+            if attr == "_id" and type(income[attr]) == str:
+                income["_id"] = ObjectId(income["_id"])
+            elif attr == "date" and type(income[attr]) == int:
+                income[attr] = datetime.fromtimestamp(income[attr])
             assert attr in self.attributes
             assert type(income[attr]) == self.attributes[attr]
 
