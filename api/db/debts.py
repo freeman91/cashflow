@@ -21,9 +21,6 @@ class DebtsModel:
     def find_one(self):
         return db.debts.find_one()
 
-    def in_range(self, start: str, end: str):
-        pass
-
     def get_all(self):
         return [debt for debt in db.debts.find()]
 

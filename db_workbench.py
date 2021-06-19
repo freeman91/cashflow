@@ -17,17 +17,47 @@ cryptocompare._set_api_key_parameter(CRYPTO_KEY)
 
 
 def g_exp():
-    exp = {
-        "date": datetime.now(),
-        "amount": float(7.68),
-        "type": "food",
-        "vendor": "Raisin Canes",
+    exp1 = {
+        "date": datetime(2021, 6, 21, 12),
+        "amount": float(36.25),
+        "type": "grocery",
+        "vendor": "Kroger",
+        "asset": "",
+        "debt": "",
+        "desc": "",
+    }
+    exp2 = {
+        "date": datetime(2021, 6, 17, 12),
+        "amount": float(74.23),
+        "type": "home",
+        "vendor": "Amazon",
+        "asset": "",
+        "debt": "",
+        "desc": "",
+    }
+    exp3 = {
+        "date": datetime(2021, 6, 15, 12),
+        "amount": float(16.11),
+        "type": "entertainment",
+        "vendor": "HBO",
+        "asset": "",
+        "debt": "",
+        "desc": "",
+    }
+    exp4 = {
+        "date": datetime(2021, 6, 19, 12),
+        "amount": float(32.9),
+        "type": "utilities",
+        "vendor": "AEP",
         "asset": "",
         "debt": "",
         "desc": "",
     }
 
-    Expenses.create(exp)
+    Expenses.create(exp1)
+    Expenses.create(exp2)
+    Expenses.create(exp3)
+    Expenses.create(exp4)
 
 
 def g_inc():
@@ -62,6 +92,7 @@ def g_hour():
 
 def g_goal():
     goal = {
+        "date": datetime(2021, 6, 1),
         "month": 6,
         "year": 2021,
         "values": {"food": 150.0, "grocery": 400.0},
@@ -73,6 +104,7 @@ def g_goal():
 
 def g_nw():
     goal = {
+        "date": datetime(2021, 6, 30),
         "month": 6,
         "year": 2021,
         "assets": {"bitcoin": 1800.0, "chevy malibu": 4000.0},

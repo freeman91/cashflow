@@ -8,6 +8,7 @@ from api.db.user import user
 class NetworthsModel:
     name = "networth"
     attributes = {
+        "date": datetime,
         "month": int,
         "year": int,
         "assets": dict,
@@ -20,8 +21,11 @@ class NetworthsModel:
     def find_one(self):
         return db.networths.find_one()
 
-    def in_range(self, start: str, end: str):
-        pass
+    def in_range(self, start: datetime, end: datetime):
+        return [
+            networth
+            for networth in db.networths.find({"date": {"$gt": start, "$lt": end}})
+        ]
 
     def get_all(self):
         return [networth for networth in db.networths.find()]

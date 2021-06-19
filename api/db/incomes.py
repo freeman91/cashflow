@@ -25,8 +25,10 @@ class IncomesModel:
     def find_one(self):
         return db.incomes.find_one()
 
-    def in_range(self, start: str, end: str):
-        pass
+    def in_range(self, start: datetime, end: datetime):
+        return [
+            income for income in db.incomes.find({"date": {"$gt": start, "$lt": end}})
+        ]
 
     def get_all(self):
         return [income for income in db.incomes.find()]

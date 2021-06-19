@@ -30,9 +30,6 @@ class AssetsModel:
     def find_one(self):
         return db.assets.find_one()
 
-    def in_range(self, start: str, end: str):
-        pass
-
     def get_all(self):
         return [asset for asset in db.assets.find()]
 

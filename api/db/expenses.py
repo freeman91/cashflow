@@ -25,8 +25,11 @@ class ExpensesModel:
     def find_one(self):
         return db.expenses.find_one()
 
-    def in_range(self, start: str, end: str):
-        pass
+    def in_range(self, start: datetime, end: datetime):
+        return [
+            expense
+            for expense in db.expenses.find({"date": {"$gt": start, "$lt": end}})
+        ]
 
     def get_all(self):
         return [expense for expense in db.expenses.find()]
