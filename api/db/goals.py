@@ -30,7 +30,7 @@ class GoalsModel:
         return db.goals.insert_one(new_exp)
 
     def update(self, goal: dict):
-        return db.goals.replace_one(self.__validate__(**goal))
+        return db.goals.replace_one({"_id": goal["_id"]}, self.__validate__(**goal))
 
     def delete(self, id):
         return db.goals.delete_one({"_id": id})

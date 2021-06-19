@@ -17,7 +17,7 @@ class NetworthsModel:
     def get(self, id):
         return db.networths.find_one({"_id": id})
 
-    def get_one(self):
+    def find_one(self):
         return db.networths.find_one()
 
     def in_range(self, start: str, end: str):
@@ -27,27 +27,11 @@ class NetworthsModel:
         return [networth for networth in db.networths.find()]
 
     def create(self, networth: dict):
-        networth = self.__validate__(**networth)
-        asset_sum = reduce_(
-            lambda total, asset: total + asset["value"], networth["assets"]
-        )
-        debt_sum = reduce_(
-            lambda total, debt: total + debt["value"], networth["assets"]
-        )
-        return db.networths.insert_one(
-            {**networth, "asset_sum": asset_sum, "debt_sum": debt_sum}
-        )
+        return db.networths.insert_one(self.__validate__(**networth))
 
     def update(self, networth: dict):
-        networth = self.__validate__(**networth)
-        asset_sum = reduce_(
-            lambda total, asset: total + asset["value"], networth["assets"]
-        )
-        debt_sum = reduce_(
-            lambda total, debt: total + debt["value"], networth["assets"]
-        )
-        return db.networths.update_one(
-            {**networth, "asset_sum": asset_sum, "debt_sum": debt_sum}
+        return db.networths.replace_one(
+            {"_id": networth["_id"]}, self.__validate__(**networth)
         )
 
     def delete(self, id):

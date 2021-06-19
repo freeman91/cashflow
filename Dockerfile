@@ -8,9 +8,9 @@ RUN mkdir /appdata
 WORKDIR /appdata
 COPY . .
 
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir -r requirements-dev.txt
-RUN python setup.py install
+RUN pip install --no-cache-dir -r api/requirements.txt
+RUN pip install --no-cache-dir -r api/requirements-dev.txt
+RUN python api/setup.py install
 
 EXPOSE 9000
 

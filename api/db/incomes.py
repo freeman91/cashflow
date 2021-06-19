@@ -35,7 +35,9 @@ class IncomesModel:
         return db.incomes.insert_one(self.__validate__(**income))
 
     def update(self, income: dict):
-        return db.incomes.replace_one(self.__validate__(**income))
+        return db.incomes.replace_one(
+            {"_id": income["_id"]}, self.__validate__(**income)
+        )
 
     def delete(self, id):
         return db.incomes.delete_one({"_id": id})

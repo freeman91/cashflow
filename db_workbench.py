@@ -1,7 +1,9 @@
 from pprint import pprint
 from datetime import datetime
+from cryptocompare import cryptocompare
+from yahoo_fin import stock_info
 
-from api.db import database as db
+from api.db import CRYPTO_KEY, database as db
 from api.db.user import user
 from api.db.expenses import Expenses
 from api.db.incomes import Incomes
@@ -10,6 +12,8 @@ from api.db.assets import Assets
 from api.db.debts import Debts
 from api.db.goals import Goals
 from api.db.networths import Networths
+
+cryptocompare._set_api_key_parameter(CRYPTO_KEY)
 
 
 def g_exp():
@@ -58,9 +62,9 @@ def g_hour():
 
 def g_goal():
     goal = {
-        "mount": 6,
+        "month": 6,
         "year": 2021,
-        "values": {"food": 150, "grocery": 400},
+        "values": {"food": 150.0, "grocery": 400.0},
         "desc": "",
     }
 
@@ -69,11 +73,10 @@ def g_goal():
 
 def g_nw():
     goal = {
-        "mount": 6,
+        "month": 6,
         "year": 2021,
-        "assets": {"bitcoin": 1800, "chevy malibu": 4000},
-        "debts": {"huntington": 150, "tuition": 29000},
-        "desc": "",
+        "assets": {"bitcoin": 1800.0, "chevy malibu": 4000.0},
+        "debts": {"huntington": 150.0, "tuition": 29000.0},
     }
 
     Networths.create(goal)
@@ -94,7 +97,7 @@ def g_asset():
     Assets.create(asset)
 
 
-def g_debts():
+def g_debt():
     debt1 = {
         "name": "huntington",
         "value": float(150),
@@ -112,6 +115,14 @@ def g_debts():
 
     Debts.create(debt1)
     Debts.create(debt2)
+
+
+def get_crypto_price(ticker: str):
+    return cryptocompare.get_price(ticker.upper(), currency="USD")
+
+
+def get_stock_price(ticker: str):
+    return stock_info.get_live_price(ticker.upper())
 
 
 if __name__ == "__main__":

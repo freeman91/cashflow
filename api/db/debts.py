@@ -41,12 +41,12 @@ class DebtsModel:
 
     def __validate__(self, **debt):
         for attr in debt:
-            if attr == "_id":
+            if attr == "_id" or attr == "last_update":
                 continue
             assert attr in self.attributes
             assert type(debt[attr]) == self.attributes[attr]
         assert debt["type"] in self.types
-        debt["updated"] = datetime.now()
+        debt["last_update"] = datetime.now()
         return debt
 
 

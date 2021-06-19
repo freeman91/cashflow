@@ -50,12 +50,12 @@ class AssetsModel:
 
     def __validate__(self, **asset):
         for attr in asset:
-            if attr == "_id":
+            if attr == "_id" or attr == "last_update":
                 continue
             assert attr in self.attributes
             assert type(asset[attr]) == self.attributes[attr]
         assert asset["type"] in self.types
-        asset["updated"] = datetime.now()
+        asset["last_update"] = datetime.now()
         return asset
 
 

@@ -29,7 +29,7 @@ class HoursModel:
         return db.hours.insert_one(self.__validate__(**hour))
 
     def update(self, hour: dict):
-        return db.hours.replace_one(self.__validate__(**hour))
+        return db.hours.replace_one({"_id": hour["_id"]}, self.__validate__(**hour))
 
     def delete(self, id):
         return db.hours.delete_one({"_id": id})
@@ -44,7 +44,6 @@ class HoursModel:
             assert attr in self.attributes
             assert type(hour[attr]) == self.attributes[attr]
 
-        assert hour["type"] in user.item["income"]["types"]
         assert hour["source"] in user.item["income"]["sources"]
 
         return hour
