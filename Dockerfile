@@ -10,7 +10,7 @@ COPY . .
 
 RUN pip install --no-cache-dir -r api/requirements.txt
 RUN pip install --no-cache-dir -r api/requirements-dev.txt
-RUN python api/setup.py install
+RUN python setup.py install
 
 EXPOSE 9000
 

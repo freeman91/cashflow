@@ -61,6 +61,7 @@ class User:
     def update(self):
         db.users.update_one({"_id": self.item["_id"]}, {"$set": self.item})
         self.item = db.users.find_one()
+        return self.item
 
     def delete(self):
         db.users.delete_one({"_id": self.item["_id"]})
@@ -69,21 +70,21 @@ class User:
         assert type(networth) in [float, int]
 
         self.item["networth"] = networth
-        self.update()
+        return self.update()
 
     def update_income(self, attr: str, l: list):
         assert_list(str, l)
         assert attr in self.income_attrs
 
         self.item["income"][attr] = l
-        self.update()
+        return self.update()
 
     def update_expense(self, attr: str, l: list):
         assert_list(str, l)
         assert attr in self.expense_attrs
 
         self.item["expense"][attr] = l
-        self.update()
+        return self.update()
 
     def update_asset(self, attr: str, l: list):
         assert_list(str, l)
@@ -97,7 +98,7 @@ class User:
         assert attr in self.debts_attrs
 
         self.item["debt"][attr] = l
-        self.update()
+        return self.update()
 
 
 user = User()

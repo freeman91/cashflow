@@ -1,7 +1,11 @@
+import os
 from pprint import pprint
 from datetime import datetime
 from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
+
+os.environ["WB_DOMAIN"] = "localhost"
+os.environ["WB_PORT"] = "27017"
 
 from api.db import CRYPTO_KEY, database as db
 from api.db.user import user
