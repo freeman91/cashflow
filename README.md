@@ -25,3 +25,7 @@ MONGO_IP=172.19.199.3
 MONGO_PORT=27017
 SECRET_KEY=
 ```
+
+### Jupiter deploy
+
+- update api/frontend port number?

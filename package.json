@@ -1,0 +1,71 @@
+{
+  "name": "cashflow2",
+  "author": "Addison Freeman <addisonfreeman91@gmail.com>",
+  "version": "0.0.1",
+  "scripts": {
+    "cdk": "cdk",
+    "start-dev": "PORT=3001 react-scripts start"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@material-ui/pickers": "^3.2.9",
+    "@reduxjs/toolkit": "^1.4.0",
+    "axios": "^0.21.1",
+    "change-case": "^4.1.1",
+    "classnames": "^2.2.6",
+    "connected-react-router": "^6.8.0",
+    "date-fns": "^2.15.0",
+    "dayjs": "^1.8.26",
+    "dayjs-plugin-utc": "^0.1.2",
+    "lodash": "^4.17.19",
+    "node-sass": "^4.14.1",
+    "numeral": "^2.0.6",
+    "react": "^16.13.1",
+    "react-big-calendar": "^0.26.0",
+    "react-day-picker": "^7.4.10",
+    "react-dom": "^16.13.1",
+    "react-helmet": "^6.0.0",
+    "react-loading": "^2.0.3",
+    "react-motion": "^0.5.2",
+    "react-number-format": "^4.4.1",
+    "react-recipes": "^1.0.0",
+    "react-redux": "^7.2.1",
+    "react-redux-loading-bar": "^5.0.0",
+    "react-redux-toastr": "^7.6.5",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^4.0.3",
+    "react-swipeable-views": "^0.13.7",
+    "react-text-mask": "^5.4.3",
+    "react-use": "^14.2.0",
+    "recharts": "^2.0.9",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-logger": "^3.0.6",
+    "uuid": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168",
+    "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "optionalDependencies": {
+    "fsevents": "*"
+  }
+}
