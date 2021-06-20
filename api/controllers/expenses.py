@@ -9,11 +9,7 @@ expenses = Blueprint("expenses", __name__)
 @expenses.route("/expenses", methods=["POST"])
 def _create_expense():
     try:
-        return {
-            "expense": serialize_dict(
-                Expenses.get(Expenses.create(request.json).inserted_id)
-            )
-        }, 200
+        return success_result(Expenses.get(Expenses.create(request.json).inserted_id))
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")
@@ -23,13 +19,12 @@ def _create_expense():
 def _expenses(id: str):
     try:
         if request.method == "GET":
-            # if does not exist send back 400 error
-            return {"expense": serialize_dict(Expenses.get(id))}, 200
+            return success_result(Expenses.get(id))
 
         if request.method == "PUT":
             expense = request.json
             Expenses.update(expense)
-            return {"expense": serialize_dict(Expenses.get(expense["_id"]))}, 200
+            return success_result(Expenses.get(expense["_id"]))
 
         if request.method == "DELETE":
             Expenses.delete(id)
@@ -45,12 +40,12 @@ def _expenses_in_range(start: str, end: str):
         if not (start.isnumeric() and end.isnumeric()):
             return {"result": "Invalid range"}, 400
 
-        return {
-            "expenses": [
+        success_result(
+            [
                 serialize_dict(expense)
                 for expense in Expenses.in_range(int(start), int(end))
             ]
-        }, 200
+        )
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")
