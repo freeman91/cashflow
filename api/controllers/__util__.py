@@ -11,3 +11,11 @@ def serialize_dict(item):
             item[attr] = round(item[attr].timestamp())
 
     return dumps(item)
+
+
+def success_result(payload):
+    return {"result": serialize_dict(payload)}, 200
+
+
+def failure_result(message):
+    return {"result": message}, 400
