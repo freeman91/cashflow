@@ -6,9 +6,9 @@ import { Route, Switch } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
+  ClickAwayListener,
   CssBaseline,
   Drawer,
-  Hidden,
   List,
   ListItem,
   ListItemText,
@@ -35,37 +35,42 @@ const useStyles = makeStyles((theme) => ({
       flexShrink: 0,
     },
   },
+  smallDrawer: {
+    paddingLeft: '6px',
+  },
   grow: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
   },
+  drawerPaperSmall: {
+    width: 35,
+    display: 'flex',
+    overflow: 'visible',
+    height: 30,
+  },
   drawerPaper: {
     width: theme.drawerWidth,
     display: 'flex',
     overflow: 'visible',
+    height: 136,
   },
   content: {
     flexGrow: 1,
   },
 }));
 
-export default function Navigation(props) {
-  const { container } = props;
+export default function Navigation() {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
+  const [showDrawer, setShowDrawer] = useState(false);
   // const user = useSelector((state) => state.user);
 
-  const [mobileOpen, setMobileOpen] = useState(false);
   const isClient = typeof window === 'object';
   const { height } = useWindowSize();
   // eslint-disable-next-line
   const [windowSize, setWindowSize] = useState(getSize);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   function getSize() {
     return {
@@ -93,90 +98,91 @@ export default function Navigation(props) {
     }
   );
 
-  const drawer = (
+  console.log('theme: ', theme);
+
+  const drawer = !showDrawer ? (
     <div className={classes.grow}>
       <List dense={true} style={{ margin: '0px', padding: '0px' }}>
         <ListItem
           dense={true}
           divider={true}
           button
-          onClick={() => history.push('/dashboard')}
+          onClick={() => setShowDrawer(!showDrawer)}
+          className={classes.smallDrawer}
         >
           <ListItemIcon style={{ minWidth: '34px' }}>
             <Dashboard />
           </ListItemIcon>
-          <ListItemText>Dashboard</ListItemText>
-        </ListItem>
-        <ListItem
-          dense={true}
-          divider={true}
-          button
-          onClick={() => history.push('/summary')}
-        >
-          <ListItemIcon style={{ minWidth: '34px' }}>
-            <DateRange />
-          </ListItemIcon>
-          <ListItemText>Summary</ListItemText>
-        </ListItem>
-        <ListItem
-          dense={true}
-          divider={true}
-          button
-          onClick={() => history.push('/networth')}
-        >
-          <ListItemIcon style={{ minWidth: '34px' }}>
-            <TrendingUp />
-          </ListItemIcon>
-          <ListItemText>Net Worth</ListItemText>
-        </ListItem>
-        <ListItem
-          dense={true}
-          divider={true}
-          button
-          onClick={() => history.push('/user')}
-        >
-          <ListItemIcon style={{ minWidth: '34px' }}>
-            <AccountBox />
-          </ListItemIcon>
-          <ListItemText>User</ListItemText>
-        </ListItem>
-      </List>
+        </ListItem>{' '}
+      </List>{' '}
     </div>
+  ) : (
+    <ClickAwayListener onClickAway={() => setShowDrawer(false)}>
+      <div className={classes.grow}>
+        <List dense={true} style={{ margin: '0px', padding: '0px' }}>
+          <ListItem
+            dense={true}
+            divider={true}
+            button
+            onClick={() => history.push('/dashboard')}
+          >
+            <ListItemIcon style={{ minWidth: '34px' }}>
+              <Dashboard />
+            </ListItemIcon>
+            <ListItemText>Dashboard</ListItemText>
+          </ListItem>
+          <ListItem
+            dense={true}
+            divider={true}
+            button
+            onClick={() => history.push('/summary')}
+          >
+            <ListItemIcon style={{ minWidth: '34px' }}>
+              <DateRange />
+            </ListItemIcon>
+            <ListItemText>Summary</ListItemText>
+          </ListItem>
+          <ListItem
+            dense={true}
+            divider={true}
+            button
+            onClick={() => history.push('/networth')}
+          >
+            <ListItemIcon style={{ minWidth: '34px' }}>
+              <TrendingUp />
+            </ListItemIcon>
+            <ListItemText>Net Worth</ListItemText>
+          </ListItem>
+          <ListItem
+            dense={true}
+            divider={true}
+            button
+            onClick={() => history.push('/user')}
+          >
+            <ListItemIcon style={{ minWidth: '34px' }}>
+              <AccountBox />
+            </ListItemIcon>
+            <ListItemText>User</ListItemText>
+          </ListItem>
+        </List>
+      </div>
+    </ClickAwayListener>
   );
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <nav className={classes.drawer} aria-label='drawer'>
-        <Hidden smUp implementation='css'>
-          <Drawer
-            container={container}
-            variant='temporary'
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation='css'>
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant='permanent'
-            open
-            style={{ zIndex: 1200 }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
+        <Drawer
+          classes={{
+            paper: showDrawer ? classes.drawerPaper : classes.drawerPaperSmall,
+          }}
+          variant='permanent'
+          open
+          style={{ zIndex: 1200 }}
+        >
+          {drawer}
+        </Drawer>
       </nav>
       <main
         className={classes.content}
