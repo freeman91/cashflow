@@ -9,6 +9,9 @@ export const breakpoints = {
 };
 
 export const muiTheme = createMuiTheme({
+  palette: {
+    type: 'dark',
+  },
   typography: {
     fontFamily: '"Helvetica", "Arial", sans-serif',
     fontSize: 12,
