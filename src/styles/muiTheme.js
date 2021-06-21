@@ -24,5 +24,5 @@ export const muiTheme = createMuiTheme({
     keys: ['xs', 'sm', 'md', 'lg', 'xl'],
     values: breakpoints,
   },
-  drawerWidth: 200,
+  drawerWidth: 150,
 });
