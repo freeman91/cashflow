@@ -10,3 +10,5 @@ Object.keys(payload.user);
 ## Income rules
 
 - paycheck dont have asset
+
+- Autocomplete on types, sources, etc
