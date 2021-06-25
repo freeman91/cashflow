@@ -1,26 +1,55 @@
 import React, { useState } from 'react';
 import { useLifecycles } from 'react-use';
-import { useHistory } from 'react-router';
-import { Route, Switch } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
 
+import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  ClickAwayListener,
+  AppBar,
+  Box,
+  Tabs,
+  Tab,
+  Typography,
   CssBaseline,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
 } from '@material-ui/core';
 import {
   AccountBox,
   DateRange,
-  Dashboard,
+  Dashboard as DashboardIcon,
   TrendingUp,
-} from '@material-ui/icons/';
+} from '@material-ui/icons';
 import { useWindowSize } from 'react-use';
+
+import Dashboard from './Dashboard';
+import Summary from './Summary';
+import Networth from './Networth';
+import User from './User';
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role='tabpanel'
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+  };
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,32 +57,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     height: '100%',
     width: '100%',
-  },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: theme.drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  smallDrawer: {
-    paddingLeft: '6px',
-  },
-  grow: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  drawerPaperSmall: {
-    width: 35,
-    display: 'flex',
-    overflow: 'visible',
-    height: 30,
-  },
-  drawerPaper: {
-    width: theme.drawerWidth,
-    display: 'flex',
-    overflow: 'visible',
-    height: 136,
   },
   content: {
     flexGrow: 1,
@@ -63,9 +66,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Navigation() {
   const classes = useStyles();
   const theme = useTheme();
-  const history = useHistory();
-  const [showDrawer, setShowDrawer] = useState(false);
-  // const user = useSelector((state) => state.user);
+  const [value, setValue] = React.useState(0);
 
   const isClient = typeof window === 'object';
   const { height } = useWindowSize();
@@ -98,110 +99,59 @@ export default function Navigation() {
     }
   );
 
-  console.log('theme: ', theme);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
-  const drawer = !showDrawer ? (
-    <div className={classes.grow}>
-      <List dense={true} style={{ margin: '0px', padding: '0px' }}>
-        <ListItem
-          dense={true}
-          divider={true}
-          button
-          onClick={() => setShowDrawer(!showDrawer)}
-          className={classes.smallDrawer}
-        >
-          <ListItemIcon style={{ minWidth: '34px' }}>
-            <Dashboard />
-          </ListItemIcon>
-        </ListItem>{' '}
-      </List>{' '}
-    </div>
-  ) : (
-    <ClickAwayListener onClickAway={() => setShowDrawer(false)}>
-      <div className={classes.grow}>
-        <List dense={true} style={{ margin: '0px', padding: '0px' }}>
-          <ListItem
-            dense={true}
-            divider={true}
-            button
-            onClick={() => history.push('/dashboard')}
-          >
-            <ListItemIcon style={{ minWidth: '34px' }}>
-              <Dashboard />
-            </ListItemIcon>
-            <ListItemText>Dashboard</ListItemText>
-          </ListItem>
-          <ListItem
-            dense={true}
-            divider={true}
-            button
-            onClick={() => history.push('/summary')}
-          >
-            <ListItemIcon style={{ minWidth: '34px' }}>
-              <DateRange />
-            </ListItemIcon>
-            <ListItemText>Summary</ListItemText>
-          </ListItem>
-          <ListItem
-            dense={true}
-            divider={true}
-            button
-            onClick={() => history.push('/networth')}
-          >
-            <ListItemIcon style={{ minWidth: '34px' }}>
-              <TrendingUp />
-            </ListItemIcon>
-            <ListItemText>Net Worth</ListItemText>
-          </ListItem>
-          <ListItem
-            dense={true}
-            divider={true}
-            button
-            onClick={() => history.push('/user')}
-          >
-            <ListItemIcon style={{ minWidth: '34px' }}>
-              <AccountBox />
-            </ListItemIcon>
-            <ListItemText>User</ListItemText>
-          </ListItem>
-        </List>
-      </div>
-    </ClickAwayListener>
-  );
+  const handleChangeIndex = (index) => {
+    setValue(index);
+  };
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <nav className={classes.drawer} aria-label='drawer'>
-        <Drawer
-          classes={{
-            paper: showDrawer ? classes.drawerPaper : classes.drawerPaperSmall,
-          }}
-          variant='permanent'
-          open
-          style={{ zIndex: 1200 }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
       <main
         className={classes.content}
         style={{ height: `${height}`, overflow: 'auto' }}
       >
-        <Switch>
-          <Route path='/dashboard'>
-            <p>dashboard</p>
-          </Route>
-          <Route path='/summary'>
-            <p>summary</p>
-          </Route>
-          <Route path='/networth'>
-            <p>networth</p>
-          </Route>
-          <Route path='/user'>
-            <p>user</p>
-          </Route>
-        </Switch>
+        <AppBar position='static' color='default'>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor='primary'
+            textColor='primary'
+            variant='fullWidth'
+            aria-label='full width tabs example'
+          >
+            <Tab
+              label='Dashboard'
+              icon={<DashboardIcon />}
+              wrapped={true}
+              {...a11yProps(0)}
+            />
+            <Tab label='Summary' icon={<DateRange />} {...a11yProps(1)} />
+            <Tab label='Net Worth' icon={<TrendingUp />} {...a11yProps(2)} />
+            <Tab label='User' icon={<AccountBox />} {...a11yProps(3)} />
+          </Tabs>
+        </AppBar>
+        <SwipeableViews
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={value}
+          onChangeIndex={handleChangeIndex}
+        >
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            <Dashboard />
+          </TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            <Summary />
+          </TabPanel>
+          <TabPanel value={value} index={2} dir={theme.direction}>
+            <Networth />
+          </TabPanel>
+          <TabPanel value={value} index={3} dir={theme.direction}>
+            <User />
+          </TabPanel>
+        </SwipeableViews>
       </main>
     </div>
   );
