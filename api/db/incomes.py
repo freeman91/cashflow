@@ -70,6 +70,7 @@ class IncomesModel:
         self.__verify_source__(income["source"])
         self.__verify_deduction_types__(income["deductions"])
 
+        income["category"] = "income"
         return income
 
     def __verify_type__(self, _type: str):

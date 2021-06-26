@@ -3,16 +3,10 @@ import { useLifecycles } from 'react-use';
 
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  AppBar,
-  Box,
-  Tabs,
-  Tab,
-  Typography,
-  CssBaseline,
-} from '@material-ui/core';
+import { AppBar, Box, Tabs, Tab, CssBaseline } from '@material-ui/core';
 import {
   AccountBox,
+  AccountBalanceWallet,
   DateRange,
   Dashboard as DashboardIcon,
   TrendingUp,
@@ -35,11 +29,7 @@ function TabPanel(props) {
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
@@ -129,9 +119,14 @@ export default function Navigation() {
               wrapped={true}
               {...a11yProps(0)}
             />
-            <Tab label='Summary' icon={<DateRange />} {...a11yProps(1)} />
-            <Tab label='Net Worth' icon={<TrendingUp />} {...a11yProps(2)} />
-            <Tab label='User' icon={<AccountBox />} {...a11yProps(3)} />
+            <Tab
+              label='Budget'
+              icon={<AccountBalanceWallet />}
+              {...a11yProps(1)}
+            />
+            <Tab label='Summary' icon={<DateRange />} {...a11yProps(2)} />
+            <Tab label='Net Worth' icon={<TrendingUp />} {...a11yProps(3)} />
+            <Tab label='User' icon={<AccountBox />} {...a11yProps(4)} />
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -143,12 +138,15 @@ export default function Navigation() {
             <Dashboard />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            <Summary />
+            Budget
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            <Networth />
+            <Summary />
           </TabPanel>
           <TabPanel value={value} index={3} dir={theme.direction}>
+            <Networth />
+          </TabPanel>
+          <TabPanel value={value} index={4} dir={theme.direction}>
             <User />
           </TabPanel>
         </SwipeableViews>

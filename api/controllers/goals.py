@@ -1,7 +1,7 @@
 from flask import request, Blueprint
 
 from api.db.goals import Goals
-from api.controllers.__util__ import serialize_dict, success_result, failure_result
+from api.controllers.__util__ import success_result, failure_result
 
 goals = Blueprint("goals", __name__)
 
@@ -43,9 +43,7 @@ def _goals_in_range(start: str, end: str):
         if not (start.isnumeric() and end.isnumeric()):
             return {"result": "Invalid range"}, 400
 
-        success_result(
-            [serialize_dict(goal) for goal in Goals.in_range(int(start), int(end))]
-        )
+        success_result(Goals.in_range(int(start), int(end)))
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")

@@ -52,6 +52,7 @@ class DebtsModel:
             assert attr in self.attributes
             assert type(debt[attr]) == self.attributes[attr]
         assert debt["type"] in self.types
+        debt["category"] = "debt"
         return debt
 
 

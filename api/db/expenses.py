@@ -68,7 +68,7 @@ class ExpensesModel:
 
         self.__verify_type__(expense["type"])
         self.__verify_vendor__(expense["vendor"])
-
+        expense["category"] = "expense"
         return expense
 
     def __verify_type__(self, _type: str):

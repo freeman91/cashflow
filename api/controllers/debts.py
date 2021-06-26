@@ -1,7 +1,7 @@
 from flask import request, Blueprint
 
 from api.db.debts import Debts
-from api.controllers.__util__ import serialize_dict, success_result, failure_result
+from api.controllers.__util__ import success_result, failure_result
 
 debts = Blueprint("debts", __name__)
 

@@ -2,7 +2,7 @@ from bson.json_util import dumps
 from flask import request, Blueprint
 
 from api.db.user import user
-from api.controllers.__util__ import serialize_dict, success_result, failure_result
+from api.controllers.__util__ import success_result, failure_result
 
 users = Blueprint("users", __name__)
 

@@ -63,6 +63,7 @@ class GoalsModel:
 
         self.__verify_values__(goal["values"])
 
+        goal["category"] = "goal"
         return goal
 
     def __verify_values__(self, values):

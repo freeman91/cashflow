@@ -58,7 +58,7 @@ class HoursModel:
             assert type(hour[attr]) == self.attributes[attr]
 
         assert hour["source"] in user.item["income"]["sources"]
-
+        hour["category"] = "hour"
         return hour
 
 

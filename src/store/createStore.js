@@ -9,10 +9,11 @@ import thunkMiddleware from 'redux-thunk';
 import { loadingBarMiddleware } from 'react-redux-loading-bar';
 
 /** REDUCERS **/
-import user from './user';
-import toast from './toastr';
 import { reducer as toastr } from 'react-redux-toastr';
 import { loadingBarReducer } from 'react-redux-loading-bar';
+import user from './user';
+import records from './records';
+import toast from './toastr';
 
 export const history = createBrowserHistory();
 
@@ -40,6 +41,7 @@ let rootReducer = combineReducers({
   router: connectRouter(history),
   toast,
   toastr,
+  records,
   user,
 });
 

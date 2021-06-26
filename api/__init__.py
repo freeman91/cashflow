@@ -1,11 +1,12 @@
 import logging
 import os
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, url_for
 from flask_meter import FlaskMeter
 from flask_cors import CORS
 
 from api.controllers.users import users
+from api.controllers.records import records
 from api.controllers.expenses import expenses
 from api.controllers.incomes import incomes
 from api.controllers.hours import hours
@@ -18,6 +19,14 @@ from api.config import app_config
 from api.db import database
 
 flask_meter = FlaskMeter()
+
+__version__ = "0.0.1"
+
+
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
 
 
 def create_app():
@@ -32,6 +41,7 @@ def create_app():
     flask_meter.init_app(app)
 
     app.register_blueprint(users)
+    app.register_blueprint(records)
     app.register_blueprint(expenses)
     app.register_blueprint(incomes)
     app.register_blueprint(hours)
@@ -45,9 +55,17 @@ def create_app():
         payload = {"result": "success"}
         return jsonify(payload)
 
-    @app.route("/_health")
-    def health():
-        payload = {"result": "success"}
-        return jsonify(payload)
+    @app.route("/site-map")
+    def site_map():
+        links = []
+        for rule in app.url_map.iter_rules():
+            # Filter out rules we can't navigate to in a browser
+            # and rules that require parameters
+            if "GET" in rule.methods and has_no_empty_params(rule):
+                url = url_for(rule.endpoint, **(rule.defaults or {}))
+                links.append((url, rule.endpoint))
+        # links is now a list of url, endpoint tuples\
+
+        return jsonify(links)
 
     return app

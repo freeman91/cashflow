@@ -62,7 +62,7 @@ class NetworthsModel:
 
         self.__verify_values__(networth["assets"])
         self.__verify_values__(networth["debts"])
-
+        networth["category"] = "networth"
         return networth
 
     def __verify_values__(self, values):

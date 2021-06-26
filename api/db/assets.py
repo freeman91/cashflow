@@ -61,6 +61,7 @@ class AssetsModel:
             assert attr in self.attributes
             assert type(asset[attr]) == self.attributes[attr]
         assert asset["type"] in self.types
+        asset["category"] = "asset"
         return asset
 
 

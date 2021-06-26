@@ -22,7 +22,7 @@ cryptocompare._set_api_key_parameter(CRYPTO_KEY)
 
 def g_exp():
     exp1 = {
-        "date": datetime(2021, 6, 21, 12),
+        "date": datetime(2021, 6, 26, 12),
         "amount": float(36.25),
         "type": "grocery",
         "vendor": "Kroger",
@@ -31,7 +31,7 @@ def g_exp():
         "desc": "",
     }
     exp2 = {
-        "date": datetime(2021, 6, 17, 12),
+        "date": datetime(2021, 6, 25, 12),
         "amount": float(74.23),
         "type": "home",
         "vendor": "Amazon",
@@ -40,7 +40,7 @@ def g_exp():
         "desc": "",
     }
     exp3 = {
-        "date": datetime(2021, 6, 15, 12),
+        "date": datetime(2021, 6, 24, 12),
         "amount": float(16.11),
         "type": "entertainment",
         "vendor": "HBO",
@@ -49,7 +49,7 @@ def g_exp():
         "desc": "",
     }
     exp4 = {
-        "date": datetime(2021, 6, 19, 12),
+        "date": datetime(2021, 6, 20, 12),
         "amount": float(32.9),
         "type": "utilities",
         "vendor": "AEP",
