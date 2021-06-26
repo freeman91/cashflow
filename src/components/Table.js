@@ -14,6 +14,8 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import { numberToCurrency } from '../helpers/currency';
+
 const useStyles = makeStyles((theme) => ({
   header: {
     flex: 1,
@@ -67,7 +69,11 @@ export default function TableComponent({ title, data }) {
                         <Typography>{row.category}</Typography>
                       </TableCell>
                       <TableCell align='right'>
-                        <Typography>{row.amount}</Typography>
+                        <Typography>
+                          {row.category === 'hour'
+                            ? row.amount
+                            : numberToCurrency.format(row.amount)}
+                        </Typography>
                       </TableCell>
                       <TableCell align='right'>
                         <Typography>{row.vendor || row.source}</Typography>
