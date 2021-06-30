@@ -51,7 +51,7 @@ const prepareRecentRecords = (expenses, incomes, hours) => {
     });
     records = records.concat(dayRecords);
   });
-  return records;
+  return records.slice(0, 15);
 };
 
 export default function Dashboard() {
@@ -85,7 +85,7 @@ export default function Dashboard() {
             </Button>
           </Paper>
         </Grid>
-        <Grid item xs>
+        <Grid item xs={4}>
           <Table data={tableData} title='Recent Records' />
         </Grid>
       </Grid>

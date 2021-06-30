@@ -30,21 +30,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     height: '100%',
   },
+  cell: {
+    width: '8rem',
+  },
 }));
 
-function createData(category, date, amount, type, vendor) {
-  return { category, date, amount, type, vendor };
-}
-
-const rows = [
-  createData('expense', '06/24/2021', 9.15, 'food', 'Chipotle'),
-  createData('expense', '06/25/2021', 77.34, 'grocery', 'Kroger'),
-  createData('income', '06/25/2021', 1848.36, 'paycheck', 'DES'),
-  createData('hour', '06/25/2021', 5, '', 'DES'),
-];
-
 export default function TableComponent({ title, data }) {
-  const theme = useTheme();
   const classes = useStyles();
 
   return (
@@ -61,21 +52,29 @@ export default function TableComponent({ title, data }) {
               <TableBody>
                 {data.map((row) => {
                   return (
-                    <TableRow key={`${row.category}-${row.date}-${row.amount}`}>
-                      <TableCell component='th' scope='row'>
+                    <TableRow
+                      key={`${row.category}-${row.date}-${row.amount}`}
+                      onClick={() => console.log(row)}
+                      hover
+                    >
+                      <TableCell
+                        component='th'
+                        scope='row'
+                        className={classes.cell}
+                      >
                         <Typography>{row.displayDate}</Typography>
                       </TableCell>
-                      <TableCell align='left'>
+                      <TableCell align='left' className={classes.cell}>
                         <Typography>{row.category}</Typography>
                       </TableCell>
-                      <TableCell align='right'>
+                      <TableCell align='right' className={classes.cell}>
                         <Typography>
                           {row.category === 'hour'
                             ? row.amount
                             : numberToCurrency.format(row.amount)}
                         </Typography>
                       </TableCell>
-                      <TableCell align='right'>
+                      <TableCell align='right' className={classes.cell}>
                         <Typography>{row.vendor || row.source}</Typography>
                       </TableCell>
                     </TableRow>
