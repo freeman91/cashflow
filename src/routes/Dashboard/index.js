@@ -6,6 +6,7 @@ import { Button, Grid, Paper, Typography } from '@material-ui/core';
 import { filter, forEach } from 'lodash';
 
 import Table from '../../components/Table';
+import RecordGenerationDialog from './RecordGenerationDialog';
 import { getRecentRecords } from '../../store/records';
 
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +59,7 @@ export default function Dashboard() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { expenses, incomes, hours } = useSelector((state) => state.records);
 
   useEffect(() => {
@@ -67,6 +69,14 @@ export default function Dashboard() {
   useEffect(() => {
     setTableData(prepareRecentRecords(expenses, incomes, hours));
   }, [expenses, incomes, hours]);
+
+  const handleButtonClick = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
 
   return (
     <>
@@ -80,17 +90,20 @@ export default function Dashboard() {
               variant='contained'
               color='primary'
               className={classes.button}
+              onClick={handleButtonClick}
             >
               Generate Record
             </Button>
           </Paper>
         </Grid>
+        <Grid item xs>
+          <Typography>Spacer</Typography>
+        </Grid>
         <Grid item xs={4}>
           <Table data={tableData} title='Recent Records' />
         </Grid>
       </Grid>
-      {/* <Grid container spacing={3}>
-      </Grid> */}
+      <RecordGenerationDialog open={dialogOpen} handleClose={handleClose} />
     </>
   );
 }
