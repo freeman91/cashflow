@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/styles';
 import {
   Button,
   Dialog,
@@ -14,7 +15,21 @@ import {
 import { sleep } from '../../helpers/util';
 import ExpenseForm from './ExpenseForm';
 
+const useStyles = makeStyles({
+  dialog: {
+    '& .MuiPaper-root': { width: '40%' },
+  },
+  stack: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  button: {
+    width: '10rem',
+  },
+});
+
 export default function RecordGenerationDialog({ open, handleClose }) {
+  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [recordType, setRecordType] = useState(null);
   const [steps, setSteps] = useState(['Select Record Type']);
@@ -58,22 +73,31 @@ export default function RecordGenerationDialog({ open, handleClose }) {
       default:
         return (
           <>
-            <Stack direction='row' spacing={1}>
+            <Stack className={classes.stack} direction='row' spacing={1}>
               <Button
                 onClick={() => selectRecordType('expense')}
                 variant='outlined'
+                color='info'
+                size='large'
+                className={classes.button}
               >
                 Expense
               </Button>
               <Button
                 onClick={() => selectRecordType('income')}
                 variant='outlined'
+                color='info'
+                size='large'
+                className={classes.button}
               >
                 Income
               </Button>
               <Button
                 onClick={() => selectRecordType('hour')}
                 variant='outlined'
+                color='info'
+                size='large'
+                className={classes.button}
               >
                 Hour
               </Button>
@@ -84,7 +108,7 @@ export default function RecordGenerationDialog({ open, handleClose }) {
   };
 
   return (
-    <Dialog open={open} onClose={handleDialogClose}>
+    <Dialog className={classes.dialog} open={open} onClose={handleDialogClose}>
       <DialogTitle id='record-generation-dialog-title'>
         Generate New Record
       </DialogTitle>

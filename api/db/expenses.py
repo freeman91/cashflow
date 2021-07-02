@@ -13,7 +13,6 @@ class ExpensesModel:
         "_id": ObjectId,
         "date": datetime,
         "amount": float,
-        "dedutctions": dict,
         "type": str,
         "vendor": str,
         "asset": str,
