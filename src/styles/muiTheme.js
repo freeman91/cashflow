@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 export const breakpoints = {
   xs: 0,
@@ -8,9 +8,9 @@ export const breakpoints = {
   xl: 1920,
 };
 
-export const muiTheme = createMuiTheme({
+export const muiTheme = createTheme({
   palette: {
-    type: 'dark',
+    mode: 'dark',
   },
   typography: {
     fontFamily: '"Helvetica", "Arial", sans-serif',

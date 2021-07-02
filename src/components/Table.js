@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import React from 'react';
+import { makeStyles } from '@material-ui/styles';
 import {
   Card,
   CardContent,
@@ -16,12 +15,12 @@ import {
 
 import { numberToCurrency } from '../helpers/currency';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   header: {
     flex: 1,
   },
   toolbar: {
-    backgroundColor: theme.palette.grey[700],
+    backgroundColor: '#616161',
     minHeight: `50px`,
     textAlign: 'left',
   },

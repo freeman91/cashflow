@@ -1,36 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import dayjs from 'dayjs';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
 import {
-  Box,
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   Step,
-  StepContent,
   StepLabel,
   Stepper,
-  Typography,
 } from '@material-ui/core';
-import { filter, forEach } from 'lodash';
 
 import { sleep } from '../../helpers/util';
-
-const useStyles = makeStyles((theme) => ({}));
+import ExpenseForm from './ExpenseForm';
 
 export default function RecordGenerationDialog({ open, handleClose }) {
-  const classes = useStyles();
-  const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(0);
   const [recordType, setRecordType] = useState(null);
   const [steps, setSteps] = useState(['Select Record Type']);
-
-  const { expenses, incomes, hours } = useSelector((state) => state.records);
-  const user = useSelector((state) => state.user);
-
-  useEffect(() => {}, []);
 
   const handleDialogClose = async () => {
     handleClose();
@@ -52,6 +37,7 @@ export default function RecordGenerationDialog({ open, handleClose }) {
       default:
         setRecordType('expense');
         setSteps([...steps, 'Expense Form']);
+        break;
     }
     setActiveStep(1);
   };
@@ -59,7 +45,14 @@ export default function RecordGenerationDialog({ open, handleClose }) {
   const renderStep = () => {
     switch (activeStep) {
       case 1:
-        return <p>form</p>;
+        switch (recordType) {
+          case 'income':
+            return <p>income form</p>;
+          case 'hour':
+            return <p>hour form</p>;
+          default:
+            return <ExpenseForm />;
+        }
       default:
         return (
           <>
@@ -85,7 +78,7 @@ export default function RecordGenerationDialog({ open, handleClose }) {
                   <StepLabel>{label}</StepLabel>
                 </Step>
               );
-            } else if (index === 1) {
+            } else {
               return (
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>

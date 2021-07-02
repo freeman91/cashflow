@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useLifecycles } from 'react-use';
 
 import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { useTheme } from '@material-ui/core/styles';
 import { AppBar, Box, Tabs, Tab, CssBaseline } from '@material-ui/core';
 import {
   AccountBox,
@@ -41,7 +42,7 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     position: 'absolute',
     display: 'flex',

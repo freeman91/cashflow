@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
+// import { useBreakpoints } from 'react-use-breakpoints';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, Grid, Paper, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import { filter, forEach } from 'lodash';
 
 import Table from '../../components/Table';
-import RecordGenerationDialog from './RecordGenerationDialog';
 import { getRecentRecords } from '../../store/records';
+import GenerateRecordButton from '../../components/GenerateRecord';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    display: 'flex',
-  },
-  button: {
-    marginLeft: 'auto',
-  },
-}));
+const useStyles = makeStyles((theme) => {
+  return {
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: '1rem',
+      textAlign: 'center',
+      color: 'rgba(255, 255, 255, 0.7)',
+      display: 'flex',
+    },
+    button: {
+      marginLeft: 'auto',
+    },
+  };
+});
 
 const prepareRecentRecords = (expenses, incomes, hours) => {
   let records = [];
@@ -57,26 +60,18 @@ const prepareRecentRecords = (expenses, incomes, hours) => {
 
 export default function Dashboard() {
   const classes = useStyles();
+  // const { breakpoint, windowSize } = useBreakpoints();
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const { expenses, incomes, hours } = useSelector((state) => state.records);
 
   useEffect(() => {
     dispatch(getRecentRecords());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setTableData(prepareRecentRecords(expenses, incomes, hours));
   }, [expenses, incomes, hours]);
-
-  const handleButtonClick = () => {
-    setDialogOpen(true);
-  };
-
-  const handleClose = () => {
-    setDialogOpen(false);
-  };
 
   return (
     <>
@@ -86,24 +81,15 @@ export default function Dashboard() {
             <Typography align='right' variant='h4'>
               {dayjs().format('dddd, MMMM D YYYY')}
             </Typography>
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.button}
-              onClick={handleButtonClick}
-            >
-              Generate Record
-            </Button>
+            <div className={classes.button}>
+              <GenerateRecordButton />
+            </div>
           </Paper>
         </Grid>
         <Grid item xs>
-          <Typography>Spacer</Typography>
-        </Grid>
-        <Grid item xs={4}>
           <Table data={tableData} title='Recent Records' />
         </Grid>
       </Grid>
-      <RecordGenerationDialog open={dialogOpen} handleClose={handleClose} />
     </>
   );
 }

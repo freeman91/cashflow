@@ -13,8 +13,11 @@ import ReduxToastr from 'react-redux-toastr';
 import LoadingBar from 'react-redux-loading-bar';
 
 /** MATERIAL-UI **/
-import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { muiTheme } from './styles/muiTheme';
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 
 import './styles/App.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
@@ -79,7 +82,9 @@ function AppProvider() {
   return (
     <ThemeProvider theme={muiTheme}>
       <ReduxProvider store={store}>
-        <App />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <App />
+        </LocalizationProvider>
       </ReduxProvider>
     </ThemeProvider>
   );
