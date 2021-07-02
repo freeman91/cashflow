@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
 import {
   AttachMoney as AttachMoneyIcon,
   Description as DescriptionIcon,
+  Category as CategoryIcon,
 } from '@material-ui/icons';
 import DatePicker from '@material-ui/lab/DatePicker';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { Box, FormControl, InputAdornment, TextField } from '@material-ui/core';
+import { Box, InputAdornment, TextField } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  form: {
+    marginTop: '1rem',
+  },
+  input: {
+    marginTop: '.5rem',
+    marginBottom: '.5rem',
+  },
+});
 
 export default function ExpenseForm() {
+  const classes = useStyles();
   const user = useSelector((state) => state.user);
   const [selectedType, setSelectedType] = useState('');
   const [selectedVendor, setSelectedVendor] = useState('');
@@ -18,14 +31,12 @@ export default function ExpenseForm() {
   // const handleSubmit = () => {};
   // const handleTypeSelect = () => {};
 
-  console.log('date: ', date);
-
   return (
     <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
+      <form className={classes.form}>
         <Autocomplete
           id='expense-type-select'
-          autoComplete
+          className={classes.input}
           freeSolo
           value={selectedType}
           options={user.expense.types}
@@ -38,7 +49,9 @@ export default function ExpenseForm() {
         {!selectedType ? null : (
           <>
             <TextField
+              fullWidth
               id='amount-input'
+              className={classes.input}
               label='amount'
               name='amount'
               required
@@ -55,6 +68,7 @@ export default function ExpenseForm() {
             />
             <Autocomplete
               id='expense-vendor-select'
+              className={classes.input}
               autoComplete
               freeSolo
               value={selectedVendor}
@@ -70,32 +84,35 @@ export default function ExpenseForm() {
               )}
             />
             <TextField
+              fullWidth
               id='description-input'
+              className={classes.input}
               label='description'
               name='description'
-              required
               value={description}
               variant='outlined'
               onChange={(e) => setDescription(e.target.value)}
               InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
+                endAdornment: (
+                  <InputAdornment position='end'>
                     <DescriptionIcon />
                   </InputAdornment>
                 ),
               }}
             />
-            <DatePicker
-              label='Basic example'
-              value={date}
-              onChange={(val) => {
-                setDate(val);
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
+            <div style={{ marginTop: '.5rem' }}>
+              <DatePicker
+                label='Date'
+                value={date}
+                onChange={(val) => {
+                  setDate(val);
+                }}
+                renderInput={(params) => <TextField fullWidth {...params} />}
+              />
+            </div>
           </>
         )}
-      </FormControl>
+      </form>
     </Box>
   );
 }

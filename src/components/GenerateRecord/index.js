@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 
@@ -14,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
 export default function GenerateRecordButton() {
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
-  // const { user } = useSelector((state) => state.user);
 
   const handleButtonClick = () => {
     setDialogOpen(true);

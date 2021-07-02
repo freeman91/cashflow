@@ -4,6 +4,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  Divider,
+  Stack,
   Step,
   StepLabel,
   Stepper,
@@ -56,9 +58,26 @@ export default function RecordGenerationDialog({ open, handleClose }) {
       default:
         return (
           <>
-            <Button onClick={() => selectRecordType('expense')}>Expense</Button>
-            <Button onClick={() => selectRecordType('income')}>Income</Button>
-            <Button onClick={() => selectRecordType('hour')}>Hour</Button>
+            <Stack direction='row' spacing={1}>
+              <Button
+                onClick={() => selectRecordType('expense')}
+                variant='outlined'
+              >
+                Expense
+              </Button>
+              <Button
+                onClick={() => selectRecordType('income')}
+                variant='outlined'
+              >
+                Income
+              </Button>
+              <Button
+                onClick={() => selectRecordType('hour')}
+                variant='outlined'
+              >
+                Hour
+              </Button>
+            </Stack>
           </>
         );
     }
@@ -87,6 +106,7 @@ export default function RecordGenerationDialog({ open, handleClose }) {
             }
           })}
         </Stepper>
+        <Divider sx={{ marginTop: '.5rem', marginBottom: '.5rem' }} />
         {renderStep()}
       </DialogContent>
     </Dialog>
