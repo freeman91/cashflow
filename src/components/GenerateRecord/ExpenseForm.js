@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import { makeStyles } from '@material-ui/styles';
 import {
   AttachMoney as AttachMoneyIcon,
   Description as DescriptionIcon,
@@ -12,10 +11,6 @@ import { Box, Button, InputAdornment, TextField } from '@material-ui/core';
 
 import { postExpense } from '../../store/expenses';
 
-const useStyles = makeStyles({
-  button: {},
-});
-
 const default_state = {
   amount: '',
   type: '',
@@ -25,7 +20,6 @@ const default_state = {
 };
 
 export default function ExpenseForm({ handleDialogClose }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
@@ -84,7 +78,6 @@ export default function ExpenseForm({ handleDialogClose }) {
         <Autocomplete
           data-lpignore='true'
           id='type-select'
-          className={classes.input}
           autoComplete
           freeSolo
           value={values.type}
@@ -103,7 +96,6 @@ export default function ExpenseForm({ handleDialogClose }) {
         />
         <Autocomplete
           id='vendor-select'
-          className={classes.input}
           autoComplete
           freeSolo
           value={values.vendor}
@@ -123,7 +115,6 @@ export default function ExpenseForm({ handleDialogClose }) {
         <TextField
           fullWidth
           id='description-input'
-          className={classes.input}
           label='description'
           name='description'
           value={values.description}

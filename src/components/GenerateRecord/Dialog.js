@@ -14,6 +14,7 @@ import {
 
 import { sleep } from '../../helpers/util';
 import ExpenseForm from './ExpenseForm';
+import IncomeForm from './IncomeForm';
 
 const useStyles = makeStyles({
   dialog: {
@@ -64,7 +65,7 @@ export default function RecordGenerationDialog({ open, handleClose }) {
       case 1:
         switch (recordType) {
           case 'income':
-            return <p>income form</p>;
+            return <IncomeForm handleDialogClose={handleDialogClose} />;
           case 'hour':
             return <p>hour form</p>;
           default:
