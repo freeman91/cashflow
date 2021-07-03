@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import { addToastr, types } from '../toastr';
 import { getRecentHoursAPI, postHourAPI } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { hours as initialState } from '../initialState';
@@ -9,12 +10,25 @@ const postHour = createAsyncThunk(
   async (new_hour, { dispatch, getState }) => {
     try {
       const result = await postHourAPI(new_hour);
-      const hours = getState().records.hours;
+      const { data: hours } = getState().hours;
+      if (result) {
+        dispatch(
+          addToastr({
+            type: types.success,
+            message: 'Hour inserted',
+          })
+        );
+      }
       return {
-        data: hours.append(result),
+        data: [result].concat(hours),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(
+        addToastr({
+          type: types.error,
+          message: `Error: ${err}`,
+        })
+      );
     }
   }
 );

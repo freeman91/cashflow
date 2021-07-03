@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import { addToastr, types } from '../toastr';
 import { getRecentIncomesAPI, postIncomeAPI } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { incomes as initialState } from '../initialState';
@@ -9,12 +10,25 @@ const postIncome = createAsyncThunk(
   async (new_income, { dispatch, getState }) => {
     try {
       const result = await postIncomeAPI(new_income);
-      const incomes = getState().records.incomes;
+      const { data: incomes } = getState().incomes;
+      if (result) {
+        dispatch(
+          addToastr({
+            type: types.success,
+            message: 'Income inserted',
+          })
+        );
+      }
       return {
-        data: incomes.append(result),
+        data: [result].concat(incomes),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(
+        addToastr({
+          type: types.error,
+          message: `Error: ${err}`,
+        })
+      );
     }
   }
 );

@@ -23,6 +23,11 @@ def _get_recent_hours():
 @hours.route("/hours", methods=["POST"])
 def _create_hour():
     try:
+        new_hour = request.json
+        new_hour["date"] = round(
+            datetime.strptime(new_hour["date"], "%m-%d-%Y").replace(hour=12).timestamp()
+        )
+        new_hour["amount"] = float(new_hour["amount"])
         return success_result(Hours.get(Hours.create(request.json).inserted_id))
     except Exception as err:
         print(f"err: {err}")

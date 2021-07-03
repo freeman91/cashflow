@@ -23,6 +23,15 @@ def _get_recent_incomes():
 @incomes.route("/incomes", methods=["POST"])
 def _create_income():
     try:
+        new_income = request.json
+        if not hasattr(new_income, "asset"):
+            new_income["asset"] = ""
+        new_income["date"] = round(
+            datetime.strptime(new_income["date"], "%m-%d-%Y")
+            .replace(hour=12)
+            .timestamp()
+        )
+        new_income["amount"] = float(new_income["amount"])
         return success_result(Incomes.get(Incomes.create(request.json).inserted_id))
     except Exception as err:
         print(f"err: {err}")
