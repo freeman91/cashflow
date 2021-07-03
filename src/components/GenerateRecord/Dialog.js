@@ -68,7 +68,7 @@ export default function RecordGenerationDialog({ open, handleClose }) {
           case 'hour':
             return <p>hour form</p>;
           default:
-            return <ExpenseForm />;
+            return <ExpenseForm handleDialogClose={handleDialogClose} />;
         }
       default:
         return (

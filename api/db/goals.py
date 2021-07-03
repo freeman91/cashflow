@@ -13,7 +13,7 @@ class GoalsModel:
         "month": int,
         "year": int,
         "values": dict,
-        "desc": str,
+        "description": str,
     }
 
     def get(self, id):

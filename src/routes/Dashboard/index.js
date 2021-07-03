@@ -7,7 +7,7 @@ import { Grid, Paper, Typography } from '@material-ui/core';
 import { filter, forEach } from 'lodash';
 
 import Table from '../../components/Table';
-import { getRecentRecords } from '../../store/records';
+import { getRecentExpenses } from '../../store/expenses';
 import GenerateRecordButton from '../../components/GenerateRecord';
 
 const useStyles = makeStyles((theme) => {
@@ -63,15 +63,15 @@ export default function Dashboard() {
   // const { breakpoint, windowSize } = useBreakpoints();
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
-  const { expenses, incomes, hours } = useSelector((state) => state.records);
+  const { data: expenses } = useSelector((state) => state.expenses);
 
   useEffect(() => {
-    dispatch(getRecentRecords());
+    dispatch(getRecentExpenses());
   }, [dispatch]);
 
   useEffect(() => {
-    setTableData(prepareRecentRecords(expenses, incomes, hours));
-  }, [expenses, incomes, hours]);
+    setTableData(prepareRecentRecords(expenses, [], []));
+  }, [expenses]);
 
   return (
     <>

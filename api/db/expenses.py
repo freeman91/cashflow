@@ -17,7 +17,7 @@ class ExpensesModel:
         "vendor": str,
         "asset": str,
         "debt": str,
-        "desc": str,
+        "description": str,
     }
 
     def get(self, id):

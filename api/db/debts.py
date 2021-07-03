@@ -14,7 +14,7 @@ class DebtsModel:
         "value": float,
         "type": str,
         "asset": str,
-        "desc": str,
+        "description": str,
         "last_update": datetime,
     }
 

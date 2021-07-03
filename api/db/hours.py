@@ -11,7 +11,7 @@ class HoursModel:
         "date": datetime,
         "amount": float,
         "source": str,
-        "desc": str,
+        "description": str,
     }
 
     def get(self, id):

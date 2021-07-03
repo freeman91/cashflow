@@ -31,13 +31,37 @@ export const getRecentRecordsAPI = async () => {
     if (get(response, 'status') === 200) {
       const payload = JSON.parse(get(response, 'data.result'));
       return {
-        expenses: parseArray(get(payload, 'expenses')),
         incomes: parseArray(get(payload, 'incomes')),
         hours: parseArray(get(payload, 'hours')),
         goals: parseArray(get(payload, 'goals')),
         assets: parseArray(get(payload, 'assets')),
         debts: parseArray(get(payload, 'debts')),
       };
+    } else {
+      console.error(response);
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const getRecentExpensesAPI = async () => {
+  try {
+    const response = await axios.get(`/expenses/recent`);
+    if (get(response, 'status') === 200) {
+      const payload = JSON.parse(get(response, 'data.result'));
+      return parseArray(get(payload, 'expenses'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const postExpenseAPI = async (new_expense) => {
+  try {
+    const response = await axios.post(`/expenses`, new_expense);
+    if (get(response, 'status') === 200) {
+      return JSON.parse(get(response, 'data.result'));
     }
   } catch (error) {
     console.log('error: ', error);

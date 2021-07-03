@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/styles';
 import {
   AttachMoney as AttachMoneyIcon,
@@ -9,59 +10,69 @@ import DatePicker from '@material-ui/lab/DatePicker';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Box, Button, InputAdornment, TextField } from '@material-ui/core';
 
+import { postExpense } from '../../store/expenses';
+
 const useStyles = makeStyles({
-  form: {
-    marginTop: '1rem',
-  },
-  input: {
-    marginTop: '.5rem',
-    marginBottom: '.5rem',
-  },
-  button: {
-    marginTop: '.5rem',
-    width: '100%',
-  },
+  button: {},
 });
 
-export default function ExpenseForm() {
+const default_state = {
+  amount: '',
+  type: '',
+  vendor: '',
+  description: '',
+  date: new Date(),
+};
+
+export default function ExpenseForm({ handleDialogClose }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const [selectedType, setSelectedType] = useState('');
-  const [selectedVendor, setSelectedVendor] = useState('');
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState(null);
-  const [ticker, setTicker] = useState('');
-  const [shares, setShares] = useState('');
-  // const handleSubmit = () => {};
-  // const handleTypeSelect = () => {};
-  // const validate = () => {};
+  const [values, setValues] = useState(default_state);
+
+  const handleSubmit = () => {
+    try {
+      const new_expense = {
+        amount: Number(values.amount),
+        type: values.type,
+        vendor: values.vendor,
+        description: values.description,
+        date: dayjs(values.date).format('DD-MM-YYYY'),
+      };
+      dispatch(postExpense(new_expense));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      handleDialogClose();
+    }
+  };
+
+  const validate = () => {
+    if (
+      isNaN(values.amount) ||
+      values.type.length === 0 ||
+      !values.vendor ||
+      values.vendor.length === 0 ||
+      !values.date
+    )
+      return false;
+    else return true;
+  };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <form className={classes.form}>
-        <Autocomplete
-          id='type-select'
-          className={classes.input}
-          freeSolo
-          value={selectedType}
-          options={user.expense.types}
-          getOptionLabel={(option) => option}
-          onChange={(e, val) => setSelectedType(val)}
-          renderInput={(params) => (
-            <TextField {...params} label='type' variant='outlined' />
-          )}
-        />
+    <Box>
+      <form id='search'>
         <TextField
           fullWidth
           id='amount-input'
-          className={classes.input}
           label='amount'
           name='amount'
           required
-          value={amount}
+          value={values.amount}
           variant='outlined'
-          onChange={(e) => setAmount(e.target.value)}
+          placeholder='0'
+          onChange={(e) => setValues({ ...values, amount: e.target.value })}
+          margin='dense'
           InputProps={{
             startAdornment: (
               <InputAdornment position='start'>
@@ -70,41 +81,43 @@ export default function ExpenseForm() {
             ),
           }}
         />
-        {selectedType === 'stock' || selectedType === 'crypto' ? (
-          <TextField
-            sx={{ marginTop: '.5rem' }}
-            fullWidth
-            id='ticker-input'
-            label='ticker'
-            name='ticker'
-            value={ticker}
-            variant='outlined'
-            onChange={(e) => setTicker(e.target.value)}
-          />
-        ) : null}
-        {selectedType === 'stock' || selectedType === 'crypto' ? (
-          <TextField
-            fullWidth
-            id='shares-input'
-            sx={{ marginTop: '.5rem' }}
-            label='shares'
-            name='shares'
-            value={shares}
-            variant='outlined'
-            onChange={(e) => setShares(e.target.value)}
-          />
-        ) : null}
+        <Autocomplete
+          data-lpignore='true'
+          id='type-select'
+          className={classes.input}
+          autoComplete
+          freeSolo
+          value={values.type}
+          options={user.expense.types}
+          getOptionLabel={(option) => option}
+          onChange={(e, value) => setValues({ ...values, type: value })}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              required
+              label='type'
+              variant='outlined'
+              margin='dense'
+            />
+          )}
+        />
         <Autocomplete
           id='vendor-select'
           className={classes.input}
           autoComplete
           freeSolo
-          value={selectedVendor}
+          value={values.vendor}
           options={user.expense.vendors}
           getOptionLabel={(option) => option}
-          onChange={(e, val) => setSelectedVendor(val)}
+          onChange={(e, value) => setValues({ ...values, vendor: value })}
+          autoSelect
           renderInput={(params) => (
-            <TextField {...params} label='vendor' variant='outlined' />
+            <TextField
+              {...params}
+              label='vendor'
+              variant='outlined'
+              margin='dense'
+            />
           )}
         />
         <TextField
@@ -113,9 +126,12 @@ export default function ExpenseForm() {
           className={classes.input}
           label='description'
           name='description'
-          value={description}
+          value={values.description}
           variant='outlined'
-          onChange={(e) => setDescription(e.target.value)}
+          margin='dense'
+          onChange={(e) =>
+            setValues({ ...values, description: e.target.value })
+          }
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
@@ -124,17 +140,23 @@ export default function ExpenseForm() {
             ),
           }}
         />
-        <div style={{ marginTop: '.5rem', marginBottom: '.5rem' }}>
-          <DatePicker
-            label='date'
-            value={date}
-            onChange={(val) => {
-              setDate(val);
-            }}
-            renderInput={(params) => <TextField fullWidth {...params} />}
-          />
-        </div>
-        <Button variant='contained' className={classes.button}>
+        <DatePicker
+          label='date'
+          value={values.date}
+          onChange={(value) => {
+            setValues({ ...values, date: value });
+          }}
+          renderInput={(params) => (
+            <TextField fullWidth {...params} margin='dense' required />
+          )}
+        />
+        <Button
+          id='submit'
+          disabled={!validate()}
+          sx={{ marginTop: '1rem', width: '100%' }}
+          variant='contained'
+          onClick={handleSubmit}
+        >
           Submit
         </Button>
       </form>

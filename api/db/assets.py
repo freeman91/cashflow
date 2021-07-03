@@ -23,7 +23,7 @@ class AssetsModel:
         "price": float,
         "ticker": str,
         "debt": str,
-        "desc": str,
+        "description": str,
         "last_update": datetime,
     }
 

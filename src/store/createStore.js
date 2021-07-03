@@ -12,7 +12,7 @@ import { loadingBarMiddleware } from 'react-redux-loading-bar';
 import { reducer as toastr } from 'react-redux-toastr';
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import user from './user';
-import records from './records';
+import expenses from './expenses';
 import toast from './toastr';
 
 export const history = createBrowserHistory();
@@ -41,7 +41,7 @@ let rootReducer = combineReducers({
   router: connectRouter(history),
   toast,
   toastr,
-  records,
+  expenses,
   user,
 });
 
@@ -55,9 +55,5 @@ const middleware = [
 export default function configureStore(preloadedState) {
   const enhancers = [applyMiddleware(...middleware)];
   const composedEnhancers = composeWithDevTools(...enhancers);
-
-  // Create the store
-  const store = createStore(rootReducer, preloadedState, composedEnhancers);
-
-  return store;
+  return createStore(rootReducer, preloadedState, composedEnhancers);
 }

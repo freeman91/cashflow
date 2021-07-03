@@ -1,4 +1,5 @@
 from flask import request, Blueprint
+from datetime import datetime, timedelta
 
 from api.db.expenses import Expenses
 from api.controllers.__util__ import success_result, failure_result
@@ -6,9 +7,31 @@ from api.controllers.__util__ import success_result, failure_result
 expenses = Blueprint("expenses", __name__)
 
 
+@expenses.route("/expenses/recent", methods=["GET"])
+def _get_recent_expenses():
+    try:
+        end = datetime.now() + timedelta(days=1)
+        start = end - timedelta(days=8)
+        return success_result(
+            {"expenses": Expenses.in_range(start.timestamp(), end.timestamp())}
+        )
+    except Exception as err:
+        print(f"err: {err}")
+        return failure_result("Bad Request")
+
+
 @expenses.route("/expenses", methods=["POST"])
 def _create_expense():
     try:
+        new_expense = request.json
+        if not hasattr(new_expense, "asset"):
+            new_expense["asset"] = ""
+        if not hasattr(new_expense, "debt"):
+            new_expense["debt"] = ""
+        new_expense["date"] = round(
+            datetime.strptime(new_expense["date"], "%d-%m-%Y").timestamp()
+        )
+        new_expense["amount"] = float(new_expense["amount"])
         return success_result(Expenses.get(Expenses.create(request.json).inserted_id))
     except Exception as err:
         print(f"err: {err}")

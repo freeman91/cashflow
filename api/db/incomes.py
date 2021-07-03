@@ -18,7 +18,7 @@ class IncomesModel:
         "type": str,
         "source": str,
         "asset": str,
-        "desc": str,
+        "description": str,
     }
 
     def get(self, id):
