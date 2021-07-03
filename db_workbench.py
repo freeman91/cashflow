@@ -22,40 +22,40 @@ cryptocompare._set_api_key_parameter(CRYPTO_KEY)
 
 def g_exp():
     exp1 = {
-        "date": datetime(2021, 6, 26, 12),
+        "date": datetime.now(),
         "amount": float(36.25),
         "type": "grocery",
         "vendor": "Kroger",
         "asset": "",
         "debt": "",
-        "desc": "",
+        "description": "",
     }
     exp2 = {
-        "date": datetime(2021, 6, 25, 12),
+        "date": datetime.now(),
         "amount": float(74.23),
         "type": "home",
         "vendor": "Amazon",
         "asset": "",
         "debt": "",
-        "desc": "",
+        "description": "",
     }
     exp3 = {
-        "date": datetime(2021, 6, 24, 12),
+        "date": datetime.now(),
         "amount": float(16.11),
         "type": "entertainment",
         "vendor": "HBO",
         "asset": "",
         "debt": "",
-        "desc": "",
+        "description": "",
     }
     exp4 = {
-        "date": datetime(2021, 6, 20, 12),
+        "date": datetime.now(),
         "amount": float(32.9),
         "type": "utilities",
         "vendor": "AEP",
         "asset": "",
         "debt": "",
-        "desc": "",
+        "description": "",
     }
 
     Expenses.create(exp1)
@@ -77,7 +77,7 @@ def g_inc():
             "other": float(10),
         },
         "asset": "",
-        "desc": "",
+        "description": "",
     }
 
     Incomes.create(inc)
@@ -88,7 +88,7 @@ def g_hour():
         "date": datetime.now(),
         "amount": float(9),
         "source": "DES",
-        "desc": "",
+        "description": "",
     }
 
     Hours.create(hour)
@@ -100,7 +100,7 @@ def g_goal():
         "month": 6,
         "year": 2021,
         "values": {"food": 150.0, "grocery": 400.0},
-        "desc": "",
+        "description": "",
     }
 
     Goals.create(goal)
@@ -127,7 +127,7 @@ def g_asset():
         "price": 37000.00,
         "ticker": "eth",
         "debt": "",
-        "desc": "",
+        "description": "",
     }
 
     Assets.create(asset)
@@ -139,18 +139,24 @@ def g_debt():
         "value": float(150),
         "type": "credit",
         "asset": "",
-        "desc": "",
+        "description": "",
     }
     debt2 = {
         "name": "student loans",
         "value": float(29000),
         "type": "tuition",
         "asset": "",
-        "desc": "",
+        "description": "",
     }
 
     Debts.create(debt1)
     Debts.create(debt2)
+
+
+def delete_all():
+    Expenses.delete_all()
+    Incomes.delete_all()
+    Hours.delete_all()
 
 
 def get_crypto_price(ticker: str):

@@ -20,7 +20,6 @@ const addToastr = createAsyncThunk(
   '@@toastr/add',
   (
     {
-      title = '',
       message = '',
       type = 'success',
       position = 'bottom-right',
@@ -62,11 +61,6 @@ const addToastr = createAsyncThunk(
     options.component = (props) => {
       return (
         <div>
-          {title && (
-            <Typography variant='subtitle1' style={{ fontWeight: 'bold' }}>
-              {title}
-            </Typography>
-          )}
           {message &&
             message.map((line, i) => (
               <Typography key={i} variant='subtitle1'>
@@ -79,7 +73,6 @@ const addToastr = createAsyncThunk(
 
     let toastrOptions = {
       message: '',
-      title: '',
       type,
       position,
       options,

@@ -6,7 +6,6 @@ from flask_meter import FlaskMeter
 from flask_cors import CORS
 
 from api.controllers.users import users
-from api.controllers.records import records
 from api.controllers.expenses import expenses
 from api.controllers.incomes import incomes
 from api.controllers.hours import hours
@@ -41,7 +40,6 @@ def create_app():
     flask_meter.init_app(app)
 
     app.register_blueprint(users)
-    app.register_blueprint(records)
     app.register_blueprint(expenses)
     app.register_blueprint(incomes)
     app.register_blueprint(hours)

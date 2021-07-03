@@ -1,9 +1,23 @@
 from flask import request, Blueprint
+from datetime import datetime, timedelta
 
 from api.db.incomes import Incomes
 from api.controllers.__util__ import success_result, failure_result
 
 incomes = Blueprint("incomes", __name__)
+
+
+@incomes.route("/incomes/recent", methods=["GET"])
+def _get_recent_incomes():
+    try:
+        end = datetime.now() + timedelta(days=1)
+        start = end - timedelta(days=8)
+        return success_result(
+            {"incomes": Incomes.in_range(start.timestamp(), end.timestamp())}
+        )
+    except Exception as err:
+        print(f"err: {err}")
+        return failure_result("Bad Request")
 
 
 @incomes.route("/incomes", methods=["POST"])

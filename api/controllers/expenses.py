@@ -29,7 +29,9 @@ def _create_expense():
         if not hasattr(new_expense, "debt"):
             new_expense["debt"] = ""
         new_expense["date"] = round(
-            datetime.strptime(new_expense["date"], "%d-%m-%Y").timestamp()
+            datetime.strptime(new_expense["date"], "%m-%d-%Y")
+            .replace(hour=12)
+            .timestamp()
         )
         new_expense["amount"] = float(new_expense["amount"])
         return success_result(Expenses.get(Expenses.create(request.json).inserted_id))

@@ -1,9 +1,23 @@
 from flask import request, Blueprint
+from datetime import datetime, timedelta
 
 from api.db.hours import Hours
 from api.controllers.__util__ import success_result, failure_result
 
 hours = Blueprint("hours", __name__)
+
+
+@hours.route("/hours/recent", methods=["GET"])
+def _get_recent_hours():
+    try:
+        end = datetime.now() + timedelta(days=1)
+        start = end - timedelta(days=8)
+        return success_result(
+            {"hours": Hours.in_range(start.timestamp(), end.timestamp())}
+        )
+    except Exception as err:
+        print(f"err: {err}")
+        return failure_result("Bad Request")
 
 
 @hours.route("/hours", methods=["POST"])

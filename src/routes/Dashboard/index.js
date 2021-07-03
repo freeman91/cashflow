@@ -8,6 +8,8 @@ import { filter, forEach } from 'lodash';
 
 import Table from '../../components/Table';
 import { getRecentExpenses } from '../../store/expenses';
+import { getRecentIncomes } from '../../store/incomes';
+import { getRecentHours } from '../../store/hours';
 import GenerateRecordButton from '../../components/GenerateRecord';
 
 const useStyles = makeStyles((theme) => {
@@ -64,14 +66,22 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
   const { data: expenses } = useSelector((state) => state.expenses);
+  const { data: incomes } = useSelector((state) => state.incomes);
+  const { data: hours } = useSelector((state) => state.hours);
+  // const { data: goals } = useSelector((state) => state.goals);
+  // const { data: networths } = useSelector((state) => state.networths);
+  // const { data: assets } = useSelector((state) => state.assets);
+  // const { data: debts } = useSelector((state) => state.debts);
 
   useEffect(() => {
     dispatch(getRecentExpenses());
+    dispatch(getRecentIncomes());
+    dispatch(getRecentHours());
   }, [dispatch]);
 
   useEffect(() => {
-    setTableData(prepareRecentRecords(expenses, [], []));
-  }, [expenses]);
+    setTableData(prepareRecentRecords(expenses, incomes, hours));
+  }, [expenses, incomes, hours]);
 
   return (
     <>

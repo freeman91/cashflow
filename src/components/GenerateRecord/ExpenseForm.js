@@ -37,7 +37,7 @@ export default function ExpenseForm({ handleDialogClose }) {
         type: values.type,
         vendor: values.vendor,
         description: values.description,
-        date: dayjs(values.date).format('DD-MM-YYYY'),
+        date: dayjs(values.date).format('MM-DD-YYYY'),
       };
       dispatch(postExpense(new_expense));
     } catch (error) {

@@ -13,6 +13,8 @@ import { reducer as toastr } from 'react-redux-toastr';
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import user from './user';
 import expenses from './expenses';
+import incomes from './incomes';
+import hours from './hours';
 import toast from './toastr';
 
 export const history = createBrowserHistory();
@@ -42,6 +44,8 @@ let rootReducer = combineReducers({
   toast,
   toastr,
   expenses,
+  incomes,
+  hours,
   user,
 });
 
