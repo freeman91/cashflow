@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import {
@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 
 import { postIncome } from '../../store/incomes';
+import { useMount } from 'react-use';
 
 const default_state = {
   amount: '',
@@ -31,7 +32,7 @@ export default function IncomeForm({ handleDialogClose }) {
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
 
-  useEffect(() => {
+  useMount(() => {
     var _deductions = {};
     user.income.deductions.forEach((deduction) => {
       _deductions[deduction] = '';
@@ -40,7 +41,7 @@ export default function IncomeForm({ handleDialogClose }) {
       ...values,
       deductions: _deductions,
     });
-  }, [user]);
+  });
 
   const handleSubmit = () => {
     try {
