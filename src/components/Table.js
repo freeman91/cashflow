@@ -34,8 +34,75 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function TableComponent({ title, data }) {
+export default function TableComponent({ title, data, handleClick, attrs }) {
   const classes = useStyles();
+
+  const renderTableRows = () => {
+    return data.map((row, i) => {
+      return (
+        <TableRow key={`table-row-${i}`} onClick={() => handleClick(row)} hover>
+          {attrs.map((attr, j) => {
+            if (attr === 'date') {
+              return (
+                <TableCell
+                  key={`table-row-${i}-cell${j}`}
+                  component='th'
+                  scope='row'
+                  className={classes.cell}
+                >
+                  <Typography>{row.displayDate}</Typography>
+                </TableCell>
+              );
+            } else if (attr === 'category') {
+              return (
+                <TableCell
+                  key={`table-row-${i}-cell${j}`}
+                  align='left'
+                  className={classes.cell}
+                >
+                  <Typography>{row.category}</Typography>
+                </TableCell>
+              );
+            } else if (attr === 'amount') {
+              return (
+                <TableCell
+                  key={`table-row-${i}-cell${j}`}
+                  align='right'
+                  className={classes.cell}
+                >
+                  <Typography>
+                    {row.category === 'hour'
+                      ? row.amount
+                      : numberToCurrency.format(row.amount)}
+                  </Typography>
+                </TableCell>
+              );
+            } else if (attr === 'source') {
+              return (
+                <TableCell
+                  key={`table-row-${i}-cell${j}`}
+                  align='right'
+                  className={classes.cell}
+                >
+                  <Typography>{row.vendor || row.source}</Typography>
+                </TableCell>
+              );
+            } else if (attr === 'name') {
+              return (
+                <TableCell
+                  key={`table-row-${i}-cell${j}`}
+                  align='center'
+                  className={classes.cell}
+                >
+                  <Typography>{row.name}</Typography>
+                </TableCell>
+              );
+            } else return null;
+          })}
+        </TableRow>
+      );
+    });
+  };
 
   return (
     <Card className={classes.container}>
@@ -48,38 +115,7 @@ export default function TableComponent({ title, data }) {
         <div className={classes.root}>
           <TableContainer component={Paper}>
             <Table size='medium'>
-              <TableBody>
-                {data.map((row, i) => {
-                  return (
-                    <TableRow
-                      key={`${row.category}-${row.date}-${row.amount}-${i}`}
-                      onClick={() => console.log(row)}
-                      hover
-                    >
-                      <TableCell
-                        component='th'
-                        scope='row'
-                        className={classes.cell}
-                      >
-                        <Typography>{row.displayDate}</Typography>
-                      </TableCell>
-                      <TableCell align='left' className={classes.cell}>
-                        <Typography>{row.category}</Typography>
-                      </TableCell>
-                      <TableCell align='right' className={classes.cell}>
-                        <Typography>
-                          {row.category === 'hour'
-                            ? row.amount
-                            : numberToCurrency.format(row.amount)}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align='right' className={classes.cell}>
-                        <Typography>{row.vendor || row.source}</Typography>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
+              <TableBody>{renderTableRows()}</TableBody>
             </Table>
           </TableContainer>
         </div>

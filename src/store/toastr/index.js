@@ -3,7 +3,6 @@ import React from 'react';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { thunkReducer } from '../thunkTemplate';
 import { actions as toastrActions } from 'react-redux-toastr';
-import { isArray } from 'lodash';
 import Typography from '@material-ui/core/Typography';
 
 const { add } = toastrActions;

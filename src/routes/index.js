@@ -15,6 +15,7 @@ import {
 import { useWindowSize } from 'react-use';
 
 import Dashboard from './Dashboard';
+import Budget from './Budget';
 import Summary from './Summary';
 import Networth from './Networth';
 import User from './User';
@@ -139,7 +140,7 @@ export default function Navigation() {
             <Dashboard />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            Budget
+            <Budget />
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
             <Summary />

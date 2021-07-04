@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import {
-  AttachMoney as AttachMoneyIcon,
-  Description as DescriptionIcon,
-} from '@material-ui/icons';
+import { Description as DescriptionIcon } from '@material-ui/icons';
 import DatePicker from '@material-ui/lab/DatePicker';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {
-  Box,
-  Button,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import { Box, Button, InputAdornment, TextField } from '@material-ui/core';
 
 import { postHour } from '../../store/hours';
 

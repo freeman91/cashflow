@@ -3,15 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Grid,
-  Paper,
-  Typography,
-} from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import { filter, forEach } from 'lodash';
 
 import Table from '../../components/Table';
@@ -94,7 +86,7 @@ export default function Dashboard() {
   return (
     <>
       <Grid container spacing={3}>
-        <Grid conatiner item xs={4} spacing={3}>
+        <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <Typography align='right' variant='h4'>
@@ -105,7 +97,7 @@ export default function Dashboard() {
               </div>
             </Paper>
           </Grid>
-          <Grid item xs={12} sx={{ paddingTop: '24px' }}>
+          <Grid item xs={12}>
             <Paper className={classes.paper}>
               <Typography sx={{ height: '65vh' }} align='left' variant='h4'>
                 Crypto Prices
@@ -120,21 +112,26 @@ export default function Dashboard() {
         <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ height: '35vh' }} align='middle' variant='h4'>
+              <Typography sx={{ height: '35vh' }} align='center' variant='h4'>
                 YTD Percent Income
               </Typography>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ height: '35vh' }} align='middle' variant='h4'>
+              <Typography sx={{ height: '35vh' }} align='center' variant='h4'>
                 YTD Expenses by type
               </Typography>
             </Paper>
           </Grid>
         </Grid>
         <Grid item xs={4}>
-          <Table data={tableData} title='Recent Records' />
+          <Table
+            data={tableData}
+            title='Recent Records'
+            handleClick={(record) => console.log('record: ', record)}
+            attrs={['date', 'category', 'amount', 'source']}
+          />
         </Grid>
       </Grid>
     </>

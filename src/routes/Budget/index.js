@@ -1,6 +1,6 @@
 import React from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-// import dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Paper, Typography } from '@material-ui/core';
 
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function Summary() {
+export default function Budget() {
   const classes = useStyles();
   // const { data: goals } = useSelector((state) => state.goals);
 
@@ -26,26 +26,16 @@ export default function Summary() {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <Typography sx={{ width: '100%' }} align='middle' variant='h4'>
-                Date Selector and submit button
+                {dayjs().format('MMMM YYYY')}
               </Typography>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <Typography sx={{ height: '65vh' }} align='left' variant='h4'>
-                Filters
+                List Goals and actual
                 <br />
-                record
-                <br />
-                category
-                <br />
-                record
-                <br />
-                type
-                <br />
-                *income source
-                <br />
-                *expense vendor
+                Show Total at the end
               </Typography>
             </Paper>
           </Grid>
@@ -53,15 +43,17 @@ export default function Summary() {
         <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ height: '25' }} align='middle' variant='h4'>
-                Totals
+              <Typography sx={{ width: '100%' }} align='middle' variant='h4'>
+                {dayjs().add(1, 'month').format('MMMM YYYY')}
               </Typography>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <Typography sx={{ height: '65vh' }} align='left' variant='h4'>
-                Table of records
+                List Goals and allow edit
+                <br />
+                Show Total at the end
               </Typography>
             </Paper>
           </Grid>
@@ -69,15 +61,19 @@ export default function Summary() {
         <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ height: '35vh' }} align='left' variant='h4'>
-                Chart 1
+              <Typography sx={{ width: '100%' }} align='middle' variant='h4'>
+                Select Month
               </Typography>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ height: '35vh' }} align='left' variant='h4'>
-                Chart 2
+              <Typography sx={{ height: '65vh' }} align='left' variant='h4'>
+                List Goals and actual if in the past
+                <br />
+                List Goals and edit if in the future
+                <br />
+                Show Total at the end
               </Typography>
             </Paper>
           </Grid>
