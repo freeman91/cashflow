@@ -26,13 +26,13 @@ export default function Summary() {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <Typography sx={{ width: '100%' }} align='middle' variant='h4'>
-                Date Selector and submit button
+                Date Range Selector and submit button
               </Typography>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ height: '65vh' }} align='left' variant='h4'>
+              <Typography sx={{ height: '35vh' }} align='left' variant='h4'>
                 Filters
                 <br />
                 record
@@ -49,18 +49,18 @@ export default function Summary() {
               </Typography>
             </Paper>
           </Grid>
-        </Grid>
-        <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ height: '25' }} align='middle' variant='h4'>
+              <Typography sx={{ height: '25vh' }} align='middle' variant='h4'>
                 Totals
               </Typography>
             </Paper>
           </Grid>
+        </Grid>
+        <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ height: '65vh' }} align='left' variant='h4'>
+              <Typography sx={{ height: '80vh' }} align='left' variant='h4'>
                 Table of records
               </Typography>
             </Paper>
