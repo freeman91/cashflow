@@ -106,6 +106,7 @@ export default function ExpenseForm({ handleDialogClose }) {
           renderInput={(params) => (
             <TextField
               {...params}
+              required
               label='vendor'
               variant='outlined'
               margin='dense'

@@ -34,7 +34,7 @@ def _create_expense():
             .timestamp()
         )
         new_expense["amount"] = float(new_expense["amount"])
-        return success_result(Expenses.get(Expenses.create(request.json).inserted_id))
+        return success_result(Expenses.get(Expenses.create(new_expense).inserted_id))
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")

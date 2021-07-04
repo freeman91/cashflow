@@ -15,6 +15,7 @@ const postIncome = createAsyncThunk(
         dispatch(
           addToastr({
             type: types.success,
+            title: 'Success',
             message: 'Income inserted',
           })
         );
@@ -26,7 +27,8 @@ const postIncome = createAsyncThunk(
       dispatch(
         addToastr({
           type: types.error,
-          message: `Error: ${err}`,
+          title: 'Error',
+          message: err,
         })
       );
     }

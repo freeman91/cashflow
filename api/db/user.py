@@ -68,35 +68,30 @@ class User:
 
     def update_networth(self, networth: float):
         assert type(networth) in [float, int]
-
         self.item["networth"] = networth
         return self.update()
 
     def update_income(self, attr: str, l: list):
         assert_list(str, l)
         assert attr in self.income_attrs
-
         self.item["income"][attr] = l
         return self.update()
 
     def update_expense(self, attr: str, l: list):
         assert_list(str, l)
         assert attr in self.expense_attrs
-
         self.item["expense"][attr] = l
         return self.update()
 
     def update_asset(self, attr: str, l: list):
         assert_list(str, l)
         assert attr in self.assets_attrs
-
         self.item["asset"][attr] = l
         self.update()
 
     def update_debt(self, attr: str, l: list):
         assert_list(str, l)
         assert attr in self.debts_attrs
-
         self.item["debt"][attr] = l
         return self.update()
 

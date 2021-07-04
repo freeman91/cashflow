@@ -11,10 +11,12 @@ const postHour = createAsyncThunk(
     try {
       const result = await postHourAPI(new_hour);
       const { data: hours } = getState().hours;
+
       if (result) {
         dispatch(
           addToastr({
             type: types.success,
+            title: 'Success',
             message: 'Hour inserted',
           })
         );
@@ -26,7 +28,8 @@ const postHour = createAsyncThunk(
       dispatch(
         addToastr({
           type: types.error,
-          message: `Error: ${err}`,
+          title: 'Error',
+          message: err,
         })
       );
     }

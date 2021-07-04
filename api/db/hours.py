@@ -52,8 +52,10 @@ class HoursModel:
 
     def __serialize__(self, **hour):
         for attr in hour:
-            if attr == "_id":
-                continue
+            if attr == "_id" and type(hour[attr]) == str:
+                hour["_id"] = ObjectId(hour["_id"])
+            elif attr == "date" and type(hour[attr]) == int:
+                hour[attr] = datetime.fromtimestamp(hour[attr])
             assert attr in self.attributes
             assert type(hour[attr]) == self.attributes[attr]
 

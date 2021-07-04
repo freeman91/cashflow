@@ -49,10 +49,10 @@ export default function TableComponent({ title, data }) {
           <TableContainer component={Paper}>
             <Table size='medium'>
               <TableBody>
-                {data.map((row) => {
+                {data.map((row, i) => {
                   return (
                     <TableRow
-                      key={`${row.category}-${row.date}-${row.amount}`}
+                      key={`${row.category}-${row.date}-${row.amount}-${i}`}
                       onClick={() => console.log(row)}
                       hover
                     >

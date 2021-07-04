@@ -15,6 +15,7 @@ const postExpense = createAsyncThunk(
         dispatch(
           addToastr({
             type: types.success,
+            title: 'Success',
             message: 'Expense inserted',
           })
         );
@@ -26,7 +27,8 @@ const postExpense = createAsyncThunk(
       dispatch(
         addToastr({
           type: types.error,
-          message: `Error: ${err}`,
+          title: 'Error',
+          message: err,
         })
       );
     }

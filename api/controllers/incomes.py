@@ -36,7 +36,7 @@ def _create_income():
             new_income["deductions"] = {}
         for _type in new_income["deductions"]:
             new_income["deductions"][_type] = float(new_income["deductions"][_type])
-        return success_result(Incomes.get(Incomes.create(request.json).inserted_id))
+        return success_result(Incomes.get(Incomes.create(new_income).inserted_id))
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")

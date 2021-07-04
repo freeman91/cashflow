@@ -177,6 +177,7 @@ export default function IncomeForm({ handleDialogClose }) {
           renderInput={(params) => (
             <TextField
               {...params}
+              required
               label='source'
               variant='outlined'
               margin='dense'

@@ -20,6 +20,7 @@ const addToastr = createAsyncThunk(
   '@@toastr/add',
   (
     {
+      title = '',
       message = '',
       type = 'success',
       position = 'bottom-right',
@@ -51,33 +52,23 @@ const addToastr = createAsyncThunk(
 
     options.timeOut = 10000;
 
-    message =
-      message &&
-      (isArray(message)
-        ? message.map((line) =>
-            useBullets ? '\u00A0\u00A0• '.concat(line) : line
-          )
-        : [message]);
     options.component = (props) => {
       return (
         <div>
-          {message &&
-            message.map((line, i) => (
-              <Typography key={i} variant='subtitle1'>
-                {line}
-              </Typography>
-            ))}
+          <Typography key='toast-message' variant='subtitle1'>
+            {message}
+          </Typography>
         </div>
       );
     };
 
     let toastrOptions = {
-      message: '',
+      message: title,
       type,
       position,
       options,
     };
-
+    console.log('toastrOptions: ', toastrOptions);
     dispatch(add(toastrOptions));
   }
 );
