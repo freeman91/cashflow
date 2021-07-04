@@ -1,17 +1,10 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { Button } from '@material-ui/core';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import { IconButton } from '@material-ui/core';
 
 import RecordGenerationDialog from './Dialog';
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    marginLeft: 'auto',
-  },
-}));
-
 export default function GenerateRecordButton() {
-  const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleButtonClick = () => {
@@ -24,14 +17,15 @@ export default function GenerateRecordButton() {
 
   return (
     <>
-      <Button
-        variant='contained'
+      <IconButton
+        aria-label='create'
         color='primary'
-        className={classes.button}
         onClick={handleButtonClick}
+        component='span'
+        variant='contained'
       >
-        Generate Record
-      </Button>
+        <AddBoxIcon sx={{ transform: 'scale(1.8)' }} />
+      </IconButton>
       <RecordGenerationDialog open={dialogOpen} handleClose={handleClose} />
     </>
   );

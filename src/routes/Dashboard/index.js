@@ -3,7 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  Paper,
+  Typography,
+} from '@material-ui/core';
 import { filter, forEach } from 'lodash';
 
 import Table from '../../components/Table';
@@ -86,17 +94,46 @@ export default function Dashboard() {
   return (
     <>
       <Grid container spacing={3}>
-        <Grid item xs>
-          <Paper className={classes.paper}>
-            <Typography align='right' variant='h4'>
-              {dayjs().format('dddd, MMMM D YYYY')}
-            </Typography>
-            <div className={classes.button}>
-              <GenerateRecordButton />
-            </div>
-          </Paper>
+        <Grid conatiner item xs={4} spacing={3}>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              <Typography align='right' variant='h4'>
+                {dayjs().format('dddd, MMMM D YYYY')}
+              </Typography>
+              <div className={classes.button}>
+                <GenerateRecordButton />
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sx={{ paddingTop: '24px' }}>
+            <Paper className={classes.paper}>
+              <Typography sx={{ height: '65vh' }} align='left' variant='h4'>
+                Crypto Prices
+                <br />
+                Current Net Worth
+                <br />
+                Links to Robinhood/BlockFi
+              </Typography>
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item xs>
+        <Grid container item xs={4} spacing={3}>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              <Typography sx={{ height: '35vh' }} align='middle' variant='h4'>
+                YTD Percent Income
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              <Typography sx={{ height: '35vh' }} align='middle' variant='h4'>
+                YTD Expenses by type
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+        <Grid item xs={4}>
           <Table data={tableData} title='Recent Records' />
         </Grid>
       </Grid>
