@@ -42,23 +42,19 @@ export default function TableComponent({
   attrs,
   paginate,
   size,
+  rowsPerPage,
 }) {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const _rowsPerPage = rowsPerPage ? rowsPerPage : 15;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const renderTableRows = () => {
     return data
-      .slice(0 + page * rowsPerPage, (page + 1) * rowsPerPage)
+      .slice(0 + page * _rowsPerPage, (page + 1) * _rowsPerPage)
       .map((row, i) => {
         return (
           <TableRow
@@ -116,7 +112,7 @@ export default function TableComponent({
                 return (
                   <TableCell
                     key={`table-row-${i}-cell${j}`}
-                    align='center'
+                    align='left'
                     className={classes.cell}
                   >
                     <Typography>{row.name}</Typography>
@@ -159,9 +155,8 @@ export default function TableComponent({
               count={data.length}
               page={page}
               onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              rowsPerPageOptions={[5, 10, 15, 20, 25]}
+              rowsPerPage={_rowsPerPage ? _rowsPerPage : 15}
+              rowsPerPageOptions={[_rowsPerPage]}
             />
           ) : null}
         </div>

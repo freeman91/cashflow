@@ -60,7 +60,7 @@ export default function Summary() {
   const [expenses, setExpenses] = useState([]);
   const [incomes, setIncomes] = useState([]);
   const [hours, setHours] = useState([]);
-  const [stats, setStats] = useState({ income: 0, expense: 0, hour: 0 });
+  const [stats, setStats] = useState([]);
   const [prevRange, setPrevRange] = useState(defaultRange);
   const [range, setRange] = useState(defaultRange);
   const user = useSelector((state) => state.user);
@@ -104,29 +104,31 @@ export default function Summary() {
       _day = _day.add(1, 'day');
     }
     setTableData(records);
-    setStats({
-      expense: reduce(
-        _expenses_,
-        (sum, expense) => {
-          return sum + expense.amount;
-        },
-        0
-      ),
-      income: reduce(
-        _incomes_,
-        (sum, income) => {
-          return sum + income.amount;
-        },
-        0
-      ),
-      hour: reduce(
-        _hours_,
-        (sum, hour) => {
-          return sum + hour.amount;
-        },
-        0
-      ),
-    });
+
+    const expenseSum = reduce(
+      _expenses_,
+      (sum, expense) => {
+        return sum + expense.amount;
+      },
+      0
+    );
+
+    const incomeSum = reduce(
+      _incomes_,
+      (sum, income) => {
+        return sum + income.amount;
+      },
+      0
+    );
+
+    const hourSum = reduce(
+      _hours_,
+      (sum, hour) => {
+        return sum + hour.amount;
+      },
+      0
+    );
+    setStats(prepareStatsData(expenseSum, incomeSum, hourSum));
   };
 
   const getRecords = async () => {
@@ -152,7 +154,22 @@ export default function Summary() {
     }
   };
 
-  // TODO: generate Totals chart
+  const prepareStatsData = (expenseSum, incomeSum, hourSum) => {
+    var tableData = [];
+    if (!filterExpense && !filterIncome)
+      tableData.push({ name: 'net', amount: incomeSum - expenseSum });
+    if (!filterExpense)
+      tableData.push({ name: 'expense total', amount: expenseSum });
+    if (!filterIncome)
+      tableData.push({ name: 'income total', amount: incomeSum });
+    if (!filterHour)
+      tableData.push({
+        name: 'hour total',
+        amount: hourSum,
+        category: 'hour',
+      });
+    return tableData;
+  };
 
   useMount(() => {
     getRecords();
@@ -316,15 +333,18 @@ export default function Summary() {
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <Table
-              data={[
-                { name: 'net', amount: stats.income - stats.expense },
-                { name: 'expense total', amount: stats.expense },
-                { name: 'income total', amount: stats.income },
-                { name: 'hour total', amount: stats.hour, category: 'hour' },
-              ]}
+              data={stats}
               title='Totals'
+              handleClick={() => {}}
+              attrs={['name', 'amount']}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Table
+              data={[]}
+              title='Undef'
               handleClick={() => {}}
               attrs={['name', 'amount']}
             />
@@ -339,6 +359,7 @@ export default function Summary() {
               attrs={['date', 'category', 'amount', 'source']}
               paginate
               size='small'
+              rowsPerPage={15}
             />
           </Grid>
         </Grid>
