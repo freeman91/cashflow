@@ -333,7 +333,8 @@ export default function Summary() {
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} sx={{ height: '20vh' }} />
+          <Grid item xs={6} sx={{ height: '40vh' }}>
             <Table
               data={stats}
               title='Totals'
@@ -341,17 +342,9 @@ export default function Summary() {
               attrs={['name', 'amount']}
             />
           </Grid>
-          <Grid item xs={6}>
-            <Table
-              data={[]}
-              title='Undef'
-              handleClick={() => {}}
-              attrs={['name', 'amount']}
-            />
-          </Grid>
         </Grid>
         <Grid container item xs={4} spacing={3}>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ height: '80vh' }}>
             <Table
               data={tableData}
               title='Records'
