@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-// import { useBreakpoints } from 'react-use-breakpoints';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Chip, Grid, Paper, Typography } from '@material-ui/core';
 import { filter, forEach } from 'lodash';
 
 import Table from '../../components/Table';
@@ -29,45 +28,16 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const prepareRecentRecords = (expenses, incomes, hours) => {
-  let records = [];
-  let days = [];
-  for (var i = 0; i <= 7; i++) {
-    days.push(dayjs().subtract(i, 'day').format('MM-DD-YYYY'));
-  }
-
-  forEach(days, (day) => {
-    let dayRecords = [];
-    let dayExpenses = filter(expenses, (expense) => {
-      return expense.date === day;
-    });
-    let dayIncomes = filter(incomes, (income) => {
-      return income.date === day;
-    });
-    let dayHours = filter(hours, (hour) => {
-      return hour.date === day;
-    });
-    dayRecords = dayRecords
-      .concat(dayExpenses)
-      .concat(dayIncomes)
-      .concat(dayHours);
-    dayRecords = dayRecords.map((record, i) => {
-      if (i === 0) return { ...record, displayDate: day };
-      return record;
-    });
-    records = records.concat(dayRecords);
-  });
-  return records.slice(0, 15);
-};
-
 export default function Dashboard() {
   const classes = useStyles();
-  // const { breakpoint, windowSize } = useBreakpoints();
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
   const { data: expenses } = useSelector((state) => state.expenses);
   const { data: incomes } = useSelector((state) => state.incomes);
   const { data: hours } = useSelector((state) => state.hours);
+  const [filterExpense, setFilterExpense] = useState(false);
+  const [filterIncome, setFilterIncome] = useState(false);
+  const [filterHour, setFilterHour] = useState(false);
   // const { data: goals } = useSelector((state) => state.goals);
   // const { data: networths } = useSelector((state) => state.networths);
   // const { data: assets } = useSelector((state) => state.assets);
@@ -80,8 +50,57 @@ export default function Dashboard() {
   }, [dispatch]);
 
   useEffect(() => {
+    const prepareRecentRecords = () => {
+      var _expenses = filterExpense ? [] : expenses;
+      var _incomes = filterIncome ? [] : incomes;
+      var _hours = filterHour ? [] : hours;
+
+      let records = [];
+      let days = [];
+      for (var i = 0; i <= 7; i++) {
+        days.push(dayjs().subtract(i, 'day').format('MM-DD-YYYY'));
+      }
+
+      forEach(days, (day) => {
+        let dayRecords = [];
+        let dayExpenses = filter(_expenses, (expense) => {
+          return expense.date === day;
+        });
+        let dayIncomes = filter(_incomes, (income) => {
+          return income.date === day;
+        });
+        let dayHours = filter(_hours, (hour) => {
+          return hour.date === day;
+        });
+        dayRecords = dayRecords
+          .concat(dayExpenses)
+          .concat(dayIncomes)
+          .concat(dayHours);
+        dayRecords = dayRecords.map((record, i) => {
+          if (i === 0) return { ...record, displayDate: day };
+          return record;
+        });
+        records = records.concat(dayRecords);
+      });
+      return records.slice(0, 15);
+    };
     setTableData(prepareRecentRecords(expenses, incomes, hours));
-  }, [expenses, incomes, hours]);
+    //eslint-disable-next-line
+  }, [expenses, incomes, hours, filterExpense, filterIncome, filterHour]);
+
+  const handleChipClick = (category) => {
+    switch (category) {
+      case 'income':
+        setFilterIncome(!filterIncome);
+        break;
+      case 'hour':
+        setFilterHour(!filterHour);
+        break;
+      default:
+        setFilterExpense(!filterExpense);
+        break;
+    }
+  };
 
   return (
     <>
@@ -126,11 +145,33 @@ export default function Dashboard() {
           </Grid>
         </Grid>
         <Grid item xs={4}>
+          <div style={{ width: '100%', marginBottom: '2ch' }}>
+            <Chip
+              sx={{ margin: '0 .5rem 0 .5rem' }}
+              label='Expense'
+              color={filterExpense ? 'default' : 'primary'}
+              onClick={() => handleChipClick('expense')}
+            />
+            <Chip
+              sx={{ margin: '0 .5rem 0 .5rem' }}
+              label='Income'
+              color={filterIncome ? 'default' : 'primary'}
+              onClick={() => handleChipClick('income')}
+            />
+            <Chip
+              sx={{ margin: '0 .5rem 0 .5rem' }}
+              label='Hour'
+              color={filterHour ? 'default' : 'primary'}
+              onClick={() => handleChipClick('hour')}
+            />
+          </div>
           <Table
             data={tableData}
             title='Recent Records'
             handleClick={(record) => console.log('record: ', record)}
             attrs={['date', 'category', 'amount', 'source']}
+            pagniate
+            rowsPerPage={15}
           />
         </Grid>
       </Grid>
