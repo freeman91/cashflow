@@ -1,4 +1,19 @@
-export const user = {};
+export const user = {
+  expense: {
+    types: [],
+    vendors: [],
+  },
+  income: {
+    types: [],
+    sources: [],
+  },
+  asset: {
+    types: [],
+  },
+  debt: {
+    types: [],
+  },
+};
 
 export const expenses = {
   data: [],

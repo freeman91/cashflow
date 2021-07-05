@@ -68,7 +68,7 @@ def _incomes_in_range(start: str, end: str):
         if not (start.isnumeric() and end.isnumeric()):
             return {"result": "Invalid range"}, 400
 
-        success_result(Incomes.in_range(int(start), int(end)))
+        return success_result(Incomes.in_range(int(start), int(end)))
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")

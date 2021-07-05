@@ -36,7 +36,7 @@ export default function Networth() {
         <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ height: '40vh' }} align='middle' variant='h4'>
+              <Typography sx={{ height: '40vh' }} align='center' variant='h4'>
                 Net Worth over time
               </Typography>
             </Paper>

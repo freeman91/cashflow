@@ -115,7 +115,17 @@ export default function TableComponent({ title, data, handleClick, attrs }) {
         <div className={classes.root}>
           <TableContainer component={Paper}>
             <Table size='medium'>
-              <TableBody>{renderTableRows()}</TableBody>
+              {data.length > 0 ? (
+                <TableBody>{renderTableRows()}</TableBody>
+              ) : (
+                <TableBody>
+                  <TableRow>
+                    <TableCell align='center'>
+                      <Typography>No Data</Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
         </div>

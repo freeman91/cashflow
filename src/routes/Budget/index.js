@@ -25,7 +25,7 @@ export default function Budget() {
         <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ width: '100%' }} align='middle' variant='h4'>
+              <Typography sx={{ width: '100%' }} align='center' variant='h4'>
                 {dayjs().format('MMMM YYYY')}
               </Typography>
             </Paper>
@@ -43,7 +43,7 @@ export default function Budget() {
         <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ width: '100%' }} align='middle' variant='h4'>
+              <Typography sx={{ width: '100%' }} align='center' variant='h4'>
                 {dayjs().add(1, 'month').format('MMMM YYYY')}
               </Typography>
             </Paper>
@@ -61,7 +61,7 @@ export default function Budget() {
         <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <Typography sx={{ width: '100%' }} align='middle' variant='h4'>
+              <Typography sx={{ width: '100%' }} align='center' variant='h4'>
                 Select Month
               </Typography>
             </Paper>

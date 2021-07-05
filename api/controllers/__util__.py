@@ -22,7 +22,7 @@ def serialize(item):
 
 
 def success_result(payload):
-    if type(payload) == dict:
+    if type(payload) == dict or type(payload) == list:
         return {"result": serialize(payload)}, 200
     else:
         return payload

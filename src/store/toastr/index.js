@@ -67,7 +67,6 @@ const addToastr = createAsyncThunk(
       position,
       options,
     };
-    console.log('toastrOptions: ', toastrOptions);
     dispatch(add(toastrOptions));
   }
 );

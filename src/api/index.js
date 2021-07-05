@@ -51,6 +51,17 @@ export const getRecentExpensesAPI = async () => {
   }
 };
 
+export const getExpensesInRangeAPI = async (start, end) => {
+  try {
+    const response = await axios.get(`/expenses/range/${start}/${end}`);
+    if (get(response, 'status') === 200) {
+      return parseArray(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 export const postExpenseAPI = async (new_expense) => {
   try {
     const response = await axios.post(`/expenses`, new_expense);
@@ -84,6 +95,17 @@ export const getRecentIncomesAPI = async () => {
   }
 };
 
+export const getIncomesInRangeAPI = async (start, end) => {
+  try {
+    const response = await axios.get(`/incomes/range/${start}/${end}`);
+    if (get(response, 'status') === 200) {
+      return parseArray(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 export const postIncomeAPI = async (new_income) => {
   try {
     const response = await axios.post(`/incomes`, new_income);
@@ -111,6 +133,17 @@ export const getRecentHoursAPI = async () => {
     if (get(response, 'status') === 200) {
       const payload = JSON.parse(get(response, 'data.result'));
       return parseArray(get(payload, 'hours'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const getHoursInRangeAPI = async (start, end) => {
+  try {
+    const response = await axios.get(`/hours/range/${start}/${end}`);
+    if (get(response, 'status') === 200) {
+      return parseArray(get(response, 'data.result'));
     }
   } catch (error) {
     console.log('error: ', error);
