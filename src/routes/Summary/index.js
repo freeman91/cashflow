@@ -42,6 +42,11 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
+const defaultRange = [
+  dayjs().date(1).hour(0),
+  dayjs().add(1, 'month').date(0).hour(23),
+];
+
 export default function Summary() {
   const classes = useStyles();
   const [tableData, setTableData] = useState([]);
@@ -56,29 +61,35 @@ export default function Summary() {
   const [incomes, setIncomes] = useState([]);
   const [hours, setHours] = useState([]);
   const [stats, setStats] = useState({ income: 0, expense: 0, hour: 0 });
-  const [range, setRange] = useState([
-    dayjs().date(1),
-    dayjs().add(1, 'month').date(0),
-  ]);
+  const [prevRange, setPrevRange] = useState(defaultRange);
+  const [range, setRange] = useState(defaultRange);
   const user = useSelector((state) => state.user);
 
-  const prepareData = () => {
-    const _expenses = filterExpense ? [] : expenses;
-    const _incomes = filterIncome ? [] : incomes;
-    const _hours = filterHour ? [] : hours;
+  const prepareData = (_expenses, _incomes, _hours) => {
+    var _expenses_ = filterExpense ? [] : _expenses;
+    var _incomes_ = filterIncome ? [] : _incomes;
+    var _hours_ = filterHour ? [] : _hours;
 
     let records = [];
     var _day = range[0];
     while (_day <= range[1]) {
       let dayRecords = [];
       const dayStr = _day.format('MM-DD-YYYY');
-      let dayExpenses = filter(_expenses, (expense) => {
+      let dayExpenses = filter(_expenses_, (expense) => {
+        if (expenseType !== 'all' && expenseType !== expense.type) return false;
+        if (expenseVendor !== 'all' && expenseVendor !== expense.vendor)
+          return false;
         return expense.date === dayStr;
       });
-      let dayIncomes = filter(_incomes, (income) => {
+      let dayIncomes = filter(_incomes_, (income) => {
+        if (incomeType !== 'all' && incomeType !== income.type) return false;
+        if (incomeSource !== 'all' && incomeSource !== income.source)
+          return false;
         return income.date === dayStr;
       });
-      let dayHours = filter(_hours, (hour) => {
+      let dayHours = filter(_hours_, (hour) => {
+        if (incomeSource !== 'all' && incomeSource !== hour.source)
+          return false;
         return hour.date === dayStr;
       });
       dayRecords = dayRecords
@@ -95,21 +106,21 @@ export default function Summary() {
     setTableData(records);
     setStats({
       expense: reduce(
-        _expenses,
+        _expenses_,
         (sum, expense) => {
           return sum + expense.amount;
         },
         0
       ),
       income: reduce(
-        _incomes,
+        _incomes_,
         (sum, income) => {
           return sum + income.amount;
         },
         0
       ),
       hour: reduce(
-        _hours,
+        _hours_,
         (sum, hour) => {
           return sum + hour.amount;
         },
@@ -129,9 +140,19 @@ export default function Summary() {
       setExpenses(_expenses);
       setIncomes(_incomes);
       setHours(_hours);
+      prepareData(_expenses, _incomes, _hours);
     });
-    prepareData();
   };
+
+  const handleSearchClick = () => {
+    if (prevRange === range) prepareData(expenses, incomes, hours);
+    else {
+      setPrevRange(range);
+      getRecords();
+    }
+  };
+
+  // TODO: generate Totals chart
 
   useMount(() => {
     getRecords();
@@ -150,7 +171,7 @@ export default function Summary() {
                     endText='end'
                     value={range}
                     onChange={(val) => {
-                      setRange(val);
+                      setRange([dayjs(val[0]).hour(0), dayjs(val[1]).hour(23)]);
                     }}
                     renderInput={(startProps, endProps) => (
                       <React.Fragment>
@@ -166,7 +187,7 @@ export default function Summary() {
                     sx={{ marginLeft: 'auto', marginRight: '1rem' }}
                     aria-label='submit'
                     color='primary'
-                    onClick={() => {}}
+                    onClick={handleSearchClick}
                     component='span'
                     variant='contained'
                   >
@@ -207,6 +228,7 @@ export default function Summary() {
                         expense type
                       </InputLabel>
                       <Select
+                        disabled={filterExpense}
                         labelId='expense-type-select-label'
                         id='expense-type-select'
                         value={expenseType}
@@ -228,6 +250,7 @@ export default function Summary() {
                         income type
                       </InputLabel>
                       <Select
+                        disabled={filterIncome && filterHour}
                         labelId='income-type-select-label'
                         id='income-type-select'
                         value={incomeType}
@@ -249,6 +272,7 @@ export default function Summary() {
                         expense vendor
                       </InputLabel>
                       <Select
+                        disabled={filterExpense}
                         labelId='expense-vendor-select-label'
                         id='expense-vendor-select'
                         value={expenseVendor}
@@ -270,6 +294,7 @@ export default function Summary() {
                         income source
                       </InputLabel>
                       <Select
+                        disabled={filterIncome && filterHour}
                         labelId='income-source-select-label'
                         id='income-source-select'
                         value={incomeSource}
@@ -310,8 +335,10 @@ export default function Summary() {
             <Table
               data={tableData}
               title='Records'
-              handleClick={() => {}}
+              handleClick={(row) => console.log('row: ', row)}
               attrs={['date', 'category', 'amount', 'source']}
+              paginate
+              size='small'
             />
           </Grid>
         </Grid>
