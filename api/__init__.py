@@ -13,6 +13,7 @@ from api.controllers.goals import goals
 from api.controllers.assets import assets
 from api.controllers.debts import debts
 from api.controllers.networths import networths
+from api.controllers.cronjobs import cronjobs
 
 from api.config import app_config
 from api.db import database
@@ -47,6 +48,7 @@ def create_app():
     app.register_blueprint(assets)
     app.register_blueprint(debts)
     app.register_blueprint(networths)
+    app.register_blueprint(cronjobs)
 
     @app.route("/")
     def index():

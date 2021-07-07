@@ -50,8 +50,8 @@ def delete_all():
     Hours.delete_all()
 
 
-def get_crypto_price(ticker: str):
-    return cryptocompare.get_price(ticker.upper(), currency="USD")
+def get_crypto_prices(tickers: list):
+    return cryptocompare.get_price(tickers, currency="USD")
 
 
 def get_stock_price(ticker: str):
