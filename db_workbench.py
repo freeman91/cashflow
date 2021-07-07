@@ -20,80 +20,6 @@ from api.db.networths import Networths
 cryptocompare._set_api_key_parameter(CRYPTO_KEY)
 
 
-def g_exp():
-    exp1 = {
-        "date": datetime.now(),
-        "amount": float(36.25),
-        "type": "grocery",
-        "vendor": "Kroger",
-        "asset": "",
-        "debt": "",
-        "description": "",
-    }
-    exp2 = {
-        "date": datetime.now(),
-        "amount": float(74.23),
-        "type": "home",
-        "vendor": "Amazon",
-        "asset": "",
-        "debt": "",
-        "description": "",
-    }
-    exp3 = {
-        "date": datetime.now(),
-        "amount": float(16.11),
-        "type": "entertainment",
-        "vendor": "HBO",
-        "asset": "",
-        "debt": "",
-        "description": "",
-    }
-    exp4 = {
-        "date": datetime.now(),
-        "amount": float(32.9),
-        "type": "utilities",
-        "vendor": "AEP",
-        "asset": "",
-        "debt": "",
-        "description": "",
-    }
-
-    Expenses.create(exp1)
-    Expenses.create(exp2)
-    Expenses.create(exp3)
-    Expenses.create(exp4)
-
-
-def g_inc():
-    inc = {
-        "date": datetime.now(),
-        "amount": float(1848.36),
-        "type": "paycheck",
-        "source": "DES",
-        "deductions": {
-            "401k": float(123),
-            "tax": float(645),
-            "benefits": float(90),
-            "other": float(10),
-        },
-        "asset": "",
-        "description": "",
-    }
-
-    Incomes.create(inc)
-
-
-def g_hour():
-    hour = {
-        "date": datetime.now(),
-        "amount": float(9),
-        "source": "DES",
-        "description": "",
-    }
-
-    Hours.create(hour)
-
-
 def g_goal():
     goal = {
         "date": datetime(2021, 6, 1),
@@ -116,41 +42,6 @@ def g_nw():
     }
 
     Networths.create(goal)
-
-
-def g_asset():
-    asset = {
-        "name": "ether",
-        "value": float(1800),
-        "type": "crypto",
-        "shares": 0.04082,
-        "price": 37000.00,
-        "ticker": "eth",
-        "debt": "",
-        "description": "",
-    }
-
-    Assets.create(asset)
-
-
-def g_debt():
-    debt1 = {
-        "name": "huntington",
-        "value": float(150),
-        "type": "credit",
-        "asset": "",
-        "description": "",
-    }
-    debt2 = {
-        "name": "student loans",
-        "value": float(29000),
-        "type": "tuition",
-        "asset": "",
-        "description": "",
-    }
-
-    Debts.create(debt1)
-    Debts.create(debt2)
 
 
 def delete_all():

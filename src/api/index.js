@@ -160,3 +160,45 @@ export const postHourAPI = async (new_hour) => {
     console.log('error: ', error);
   }
 };
+
+/*
+   ###     ######   ######  ######## ########  ######
+  ## ##   ##    ## ##    ## ##          ##    ##    ##
+ ##   ##  ##       ##       ##          ##    ##
+##     ##  ######   ######  ######      ##     ######
+#########       ##       ## ##          ##          ##
+##     ## ##    ## ##    ## ##          ##    ##    ##
+##     ##  ######   ######  ########    ##     ######
+*/
+
+export const getAssetsAPI = async () => {
+  try {
+    const response = await axios.get(`/assets`);
+    if (get(response, 'status') === 200) {
+      return parseArray(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+/*
+########  ######## ########  ########  ######
+##     ## ##       ##     ##    ##    ##    ##
+##     ## ##       ##     ##    ##    ##
+##     ## ######   ########     ##     ######
+##     ## ##       ##     ##    ##          ##
+##     ## ##       ##     ##    ##    ##    ##
+########  ######## ########     ##     ######
+*/
+
+export const getDebtsAPI = async () => {
+  try {
+    const response = await axios.get(`/debts`);
+    if (get(response, 'status') === 200) {
+      return parseArray(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};

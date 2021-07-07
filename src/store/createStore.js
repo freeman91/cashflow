@@ -15,6 +15,8 @@ import user from './user';
 import expenses from './expenses';
 import incomes from './incomes';
 import hours from './hours';
+import assets from './assets';
+import debts from './debts';
 import toast from './toastr';
 
 export const history = createBrowserHistory();
@@ -46,6 +48,8 @@ let rootReducer = combineReducers({
   expenses,
   incomes,
   hours,
+  assets,
+  debts,
   user,
 });
 

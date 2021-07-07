@@ -344,7 +344,7 @@ export default function Summary() {
           </Grid>
         </Grid>
         <Grid container item xs={4} spacing={3}>
-          <Grid item xs={12} sx={{ height: '80vh' }}>
+          <Grid item xs={12} sx={{ height: '100%' }}>
             <Table
               data={tableData}
               title='Records'
@@ -352,7 +352,7 @@ export default function Summary() {
               attrs={['date', 'category', 'amount', 'source']}
               paginate
               size='small'
-              rowsPerPage={15}
+              rowsPerPage={20}
             />
           </Grid>
         </Grid>

@@ -23,8 +23,10 @@ class AssetsModel:
         "price": float,
         "ticker": str,
         "debt": str,
+        "invested": float,
         "description": str,
         "last_update": datetime,
+        "category": str,
     }
 
     def get(self, name):

@@ -118,6 +118,18 @@ export default function TableComponent({
                     <Typography>{row.name}</Typography>
                   </TableCell>
                 );
+              } else if (attr === 'value') {
+                return (
+                  <TableCell
+                    key={`table-row-${i}-cell${j}`}
+                    align='left'
+                    className={classes.cell}
+                  >
+                    <Typography>
+                      {numberToCurrency.format(row.value)}
+                    </Typography>
+                  </TableCell>
+                );
               } else return null;
             })}
           </TableRow>
