@@ -1,16 +1,10 @@
-import csv
+import csv, sys
 from datetime import datetime
 from io import StringIO
 from fabric import Connection
+from pprint import pprint
 
 from db_workbench import Assets, Debts, Expenses, Incomes, Hours, Networths
-
-
-def generate_seeds():
-    Connection("192.168.0.42").run(
-        "source ~/.zshrc && cd repos/cashflow-api && rails runner db_workbench.rb",
-        hide=True,
-    )
 
 
 def migrate_expenses():
@@ -115,10 +109,56 @@ def migrate_networths():
     )
     f = StringIO(networths.stdout)
     reader = csv.reader(f, delimiter="|")
+    current_month = 0
+    current_year = 0
+    current_date = ""
+    count = -1
+    records = []
+
     for idx, row in enumerate(reader):
         if idx == 0:
             continue
-        print(", ".join(row))
+
+        r0 = row[0]
+        r1 = row[1]
+
+        if r0.isnumeric() and r1.isnumeric():
+            current_year = int(r0)
+            current_month = int(r1)
+            current_date = row[2]
+            count += 1
+            records.append(
+                {
+                    "year": current_year,
+                    "month": current_month,
+                    "date": datetime.strptime(current_date.strip(), "%Y-%m-%d").replace(
+                        hour=12
+                    ),
+                    "assets": [],
+                    "debts": [],
+                }
+            )
+
+        else:
+            category = row[0]
+            amount = float(row[1])
+            _type = row[2].lower()
+            name = row[3].lower()
+
+            record = {
+                "category": category,
+                "amount": amount,
+                "type": _type,
+                "name": name,
+            }
+
+            if record["category"] == "asset":
+                records[count]["assets"] += [record]
+            elif record["category"] == "debt":
+                records[count]["debts"] += [record]
+
+    for record in records:
+        Networths.create(record)
 
 
 def generate_assets():
@@ -318,3 +358,16 @@ def generate_debts():
 
     for debt in debts:
         Debts.create(debt)
+
+
+def migrate_all():
+    migrate_expenses()
+    migrate_incomes()
+    migrate_hours()
+    migrate_networths()
+    generate_assets()
+    generate_debts()
+
+
+if __name__ == "__main__":
+    globals()[sys.argv[1]]()

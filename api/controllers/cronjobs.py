@@ -1,10 +1,22 @@
 from flask import request, Blueprint
+from cryptocompare import cryptocompare
+from yahoo_fin import stock_info
 
-from db_workbench import get_crypto_prices
 from api.controllers.__util__ import success_result, failure_result
 from api.db.assets import Assets
+from api.db import CRYPTO_KEY
+
+cryptocompare._set_api_key_parameter(CRYPTO_KEY)
 
 cronjobs = Blueprint("cronjobs", __name__)
+
+
+def get_crypto_prices(tickers: list):
+    return cryptocompare.get_price(tickers, currency="USD")
+
+
+def get_stock_price(ticker: str):
+    return stock_info.get_live_price(ticker.upper())
 
 
 @cronjobs.route("/cronjobs/update_crypto_price", methods=["GET"])

@@ -11,8 +11,8 @@ class NetworthsModel:
         "date": datetime,
         "month": int,
         "year": int,
-        "assets": dict,
-        "debts": dict,
+        "assets": list,
+        "debts": list,
     }
 
     def get(self, id):
@@ -60,15 +60,16 @@ class NetworthsModel:
             assert attr in self.attributes
             assert type(networth[attr]) == self.attributes[attr]
 
-        self.__verify_values__(networth["assets"])
-        self.__verify_values__(networth["debts"])
+        # self.__verify_assets__(networth["assets"])
+        # self.__verify_debts__(networth["debts"])
         networth["category"] = "networth"
         return networth
 
-    def __verify_values__(self, values):
-        for value in values:
-            assert type(value) == str
-            assert type(values[value]) == float
+    def __verify_assets__(self):
+        pass
+
+    def __verify_debts__(self):
+        pass
 
 
 Networths = NetworthsModel()

@@ -1,13 +1,11 @@
 import os
 from pprint import pprint
 from datetime import datetime
-from cryptocompare import cryptocompare
-from yahoo_fin import stock_info
 
 os.environ["WB_DOMAIN"] = "localhost"
 os.environ["WB_PORT"] = "27017"
 
-from api.db import CRYPTO_KEY, database as db
+from api.db import database as db
 from api.db.user import user
 from api.db.expenses import Expenses
 from api.db.incomes import Incomes
@@ -16,8 +14,6 @@ from api.db.assets import Assets
 from api.db.debts import Debts
 from api.db.goals import Goals
 from api.db.networths import Networths
-
-cryptocompare._set_api_key_parameter(CRYPTO_KEY)
 
 
 def g_goal():
@@ -48,14 +44,6 @@ def delete_all():
     Expenses.delete_all()
     Incomes.delete_all()
     Hours.delete_all()
-
-
-def get_crypto_prices(tickers: list):
-    return cryptocompare.get_price(tickers, currency="USD")
-
-
-def get_stock_price(ticker: str):
-    return stock_info.get_live_price(ticker.upper())
 
 
 def print_all():
