@@ -1,5 +1,5 @@
 import axios from '../xhr_libs/axios';
-import { get, forEach } from 'lodash';
+import { get, forEach, map } from 'lodash';
 import dayjs from 'dayjs';
 
 const parseArray = (arr) => {
@@ -197,6 +197,34 @@ export const getDebtsAPI = async () => {
     const response = await axios.get(`/debts`);
     if (get(response, 'status') === 200) {
       return parseArray(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+/*
+##    ## ######## ######## ##      ##  #######  ########  ######## ##     ##  ######
+###   ## ##          ##    ##  ##  ## ##     ## ##     ##    ##    ##     ## ##    ##
+####  ## ##          ##    ##  ##  ## ##     ## ##     ##    ##    ##     ## ##
+## ## ## ######      ##    ##  ##  ## ##     ## ########     ##    #########  ######
+##  #### ##          ##    ##  ##  ## ##     ## ##   ##      ##    ##     ##       ##
+##   ### ##          ##    ##  ##  ## ##     ## ##    ##     ##    ##     ## ##    ##
+##    ## ########    ##     ###  ###   #######  ##     ##    ##    ##     ##  ######
+*/
+
+export const getNetworthsAPI = async () => {
+  try {
+    const response = await axios.get(`/networths`);
+    if (get(response, 'status') === 200) {
+      const payload = parseArray(get(response, 'data.result'));
+      return map(payload, (record) => {
+        return {
+          ...record,
+          assets: parseArray(record['assets']),
+          debts: parseArray(record['debts']),
+        };
+      });
     }
   } catch (error) {
     console.log('error: ', error);

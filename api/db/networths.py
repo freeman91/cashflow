@@ -18,6 +18,9 @@ class NetworthsModel:
     def get(self, id):
         return db.networths.find_one({"_id": ObjectId(id)})
 
+    def get_record(self, year: int, month: int):
+        return db.networths.find({"year": year, "month": month})
+
     def find_one(self):
         return db.networths.find_one()
 

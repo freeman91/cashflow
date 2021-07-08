@@ -27,6 +27,8 @@ export default function Networth() {
   const [filterCrypto, setFilterCrypto] = useState(false);
   const [filterOther, setFilterOther] = useState(false);
   const [assets, setAssets] = useState([]);
+  const [selectedNetworth, setSelectedNetworth] = useState(0);
+  const { data: networths } = useSelector((state) => state.networths);
   const { data: _assets } = useSelector((state) => state.assets);
   const { data: debts } = useSelector((state) => state.debts);
 
@@ -67,6 +69,10 @@ export default function Networth() {
         break;
     }
   };
+
+  var d_arr = [...networths];
+  d_arr.reverse();
+  const s_nw = d_arr[selectedNetworth];
 
   return (
     <>
@@ -133,6 +139,13 @@ export default function Networth() {
         </Grid>
         <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
+            {/* <Table
+              data={[]}
+              title='Totals'
+              handleClick={() => {}}
+              attrs={['name', 'value']}
+              size='small'
+            /> */}
             <Paper className={classes.paper}>
               <Typography sx={{ height: '80vh' }} align='left' variant='h4'>
                 Month Select

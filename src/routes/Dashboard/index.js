@@ -11,6 +11,8 @@ import { getRecentIncomes } from '../../store/incomes';
 import { getRecentHours } from '../../store/hours';
 import { getAssets } from '../../store/assets';
 import { getDebts } from '../../store/debts';
+import { getNetworths } from '../../store/networths';
+
 import GenerateRecordButton from '../../components/GenerateRecord';
 
 const useStyles = makeStyles((theme) => {
@@ -51,6 +53,7 @@ export default function Dashboard() {
     dispatch(getRecentHours());
     dispatch(getAssets());
     dispatch(getDebts());
+    dispatch(getNetworths());
   }, [dispatch]);
 
   useEffect(() => {

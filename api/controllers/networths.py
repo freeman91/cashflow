@@ -15,6 +15,17 @@ def _create_networth():
         return failure_result("Bad Request")
 
 
+@networths.route("/networths", methods=["GET"])
+def _get_networths():
+    try:
+        if request.method == "GET":
+            return success_result(Networths.get_all())
+
+    except Exception as err:
+        print(f"err: {err}")
+        return failure_result("Bad Request")
+
+
 @networths.route("/networths/<string:id>", methods=["GET", "PUT", "DELETE"])
 def _networths(id: str):
     try:
