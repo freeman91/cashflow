@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { forEach, sortBy } from 'lodash';
 import { makeStyles } from '@material-ui/styles';
-import { Chip, Grid, Paper, Typography } from '@material-ui/core';
+import DatePicker from '@material-ui/lab/DatePicker';
+import {
+  Card,
+  CardContent,
+  Chip,
+  Divider,
+  Grid,
+  Paper,
+  Table as MuiTable,
+  TableBody,
+  TableContainer,
+  TableCell,
+  TableRow,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 
 import { getAssets } from '../../store/assets';
 import { getDebts } from '../../store/debts';
 import Table from '../../components/Table';
+import { numberToCurrency } from '../../helpers/currency';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -28,6 +44,7 @@ export default function Networth() {
   const [filterOther, setFilterOther] = useState(false);
   const [assets, setAssets] = useState([]);
   const [selectedNetworth, setSelectedNetworth] = useState(0);
+  const [date, setDate] = useState(dayjs().subtract(1, 'month'));
   const { data: networths } = useSelector((state) => state.networths);
   const { data: _assets } = useSelector((state) => state.assets);
   const { data: debts } = useSelector((state) => state.debts);
@@ -74,10 +91,19 @@ export default function Networth() {
   d_arr.reverse();
   const s_nw = d_arr[selectedNetworth];
 
+  const assetSum = s_nw.assets.reduce((sum, asset) => {
+    return sum + asset.amount;
+  }, 0);
+  const debtSum = s_nw.debts.reduce((sum, debt) => {
+    return sum + debt.amount;
+  }, 0);
+
+  console.log('s_nw: ', s_nw);
+
   return (
     <>
       <Grid container spacing={3}>
-        <Grid container item xs={4} spacing={3}>
+        <Grid container item xs={4} spacing={3} sx={{ height: '6%' }}>
           <Grid item xs={12} sx={{ width: '100%', height: '1.5rem' }}>
             <Chip
               sx={{ margin: '0 .5rem 0 .5rem' }}
@@ -118,7 +144,7 @@ export default function Networth() {
               rowsPerPage={20}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ height: '10rem' }}>
             <Table
               data={[]}
               title='Totals'
@@ -139,22 +165,88 @@ export default function Networth() {
         </Grid>
         <Grid container item xs={4} spacing={3}>
           <Grid item xs={12}>
-            {/* <Table
-              data={[]}
-              title='Totals'
-              handleClick={() => {}}
-              attrs={['name', 'value']}
-              size='small'
-            /> */}
-            <Paper className={classes.paper}>
-              <Typography sx={{ height: '80vh' }} align='left' variant='h4'>
-                Month Select
-                <br />
-                List Assets
-                <br />
-                List Debts
-              </Typography>
-            </Paper>
+            <Card sx={{ height: '60vh' }}>
+              <CardContent>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <DatePicker
+                      views={['year', 'month']}
+                      label='Year and Month'
+                      minDate={new Date('2018-11-01')}
+                      maxDate={new Date('2030-12-31')}
+                      value={date}
+                      onChange={(newValue) => {
+                        console.log('newValue: ', newValue);
+                      }}
+                      renderInput={(params) => (
+                        <TextField {...params} fullWidth helperText={null} />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TableContainer component={Paper}>
+                      <MuiTable size='medium'>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell>Net</TableCell>
+                            <TableCell>
+                              {numberToCurrency.format(assetSum - debtSum)}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Asset sum</TableCell>
+                            <TableCell>
+                              {numberToCurrency.format(assetSum)}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Debt Sum</TableCell>
+                            <TableCell>
+                              {numberToCurrency.format(debtSum)}
+                            </TableCell>
+                          </TableRow>
+                          <Divider
+                            sx={{
+                              marginTop: '.5rem',
+                              marginBottom: '.5rem',
+                              width: '100%',
+                            }}
+                          />
+                          {s_nw.debts.map((debt) => {
+                            return (
+                              <TableRow>
+                                <TableCell>{debt.name}</TableCell>
+                                <TableCell>
+                                  {numberToCurrency.format(debt.amount)}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </MuiTable>
+                    </TableContainer>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TableContainer component={Paper}>
+                      <MuiTable size='medium'>
+                        <TableBody>
+                          {s_nw.assets.map((asset) => {
+                            return (
+                              <TableRow>
+                                <TableCell>{asset.name}</TableCell>
+                                <TableCell>
+                                  {numberToCurrency.format(asset.amount)}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </MuiTable>
+                    </TableContainer>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
         </Grid>
       </Grid>

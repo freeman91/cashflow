@@ -1,17 +1,5 @@
 version: '3'
 services:
-  flask:
-    build: .
-    ports:
-      - '9000:9000'
-    volumes:
-      - ./:/appdata
-    env_file:
-      - .env
-    networks:
-      app-net:
-        ipv4_address: 172.19.199.2
-
   database:
     image: 'mongo'
     container_name: 'mongodb'
@@ -26,6 +14,17 @@ services:
     networks:
       app-net:
         ipv4_address: ${MONGO_IP}
+  flask:
+    build: .
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./:/appdata
+    env_file:
+      - .env
+    networks:
+      app-net:
+        ipv4_address: 172.19.199.2
 
 networks:
   app-net:

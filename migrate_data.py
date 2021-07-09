@@ -364,9 +364,9 @@ def migrate_all():
     migrate_expenses()
     migrate_incomes()
     migrate_hours()
-    migrate_networths()
-    generate_assets()
-    generate_debts()
+    # migrate_networths()
+    # generate_assets()
+    # generate_debts()
 
 
 if __name__ == "__main__":
