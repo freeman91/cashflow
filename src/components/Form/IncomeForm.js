@@ -4,16 +4,16 @@ import dayjs from 'dayjs';
 import {
   AttachMoney as AttachMoneyIcon,
   Description as DescriptionIcon,
-} from '@material-ui/icons';
-import DatePicker from '@material-ui/lab/DatePicker';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+} from '@mui/icons-material';
+import DatePicker from '@mui/lab/DatePicker';
+import Autocomplete from '@mui/lab/Autocomplete';
 import {
   Box,
   Button,
   InputAdornment,
   TextField,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { postIncome } from '../../store/incomes';
 import { useMount } from 'react-use';

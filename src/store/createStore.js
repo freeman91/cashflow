@@ -55,12 +55,14 @@ let rootReducer = combineReducers({
   user,
 });
 
-const middleware = [
+let middleware = [
   routerMiddleware(history),
   thunkMiddleware,
   loadingBarMiddleware(),
   loggerMiddleware,
 ];
+
+if (true) middleware.pop();
 
 export default function configureStore(preloadedState) {
   const enhancers = [applyMiddleware(...middleware)];

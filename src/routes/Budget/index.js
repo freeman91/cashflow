@@ -1,8 +1,8 @@
 import React from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { makeStyles } from '@material-ui/styles';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Grid, Paper, Typography } from '@mui/material';
 
 const useStyles = makeStyles((theme) => {
   return {

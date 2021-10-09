@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import { IconButton } from '@material-ui/core';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { IconButton } from '@mui/material';
 
-import RecordGenerationDialog from './Dialog';
+import RecordGenerationDialog from '../Dialog/GenerateRecordDialog';
 
 export default function GenerateRecordButton() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function GenerateRecordButton() {
         component='span'
         variant='contained'
       >
-        <AddBoxIcon sx={{ transform: 'scale(1.8)' }} />
+        <AddCircleIcon sx={{ transform: 'scale(1.2)' }} />
       </IconButton>
       <RecordGenerationDialog open={dialogOpen} handleClose={handleClose} />
     </>

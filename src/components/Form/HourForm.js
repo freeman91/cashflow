@@ -1,39 +1,34 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import {
-  AttachMoney as AttachMoneyIcon,
-  Description as DescriptionIcon,
-} from '@material-ui/icons';
-import DatePicker from '@material-ui/lab/DatePicker';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { Box, Button, InputAdornment, TextField } from '@material-ui/core';
+import { Description as DescriptionIcon } from '@mui/icons-material';
+import DatePicker from '@mui/lab/DatePicker';
+import Autocomplete from '@mui/lab/Autocomplete';
+import { Box, Button, InputAdornment, TextField } from '@mui/material';
 
-import { postExpense } from '../../store/expenses';
+import { postHour } from '../../store/hours';
 
 const default_state = {
   amount: '',
-  type: '',
-  vendor: '',
+  source: '',
   description: '',
   date: new Date(),
 };
 
-export default function ExpenseForm({ handleDialogClose }) {
+export default function HourForm({ handleDialogClose }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
 
   const handleSubmit = () => {
     try {
-      const new_expense = {
+      const new_hour = {
         amount: Number(values.amount),
-        type: values.type,
-        vendor: values.vendor,
+        source: values.source,
         description: values.description,
         date: dayjs(values.date).format('MM-DD-YYYY'),
       };
-      dispatch(postExpense(new_expense));
+      dispatch(postHour(new_hour));
     } catch (error) {
       console.error(error);
     } finally {
@@ -44,9 +39,8 @@ export default function ExpenseForm({ handleDialogClose }) {
   const validate = () => {
     if (
       isNaN(values.amount) ||
-      values.type.length === 0 ||
-      !values.vendor ||
-      values.vendor.length === 0 ||
+      !values.source ||
+      values.source.length === 0 ||
       !values.date
     )
       return false;
@@ -67,47 +61,21 @@ export default function ExpenseForm({ handleDialogClose }) {
           placeholder='0'
           onChange={(e) => setValues({ ...values, amount: e.target.value })}
           margin='dense'
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position='start'>
-                <AttachMoneyIcon />
-              </InputAdornment>
-            ),
-          }}
         />
         <Autocomplete
-          data-lpignore='true'
-          id='type-select'
+          id='source-select'
           autoComplete
           freeSolo
-          value={values.type}
-          options={user.expense.types}
+          value={values.source}
+          options={user.income.sources}
           getOptionLabel={(option) => option}
-          onChange={(e, value) => setValues({ ...values, type: value })}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              required
-              label='type'
-              variant='outlined'
-              margin='dense'
-            />
-          )}
-        />
-        <Autocomplete
-          id='vendor-select'
-          autoComplete
-          freeSolo
-          value={values.vendor}
-          options={user.expense.vendors}
-          getOptionLabel={(option) => option}
-          onChange={(e, value) => setValues({ ...values, vendor: value })}
+          onChange={(e, value) => setValues({ ...values, source: value })}
           autoSelect
           renderInput={(params) => (
             <TextField
               {...params}
               required
-              label='vendor'
+              label='source'
               variant='outlined'
               margin='dense'
             />

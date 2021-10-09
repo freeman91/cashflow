@@ -1,34 +1,39 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import { Description as DescriptionIcon } from '@material-ui/icons';
-import DatePicker from '@material-ui/lab/DatePicker';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { Box, Button, InputAdornment, TextField } from '@material-ui/core';
+import {
+  AttachMoney as AttachMoneyIcon,
+  Description as DescriptionIcon,
+} from '@mui/icons-material';
+import DatePicker from '@mui/lab/DatePicker';
+import Autocomplete from '@mui/lab/Autocomplete';
+import { Box, Button, InputAdornment, TextField } from '@mui/material';
 
-import { postHour } from '../../store/hours';
+import { postExpense } from '../../store/expenses';
 
 const default_state = {
   amount: '',
-  source: '',
+  type: '',
+  vendor: '',
   description: '',
   date: new Date(),
 };
 
-export default function HourForm({ handleDialogClose }) {
+export default function ExpenseForm({ handleDialogClose }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
 
   const handleSubmit = () => {
     try {
-      const new_hour = {
+      const new_expense = {
         amount: Number(values.amount),
-        source: values.source,
+        type: values.type,
+        vendor: values.vendor,
         description: values.description,
         date: dayjs(values.date).format('MM-DD-YYYY'),
       };
-      dispatch(postHour(new_hour));
+      dispatch(postExpense(new_expense));
     } catch (error) {
       console.error(error);
     } finally {
@@ -39,8 +44,9 @@ export default function HourForm({ handleDialogClose }) {
   const validate = () => {
     if (
       isNaN(values.amount) ||
-      !values.source ||
-      values.source.length === 0 ||
+      values.type.length === 0 ||
+      !values.vendor ||
+      values.vendor.length === 0 ||
       !values.date
     )
       return false;
@@ -61,21 +67,47 @@ export default function HourForm({ handleDialogClose }) {
           placeholder='0'
           onChange={(e) => setValues({ ...values, amount: e.target.value })}
           margin='dense'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <AttachMoneyIcon />
+              </InputAdornment>
+            ),
+          }}
         />
         <Autocomplete
-          id='source-select'
+          data-lpignore='true'
+          id='type-select'
           autoComplete
           freeSolo
-          value={values.source}
-          options={user.income.sources}
+          value={values.type}
+          options={user.expense.types}
           getOptionLabel={(option) => option}
-          onChange={(e, value) => setValues({ ...values, source: value })}
+          onChange={(e, value) => setValues({ ...values, type: value })}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              required
+              label='type'
+              variant='outlined'
+              margin='dense'
+            />
+          )}
+        />
+        <Autocomplete
+          id='vendor-select'
+          autoComplete
+          freeSolo
+          value={values.vendor}
+          options={user.expense.vendors}
+          getOptionLabel={(option) => option}
+          onChange={(e, value) => setValues({ ...values, vendor: value })}
           autoSelect
           renderInput={(params) => (
             <TextField
               {...params}
               required
-              label='source'
+              label='vendor'
               variant='outlined'
               margin='dense'
             />

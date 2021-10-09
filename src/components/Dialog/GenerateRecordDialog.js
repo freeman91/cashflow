@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import {
   Button,
   Dialog,
@@ -10,12 +10,12 @@ import {
   Step,
   StepLabel,
   Stepper,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { sleep } from '../../helpers/util';
-import ExpenseForm from './ExpenseForm';
-import IncomeForm from './IncomeForm';
-import HourForm from './HourForm';
+import ExpenseForm from '../Form/ExpenseForm';
+import IncomeForm from '../Form/IncomeForm';
+import HourForm from '../Form/HourForm';
 
 const useStyles = makeStyles({
   dialog: {

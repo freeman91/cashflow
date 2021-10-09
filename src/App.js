@@ -1,4 +1,3 @@
-/** REACT **/
 import React from 'react';
 import { useMount } from 'react-use';
 import { Helmet } from 'react-helmet';
@@ -7,22 +6,19 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import { v4 as uuidv4 } from 'uuid';
 
-/** REDUX **/
 import { Provider as ReduxProvider, useDispatch } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr';
 import LoadingBar from 'react-redux-loading-bar';
 
-/** MATERIAL-UI **/
-import { ThemeProvider } from '@material-ui/core/styles';
-import { makeStyles } from '@material-ui/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { muiTheme } from './styles/muiTheme';
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import './styles/App.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 
-/** STORE **/
 import createStore, { history } from './store/createStore';
 import { getUser } from './store/user';
 

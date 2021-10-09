@@ -1,9 +1,11 @@
 from flask import request, Blueprint
+from datetime import datetime
 from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
 
 from api.controllers.__util__ import success_result, failure_result
 from api.db.assets import Assets
+from api.db.networths import Networths
 from api.db import CRYPTO_KEY
 
 cryptocompare._set_api_key_parameter(CRYPTO_KEY)
@@ -39,6 +41,32 @@ def _update_crypto_price():
                 Assets.update(asset)
 
             return success_result("Success")
+    except Exception as err:
+        print(f"err: {err}")
+        return failure_result("Bad Request")
+
+
+@cronjobs.route("/cronjobs/record_networth", methods=["GET"])
+def _insert_networth():
+    try:
+        assets = []
+        debts = []
+        date = datetime.now()
+
+        if request.method == "GET":
+            for asset in Assets.get_all():
+                print(asset)
+
+        # Networths.create(
+        #     {
+        #         "date": date,
+        #         "month": date.month,
+        #         "year": date.year,
+        #         "assets": assets,
+        #         "debts": debts,
+        #     }
+        # )
+        return success_result("Success")
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")

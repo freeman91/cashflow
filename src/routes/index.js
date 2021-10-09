@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { useLifecycles } from 'react-use';
 
 import SwipeableViews from 'react-swipeable-views';
-import { makeStyles } from '@material-ui/styles';
-import { useTheme } from '@material-ui/core/styles';
-import { AppBar, Box, Tabs, Tab, CssBaseline } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { useTheme } from '@mui/material/styles';
+import { AppBar, Box, Tabs, Tab, CssBaseline } from '@mui/material';
 import {
   AccountBox,
   AccountBalanceWallet,
   DateRange,
   Dashboard as DashboardIcon,
   TrendingUp,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { useWindowSize } from 'react-use';
 
 import Dashboard from './Dashboard';
@@ -112,29 +112,63 @@ export default function Navigation() {
             onChange={handleChange}
             indicatorColor='primary'
             textColor='primary'
-            variant='fullWidth'
-            aria-label='full width tabs example'
+            sx={{
+              margin: 'auto',
+              justifyContent: 'space-between',
+            }}
           >
             <Tab
               label='Dashboard'
               icon={<DashboardIcon />}
               wrapped={true}
               {...a11yProps(0)}
+              sx={{
+                width: '15rem',
+              }}
             />
             <Tab
               label='Budget'
               icon={<AccountBalanceWallet />}
               {...a11yProps(1)}
+              sx={{
+                width: '15rem',
+              }}
             />
-            <Tab label='Summary' icon={<DateRange />} {...a11yProps(2)} />
-            <Tab label='Net Worth' icon={<TrendingUp />} {...a11yProps(3)} />
-            <Tab label='User' icon={<AccountBox />} {...a11yProps(4)} />
+            <Tab
+              label='Summary'
+              icon={<DateRange />}
+              {...a11yProps(2)}
+              sx={{
+                width: '15rem',
+              }}
+            />
+            <Tab
+              label='Net Worth'
+              icon={<TrendingUp />}
+              {...a11yProps(3)}
+              sx={{
+                width: '15rem',
+              }}
+            />
+            <Tab
+              label='User'
+              icon={<AccountBox />}
+              {...a11yProps(4)}
+              sx={{
+                width: '15rem',
+              }}
+            />
           </Tabs>
         </AppBar>
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={value}
           onChangeIndex={handleChangeIndex}
+          style={{
+            width: `${theme.breakpoints.maxWidth}px`,
+            margin: 'auto',
+            justifyContent: 'space-between',
+          }}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
             <Dashboard />
