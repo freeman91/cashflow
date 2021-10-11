@@ -15,13 +15,14 @@ class ExpensesModel:
         "amount": float,
         "type": str,
         "vendor": str,
+        "category": str,
         "asset": str,
         "debt": str,
         "description": str,
     }
 
-    def get(self, id):
-        return db.expenses.find_one({"_id": ObjectId(id)})
+    def get(self, _id):
+        return db.expenses.find_one({"_id": ObjectId(_id)})
 
     def find_one(self):
         return db.expenses.find_one()
@@ -50,20 +51,20 @@ class ExpensesModel:
             {"_id": ObjectId(expense["_id"])}, self.__serialize__(**expense)
         )
 
-    def delete(self, id):
-        return db.expenses.delete_one({"_id": ObjectId(id)})
+    def delete(self, _id):
+        return db.expenses.delete_one({"_id": ObjectId(_id)})
 
     def delete_all(self):
         return db.expenses.delete_many({})
 
     def __serialize__(self, **expense):
         for attr in expense:
-            if attr == "_id" and type(expense[attr]) == str:
+            if attr == "_id" and isinstance(expense[attr], str):
                 expense["_id"] = ObjectId(expense["_id"])
-            elif attr == "date" and type(expense[attr]) == int:
+            elif attr == "date" and isinstance(expense[attr], int):
                 expense[attr] = datetime.fromtimestamp(expense[attr])
             assert attr in self.attributes
-            assert type(expense[attr]) == self.attributes[attr]
+            assert isinstance(expense[attr], self.attributes[attr])
 
         self.__verify_type__(expense["type"])
         self.__verify_vendor__(expense["vendor"])

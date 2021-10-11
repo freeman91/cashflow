@@ -19,6 +19,7 @@ import Budget from './Budget';
 import Summary from './Summary';
 import Networth from './Networth';
 import User from './User';
+import UpdateRecordDialog from '../components/Dialog/UpdateRecordDialog';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,7 +60,6 @@ export default function Navigation() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-
   const isClient = typeof window === 'object';
   const { height } = useWindowSize();
   // eslint-disable-next-line
@@ -123,7 +123,7 @@ export default function Navigation() {
               wrapped={true}
               {...a11yProps(0)}
               sx={{
-                width: '15rem',
+                width: '12rem',
               }}
             />
             <Tab
@@ -131,7 +131,7 @@ export default function Navigation() {
               icon={<AccountBalanceWallet />}
               {...a11yProps(1)}
               sx={{
-                width: '15rem',
+                width: '12rem',
               }}
             />
             <Tab
@@ -139,7 +139,7 @@ export default function Navigation() {
               icon={<DateRange />}
               {...a11yProps(2)}
               sx={{
-                width: '15rem',
+                width: '12rem',
               }}
             />
             <Tab
@@ -147,7 +147,7 @@ export default function Navigation() {
               icon={<TrendingUp />}
               {...a11yProps(3)}
               sx={{
-                width: '15rem',
+                width: '12rem',
               }}
             />
             <Tab
@@ -155,7 +155,7 @@ export default function Navigation() {
               icon={<AccountBox />}
               {...a11yProps(4)}
               sx={{
-                width: '15rem',
+                width: '12rem',
               }}
             />
           </Tabs>
@@ -186,6 +186,7 @@ export default function Navigation() {
             <User />
           </TabPanel>
         </SwipeableViews>
+        <UpdateRecordDialog />
       </main>
     </div>
   );

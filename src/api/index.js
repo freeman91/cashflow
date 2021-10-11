@@ -73,6 +73,32 @@ export const postExpenseAPI = async (new_expense) => {
   }
 };
 
+export const putExpenseAPI = async (updatedExpense) => {
+  try {
+    const response = await axios.put(
+      `/expenses/${get(updatedExpense, '_id')}`,
+      updatedExpense
+    );
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const deleteExpenseAPI = async (expenseId) => {
+  try {
+    const response = await axios.delete(`/expenses/${expenseId}`);
+    if (get(response, 'status') === 200) {
+      console.log('response: ', response);
+      return true;
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 /*
 #### ##    ##  ######   #######  ##     ## ########  ######
  ##  ###   ## ##    ## ##     ## ###   ### ##       ##    ##

@@ -63,10 +63,6 @@ export default function Dashboard() {
           .concat(dayExpenses)
           .concat(dayIncomes)
           .concat(dayHours);
-        dayRecords = dayRecords.map((record, i) => {
-          if (i === 0) return { ...record, displayDate: day };
-          return record;
-        });
         records = records.concat(dayRecords);
       });
       return records.slice(0, 10);
@@ -75,22 +71,18 @@ export default function Dashboard() {
   }, [expenses, incomes, hours, filterExpense, filterIncome, filterHour]);
 
   return (
-    <>
-      <Grid container spacing={3}>
-        <Grid container item xs={12}>
-          <Grid item xs={12}>
-            <RecentRecordsTable
-              data={tableData}
-              filterExpense={filterExpense}
-              setFilterExpense={setFilterExpense}
-              filterIncome={filterIncome}
-              setFilterIncome={setFilterIncome}
-              filterHour={filterHour}
-              setFilterHour={setFilterHour}
-            />
-          </Grid>
-        </Grid>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <RecentRecordsTable
+          data={tableData}
+          filterExpense={filterExpense}
+          setFilterExpense={setFilterExpense}
+          filterIncome={filterIncome}
+          setFilterIncome={setFilterIncome}
+          filterHour={filterHour}
+          setFilterHour={setFilterHour}
+        />
       </Grid>
-    </>
+    </Grid>
   );
 }

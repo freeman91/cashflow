@@ -66,11 +66,20 @@ export default function RecordGenerationDialog({ open, handleClose }) {
       case 1:
         switch (recordType) {
           case 'income':
-            return <IncomeForm handleDialogClose={handleDialogClose} />;
+            return (
+              <IncomeForm handleDialogClose={handleDialogClose} mode='create' />
+            );
           case 'hour':
-            return <HourForm handleDialogClose={handleDialogClose} />;
+            return (
+              <HourForm handleDialogClose={handleDialogClose} mode='create' />
+            );
           default:
-            return <ExpenseForm handleDialogClose={handleDialogClose} />;
+            return (
+              <ExpenseForm
+                handleDialogClose={handleDialogClose}
+                mode='create'
+              />
+            );
         }
       default:
         return (

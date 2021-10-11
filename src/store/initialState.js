@@ -1,3 +1,10 @@
+export const settings = {
+  dialog: {
+    open: false,
+    record: {},
+  },
+};
+
 export const user = {
   expense: {
     types: [],

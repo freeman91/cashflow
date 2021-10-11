@@ -11,6 +11,7 @@ import { loadingBarMiddleware } from 'react-redux-loading-bar';
 /** REDUCERS **/
 import { reducer as toastr } from 'react-redux-toastr';
 import { loadingBarReducer } from 'react-redux-loading-bar';
+import settings from './settings';
 import user from './user';
 import expenses from './expenses';
 import incomes from './incomes';
@@ -53,6 +54,7 @@ let rootReducer = combineReducers({
   debts,
   networths,
   user,
+  settings,
 });
 
 let middleware = [

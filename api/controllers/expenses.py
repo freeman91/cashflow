@@ -1,8 +1,8 @@
-from flask import request, Blueprint
 from datetime import datetime, timedelta
 
+from api.controllers.__util__ import failure_result, success_result
 from api.db.expenses import Expenses
-from api.controllers.__util__ import success_result, failure_result
+from flask import Blueprint, request
 
 expenses = Blueprint("expenses", __name__)
 
@@ -43,17 +43,25 @@ def _create_expense():
 @expenses.route("/expenses/<string:id>", methods=["GET", "PUT", "DELETE"])
 def _expenses(id: str):
     try:
+
         if request.method == "GET":
             return success_result(Expenses.get(id))
 
-        if request.method == "PUT":
+        elif request.method == "PUT":
             expense = request.json
+            expense["amount"] = float(expense["amount"])
+            expense["date"] = datetime.strptime(expense["date"], "%m-%d-%Y").replace(
+                hour=12
+            )
             Expenses.update(expense)
             return success_result(Expenses.get(expense["_id"]))
 
-        if request.method == "DELETE":
+        elif request.method == "DELETE":
             Expenses.delete(id)
             return "Expense deleted", 200
+
+        else:
+            return failure_result("Bad Request")
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")
