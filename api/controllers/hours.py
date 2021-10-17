@@ -43,6 +43,8 @@ def _hours(id: str):
 
         if request.method == "PUT":
             hour = request.json
+            hour["amount"] = float(hour["amount"])
+            hour["date"] = datetime.strptime(hour["date"], "%m-%d-%Y").replace(hour=12)
             Hours.update(hour)
             return success_result(Hours.get(hour["_id"]))
 

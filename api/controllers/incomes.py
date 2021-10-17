@@ -1,5 +1,6 @@
 from flask import request, Blueprint
 from datetime import datetime, timedelta
+from pydash import map_
 
 from api.db.incomes import Incomes
 from api.controllers.__util__ import success_result, failure_result
@@ -51,13 +52,24 @@ def _incomes(id: str):
 
         if request.method == "PUT":
             income = request.json
+            income["amount"] = float(income["amount"])
+            income["date"] = datetime.strptime(income["date"], "%m-%d-%Y").replace(
+                hour=12
+            )
+            for d in income["deductions"]:
+                deduction = income["deductions"][d]
+                if deduction == "":
+                    income["deductions"][d] = float(0)
+                else:
+                    income["deductions"][d] = float(income["deductions"][d])
+
             Incomes.update(income)
             return success_result(Incomes.get(income["_id"]))
 
         if request.method == "DELETE":
             Incomes.delete(id)
             return "Expense deleted", 200
-    except Exception as err:
+    except AssertionError as err:
         print(f"err: {err}")
         return failure_result("Bad Request")
 

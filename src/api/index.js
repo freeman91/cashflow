@@ -91,7 +91,6 @@ export const deleteExpenseAPI = async (expenseId) => {
   try {
     const response = await axios.delete(`/expenses/${expenseId}`);
     if (get(response, 'status') === 200) {
-      console.log('response: ', response);
       return true;
     }
   } catch (error) {
@@ -143,6 +142,31 @@ export const postIncomeAPI = async (new_income) => {
   }
 };
 
+export const putIncomeAPI = async (updatedIncome) => {
+  try {
+    const response = await axios.put(
+      `/incomes/${get(updatedIncome, '_id')}`,
+      updatedIncome
+    );
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const deleteIncomeAPI = async (incomeId) => {
+  try {
+    const response = await axios.delete(`/incomes/${incomeId}`);
+    if (get(response, 'status') === 200) {
+      return true;
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 /*
 ##     ##  #######  ##     ## ########   ######
 ##     ## ##     ## ##     ## ##     ## ##    ##
@@ -181,6 +205,31 @@ export const postHourAPI = async (new_hour) => {
     const response = await axios.post(`/hours`, new_hour);
     if (get(response, 'status') === 200) {
       return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const putHourAPI = async (updatedHour) => {
+  try {
+    const response = await axios.put(
+      `/hours/${get(updatedHour, '_id')}`,
+      updatedHour
+    );
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const deleteHourAPI = async (hourId) => {
+  try {
+    const response = await axios.delete(`/hours/${hourId}`);
+    if (get(response, 'status') === 200) {
+      return true;
     }
   } catch (error) {
     console.log('error: ', error);

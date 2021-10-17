@@ -19,10 +19,11 @@ class IncomesModel:
         "source": str,
         "asset": str,
         "description": str,
+        "category": str,
     }
 
-    def get(self, id):
-        return db.incomes.find_one({"_id": ObjectId(id)})
+    def get(self, _id):
+        return db.incomes.find_one({"_id": ObjectId(_id)})
 
     def find_one(self):
         return db.incomes.find_one()
@@ -51,20 +52,20 @@ class IncomesModel:
             {"_id": ObjectId(income["_id"])}, self.__serialize__(**income)
         )
 
-    def delete(self, id):
-        return db.incomes.delete_one({"_id": ObjectId(id)})
+    def delete(self, _id):
+        return db.incomes.delete_one({"_id": ObjectId(_id)})
 
     def delete_all(self):
         return db.incomes.delete_many({})
 
     def __serialize__(self, **income):
         for attr in income:
-            if attr == "_id" and type(income[attr]) == str:
+            if attr == "_id" and isinstance(income[attr], str):
                 income["_id"] = ObjectId(income["_id"])
-            elif attr == "date" and type(income[attr]) == int:
+            elif attr == "date" and isinstance(income[attr], int):
                 income[attr] = datetime.fromtimestamp(income[attr])
             assert attr in self.attributes
-            assert type(income[attr]) == self.attributes[attr]
+            assert isinstance(income[attr], self.attributes[attr])
 
         self.__verify_type__(income["type"])
         self.__verify_source__(income["source"])
@@ -83,8 +84,8 @@ class IncomesModel:
 
     def __verify_deduction_types__(self, deduction_types: dict):
         for _type in deduction_types:
-            assert type(_type) == str
-            assert type(deduction_types[_type]) == float
+            assert isinstance(_type, str)
+            assert isinstance(deduction_types[_type], float)
             assert _type in self.deduction_types
 
 

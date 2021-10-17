@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
+import { get } from 'lodash';
 import {
   AttachMoney as AttachMoneyIcon,
   Description as DescriptionIcon,
@@ -15,8 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { postIncome } from '../../store/incomes';
-import { useMount } from 'react-use';
+import { postIncome, putIncome, deleteIncome } from '../../store/incomes';
 
 const default_state = {
   amount: '',
@@ -27,36 +27,57 @@ const default_state = {
   date: new Date(),
 };
 
-export default function IncomeForm({ handleDialogClose }) {
+export default function IncomeForm({ handleDialogClose, mode, income }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
+  const [initialDeductions, setInitialDeductions] = useState({});
 
-  useMount(() => {
+  useEffect(() => {
     var _deductions = {};
     user.income.deductions.forEach((deduction) => {
       _deductions[deduction] = '';
     });
-    setValues({
-      ...values,
-      deductions: _deductions,
-    });
-  });
+    setInitialDeductions(_deductions);
+  }, [user.income.deductions]);
 
-  const handleSubmit = () => {
-    try {
-      var _deductions = {};
-      Object.keys(values.deductions).forEach((deduction) => {
-        _deductions[deduction] = values.deductions[deduction];
-      });
+  useEffect(() => {
+    let _deductions = get(income, 'deductions', {});
+    if (Object.keys(_deductions).length === 0) {
+      _deductions = initialDeductions;
+    }
 
-      const new_income = {
-        amount: Number(values.amount),
+    if (mode === 'create') {
+      setValues({ ...values, deductions: _deductions });
+    } else if (mode === 'update') {
+      setValues({
+        amount: get(income, 'amount', 0),
+        source: get(income, 'source', ''),
+        type: get(income, 'type', ''),
         deductions: _deductions,
-        type: values.type,
-        source: values.source,
-        description: values.description,
-        date: dayjs(values.date).format('MM-DD-YYYY'),
+        description: get(income, 'description', ''),
+        date: new Date(get(income, 'date')),
+      });
+    }
+    // eslint-disable-next-line
+  }, [mode, income, initialDeductions]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let _values = values;
+    if (values.type !== 'paycheck') {
+      _values.deductions = initialDeductions;
+    }
+
+    try {
+      const new_income = {
+        amount: Number(_values.amount),
+        deductions: _values.deductions,
+        type: _values.type,
+        source: _values.source,
+        description: _values.description,
+        date: dayjs(_values.date).format('MM-DD-YYYY'),
       };
       dispatch(postIncome(new_income));
     } catch (error) {
@@ -66,16 +87,64 @@ export default function IncomeForm({ handleDialogClose }) {
     }
   };
 
+  const handleUpdate = () => {
+    let _values = values;
+    if (values.type !== 'paycheck') {
+      _values.deductions = initialDeductions;
+    }
+
+    if (validate()) {
+      let updatedIncome = {
+        ...income,
+        ..._values,
+        date: dayjs(_values.date).format('MM-DD-YYYY'),
+      };
+      dispatch(putIncome(updatedIncome));
+      handleDialogClose();
+    }
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteIncome(get(income, '_id')));
+    handleDialogClose();
+  };
+
   const validate = () => {
     if (
       isNaN(values.amount) ||
       values.type.length === 0 ||
       !values.source ||
       values.source.length === 0 ||
-      !values.date
+      !values.date ||
+      values.deductions.length === 0
     )
       return false;
     else return true;
+  };
+
+  const handleFormEnterClick = () => {
+    if (mode === 'create') {
+      handleSubmit();
+    } else if (mode === 'update') {
+      handleUpdate();
+    } else {
+      handleDialogClose();
+    }
+  };
+
+  const incomeDiff = () => {
+    if (
+      values.amount === get(income, 'amount') &&
+      values.source === get(income, 'source') &&
+      values.type === get(income, 'type') &&
+      values.description === get(income, 'description') &&
+      dayjs(values.date).format('MM-DD-YYYY') === get(income, 'date') &&
+      values.deductions === get(income, 'deductions')
+    ) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   const renderDeductions = () => {
@@ -125,7 +194,7 @@ export default function IncomeForm({ handleDialogClose }) {
 
   return (
     <Box>
-      <form id='search'>
+      <form onSubmit={handleFormEnterClick}>
         <TextField
           fullWidth
           id='amount-input'
@@ -145,7 +214,6 @@ export default function IncomeForm({ handleDialogClose }) {
             ),
           }}
         />
-        {renderDeductions()}
         <Autocomplete
           data-lpignore='true'
           id='type-select'
@@ -165,6 +233,7 @@ export default function IncomeForm({ handleDialogClose }) {
             />
           )}
         />
+        {renderDeductions()}
         <Autocomplete
           id='source-select'
           autoComplete
@@ -214,14 +283,50 @@ export default function IncomeForm({ handleDialogClose }) {
           )}
         />
         <Button
-          id='submit'
-          disabled={!validate()}
-          sx={{ marginTop: '1rem', width: '100%' }}
-          variant='contained'
-          onClick={handleSubmit}
+          id='cancel'
+          sx={{ mr: '1rem', mt: '1rem', width: '5rem' }}
+          variant='outlined'
+          color='info'
+          onClick={handleDialogClose}
         >
-          Submit
+          Cancel
         </Button>
+        {mode === 'create' ? (
+          <Button
+            type='submit'
+            id='submit'
+            disabled={!validate()}
+            sx={{ mt: '1rem' }}
+            variant='outlined'
+            onClick={handleSubmit}
+            color='success'
+          >
+            Submit
+          </Button>
+        ) : (
+          <>
+            <Button
+              type='submit'
+              id='update'
+              disabled={!validate() || !incomeDiff()}
+              sx={{ mt: '1rem' }}
+              variant='outlined'
+              onClick={handleUpdate}
+              color='success'
+            >
+              Update
+            </Button>
+            <Button
+              id='delete'
+              sx={{ mt: '1rem', ml: '1rem' }}
+              variant='outlined'
+              onClick={handleDelete}
+              color='error'
+            >
+              Delete
+            </Button>
+          </>
+        )}
       </form>
     </Box>
   );

@@ -37,7 +37,8 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
     }
   }, [mode, expense]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const new_expense = {
       amount: Number(values.amount),
       type: values.type,

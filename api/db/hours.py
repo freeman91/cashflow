@@ -8,14 +8,16 @@ from api.db.user import user
 class HoursModel:
     name = "hour"
     attributes = {
+        "_id": ObjectId,
         "date": datetime,
         "amount": float,
         "source": str,
         "description": str,
+        "category": str,
     }
 
-    def get(self, id):
-        return db.hours.find_one({"_id": ObjectId(id)})
+    def get(self, _id):
+        return db.hours.find_one({"_id": ObjectId(_id)})
 
     def find_one(self):
         return db.hours.find_one()
@@ -44,20 +46,20 @@ class HoursModel:
             {"_id": ObjectId(hour["_id"])}, self.__serialize__(**hour)
         )
 
-    def delete(self, id):
-        return db.hours.delete_one({"_id": ObjectId(id)})
+    def delete(self, _id):
+        return db.hours.delete_one({"_id": ObjectId(_id)})
 
     def delete_all(self):
         return db.hours.delete_many({})
 
     def __serialize__(self, **hour):
         for attr in hour:
-            if attr == "_id" and type(hour[attr]) == str:
+            if attr == "_id" and isinstance(hour[attr], str):
                 hour["_id"] = ObjectId(hour["_id"])
-            elif attr == "date" and type(hour[attr]) == int:
+            elif attr == "date" and isinstance(hour[attr], int):
                 hour[attr] = datetime.fromtimestamp(hour[attr])
             assert attr in self.attributes
-            assert type(hour[attr]) == self.attributes[attr]
+            assert isinstance(hour[attr], self.attributes[attr])
 
         assert hour["source"] in user.item["income"]["sources"]
         hour["category"] = "hour"

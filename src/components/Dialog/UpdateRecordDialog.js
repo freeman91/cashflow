@@ -6,8 +6,8 @@ import { Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { setDialog } from '../../store/settings';
 import { settings as initialState } from '../../store/initialState';
 import ExpenseForm from '../Form/ExpenseForm';
-// import IncomeForm from '../Form/IncomeForm';
-// import HourForm from '../Form/HourForm';
+import IncomeForm from '../Form/IncomeForm';
+import HourForm from '../Form/HourForm';
 
 export default function UpdateRecordDialog() {
   const dispatch = useDispatch();
@@ -34,9 +34,17 @@ export default function UpdateRecordDialog() {
         />
       );
     } else if (category === 'income') {
-      return null;
+      return (
+        <IncomeForm
+          handleDialogClose={handleClose}
+          mode='update'
+          income={record}
+        />
+      );
     } else if (category === 'hour') {
-      return null;
+      return (
+        <HourForm handleDialogClose={handleClose} mode='update' hour={record} />
+      );
     } else if (category === 'asset') {
       return null;
     } else if (category === 'debt') {
