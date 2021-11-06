@@ -257,6 +257,53 @@ export const getAssetsAPI = async () => {
   }
 };
 
+export const putAssetAPI = async (updatedAsset) => {
+  try {
+    const response = await axios.put(
+      `/assets/${get(updatedAsset, '_id')}`,
+      updatedAsset
+    );
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const buyAssetAPI = async (assetId, payload) => {
+  try {
+    const response = await axios.put(`/assets/${assetId}/buy`, payload);
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const sellAssetAPI = async (assetId, payload) => {
+  try {
+    const response = await axios.put(`/assets/${assetId}/sell`, payload);
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const postAssetAPI = async (updatedAsset) => {
+  try {
+    const response = await axios.post(`/assets`, updatedAsset);
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 /*
 ########  ######## ########  ########  ######
 ##     ## ##       ##     ##    ##    ##    ##

@@ -14,7 +14,8 @@ const styles = (theme) => ({
 export const CellComponent = withStyles(styles, { name: 'CellComponent' })(
   ({ classes, row, ...restProps }) => {
     const dispatch = useDispatch();
-    const handleClick = () => {
+    const handleClick = (e) => {
+      e.preventDefault();
       if (get(row, 'category')) {
         dispatch(setDialog({ open: true, record: row }));
       }

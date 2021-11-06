@@ -160,6 +160,8 @@ def migrate_networths():
     for record in records:
         Networths.create(record)
 
+    print("Net Worths generated")
+
 
 def generate_assets():
     Assets.delete_all()
@@ -338,6 +340,8 @@ def generate_assets():
     for asset in assets:
         Assets.create(asset)
 
+    print("Assets generated")
+
 
 def generate_debts():
     Debts.delete_all()
@@ -358,6 +362,8 @@ def generate_debts():
 
     for debt in debts:
         Debts.create(debt)
+
+    print("Debts generated")
 
 
 def migrate_all():

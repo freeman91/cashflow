@@ -25,6 +25,8 @@ services:
     networks:
       app-net:
         ipv4_address: 172.19.199.2
+    depends_on:
+      - database
 
 networks:
   app-net:

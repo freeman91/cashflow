@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useUpdateEffect, useMeasure } from 'react-use';
 import dayjs from 'dayjs';
-import { get, reduce } from 'lodash';
+import { get, reduce, sortBy, toLower } from 'lodash';
 
 import {
   Card,
@@ -27,16 +27,20 @@ import { CellComponent } from './CellComponent';
 import { AmountTypeProvider } from './Providers';
 import AssetDetailTable from './AssetDetailTable';
 import DebtDetailTable from './DebtDetailTable';
+import GenerateNetWorthButton from '../Button/GenerateNetWorthButton';
 
 const NetWorthRowDetail = ({ row }) => {
   if (row) {
-    let assets = get(row, 'assets');
+    let assets = sortBy(get(row, 'assets'), (asset) =>
+      toLower(get(asset, 'name'))
+    );
     let debts = get(row, 'debts');
-    if (assets) {
+    if (assets.length > 0) {
       return <AssetDetailTable rows={assets} />;
     } else if (debts) {
       return <DebtDetailTable rows={debts} />;
     }
+    return null;
   } else {
     return <Typography>No Data</Typography>;
   }
@@ -98,7 +102,9 @@ export default function NetWorthTable() {
         <Typography align='right' variant='h4'>
           Net Worth
         </Typography>
+
         <div style={{ display: 'flex', marginTop: '1rem' }}>
+          <GenerateNetWorthButton />
           <DatePicker
             views={['year', 'month']}
             label='Year and Month'

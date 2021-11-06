@@ -29,7 +29,7 @@ def g_goal():
 
 
 def g_nw():
-    goal = {
+    nw = {
         "date": datetime(2021, 6, 30),
         "month": 6,
         "year": 2021,
@@ -37,7 +37,7 @@ def g_nw():
         "debts": {"huntington": 150.0, "tuition": 29000.0},
     }
 
-    Networths.create(goal)
+    Networths.create(nw)
 
 
 def delete_all():

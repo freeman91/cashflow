@@ -21,7 +21,8 @@ class AssetsModel:
         "type": str,
         "shares": float,
         "price": float,
-        "ticker": str,
+        "vendor": str,
+        # "ticker": str,
         "debt": str,
         "invested": float,
         "description": str,
@@ -29,8 +30,8 @@ class AssetsModel:
         "category": str,
     }
 
-    def get(self, name):
-        return db.assets.find_one({"name": name})
+    def get(self, _id):
+        return db.assets.find_one({"_id": ObjectId(_id)})
 
     def find_one(self):
         return db.assets.find_one()
@@ -56,12 +57,12 @@ class AssetsModel:
 
     def __serialize__(self, **asset):
         for attr in asset:
-            if attr == "_id" and type(asset[attr]) == str:
+            if attr == "_id" and isinstance(asset[attr], str):
                 asset["_id"] = ObjectId(asset["_id"])
-            elif attr == "last_update" and type(asset[attr]) == int:
+            elif attr == "last_update" and isinstance(asset[attr], int):
                 asset[attr] = datetime.fromtimestamp(asset[attr])
             assert attr in self.attributes
-            assert type(asset[attr]) == self.attributes[attr]
+            assert isinstance(asset[attr], self.attributes[attr])
         assert asset["type"] in self.types
         asset["category"] = "asset"
         return asset

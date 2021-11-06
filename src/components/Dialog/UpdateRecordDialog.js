@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { get } from 'lodash';
+import { get, capitalize } from 'lodash';
 import { Dialog, DialogTitle, DialogContent } from '@mui/material';
 
 import { setDialog } from '../../store/settings';
@@ -8,6 +8,8 @@ import { settings as initialState } from '../../store/initialState';
 import ExpenseForm from '../Form/ExpenseForm';
 import IncomeForm from '../Form/IncomeForm';
 import HourForm from '../Form/HourForm';
+import AssetForm from '../Form/AssetForm';
+import DebtForm from '../Form/DebtForm';
 
 export default function UpdateRecordDialog() {
   const dispatch = useDispatch();
@@ -46,9 +48,17 @@ export default function UpdateRecordDialog() {
         <HourForm handleDialogClose={handleClose} mode='update' hour={record} />
       );
     } else if (category === 'asset') {
-      return null;
+      return (
+        <AssetForm
+          handleDialogClose={handleClose}
+          mode='update'
+          asset={record}
+        />
+      );
     } else if (category === 'debt') {
-      return null;
+      return (
+        <DebtForm handleDialogClose={handleClose} mode='update' debt={record} />
+      );
     } else if (category === 'goal') {
       return null;
     } else return null;
@@ -56,7 +66,9 @@ export default function UpdateRecordDialog() {
 
   return (
     <Dialog open={dialog.open} onClose={handleClose}>
-      <DialogTitle>Update Record</DialogTitle>
+      <DialogTitle>
+        Update {capitalize(get(dialog, 'record.category'))}
+      </DialogTitle>
       <DialogContent>{showRecordForm()}</DialogContent>
     </Dialog>
   );

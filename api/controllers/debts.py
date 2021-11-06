@@ -18,9 +18,11 @@ def _create_debt():
         print(f"err: {err}")
         return failure_result("Bad Request")
 
+    return failure_result("Bad Request")
 
-@debts.route("/debts/<string:id>", methods=["GET", "PUT", "DELETE"])
-def _debts(id: str):
+
+@debts.route("/debts/<string:_id>", methods=["GET", "PUT", "DELETE"])
+def _debts(_id: str):
     try:
         if request.method == "GET":
             # if does not exist send back 400 error
@@ -37,3 +39,10 @@ def _debts(id: str):
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")
+
+    return failure_result("Bad Request")
+
+
+@debts.route("/debts/<string:_id>/payment", methods=["GET", "PUT", "DELETE"])
+def _payment(_id: str):
+    pass
