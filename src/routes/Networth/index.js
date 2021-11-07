@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 
 import { getAssets } from '../../store/assets';
 import { getDebts } from '../../store/debts';
+import NetWorthCard from '../../components/Card/NetWorthCard';
 import AssetsCard from '../../components/Card/AssetsCard';
 import DebtsCard from '../../components/Card/DebtsCard';
 
@@ -17,6 +18,9 @@ export default function Networth() {
 
   return (
     <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <NetWorthCard />
+      </Grid>
       <Grid item xs={6}>
         <AssetsCard />
       </Grid>
