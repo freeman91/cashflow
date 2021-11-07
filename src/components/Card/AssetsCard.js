@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { get, reduce, filter as filter_ } from 'lodash';
 import { Card, CardContent, Divider, Typography } from '@mui/material';
@@ -15,26 +15,24 @@ export default function AssetsCard() {
   const [open, setOpen] = useState(false);
   const [selectedAssets, setSelectedAssets] = useState([]);
   const [title, setTitle] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState('');
 
-  const handleClick = (e, filter) => {
-    e.preventDefault();
-    if (filter === 'crypto') {
-      setTitle('Crypto');
+  useEffect(() => {
+    if (selectedFilter === 'crypto') {
+      setTitle('Crpyto');
       setSelectedAssets(
         filter_(assets, (asset) => {
           return get(asset, 'type') === 'crypto';
         })
       );
-      setOpen(true);
-    } else if (filter === 'stocks') {
-      setTitle('Stocks');
+    } else if (selectedFilter === 'stock') {
+      setTitle('Credit');
       setSelectedAssets(
         filter_(assets, (asset) => {
           return get(asset, 'type') === 'stock';
         })
       );
-      setOpen(true);
-    } else if (filter === 'else') {
+    } else if (selectedFilter === 'else') {
       setTitle('All Other Assets');
       setSelectedAssets(
         filter_(assets, (asset) => {
@@ -43,12 +41,16 @@ export default function AssetsCard() {
           );
         })
       );
-      setOpen(true);
     } else {
       setTitle('All Assets');
       setSelectedAssets(assets);
-      setOpen(true);
     }
+  }, [assets, selectedFilter]);
+
+  const handleClick = (e, filter) => {
+    e.preventDefault();
+    setSelectedFilter(filter);
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -66,7 +68,7 @@ export default function AssetsCard() {
       let value = get(asset, 'value');
       if (get(asset, 'type') === 'crypto') {
         cryptoValue += value;
-      } else if (get(asset, 'type') === 'crypto') {
+      } else if (get(asset, 'type') === 'stock') {
         stocksValue += value;
       } else {
         elseValue += value;
@@ -113,7 +115,7 @@ export default function AssetsCard() {
             </Typography>
           </div>
 
-          <div style={divStyle} onClick={(e) => handleClick(e, 'stocks')}>
+          <div style={divStyle} onClick={(e) => handleClick(e, 'stock')}>
             <Typography sx={textStyle}>Stocks Value...</Typography>
             <Typography sx={{ mt: '.25rem' }}>
               {numberToCurrency.format(stocksValue)}

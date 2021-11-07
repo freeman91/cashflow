@@ -21,7 +21,6 @@ export default function CreateButton({ children }) {
         onClick={handleButtonClick}
         component='span'
         variant='contained'
-        sx={{ marginRight: '1rem' }}
       >
         <AddCircleIcon sx={{ height: '1.75rem', width: '1.75rem' }} />
       </IconButton>

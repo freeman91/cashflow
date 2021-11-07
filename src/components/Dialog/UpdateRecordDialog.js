@@ -49,16 +49,10 @@ export default function UpdateRecordDialog() {
       );
     } else if (category === 'asset') {
       return (
-        <AssetForm
-          handleDialogClose={handleClose}
-          mode='update'
-          asset={record}
-        />
+        <AssetForm handleClose={handleClose} mode='update' asset={record} />
       );
     } else if (category === 'debt') {
-      return (
-        <DebtForm handleDialogClose={handleClose} mode='update' debt={record} />
-      );
+      return <DebtForm handleClose={handleClose} mode='update' debt={record} />;
     } else if (category === 'goal') {
       return null;
     } else return null;

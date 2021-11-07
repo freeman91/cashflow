@@ -13,13 +13,14 @@ class DebtsModel:
         "name": str,
         "value": float,
         "type": str,
-        "asset": str,
+        "vendor": str,
         "description": str,
         "last_update": datetime,
+        "category": str,
     }
 
-    def get(self, name):
-        return db.debts.find_one({"name": name})
+    def get(self, _id):
+        return db.debts.find_one({"_id": ObjectId(_id)})
 
     def find_one(self):
         return db.debts.find_one()
@@ -57,24 +58,3 @@ class DebtsModel:
 
 
 Debts = DebtsModel()
-
-
-# def acquire():
-#     """ "create new debt or update debt"""
-#     pass
-
-
-# def reduce(debt: str):
-#     """
-#     no expense generated
-#     reduce debt amount
-#     """
-#     pass
-
-
-# def pay_off():
-#     """paying off a debt generates an expense
-#     - reduce debt amount
-#     - generate expense
-#     """
-#     pass

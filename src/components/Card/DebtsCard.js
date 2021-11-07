@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { get, reduce, filter as filter_ } from 'lodash';
 import { Card, CardContent, Divider, Typography } from '@mui/material';
@@ -15,40 +15,42 @@ export default function DebtsCard() {
   const [open, setOpen] = useState(false);
   const [selectedDebts, setSelectedDebts] = useState([]);
   const [title, setTitle] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState('');
+
+  useEffect(() => {
+    if (selectedFilter === 'tuition') {
+      setTitle('Tution');
+      setSelectedDebts(
+        filter_(debts, (debt) => {
+          return get(debt, 'type') === 'tuition';
+        })
+      );
+    } else if (selectedFilter === 'credit') {
+      setTitle('Credit');
+      setSelectedDebts(
+        filter_(debts, (debt) => {
+          return get(debt, 'type') === 'credit';
+        })
+      );
+    } else if (selectedFilter === 'else') {
+      setTitle('All Other Debts');
+      setSelectedDebts(
+        filter_(debts, (debt) => {
+          return (
+            get(debt, 'type') !== 'tuition' && get(debt, 'type') !== 'credit'
+          );
+        })
+      );
+    } else {
+      setTitle('All Debts');
+      setSelectedDebts(debts);
+    }
+  }, [debts, selectedFilter]);
 
   const handleClick = (e, filter) => {
     e.preventDefault();
-    // if (filter === 'crypto') {
-    //   setTitle('Crypto');
-    //   setSelectedDebts(
-    //     filter_(debts, (debt) => {
-    //       return get(debt, 'type') === 'crypto';
-    //     })
-    //   );
-    //   setOpen(true);
-    // } else if (filter === 'stocks') {
-    //   setTitle('Stocks');
-    //   setSelectedDebts(
-    //     filter_(debts, (asset) => {
-    //       return get(asset, 'type') === 'stock';
-    //     })
-    //   );
-    //   setOpen(true);
-    // } else if (filter === 'else') {
-    //   setTitle('All Other Debts');
-    //   setSelectedDebts(
-    //     filter_(assets, (asset) => {
-    //       return (
-    //         get(asset, 'type') !== 'crypto' && get(asset, 'type') !== 'stock'
-    //       );
-    //     })
-    //   );
-    //   setOpen(true);
-    // } else {
-    //   setTitle('All Debts');
-    //   setSelectedDebts(assets);
-    //   setOpen(true);
-    // }
+    setSelectedFilter(filter);
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -57,23 +59,21 @@ export default function DebtsCard() {
     setTitle('');
   };
 
-  console.log('debts: ', debts);
-
   let tuitionValue = 0;
   let creditValue = 0;
   let elseValue = 0;
   let totalValue = reduce(
     debts,
     (sum, debt) => {
-      // let value = get(debt, 'value');
-      // if (get(debt, 'type') === 'crypto') {
-      //   cryptoValue += value;
-      // } else if (get(debt, 'type') === 'crypto') {
-      //   stocksValue += value;
-      // } else {
-      //   elseValue += value;
-      // }
-      // return sum + value;
+      let value = get(debt, 'value');
+      if (get(debt, 'type') === 'tuition') {
+        tuitionValue += value;
+      } else if (get(debt, 'type') === 'credit') {
+        creditValue += value;
+      } else {
+        elseValue += value;
+      }
+      return sum + value;
     },
     0
   );

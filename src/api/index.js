@@ -257,6 +257,17 @@ export const getAssetsAPI = async () => {
   }
 };
 
+export const postAssetAPI = async (updatedAsset) => {
+  try {
+    const response = await axios.post(`/assets`, updatedAsset);
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 export const putAssetAPI = async (updatedAsset) => {
   try {
     const response = await axios.put(
@@ -293,17 +304,6 @@ export const sellAssetAPI = async (assetId, payload) => {
   }
 };
 
-export const postAssetAPI = async (updatedAsset) => {
-  try {
-    const response = await axios.post(`/assets`, updatedAsset);
-    if (get(response, 'status') === 200) {
-      return parseRecord(get(response, 'data.result'));
-    }
-  } catch (error) {
-    console.log('error: ', error);
-  }
-};
-
 /*
 ########  ######## ########  ########  ######
 ##     ## ##       ##     ##    ##    ##    ##
@@ -319,6 +319,42 @@ export const getDebtsAPI = async () => {
     const response = await axios.get(`/debts`);
     if (get(response, 'status') === 200) {
       return parseArray(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const postDebtAPI = async (updatedDebt) => {
+  try {
+    const response = await axios.post(`/debts`, updatedDebt);
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const putDebtAPI = async (updatedDebt) => {
+  try {
+    const response = await axios.put(
+      `/debts/${get(updatedDebt, '_id')}`,
+      updatedDebt
+    );
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const debtPaymentAPI = async (debtId, payload) => {
+  try {
+    const response = await axios.put(`/debts/${debtId}/payment`, payload);
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
     }
   } catch (error) {
     console.log('error: ', error);

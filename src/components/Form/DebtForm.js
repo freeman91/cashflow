@@ -10,8 +10,9 @@ import DatePicker from '@mui/lab/DatePicker';
 import Autocomplete from '@mui/lab/Autocomplete';
 import { Box, Button, InputAdornment, TextField } from '@mui/material';
 
+import DebtPaymentDialog from '../Dialog/DebtPaymentDialog';
 import { _numberToCurrency } from '../../helpers/currency';
-// import { putDebt } from '../../store/debts';
+import { postDebt, putDebt } from '../../store/debts';
 
 const default_state = {
   name: '',
@@ -19,13 +20,15 @@ const default_state = {
   type: '',
   description: '',
   last_update: new Date(),
-  asset: '',
+  vendor: '',
 };
 
-export default function DebtForm({ handleDialogClose, mode, debt }) {
+export default function DebtForm(props) {
+  const { handleClose, mode, debt } = props;
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (mode === 'update') {
@@ -33,45 +36,42 @@ export default function DebtForm({ handleDialogClose, mode, debt }) {
         name: get(debt, 'name', ''),
         value: get(debt, 'value', 0),
         type: get(debt, 'type', ''),
+        vendor: get(debt, 'vendor', ''),
         description: get(debt, 'description', ''),
         last_update: new Date(get(debt, 'last_update')),
-        asset: get(debt, 'asset', ''),
       });
     }
   }, [mode, debt]);
 
   const handleCreate = (e) => {
     e.preventDefault();
-    const new_debt = {
-      name: values.name,
-      value: Number(values.value),
-      type: values.type,
-      description: values.description,
-      last_update: dayjs(values.date).format('MM-DD-YYYY'),
-      asset: values.asset,
-    };
-    console.log('new_debt: ', new_debt);
-    // dispatch(postDebt(new_debt));
-    handleDialogClose();
+    if (validate()) {
+      const new_debt = {
+        name: values.name,
+        value: Number(values.value),
+        type: values.type,
+        vendor: values.vendor,
+        description: values.description,
+      };
+      dispatch(postDebt(new_debt));
+      handleClose();
+    }
   };
 
   const handleUpdate = (e) => {
     e.preventDefault();
     if (validate()) {
-      // let updatedDebt = {
-      //   ...debt,
-      //   ...values,
-      //   last_update: dayjs(values.date).format('MM-DD-YYYY'),
-      // };
-      // dispatch(putDebt(updatedDebt));
-      handleDialogClose();
+      let updatedDebt = {
+        ...debt,
+        value: Number(values.value),
+      };
+      dispatch(putDebt(updatedDebt));
+      handleClose();
     }
   };
 
   const handlePayment = () => {
-    // dispatch(deleteDebt(get(debt, '_id')));
-    // console.log('delete');
-    // handleDialogClose();
+    setDialogOpen(true);
   };
 
   const handleFormEnterClick = () => {
@@ -80,8 +80,13 @@ export default function DebtForm({ handleDialogClose, mode, debt }) {
     } else if (mode === 'update') {
       handleUpdate();
     } else {
-      handleDialogClose();
+      handleClose();
     }
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    handleClose();
   };
 
   const validate = () => {
@@ -103,7 +108,7 @@ export default function DebtForm({ handleDialogClose, mode, debt }) {
       values.value === get(debt, 'value') &&
       values.price === get(debt, 'price') &&
       values.type === get(debt, 'type') &&
-      values.asset === get(debt, 'asset') &&
+      values.vendor === get(debt, 'vendor') &&
       values.description === get(debt, 'description') &&
       valueDate === debtDate
     ) {
@@ -116,158 +121,168 @@ export default function DebtForm({ handleDialogClose, mode, debt }) {
   let isCredit = values.type === 'credit';
 
   return (
-    <Box>
-      <form onSubmit={handleFormEnterClick}>
-        <TextField
-          fullWidth
-          id='name-input'
-          label='name'
-          name='name'
-          required
-          value={values.name}
-          variant='outlined'
-          onChange={(e) => setValues({ ...values, name: e.target.value })}
-          margin='dense'
-        />
-        <TextField
-          fullWidth
-          id='value-input'
-          label='value'
-          name='value'
-          disabled={!isCredit}
-          required={isCredit}
-          value={_numberToCurrency.format(values.value)}
-          variant='outlined'
-          placeholder='0'
-          onChange={(e) => setValues({ ...values, value: e.target.value })}
-          margin='dense'
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position='start'>
-                <AttachMoneyIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
-        <Autocomplete
-          data-lpignore='true'
-          disabled
-          id='type-select'
-          autoComplete
-          freeSolo
-          value={values.type}
-          options={user.debt.types}
-          getOptionLabel={(option) => option}
-          onChange={(e, value) => setValues({ ...values, type: value })}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              required
-              label='type'
-              variant='outlined'
-              margin='dense'
-            />
-          )}
-        />
-        <TextField
-          fullWidth
-          id='description-input'
-          label='description'
-          name='description'
-          value={values.description}
-          variant='outlined'
-          margin='dense'
-          onChange={(e) =>
-            setValues({ ...values, description: e.target.value })
-          }
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <DescriptionIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
-        {/* TODO: asset selector */}
-        {/* <TextField
-          fullWidth
-          id='description-input'
-          label='description'
-          name='description'
-          value={values.description}
-          variant='outlined'
-          margin='dense'
-          onChange={(e) =>
-            setValues({ ...values, description: e.target.value })
-          }
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <DescriptionIcon />
-              </InputAdornment>
-            ),
-          }}
-        /> */}
-        <DatePicker
-          disabled
-          label='date'
-          value={values.last_update}
-          onChange={(value) => {
-            setValues({ ...values, last_update: value });
-          }}
-          renderInput={(params) => (
-            <TextField fullWidth {...params} margin='dense' required />
-          )}
-        />
-        <Button
-          id='cancel'
-          sx={{ mr: '1rem', mt: '1rem', width: '5rem' }}
-          variant='outlined'
-          color='info'
-          onClick={handleDialogClose}
-        >
-          Cancel
-        </Button>
-        {mode === 'create' ? (
-          <Button
-            type='submit'
-            id='submit'
-            disabled={!validate()}
-            sx={{ mt: '1rem' }}
+    <>
+      <Box>
+        <form onSubmit={handleFormEnterClick}>
+          <TextField
+            fullWidth
+            id='name-input'
+            label='name'
+            name='name'
+            required
+            value={values.name}
             variant='outlined'
-            onClick={handleCreate}
-            color='success'
-          >
-            Submit
-          </Button>
-        ) : (
-          <>
-            {isCredit ? (
-              <Button
-                type='submit'
-                id='update'
-                disabled={!validate() || !debtDiff()}
-                sx={{ mt: '1rem' }}
+            onChange={(e) => setValues({ ...values, name: e.target.value })}
+            margin='dense'
+          />
+          <TextField
+            fullWidth
+            id='value-input'
+            label='value'
+            name='value'
+            disabled={mode === 'update' && !isCredit}
+            required={mode === 'create' || isCredit}
+            value={
+              mode === 'update' && !isCredit
+                ? _numberToCurrency.format(values.value)
+                : values.value
+            }
+            variant='outlined'
+            placeholder='0'
+            onChange={(e) => setValues({ ...values, value: e.target.value })}
+            margin='dense'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <AttachMoneyIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Autocomplete
+            data-lpignore='true'
+            disabled={mode === 'update'}
+            id='type-select'
+            autoComplete
+            freeSolo
+            value={values.type}
+            options={user.debt.types}
+            getOptionLabel={(option) => option}
+            onChange={(e, value) => setValues({ ...values, type: value })}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                required={mode === 'create'}
+                label='type'
                 variant='outlined'
-                onClick={handleUpdate}
-                color='success'
-              >
-                Update
-              </Button>
-            ) : (
-              <Button
-                id='payment'
-                sx={{ mt: '1rem', ml: '1rem' }}
-                variant='outlined'
-                onClick={handlePayment}
-                color='success'
-              >
-                Payment
-              </Button>
+                margin='dense'
+              />
             )}
-          </>
-        )}
-      </form>
-    </Box>
+          />
+          <Autocomplete
+            id='vendor-select'
+            autoComplete
+            freeSolo
+            value={values.vendor}
+            options={user.expense.vendors}
+            getOptionLabel={(option) => option}
+            onChange={(e, value) => setValues({ ...values, vendor: value })}
+            autoSelect
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                disabled={mode === 'update'}
+                label='vendor'
+                variant='outlined'
+                margin='dense'
+              />
+            )}
+          />
+          <TextField
+            fullWidth
+            id='description-input'
+            label='description'
+            name='description'
+            value={values.description}
+            variant='outlined'
+            margin='dense'
+            onChange={(e) =>
+              setValues({ ...values, description: e.target.value })
+            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <DescriptionIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <DatePicker
+            disabled
+            label='date'
+            value={values.last_update}
+            onChange={(value) => {
+              setValues({ ...values, last_update: value });
+            }}
+            renderInput={(params) => (
+              <TextField fullWidth {...params} margin='dense' required />
+            )}
+          />
+          <Button
+            id='cancel'
+            sx={{ mr: '1rem', mt: '1rem', width: '5rem' }}
+            variant='outlined'
+            color='info'
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
+          {mode === 'create' ? (
+            <Button
+              type='submit'
+              id='submit'
+              disabled={!validate()}
+              sx={{ mt: '1rem' }}
+              variant='outlined'
+              onClick={handleCreate}
+              color='success'
+            >
+              Submit
+            </Button>
+          ) : (
+            <>
+              {isCredit ? (
+                <Button
+                  type='submit'
+                  id='update'
+                  disabled={!validate() || !debtDiff()}
+                  sx={{ mt: '1rem' }}
+                  variant='outlined'
+                  onClick={handleUpdate}
+                  color='success'
+                >
+                  Update
+                </Button>
+              ) : (
+                <Button
+                  id='payment'
+                  sx={{ mt: '1rem', ml: '1rem' }}
+                  variant='outlined'
+                  onClick={handlePayment}
+                  color='success'
+                >
+                  Payment
+                </Button>
+              )}
+            </>
+          )}
+        </form>
+      </Box>
+      <DebtPaymentDialog
+        open={dialogOpen}
+        handleClose={handleDialogClose}
+        debt={debt}
+      />
+    </>
   );
 }

@@ -143,9 +143,9 @@ const sellAsset = createAsyncThunk(
 
 const postAsset = createAsyncThunk(
   'assets/postAsset',
-  async (updatedAsset, { dispatch, getState }) => {
+  async (newAsset, { dispatch, getState }) => {
     try {
-      const result = await postAssetAPI(updatedAsset);
+      const result = await postAssetAPI(newAsset);
       const { data: assets } = getState().assets;
       if (result) {
         dispatch(
