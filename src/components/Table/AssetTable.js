@@ -11,7 +11,7 @@ import { TableComponent } from './TableComponent';
 import { CellComponent } from './CellComponent';
 import { AmountTypeProvider, DateTypeProvider } from './Providers';
 
-export default function DebtDetailTable(props) {
+export default function AssetTable(props) {
   const { rows } = props;
   const [columns] = useState([
     { title: 'Amount', name: 'value' },

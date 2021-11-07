@@ -1,0 +1,139 @@
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { get, reduce, filter as filter_ } from 'lodash';
+import { Card, CardContent, Divider, Typography } from '@mui/material';
+import { numberToCurrency } from '../../helpers/currency';
+
+import AssetForm from '../Form/AssetForm';
+import CreateButton from '../Button/CreateButton';
+import CreateDialog from '../Dialog/CreateDialog';
+import AssetTableDialog from '../Dialog/AssetTableDialog';
+import { divStyle, textStyle } from './styles';
+
+export default function AssetsCard() {
+  const { data: assets } = useSelector((state) => state.assets);
+  const [open, setOpen] = useState(false);
+  const [selectedAssets, setSelectedAssets] = useState([]);
+  const [title, setTitle] = useState('');
+
+  const handleClick = (e, filter) => {
+    e.preventDefault();
+    if (filter === 'crypto') {
+      setTitle('Crypto');
+      setSelectedAssets(
+        filter_(assets, (asset) => {
+          return get(asset, 'type') === 'crypto';
+        })
+      );
+      setOpen(true);
+    } else if (filter === 'stocks') {
+      setTitle('Stocks');
+      setSelectedAssets(
+        filter_(assets, (asset) => {
+          return get(asset, 'type') === 'stock';
+        })
+      );
+      setOpen(true);
+    } else if (filter === 'else') {
+      setTitle('All Other Assets');
+      setSelectedAssets(
+        filter_(assets, (asset) => {
+          return (
+            get(asset, 'type') !== 'crypto' && get(asset, 'type') !== 'stock'
+          );
+        })
+      );
+      setOpen(true);
+    } else {
+      setTitle('All Assets');
+      setSelectedAssets(assets);
+      setOpen(true);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedAssets([]);
+    setTitle('');
+  };
+
+  let cryptoValue = 0;
+  let stocksValue = 0;
+  let elseValue = 0;
+  let totalValue = reduce(
+    assets,
+    (sum, asset) => {
+      let value = get(asset, 'value');
+      if (get(asset, 'type') === 'crypto') {
+        cryptoValue += value;
+      } else if (get(asset, 'type') === 'crypto') {
+        stocksValue += value;
+      } else {
+        elseValue += value;
+      }
+      return sum + value;
+    },
+    0
+  );
+
+  return (
+    <>
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography
+              variant='h4'
+              gutterBottom
+              onClick={(e) => handleClick(e, 'all')}
+            >
+              Assets
+            </Typography>
+            <CreateButton>
+              <CreateDialog title='Create Asset'>
+                <AssetForm mode='create' />
+              </CreateDialog>
+            </CreateButton>
+          </div>
+
+          <Divider sx={{ mb: '1rem' }} />
+
+          <div style={divStyle} onClick={(e) => handleClick(e, 'all')}>
+            <Typography variant='h5' sx={textStyle}>
+              Total Value...
+            </Typography>
+            <Typography variant='h5' sx={{ mt: '.25rem' }}>
+              {numberToCurrency.format(totalValue)}
+            </Typography>
+          </div>
+
+          <div style={divStyle} onClick={(e) => handleClick(e, 'crypto')}>
+            <Typography sx={textStyle}>Crypto Value...</Typography>
+            <Typography sx={{ mt: '.25rem' }}>
+              {numberToCurrency.format(cryptoValue)}
+            </Typography>
+          </div>
+
+          <div style={divStyle} onClick={(e) => handleClick(e, 'stocks')}>
+            <Typography sx={textStyle}>Stocks Value...</Typography>
+            <Typography sx={{ mt: '.25rem' }}>
+              {numberToCurrency.format(stocksValue)}
+            </Typography>
+          </div>
+
+          <div style={divStyle} onClick={(e) => handleClick(e, 'else')}>
+            <Typography sx={textStyle}>Everything Else...</Typography>
+            <Typography sx={{ mt: '.25rem' }}>
+              {numberToCurrency.format(elseValue)}
+            </Typography>
+          </div>
+        </CardContent>
+      </Card>
+      <AssetTableDialog
+        open={open}
+        handleClose={handleClose}
+        assets={selectedAssets}
+        title={title}
+      />
+    </>
+  );
+}

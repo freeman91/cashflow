@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { IconButton } from '@mui/material';
 
-import NetWorthGenerationDialog from '../Dialog/GenerateNetWorthDialog';
-
-export default function GenerateNetWorthButton() {
-  const [dialogOpen, setDialogOpen] = useState(false);
+export default function CreateButton({ children }) {
+  const [open, setOpen] = useState(false);
 
   const handleButtonClick = () => {
-    setDialogOpen(true);
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setDialogOpen(false);
+    setOpen(false);
   };
 
   return (
@@ -25,9 +23,16 @@ export default function GenerateNetWorthButton() {
         variant='contained'
         sx={{ marginRight: '1rem' }}
       >
-        <AddCircleIcon sx={{ transform: 'scale(1.2)' }} />
+        <AddCircleIcon sx={{ height: '1.75rem', width: '1.75rem' }} />
       </IconButton>
-      <NetWorthGenerationDialog open={dialogOpen} handleClose={handleClose} />
+      {React.Children.map(children, (child) => {
+        if (child !== null) {
+          return React.cloneElement(child, {
+            open: open,
+            handleClose: handleClose,
+          });
+        }
+      })}
     </>
   );
 }

@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function AssetDialog({ open, handleClose, asset, mode }) {
+export default function AssetBuySellDialog({ open, handleClose, asset, mode }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -70,9 +70,11 @@ export default function AssetDialog({ open, handleClose, asset, mode }) {
     }
   };
 
+  if (!asset) return null;
+
   return (
     <Dialog className={classes.dialog} open={open} onClose={handleDialogClose}>
-      <DialogTitle id='asset-buy-dialog-title'>
+      <DialogTitle id='asset-dialog-title'>
         {mode === 'buy' ? `Purchase Shares` : `Sell Shares`}
       </DialogTitle>
       <DialogContent>

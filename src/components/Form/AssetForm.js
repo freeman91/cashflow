@@ -7,7 +7,7 @@ import {
   Description as DescriptionIcon,
 } from '@mui/icons-material';
 
-import AssetDialog from '../Dialog/AssetDialog';
+import AssetBuySellDialog from '../Dialog/AssetBuySellDialog';
 import DatePicker from '@mui/lab/DatePicker';
 import Autocomplete from '@mui/lab/Autocomplete';
 import { Box, Button, InputAdornment, TextField } from '@mui/material';
@@ -27,7 +27,7 @@ const default_state = {
   last_update: new Date(),
 };
 
-export default function AssetForm({ handleDialogClose, mode, asset }) {
+export default function AssetForm({ handleClose, mode, asset }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
@@ -62,7 +62,7 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
       last_update: dayjs(values.date).format('MM-DD-YYYY'),
     };
     dispatch(postAsset(new_asset));
-    handleDialogClose();
+    handleClose();
   };
 
   const handleUpdate = (e) => {
@@ -72,7 +72,7 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
       value: values.value,
     };
     dispatch(putAsset(updatedAsset));
-    handleDialogClose();
+    handleClose();
   };
 
   const handleUpdatePrice = (e) => {
@@ -82,7 +82,7 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
       price: values.price,
     };
     dispatch(putAsset(updatedAsset));
-    handleDialogClose();
+    handleClose();
   };
 
   const handleClick = (e, dialogMode) => {
@@ -91,9 +91,9 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
     setDialogOpen(true);
   };
 
-  const handleAssetDialogClose = () => {
+  const handleAssetBuySellDialogClose = () => {
     setDialogOpen(false);
-    handleDialogClose();
+    handleClose();
   };
 
   const handleFormEnterClick = () => {
@@ -103,7 +103,7 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
     } else if (mode === 'update') {
       handleUpdate();
     } else {
-      handleDialogClose();
+      handleClose();
     }
   };
 
@@ -140,10 +140,11 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
     let buttons = [
       <Button
         id='cancel-button'
+        key='cancel-button'
         sx={{ mr: '1rem', mt: '1rem', width: '5rem' }}
         variant='outlined'
         color='info'
-        onClick={handleDialogClose}
+        onClick={handleClose}
       >
         Cancel
       </Button>,
@@ -154,6 +155,7 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
         <Button
           type='submit'
           id='submit'
+          key='submit=button'
           disabled={!validate()}
           sx={{ mt: '1rem', width: '5rem' }}
           variant='outlined'
@@ -168,6 +170,7 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
         buttons.push(
           <Button
             id='buy'
+            key='buy-button'
             sx={{ mt: '1rem', mr: '1rem', width: '5rem' }}
             variant='outlined'
             onClick={(e) => handleClick(e, 'buy')}
@@ -179,6 +182,7 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
         buttons.push(
           <Button
             id='sell'
+            key='sell-button'
             sx={{ mt: '1rem', mr: '1rem', width: '5rem' }}
             variant='outlined'
             onClick={(e) => handleClick(e, 'sell')}
@@ -191,6 +195,7 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
           <Button
             type='submit'
             id='update-price'
+            key='update-price-button'
             disabled={asset.price === values.price}
             sx={{ mt: '1rem', width: '5rem' }}
             variant='outlined'
@@ -205,6 +210,7 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
           <Button
             type='submit'
             id='update-value'
+            key='update-value-button'
             disabled={asset.value === values.value}
             sx={{ mt: '1rem', width: '5rem' }}
             variant='outlined'
@@ -394,9 +400,9 @@ export default function AssetForm({ handleDialogClose, mode, asset }) {
           {renderButtons()}
         </form>
       </Box>
-      <AssetDialog
+      <AssetBuySellDialog
         open={dialogOpen}
-        handleClose={handleAssetDialogClose}
+        handleClose={handleAssetBuySellDialogClose}
         asset={asset}
         mode={dialogMode}
       />
