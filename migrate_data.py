@@ -354,9 +354,9 @@ def generate_debts():
 
 
 def migrate_all():
-    migrate_expenses()
-    migrate_incomes()
-    migrate_hours()
+    # migrate_expenses()
+    # migrate_incomes()
+    # migrate_hours()
     # migrate_networths()
     # generate_assets()
     # generate_debts()

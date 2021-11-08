@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dialog, DialogTitle, DialogContent } from '@mui/material';
 
 export default function CreateDialog(props) {

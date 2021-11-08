@@ -4,9 +4,11 @@ import { Grid } from '@mui/material';
 
 import { getAssets } from '../../store/assets';
 import { getDebts } from '../../store/debts';
+import { getNetworths } from '../../store/networths';
 import NetWorthCard from '../../components/Card/NetWorthCard';
 import AssetsCard from '../../components/Card/AssetsCard';
 import DebtsCard from '../../components/Card/DebtsCard';
+import NetworthChart from '../../components/charts/NetworthChart';
 
 export default function Networth() {
   const dispatch = useDispatch();
@@ -14,6 +16,7 @@ export default function Networth() {
   useEffect(() => {
     dispatch(getAssets());
     dispatch(getDebts());
+    dispatch(getNetworths());
   }, [dispatch]);
 
   return (
@@ -26,6 +29,9 @@ export default function Networth() {
       </Grid>
       <Grid item xs={6}>
         <DebtsCard />
+      </Grid>
+      <Grid item xs={12}>
+        <NetworthChart />
       </Grid>
     </Grid>
   );
