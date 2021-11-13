@@ -7,6 +7,7 @@ import { ComposedChart, XAxis, YAxis, Tooltip, Bar, Line } from 'recharts';
 import { NetworthTooltip } from './NetworthTooltip';
 import { divStyle } from '../Card/styles';
 import { numberToCurrency } from '../../helpers/currency';
+import NetworthDialog from '../Dialog/NetworthDialog';
 
 const compileData = (networths) => {
   return map(networths, (month) => {
@@ -56,40 +57,60 @@ const TiltedAxisTick = (props) => {
 export default function NetworthChart() {
   const { data: networths } = useSelector((state) => state.networths);
   const [chartData, setChartData] = useState([]);
+  const [selecteMonth, setSelectedMonth] = useState('');
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setChartData(compileData(networths));
   }, [networths]);
 
+  const handleClick = (e) => {
+    setSelectedMonth(e.activeLabel);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedMonth('');
+  };
+
   return (
-    <Card>
-      <CardContent>
-        <div style={divStyle}>
-          <Typography variant='h4'>Net Worth over time</Typography>
-        </div>
-        <ComposedChart
-          width={900}
-          height={300}
-          data={chartData}
-          margin={{ top: 30, right: 0, bottom: 25, left: 20 }}
-        >
-          <XAxis dataKey='month' tick={<TiltedAxisTick />} />
-          <YAxis
-            tickFormatter={(val, _axis) => {
-              return numberToCurrency.format(val);
-            }}
-          />
-          <Tooltip content={<NetworthTooltip />} />
-          <Bar dataKey='assetTotal' barSize={4} fill='#38b000' />
-          <Bar dataKey='debtTotal' barSize={4} fill='#a22c29' />
-          <Line
-            dataKey='networth'
-            type='monotone'
-            stroke='#fde424'
-            dot={false}
-          />
-        </ComposedChart>
-      </CardContent>
-    </Card>
+    <>
+      <Card>
+        <CardContent>
+          <div style={divStyle}>
+            <Typography variant='h4'>Net Worth over time</Typography>
+          </div>
+          <ComposedChart
+            width={900}
+            height={300}
+            data={chartData}
+            margin={{ top: 30, right: 0, bottom: 25, left: 20 }}
+            onClick={handleClick}
+          >
+            <XAxis dataKey='month' tick={<TiltedAxisTick />} />
+            <YAxis
+              tickFormatter={(val, _axis) => {
+                return numberToCurrency.format(val);
+              }}
+            />
+            <Tooltip content={<NetworthTooltip />} />
+            <Bar dataKey='assetTotal' barSize={4} fill='#38b000' />
+            <Bar dataKey='debtTotal' barSize={4} fill='#a22c29' />
+            <Line
+              dataKey='networth'
+              type='monotone'
+              stroke='#fde424'
+              dot={false}
+            />
+          </ComposedChart>
+        </CardContent>
+      </Card>
+      <NetworthDialog
+        open={open}
+        handleClose={handleClose}
+        selectedMonth={selecteMonth}
+      />
+    </>
   );
 }
