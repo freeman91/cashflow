@@ -1,7 +1,6 @@
 import logging
-import os
 
-from flask import Flask, jsonify, request, url_for
+from flask import Flask, jsonify, url_for
 from flask_meter import FlaskMeter
 from flask_cors import CORS
 
@@ -16,7 +15,6 @@ from api.controllers.networths import networths
 from api.controllers.cronjobs import cronjobs
 
 from api.config import app_config
-from api.db import database
 
 flask_meter = FlaskMeter()
 

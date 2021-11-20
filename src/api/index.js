@@ -20,7 +20,18 @@ const parseRecord = (record) => {
 
 export const getUserAPI = async () => {
   try {
-    const response = await axios.get(`/users/user`);
+    const response = await axios.get(`/user`);
+    if (get(response, 'status') === 200) {
+      return JSON.parse(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const putUserSettingsAPI = async (payload) => {
+  try {
+    const response = await axios.put(`/user`, payload);
     if (get(response, 'status') === 200) {
       return JSON.parse(get(response, 'data.result'));
     }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Card, CardContent, Divider, Typography } from '@mui/material';
 
 import { get, map } from 'lodash';
@@ -19,9 +20,13 @@ export const NetworthTooltip = ({ active, payload, label }) => {
     } else {
       name = 'Net Worth';
     }
+
     if (get(resource, 'value') !== 0) {
       return (
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div
+          key={`${get(resource, 'payload.month')}-${uuidv4()}`}
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
           <Typography
             align='left'
             style={{ color: get(resource, 'color'), width: '12rem' }}

@@ -29,7 +29,7 @@ const compileData = (networths) => {
     return {
       month: `${get(month, 'month')}-${get(month, 'year')}`,
       assetTotal,
-      debtTotal: -debtTotal,
+      debtTotal: debtTotal,
       networth: assetTotal - debtTotal,
     };
   });

@@ -1,56 +1,25 @@
-from bson.json_util import dumps
+from pydash import get
 from flask import request, Blueprint
 
 from api.db.user import user
-from api.controllers.__util__ import success_result, failure_result
+from api.controllers.__util__ import success_result
 
 users = Blueprint("users", __name__)
 
 
-@users.route("/users/user", methods=["GET"])
-def get():
-    return success_result(user.item)
-
-
-@users.route("/users/update/income/<attr>", methods=["PUT"])
-def update_income(attr=None):
-    try:
-        types = request.json
-        user.update_income(attr, types)
+@users.route("/user", methods=["GET", "PUT"])
+def _user():
+    if request.method == "GET":
         return success_result(user.item)
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
 
+    elif request.method == "PUT":
+        payload = request.json
 
-@users.route("/users/update/expense/<attr>", methods=["PUT"])
-def update_expense(attr=None):
-    try:
-        types = request.json
-        user.update_expense(attr, types)
-        return success_result(user.item)
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+        updated_list = get(payload, "updated")
+        resource, setting = get(payload, "setting").split(".")
 
+        user.update_setting(resource, setting, updated_list)
 
-@users.route("/users/update/asset/<attr>", methods=["PUT"])
-def update_asset(attr=None):
-    try:
-        types = request.json
-        user.update_asset(attr, types)
-        return success_result(user.item)
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+        _user = user.refresh()
 
-
-@users.route("/users/update/debt/<attr>", methods=["PUT"])
-def update_debt(attr=None):
-    try:
-        types = request.json
-        user.update_debt(attr, types)
-        return success_result(user.item)
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+        return success_result(_user)

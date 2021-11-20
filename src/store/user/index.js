@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getUserAPI } from '../../api';
+import { getUserAPI, putUserSettingsAPI } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { user as initialState } from '../initialState';
 
@@ -12,14 +12,26 @@ const getUser = createAsyncThunk('user/getUser', async () => {
   }
 });
 
+const putUserSettings = createAsyncThunk(
+  'user/putUserSettings',
+  async (payload) => {
+    try {
+      return await putUserSettingsAPI(payload);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+);
+
 const { reducer } = createSlice({
   name: 'user',
   initialState,
   reducers: {},
   extraReducers: {
     ...thunkReducer(getUser),
+    ...thunkReducer(putUserSettings),
   },
 });
 
-export { getUser };
+export { getUser, putUserSettings };
 export default reducer;

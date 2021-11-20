@@ -354,6 +354,7 @@ def generate_debts():
 
 
 def migrate_all():
+    pass
     # migrate_expenses()
     # migrate_incomes()
     # migrate_hours()

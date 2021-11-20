@@ -33,12 +33,14 @@ class User:
     def _print(self):
         pprint(self.item)
 
+    def refresh(self):
+        return db.users.find_one()
+
     def create(self):
         self.delete()
         user_item = {
             "name": NAME,
             "email": EMAIL,
-            "networth": 0,
             "income": {
                 "types": INCOME_TYPES,
                 "sources": INCOME_SOURCES,
@@ -66,33 +68,9 @@ class User:
     def delete(self):
         db.users.delete_one({"_id": self.item["_id"]})
 
-    def update_networth(self, networth: float):
-        assert type(networth) in [float, int]
-        self.item["networth"] = networth
-        return self.update()
-
-    def update_income(self, attr: str, l: list):
-        assert_list(str, l)
-        assert attr in self.income_attrs
-        self.item["income"][attr] = l
-        return self.update()
-
-    def update_expense(self, attr: str, l: list):
-        assert_list(str, l)
-        assert attr in self.expense_attrs
-        self.item["expense"][attr] = l
-        return self.update()
-
-    def update_asset(self, attr: str, l: list):
-        assert_list(str, l)
-        assert attr in self.assets_attrs
-        self.item["asset"][attr] = l
-        self.update()
-
-    def update_debt(self, attr: str, l: list):
-        assert_list(str, l)
-        assert attr in self.debts_attrs
-        self.item["debt"][attr] = l
+    def update_setting(self, resource, setting, updated_list):
+        assert_list(str, updated_list)
+        self.item[resource][setting] = updated_list
         return self.update()
 
 
