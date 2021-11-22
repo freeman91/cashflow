@@ -399,3 +399,21 @@ export const getNetworthsAPI = async () => {
     console.log('error: ', error);
   }
 };
+
+//  ██████╗  ██████╗  █████╗ ██╗     ███████╗
+// ██╔════╝ ██╔═══██╗██╔══██╗██║     ██╔════╝
+// ██║  ███╗██║   ██║███████║██║     ███████╗
+// ██║   ██║██║   ██║██╔══██║██║     ╚════██║
+// ╚██████╔╝╚██████╔╝██║  ██║███████╗███████║
+//  ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝
+
+export const getGoalsAPI = async () => {
+  try {
+    const response = await axios.get(`/goals`);
+    if (get(response, 'status') === 200) {
+      return parseArray(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};

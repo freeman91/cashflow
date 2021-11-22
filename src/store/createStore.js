@@ -19,6 +19,7 @@ import hours from './hours';
 import assets from './assets';
 import debts from './debts';
 import networths from './networths';
+import goals from './goals';
 import toast from './toastr';
 
 export const history = createBrowserHistory();
@@ -55,6 +56,7 @@ let rootReducer = combineReducers({
   networths,
   user,
   settings,
+  goals,
 });
 
 let middleware = [

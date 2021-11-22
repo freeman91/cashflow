@@ -21,7 +21,7 @@ def migrate_expenses():
             continue
 
         amount = float(row[0].strip())
-        _type = row[1].strip().lower()
+        _type = row[1].strip()
         vendor = row[2].strip()
         description = row[3].strip()
         date = datetime.strptime(row[4].strip(), "%Y-%m-%d").replace(hour=12)
@@ -55,7 +55,7 @@ def migrate_incomes():
         if idx == 0:
             continue
         amount = float(row[0].strip())
-        _type = row[1].strip().lower()
+        _type = row[1].strip()
         source = row[2].strip()
         description = row[3].strip()
         date = datetime.strptime(row[4].strip(), "%Y-%m-%d").replace(hour=12)
@@ -87,7 +87,7 @@ def migrate_hours():
         if idx == 0:
             continue
         amount = float(row[0].strip())
-        source = row[1].strip().lower()
+        source = row[1].strip()
         description = ""
         date = datetime.strptime(row[2].strip(), "%Y-%m-%d").replace(hour=12)
         new_hour = {
@@ -142,8 +142,8 @@ def migrate_networths():
         else:
             category = row[0]
             amount = float(row[1])
-            _type = row[2].lower()
-            name = row[3].lower()
+            _type = row[2]
+            name = row[3]
 
             record = {
                 "category": category,
@@ -354,8 +354,7 @@ def generate_debts():
 
 
 def migrate_all():
-    pass
-    # migrate_expenses()
+    migrate_expenses()
     # migrate_incomes()
     # migrate_hours()
     # migrate_networths()

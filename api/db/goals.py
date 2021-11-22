@@ -9,7 +9,7 @@ class GoalsModel:
     name = "goal"
     attributes = {
         "_id": ObjectId,
-        "date": datetime,
+        "date": datetime,  # the 15th of every month
         "month": int,
         "year": int,
         "values": dict,
@@ -68,7 +68,7 @@ class GoalsModel:
 
     def __verify_values__(self, values):
         for value in values:
-            assert value in user.item["expense"]["types"]
+            assert value in user.item["goal"]["categories"]
             assert type(value) == str
             assert type(values[value]) == float
 

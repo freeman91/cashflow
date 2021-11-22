@@ -76,11 +76,11 @@ class IncomesModel:
 
     def __verify_type__(self, _type: str):
         if _type not in self.types:
-            user.update_income("types", self.types + [_type])
+            user.update_setting("income", "types", self.types + [_type])
 
     def __verify_source__(self, source: str):
         if source not in self.sources:
-            user.update_income("sources", self.sources + [source])
+            user.update_setting("income", "sources", self.sources + [source])
 
     def __verify_deduction_types__(self, deduction_types: dict):
         for _type in deduction_types:

@@ -6,18 +6,21 @@ from api.controllers.__util__ import success_result, failure_result
 goals = Blueprint("goals", __name__)
 
 
-@goals.route("/goals", methods=["POST"])
-def _create_goal():
+@goals.route("/goals", methods=["GET", "POST"])
+def _goals():
     try:
-        # check if now is before first of month in goal payload
-        return success_result(Goals.get(Goals.create(request.json).inserted_id))
+        if request.method == "GET":
+            return success_result(Goals.get_all())
+        elif request.method == "POST":
+            return success_result(Goals.get(Goals.create(request.json).inserted_id))
+
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")
 
 
 @goals.route("/goals/<string:id>", methods=["GET", "PUT", "DELETE"])
-def _goals(id: str):
+def _goals_id(id: str):
     try:
         if request.method == "GET":
             # if does not exist send back 400 error

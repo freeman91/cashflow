@@ -73,11 +73,11 @@ class ExpensesModel:
 
     def __verify_type__(self, _type: str):
         if _type not in self.types:
-            user.update_expense("types", self.types + [_type])
+            user.update_setting("expense", "types", self.types + [_type])
 
     def __verify_vendor__(self, vendor: str):
         if vendor not in self.vendors:
-            user.update_expense("vendors", self.vendors + [vendor])
+            user.update_setting("expense", "vendors", self.vendors + [vendor])
 
 
 Expenses = ExpensesModel()

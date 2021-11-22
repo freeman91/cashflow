@@ -56,5 +56,34 @@ def print_all():
     pprint(Debts.get_all())
 
 
+goal = {
+    "date": datetime(2021, 11, 15),
+    "month": 11,
+    "year": 2021,
+    "values": {
+        "Housing": 1340.00,
+        "Utilities": 100.00,
+        "Debt": 300.00,
+        "Transportation": 100.00,
+        "Grocery": 400.00,
+        "Dining": 200.00,
+        "Health Care": 50.00,
+        "Entertainment": 50.00,
+        "Pets": 50.00,
+        "Personal": 200.00,
+        "Home": 200.00,
+        "Fitness": 100.00,
+        "Investments": 300.00,
+        "Other": 100.00,
+    },
+    "description": "",
+}
+
+
+def exec():
+    res = Goals.create(goal)
+    print(f"res: {res}")
+
+
 if __name__ == "__main__":
     pass

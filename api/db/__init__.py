@@ -25,6 +25,7 @@ EXPENSE_TYPES = json.loads(os.getenv("EXPENSE_TYPES"))
 EXPENSE_VENDORS = json.loads(os.getenv("EXPENSE_VENDORS"))
 ASSET_TYPES = json.loads(os.getenv("ASSET_TYPES"))
 DEBT_TYPES = json.loads(os.getenv("DEBT_TYPES"))
+GOAL_CATEGORIES = json.loads(os.getenv("GOAL_CATEGORIES"))
 
 
 def connect() -> MongoClient:

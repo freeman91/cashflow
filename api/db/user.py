@@ -10,6 +10,7 @@ from api.db import (
     EXPENSE_VENDORS,
     ASSET_TYPES,
     DEBT_TYPES,
+    GOAL_CATEGORIES,
 )
 from api.db.__util__ import assert_list
 
@@ -55,6 +56,9 @@ class User:
             },
             "debt": {
                 "types": DEBT_TYPES,
+            },
+            "goal": {
+                "categories": GOAL_CATEGORIES,
             },
         }
         db.users.insert_one(user_item)
