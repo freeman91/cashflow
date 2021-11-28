@@ -4,12 +4,14 @@ import dayjs from 'dayjs';
 import { get, filter, find, map, reduce } from 'lodash';
 import {
   Box,
+  TextField,
   Divider,
   Grid,
   LinearProgress,
   Tooltip,
   Typography,
 } from '@mui/material';
+import DatePicker from '@mui/lab/DatePicker';
 
 import { getExpensesInRangeAPI } from '../../api';
 import { numberToCurrency } from '../../helpers/currency';
@@ -133,9 +135,22 @@ export default function GoalCharts() {
   return (
     <>
       <Grid item xs={12}>
-        <Typography sx={{ width: '100%' }} align='center' variant='h4'>
-          {dayjs().format('MMMM YYYY')}
-        </Typography>
+        <DatePicker
+          views={['year', 'month']}
+          minDate={new Date('2021-11-01')}
+          value={date}
+          onChange={(newValue) => {
+            setDate(dayjs(newValue));
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              helperText={null}
+              fullWidth
+              variant='standard'
+            />
+          )}
+        />
       </Grid>
       <Grid item xs={12}>
         <Box sx={{ width: '100%' }}>

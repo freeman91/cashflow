@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { get, map, reduce } from 'lodash';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { ComposedChart, XAxis, YAxis, Tooltip, Bar, Line } from 'recharts';
 
 import { NetworthTooltip } from './NetworthTooltip';

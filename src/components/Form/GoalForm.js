@@ -2,17 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import { find, get, map, transform } from 'lodash';
-import {
-  Box,
-  Button,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Grid, InputAdornment, TextField } from '@mui/material';
+import DatePicker from '@mui/lab/DatePicker';
 import { AttachMoney as AttachMoneyIcon } from '@mui/icons-material';
 
-const default_state = {
+const defaultState = {
   housing: '',
   utilities: '',
   debt: '',
@@ -33,7 +27,7 @@ export default function GoalForm() {
   const dispatch = useDispatch();
   const { data: goals } = useSelector((state) => state.goals);
   const [date, setDate] = useState(dayjs().add(1, 'months'));
-  const [values, setValues] = useState(default_state);
+  const [values, setValues] = useState(defaultState);
 
   useEffect(() => {
     let monthGoals = find(goals, {
@@ -51,6 +45,8 @@ export default function GoalForm() {
           {}
         )
       );
+    } else {
+      setValues(defaultState);
     }
   }, [date, goals]);
 
@@ -60,7 +56,7 @@ export default function GoalForm() {
   };
 
   const handleClear = () => {
-    setValues(default_state);
+    setValues(defaultState);
   };
 
   const handleFormEnterClick = () => {
@@ -70,14 +66,27 @@ export default function GoalForm() {
   return (
     <>
       <Grid item xs={12}>
-        <Typography sx={{ width: '100%' }} align='center' variant='h4'>
-          {date.format('MMMM YYYY')}
-        </Typography>
+        <DatePicker
+          views={['year', 'month']}
+          minDate={new Date('2021-11-01')}
+          value={date}
+          onChange={(newValue) => {
+            setDate(dayjs(newValue));
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              helperText={null}
+              fullWidth
+              variant='standard'
+            />
+          )}
+        />
       </Grid>
       <Grid item xs={12}>
         <Box sx={{ width: '100%' }}>
           <form onSubmit={handleFormEnterClick}>
-            {map(default_state, (_, goal) => {
+            {map(defaultState, (_, goal) => {
               return (
                 <TextField
                   fullWidth
