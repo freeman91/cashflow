@@ -21,7 +21,7 @@ export default function Networth() {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ mb: '2rem', mt: '2rem' }}>
         <NetWorthCard />
       </Grid>
       <Grid item xs={6}>
@@ -30,7 +30,7 @@ export default function Networth() {
       <Grid item xs={6}>
         <DebtsCard />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ mt: '2rem' }}>
         <NetworthChart />
       </Grid>
     </Grid>

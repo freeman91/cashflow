@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { get, reduce, filter as filter_ } from 'lodash';
-import { Card, CardContent, Divider, Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { numberToCurrency } from '../../helpers/currency';
 
 import DebtForm from '../Form/DebtForm';
@@ -80,56 +80,58 @@ export default function DebtsCard() {
 
   return (
     <>
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography
-              variant='h4'
-              gutterBottom
-              onClick={(e) => handleClick(e, 'all')}
-            >
-              Debts
-            </Typography>
-            <CreateButton>
-              <CreateDialog title='Create Debt'>
-                <DebtForm mode='create' />
-              </CreateDialog>
-            </CreateButton>
-          </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          minWidth: 275,
+        }}
+      >
+        <Typography
+          variant='h4'
+          gutterBottom
+          onClick={(e) => handleClick(e, 'all')}
+        >
+          Debts
+        </Typography>
+        <CreateButton>
+          <CreateDialog title='Create Debt'>
+            <DebtForm mode='create' />
+          </CreateDialog>
+        </CreateButton>
+      </div>
 
-          <Divider sx={{ mb: '1rem' }} />
+      <Divider sx={{ mb: '1rem' }} />
 
-          <div style={divStyle} onClick={(e) => handleClick(e, 'all')}>
-            <Typography variant='h5' sx={textStyle}>
-              Total Value...
-            </Typography>
-            <Typography variant='h5' sx={{ mt: '.25rem' }}>
-              {numberToCurrency.format(totalValue)}
-            </Typography>
-          </div>
+      <div style={divStyle} onClick={(e) => handleClick(e, 'all')}>
+        <Typography variant='h5' sx={textStyle}>
+          Total Value...
+        </Typography>
+        <Typography variant='h5' sx={{ mt: '.25rem' }}>
+          {numberToCurrency.format(totalValue)}
+        </Typography>
+      </div>
 
-          <div style={divStyle} onClick={(e) => handleClick(e, 'tuition')}>
-            <Typography sx={textStyle}>Tuition Value...</Typography>
-            <Typography sx={{ mt: '.25rem' }}>
-              {numberToCurrency.format(tuitionValue)}
-            </Typography>
-          </div>
+      <div style={divStyle} onClick={(e) => handleClick(e, 'tuition')}>
+        <Typography sx={textStyle}>Tuition Value...</Typography>
+        <Typography sx={{ mt: '.25rem' }}>
+          {numberToCurrency.format(tuitionValue)}
+        </Typography>
+      </div>
 
-          <div style={divStyle} onClick={(e) => handleClick(e, 'credit')}>
-            <Typography sx={textStyle}>Credit Value...</Typography>
-            <Typography sx={{ mt: '.25rem' }}>
-              {numberToCurrency.format(creditValue)}
-            </Typography>
-          </div>
+      <div style={divStyle} onClick={(e) => handleClick(e, 'credit')}>
+        <Typography sx={textStyle}>Credit Value...</Typography>
+        <Typography sx={{ mt: '.25rem' }}>
+          {numberToCurrency.format(creditValue)}
+        </Typography>
+      </div>
 
-          <div style={divStyle} onClick={(e) => handleClick(e, 'else')}>
-            <Typography sx={textStyle}>Everything Else...</Typography>
-            <Typography sx={{ mt: '.25rem' }}>
-              {numberToCurrency.format(elseValue)}
-            </Typography>
-          </div>
-        </CardContent>
-      </Card>
+      <div style={divStyle} onClick={(e) => handleClick(e, 'else')}>
+        <Typography sx={textStyle}>Everything Else...</Typography>
+        <Typography sx={{ mt: '.25rem' }}>
+          {numberToCurrency.format(elseValue)}
+        </Typography>
+      </div>
       <DebtTableDialog
         open={open}
         handleClose={handleClose}

@@ -32,7 +32,7 @@ const default_state = {
 export default function GoalForm() {
   const dispatch = useDispatch();
   const { data: goals } = useSelector((state) => state.goals);
-  const [date, setDate] = useState(dayjs());
+  const [date, setDate] = useState(dayjs().add(1, 'months'));
   const [values, setValues] = useState(default_state);
 
   useEffect(() => {

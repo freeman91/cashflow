@@ -76,36 +76,27 @@ export default function NetworthChart() {
 
   return (
     <>
-      <Card>
-        <CardContent>
-          <div style={divStyle}>
-            <Typography variant='h4'>Net Worth over time</Typography>
-          </div>
-          <ComposedChart
-            width={900}
-            height={300}
-            data={chartData}
-            margin={{ top: 30, right: 0, bottom: 25, left: 20 }}
-            onClick={handleClick}
-          >
-            <XAxis dataKey='month' tick={<TiltedAxisTick />} />
-            <YAxis
-              tickFormatter={(val, _axis) => {
-                return numberToCurrency.format(val);
-              }}
-            />
-            <Tooltip content={<NetworthTooltip />} />
-            <Bar dataKey='assetTotal' barSize={4} fill='#38b000' />
-            <Bar dataKey='debtTotal' barSize={4} fill='#a22c29' />
-            <Line
-              dataKey='networth'
-              type='monotone'
-              stroke='#fde424'
-              dot={false}
-            />
-          </ComposedChart>
-        </CardContent>
-      </Card>
+      <div style={divStyle}>
+        <Typography variant='h4'>Net Worth over time</Typography>
+      </div>
+      <ComposedChart
+        width={950}
+        height={300}
+        data={chartData}
+        margin={{ top: 30, right: 0, bottom: 25, left: 20 }}
+        onClick={handleClick}
+      >
+        <XAxis dataKey='month' tick={<TiltedAxisTick />} />
+        <YAxis
+          tickFormatter={(val, _axis) => {
+            return numberToCurrency.format(val);
+          }}
+        />
+        <Tooltip content={<NetworthTooltip />} />
+        <Bar dataKey='assetTotal' barSize={4} fill='#38b000' />
+        <Bar dataKey='debtTotal' barSize={4} fill='#a22c29' />
+        <Line dataKey='networth' type='monotone' stroke='#fde424' dot={false} />
+      </ComposedChart>
       <NetworthDialog
         open={open}
         handleClose={handleClose}
