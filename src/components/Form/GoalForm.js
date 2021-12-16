@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import { find, get, map, transform } from 'lodash';
+import { find, hasIn, get, map, transform, mapValues } from 'lodash';
 import { Box, Button, Grid, InputAdornment, TextField } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 import { AttachMoney as AttachMoneyIcon } from '@mui/icons-material';
+
+import { postGoal, putGoal } from '../../store/goals';
 
 const defaultState = {
   housing: '',
@@ -28,17 +30,20 @@ export default function GoalForm() {
   const { data: goals } = useSelector((state) => state.goals);
   const [date, setDate] = useState(dayjs().add(1, 'months'));
   const [values, setValues] = useState(defaultState);
+  const [monthGoal, setMonthGoal] = useState({});
 
   useEffect(() => {
-    let monthGoals = find(goals, {
+    let _monthGoal = find(goals, {
       year: date.year(),
       month: date.month() + 1,
     });
 
-    if (monthGoals) {
+    setMonthGoal(_monthGoal);
+
+    if (_monthGoal) {
       setValues(
         transform(
-          get(monthGoals, 'values'),
+          get(_monthGoal, 'values'),
           (result, value, key) => {
             result[key.toLowerCase()] = String(value);
           },
@@ -52,7 +57,30 @@ export default function GoalForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('values: ', values);
+
+    let _values = mapValues(values, (value) => {
+      return Number(value);
+    });
+
+    if (hasIn(monthGoal, 'date')) {
+      dispatch(putGoal({ ...monthGoal, values: _values }));
+    } else {
+      dispatch(
+        postGoal({
+          values: _values,
+          date: date.format('DD-MM-YYYY'),
+        })
+      );
+    }
+  };
+
+  const validate = () => {
+    for (const value of Object.values(values)) {
+      if (isNaN(value)) {
+        return false;
+      }
+    }
+    return true;
   };
 
   const handleClear = () => {
@@ -90,6 +118,7 @@ export default function GoalForm() {
               return (
                 <TextField
                   fullWidth
+                  key={`${goal}-text-field`}
                   id={`${goal}-input`}
                   label={goal}
                   name={goal}
@@ -124,6 +153,7 @@ export default function GoalForm() {
             <Button
               type='submit'
               id='submit'
+              disabled={!validate()}
               sx={{ mt: '1rem' }}
               variant='outlined'
               onClick={handleSubmit}

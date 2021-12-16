@@ -217,7 +217,7 @@ export default function GoalCharts() {
             let percent = (actual / goal) * 100;
 
             return (
-              <>
+              <React.Fragment key={`${category}-fragment`}>
                 <Typography align='left'>{category}</Typography>
                 <Tooltip
                   title={
@@ -271,7 +271,7 @@ export default function GoalCharts() {
                     </Box>
                   </Box>
                 </Tooltip>
-              </>
+              </React.Fragment>
             );
           })}
         </Box>

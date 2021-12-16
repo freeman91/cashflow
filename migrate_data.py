@@ -87,7 +87,7 @@ def migrate_hours():
         if idx == 0:
             continue
         amount = float(row[0].strip())
-        source = row[1].strip()
+        source = row[1].strip().lower()
         description = ""
         date = datetime.strptime(row[2].strip(), "%Y-%m-%d").replace(hour=12)
         new_hour = {
@@ -355,9 +355,9 @@ def generate_debts():
 
 def migrate_all():
     migrate_expenses()
-    # migrate_incomes()
-    # migrate_hours()
-    # migrate_networths()
+    migrate_incomes()
+    migrate_hours()
+    migrate_networths()
     # generate_assets()
     # generate_debts()
 

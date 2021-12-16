@@ -417,3 +417,25 @@ export const getGoalsAPI = async () => {
     console.log('error: ', error);
   }
 };
+
+export const postGoalAPI = async (goal) => {
+  try {
+    const response = await axios.post(`/goals`, goal);
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const putGoalAPI = async (goal) => {
+  try {
+    const response = await axios.put(`/goals/${get(goal, '_id')}`, goal);
+    if (get(response, 'status') === 200) {
+      return parseRecord(get(response, 'data.result'));
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};

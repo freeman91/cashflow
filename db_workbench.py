@@ -58,7 +58,7 @@ def print_all():
 
 goal = {
     "date": datetime(2021, 11, 15),
-    "month": 11,
+    "month": 12,
     "year": 2021,
     "values": {
         "Housing": 1340.00,

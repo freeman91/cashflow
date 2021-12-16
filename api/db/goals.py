@@ -9,6 +9,7 @@ class GoalsModel:
     name = "goal"
     attributes = {
         "_id": ObjectId,
+        "category": str,
         "date": datetime,  # the 15th of every month
         "month": int,
         "year": int,
@@ -54,12 +55,12 @@ class GoalsModel:
 
     def __serialize__(self, **goal):
         for attr in goal:
-            if attr == "_id" and type(goal[attr]) == str:
+            if attr == "_id" and isinstance(goal[attr], str):
                 goal["_id"] = ObjectId(goal["_id"])
-            elif attr == "date" and type(goal[attr]) == int:
+            elif attr == "date" and isinstance(goal[attr], int):
                 goal[attr] = datetime.fromtimestamp(goal[attr])
             assert attr in self.attributes
-            assert type(goal[attr]) == self.attributes[attr]
+            assert isinstance(goal[attr], self.attributes[attr])
 
         self.__verify_values__(goal["values"])
 
@@ -69,8 +70,8 @@ class GoalsModel:
     def __verify_values__(self, values):
         for value in values:
             assert value in user.item["goal"]["categories"]
-            assert type(value) == str
-            assert type(values[value]) == float
+            assert isinstance(value, str)
+            assert isinstance(values[value], (float, int))
 
 
 Goals = GoalsModel()
