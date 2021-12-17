@@ -18,7 +18,6 @@ export default function AssetsContainer() {
   const [selectedFilter, setSelectedFilter] = useState('');
 
   useEffect(() => {
-    console.log('selectedFilter: ', selectedFilter);
     if (selectedFilter === 'crypto') {
       setTitle('Crpyto');
       setSelectedAssets(

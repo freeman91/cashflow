@@ -10,7 +10,6 @@ import {
   TableBody,
   TableContainer,
   TableRow,
-  TableFooter,
   TablePagination,
   Typography,
   Select,
@@ -116,25 +115,21 @@ export default function Networth() {
                 </TableRow>
               ))}
             </TableBody>
-            {items.length > itemsPerPage ? (
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    rowsPerPageOptions={[itemsPerPage]}
-                    colSpan={1}
-                    count={items.length}
-                    rowsPerPage={itemsPerPage}
-                    page={page}
-                    SelectProps={{
-                      native: true,
-                    }}
-                    onPageChange={(e, newPage) => setPage(newPage)}
-                  />
-                </TableRow>
-              </TableFooter>
-            ) : null}
           </Table>
         </TableContainer>
+        {items.length > itemsPerPage ? (
+          <TablePagination
+            rowsPerPageOptions={[itemsPerPage]}
+            colSpan={1}
+            count={items.length}
+            rowsPerPage={itemsPerPage}
+            page={page}
+            SelectProps={{
+              native: true,
+            }}
+            onPageChange={(e, newPage) => setPage(newPage)}
+          />
+        ) : null}
       </Grid>
 
       <SettingsDialog

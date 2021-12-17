@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import {
   Paper,
@@ -12,24 +13,30 @@ import {
 } from '@mui/material';
 import numeral from 'numeral';
 
+import { setDialog } from '../../store/settings';
 import { numberToCurrency } from '../../helpers/currency';
 
+const tableHeaderCellStyle = { fontWeight: 800, width: '10rem' };
+
+const renderAmount = (row) => {
+  if (row.category !== 'hour') {
+    return numberToCurrency.format(row.amount);
+  } else {
+    return numeral(row.amount.toPrecision(2)).format('0,0.[00]');
+  }
+};
+
 export default function RecordTable({ data }) {
+  const dispatch = useDispatch();
   const [page, setPage] = useState(0);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const renderAmount = (row) => {
-    if (row.category !== 'hour') {
-      return numberToCurrency.format(row.amount);
-    } else {
-      return numeral(row.amount.toPrecision(2)).format('0,0.[00]');
-    }
+  const handleClick = (row) => {
+    dispatch(setDialog({ open: true, record: row }));
   };
-
-  const tableHeaderCellStyle = { fontWeight: 800, width: '10rem' };
 
   return (
     <>
@@ -56,7 +63,7 @@ export default function RecordTable({ data }) {
           </TableHead>
           <TableBody>
             {data.slice(page * 10, page * 10 + 10).map((row) => (
-              <TableRow key={row._id} onClick={() => console.log(row)}>
+              <TableRow key={row._id} onClick={() => handleClick(row)}>
                 <TableCell component='th' scope='row'>
                   {dayjs(row.date).format('MMMM D')}
                 </TableCell>
