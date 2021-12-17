@@ -146,7 +146,7 @@ export default function AssetBuySellDialog({ open, handleClose, asset, mode }) {
               value={vendor}
               options={user.expense.vendors}
               getOptionLabel={(option) => option}
-              onChange={(e, value) => setVendor(value)}
+              onChange={(e, value) => setVendor(value ? value : '')}
               autoSelect
               renderInput={(params) => (
                 <TextField

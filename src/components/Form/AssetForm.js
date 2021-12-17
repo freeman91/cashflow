@@ -249,7 +249,9 @@ export default function AssetForm({ handleClose, mode, asset }) {
             value={values.type}
             options={user.asset.types}
             getOptionLabel={(option) => option}
-            onChange={(e, value) => setValues({ ...values, type: value })}
+            onChange={(e, value) =>
+              setValues({ ...values, type: value ? value : '' })
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -268,7 +270,9 @@ export default function AssetForm({ handleClose, mode, asset }) {
             value={values.vendor}
             options={user.expense.vendors}
             getOptionLabel={(option) => option}
-            onChange={(e, value) => setValues({ ...values, vendor: value })}
+            onChange={(e, value) =>
+              setValues({ ...values, vendor: value ? value : '' })
+            }
             autoSelect
             renderInput={(params) => (
               <TextField

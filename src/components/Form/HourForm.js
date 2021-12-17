@@ -117,7 +117,9 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
           value={values.source}
           options={user.income.sources}
           getOptionLabel={(option) => option}
-          onChange={(e, value) => setValues({ ...values, source: value })}
+          onChange={(e, value) =>
+            setValues({ ...values, source: value ? value : '' })
+          }
           autoSelect
           renderInput={(params) => (
             <TextField

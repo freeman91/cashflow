@@ -168,7 +168,9 @@ export default function DebtForm(props) {
             value={values.type}
             options={user.debt.types}
             getOptionLabel={(option) => option}
-            onChange={(e, value) => setValues({ ...values, type: value })}
+            onChange={(e, value) =>
+              setValues({ ...values, type: value ? value : '' })
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -186,7 +188,9 @@ export default function DebtForm(props) {
             value={values.vendor}
             options={user.expense.vendors}
             getOptionLabel={(option) => option}
-            onChange={(e, value) => setValues({ ...values, vendor: value })}
+            onChange={(e, value) =>
+              setValues({ ...values, vendor: value ? value : '' })
+            }
             autoSelect
             renderInput={(params) => (
               <TextField

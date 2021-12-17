@@ -115,7 +115,9 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
           value={values.amount}
           variant='outlined'
           placeholder='0'
-          onChange={(e) => setValues({ ...values, amount: e.target.value })}
+          onChange={(e) => {
+            setValues({ ...values, amount: String(e.target.value) });
+          }}
           margin='dense'
           InputProps={{
             startAdornment: (
@@ -133,7 +135,9 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
           value={values.type}
           options={user.expense.types}
           getOptionLabel={(option) => option}
-          onChange={(e, value) => setValues({ ...values, type: value })}
+          onChange={(e, value) =>
+            setValues({ ...values, type: value ? value : '' })
+          }
           renderInput={(params) => (
             <TextField
               {...params}
@@ -151,7 +155,9 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
           value={values.vendor}
           options={user.expense.vendors}
           getOptionLabel={(option) => option}
-          onChange={(e, value) => setValues({ ...values, vendor: value })}
+          onChange={(e, value) =>
+            setValues({ ...values, vendor: value ? value : '' })
+          }
           autoSelect
           renderInput={(params) => (
             <TextField

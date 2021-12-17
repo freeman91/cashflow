@@ -222,7 +222,9 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
           value={values.type}
           options={user.income.types}
           getOptionLabel={(option) => option}
-          onChange={(e, value) => setValues({ ...values, type: value })}
+          onChange={(e, value) =>
+            setValues({ ...values, type: value ? value : '' })
+          }
           renderInput={(params) => (
             <TextField
               {...params}
@@ -241,7 +243,9 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
           value={values.source}
           options={user.income.sources}
           getOptionLabel={(option) => option}
-          onChange={(e, value) => setValues({ ...values, source: value })}
+          onChange={(e, value) =>
+            setValues({ ...values, source: value ? value : '' })
+          }
           autoSelect
           renderInput={(params) => (
             <TextField
