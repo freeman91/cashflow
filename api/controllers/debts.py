@@ -16,7 +16,6 @@ def _create_debt():
             return success_result(Debts.get_all())
         if request.method == "POST":
             new_debt = create()
-            print(f"new_debt2: {new_debt}")
             return success_result(new_debt)
     except Exception as err:
         print(f"err: {err}")
