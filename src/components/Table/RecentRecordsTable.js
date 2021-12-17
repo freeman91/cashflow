@@ -1,64 +1,23 @@
-import React, { useState } from 'react';
-import { useUpdateEffect, useMeasure } from 'react-use';
+import React from 'react';
 import dayjs from 'dayjs';
 
-import { Card, CardContent, Toolbar, Typography } from '@mui/material';
-import { SortingState } from '@devexpress/dx-react-grid';
-import {
-  Grid,
-  Table,
-  TableColumnResizing,
-} from '@devexpress/dx-react-grid-material-ui';
+import { Toolbar, Typography } from '@mui/material';
 
 import GenerateRecordButton from '../../components/Button/GenerateRecordButton';
-import { TableComponent } from './TableComponent';
-import { CellComponent } from './CellComponent';
-import { AmountTypeProvider, DateTypeProvider } from '../Table/Providers';
-import { SourceVendorTypeProvider } from './Providers/SourceVendorTypeProvider';
 import FilterRecordsButton from '../Button/FilterRecordsButton';
+import RecordTable from './RecordTable';
 
-export default function RecentRecordsTable(props) {
-  const {
-    data,
-    filterExpense,
-    setFilterExpense,
-    filterIncome,
-    setFilterIncome,
-    filterHour,
-    setFilterHour,
-  } = props;
-  const [columns] = useState([
-    { title: 'Date', name: 'date' },
-    { title: 'Amount', name: 'amount' },
-    { title: 'Category', name: 'category' },
-    { title: 'Source', name: 'source' },
-    { title: 'Description', name: 'description' },
-  ]);
-  const [defaultColumnWidths] = useState([
-    { columnName: 'date', width: 180 },
-    { columnName: 'amount', width: 180 },
-    { columnName: 'category', width: 180 },
-    { columnName: 'source', width: 180 },
-    { columnName: 'description', width: 180 },
-  ]);
-  const [columnWidths, setColumnWidths] = useState(defaultColumnWidths);
-  const [tableRef, { width }] = useMeasure();
-
-  useUpdateEffect(() => {
-    if (width) {
-      const availableWidth = width; // the edit/delete button groups
-      setColumnWidths([
-        { columnName: 'date', width: availableWidth * 0.2 },
-        { columnName: 'amount', width: availableWidth * 0.2 },
-        { columnName: 'category', width: availableWidth * 0.2 },
-        { columnName: 'source', width: availableWidth * 0.2 },
-        { columnName: 'description', width: availableWidth * 0.2 },
-      ]);
-    }
-  }, [width]);
-
+export default function RecentRecordsTable({
+  data,
+  filterExpense,
+  setFilterExpense,
+  filterIncome,
+  setFilterIncome,
+  filterHour,
+  setFilterHour,
+}) {
   return (
-    <Card>
+    <>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Typography align='right' variant='h4'>
           {dayjs().format('dddd, MMMM D YYYY')}
@@ -75,29 +34,7 @@ export default function RecentRecordsTable(props) {
           <GenerateRecordButton />
         </div>
       </Toolbar>
-      <CardContent>
-        <div ref={tableRef}>
-          <Grid rows={data} columns={columns}>
-            <AmountTypeProvider for={['amount']} />
-            <DateTypeProvider for={['date']} data={data} />
-            <SourceVendorTypeProvider for={['source']} />
-            <SortingState
-              defaultSorting={[{ columnName: 'date', direction: 'desc' }]}
-            />
-
-            <Table
-              tableComponent={TableComponent}
-              cellComponent={CellComponent}
-            />
-
-            <TableColumnResizing
-              columnWidths={columnWidths}
-              onColumnWidthsChange={setColumnWidths}
-              resizingMode='nextColumn'
-            />
-          </Grid>
-        </div>
-      </CardContent>
-    </Card>
+      <RecordTable data={data} />
+    </>
   );
 }

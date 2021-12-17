@@ -1,33 +1,12 @@
-import React, { useState } from 'react';
-import { useUpdateEffect, useMeasure } from 'react-use';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import { filter } from 'lodash';
 
-import {
-  Box,
-  Card,
-  CardContent,
-  TextField,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { Box, TextField, Toolbar, Typography } from '@mui/material';
 import DateRangePicker from '@mui/lab/DateRangePicker';
-import {
-  SortingState,
-  PagingState,
-  IntegratedPaging,
-} from '@devexpress/dx-react-grid';
-import {
-  Grid,
-  PagingPanel,
-  Table,
-  TableColumnResizing,
-} from '@devexpress/dx-react-grid-material-ui';
 
+import RecordTable from './RecordTable';
 import GenerateRecordButton from '../../components/Button/GenerateRecordButton';
-import { TableComponent } from './TableComponent';
-import { CellComponent } from './CellComponent';
-import { AmountTypeProvider, DateTypeProvider } from '../Table/Providers';
-import { SourceVendorTypeProvider } from './Providers/SourceVendorTypeProvider';
 import FilterRecordsButton from '../Button/FilterRecordsButton';
 
 export default function RecordSummaryTable(props) {
@@ -42,41 +21,28 @@ export default function RecordSummaryTable(props) {
     filterHour,
     setFilterHour,
   } = props;
-  const [columns] = useState([
-    { title: 'Date', name: 'date' },
-    { title: 'Amount', name: 'amount' },
-    { title: 'Category', name: 'category' },
-    { title: 'Source', name: 'source' },
-    { title: 'Description', name: 'description' },
-  ]);
-  const [defaultColumnWidths] = useState([
-    { columnName: 'date', width: 180 },
-    { columnName: 'amount', width: 180 },
-    { columnName: 'category', width: 180 },
-    { columnName: 'source', width: 180 },
-    { columnName: 'description', width: 180 },
-  ]);
-  const [columnWidths, setColumnWidths] = useState(defaultColumnWidths);
-  const [tableRef, { width }] = useMeasure();
+  const [tableData, setTableData] = useState([]);
 
-  useUpdateEffect(() => {
-    if (width) {
-      const availableWidth = width; // the edit/delete button groups
-      setColumnWidths([
-        { columnName: 'date', width: availableWidth * 0.2 },
-        { columnName: 'amount', width: availableWidth * 0.2 },
-        { columnName: 'category', width: availableWidth * 0.2 },
-        { columnName: 'source', width: availableWidth * 0.2 },
-        { columnName: 'description', width: availableWidth * 0.2 },
-      ]);
-    }
-  }, [width]);
+  useEffect(() => {
+    setTableData(
+      filter(data, (row) => {
+        if (
+          (row.category === 'expense' && filterExpense) ||
+          (row.category === 'income' && filterIncome) ||
+          (row.category === 'hour' && filterHour)
+        ) {
+          return false;
+        }
+        return true;
+      })
+    );
+  }, [data, filterExpense, filterIncome, filterHour]);
 
   return (
-    <Card>
+    <>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <Typography align='right' variant='h4'>
-          Transaction History
+        <Typography align='left' variant='h4'>
+          Transactions
         </Typography>
         <div style={{ display: 'flex', marginTop: '1rem' }}>
           <DateRangePicker
@@ -121,32 +87,7 @@ export default function RecordSummaryTable(props) {
           </div>
         </div>
       </Toolbar>
-      <CardContent>
-        <div ref={tableRef}>
-          <Grid rows={data} columns={columns}>
-            <AmountTypeProvider for={['amount']} />
-            <DateTypeProvider for={['date']} data={data} />
-            <SourceVendorTypeProvider for={['source']} />
-            <SortingState
-              defaultSorting={[{ columnName: 'date', direction: 'desc' }]}
-            />
-            <PagingState defaultCurrentPage={0} defaultPageSize={10} />
-            <IntegratedPaging />
-            <PagingPanel />
-
-            <Table
-              tableComponent={TableComponent}
-              cellComponent={CellComponent}
-            />
-
-            <TableColumnResizing
-              columnWidths={columnWidths}
-              onColumnWidthsChange={setColumnWidths}
-              resizingMode='nextColumn'
-            />
-          </Grid>
-        </div>
-      </CardContent>
-    </Card>
+      <RecordTable data={tableData} />
+    </>
   );
 }

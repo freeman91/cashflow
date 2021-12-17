@@ -1,75 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { get, reduce, filter as filter_ } from 'lodash';
 import { Divider, Typography } from '@mui/material';
 import { numberToCurrency } from '../../helpers/currency';
 
-import AssetForm from '../Form/AssetForm';
+import DebtForm from '../Form/DebtForm';
 import CreateButton from '../Button/CreateButton';
 import CreateDialog from '../Dialog/CreateDialog';
-import AssetTableDialog from '../Dialog/AssetTableDialog';
+import AssetDebtDialog from '../Dialog/AssetDebtDialog';
 import { divStyle, textStyle } from './styles';
 
-export default function AssetsCard() {
-  const { data: assets } = useSelector((state) => state.assets);
+export default function DebtsContainer() {
+  const { data: debts } = useSelector((state) => state.debts);
   const [open, setOpen] = useState(false);
-  const [selectedAssets, setSelectedAssets] = useState([]);
+  const [selectedDebts, setSelectedDebts] = useState([]);
   const [title, setTitle] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('');
 
   useEffect(() => {
-    if (selectedFilter === 'crypto') {
-      setTitle('Crpyto');
-      setSelectedAssets(
-        filter_(assets, (asset) => {
-          return get(asset, 'type') === 'crypto';
+    if (selectedFilter === 'tuition') {
+      setTitle('Tution');
+      setSelectedDebts(
+        filter_(debts, (debt) => {
+          return get(debt, 'type') === 'tuition';
         })
       );
-    } else if (selectedFilter === 'stock') {
+    } else if (selectedFilter === 'credit') {
       setTitle('Credit');
-      setSelectedAssets(
-        filter_(assets, (asset) => {
-          return get(asset, 'type') === 'stock';
+      setSelectedDebts(
+        filter_(debts, (debt) => {
+          return get(debt, 'type') === 'credit';
         })
       );
     } else if (selectedFilter === 'else') {
-      setTitle('All Other Assets');
-      setSelectedAssets(
-        filter_(assets, (asset) => {
+      setTitle('All Other Debts');
+      setSelectedDebts(
+        filter_(debts, (debt) => {
           return (
-            get(asset, 'type') !== 'crypto' && get(asset, 'type') !== 'stock'
+            get(debt, 'type') !== 'tuition' && get(debt, 'type') !== 'credit'
           );
         })
       );
+    } else if (selectedFilter === 'all') {
+      setTitle('All Debts');
+      setSelectedDebts(debts);
     } else {
-      setTitle('All Assets');
-      setSelectedAssets(assets);
+      setTitle('');
+      setSelectedDebts([]);
     }
-  }, [assets, selectedFilter]);
+  }, [debts, selectedFilter]);
 
-  const handleClick = (e, filter) => {
-    e.preventDefault();
+  const handleClick = (filter) => {
     setSelectedFilter(filter);
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setSelectedAssets([]);
-    setTitle('');
+    setSelectedFilter('');
   };
 
-  let cryptoValue = 0;
-  let stocksValue = 0;
+  let tuitionValue = 0;
+  let creditValue = 0;
   let elseValue = 0;
   let totalValue = reduce(
-    assets,
-    (sum, asset) => {
-      let value = get(asset, 'value');
-      if (get(asset, 'type') === 'crypto') {
-        cryptoValue += value;
-      } else if (get(asset, 'type') === 'stock') {
-        stocksValue += value;
+    debts,
+    (sum, debt) => {
+      let value = get(debt, 'value');
+      if (get(debt, 'type') === 'tuition') {
+        tuitionValue += value;
+      } else if (get(debt, 'type') === 'credit') {
+        creditValue += value;
       } else {
         elseValue += value;
       }
@@ -90,20 +91,20 @@ export default function AssetsCard() {
         <Typography
           variant='h4'
           gutterBottom
-          onClick={(e) => handleClick(e, 'all')}
+          onClick={() => handleClick('all')}
         >
-          Assets
+          Debts
         </Typography>
         <CreateButton>
-          <CreateDialog title='Create Asset'>
-            <AssetForm mode='create' />
+          <CreateDialog title='Create Debt'>
+            <DebtForm mode='create' />
           </CreateDialog>
         </CreateButton>
       </div>
 
       <Divider sx={{ mb: '1rem' }} />
 
-      <div style={divStyle} onClick={(e) => handleClick(e, 'all')}>
+      <div style={divStyle} onClick={() => handleClick('all')}>
         <Typography variant='h5' sx={textStyle}>
           Total Value...
         </Typography>
@@ -112,30 +113,30 @@ export default function AssetsCard() {
         </Typography>
       </div>
 
-      <div style={divStyle} onClick={(e) => handleClick(e, 'crypto')}>
-        <Typography sx={textStyle}>Crypto Value...</Typography>
+      <div style={divStyle} onClick={() => handleClick('tuition')}>
+        <Typography sx={textStyle}>Tuition Value...</Typography>
         <Typography sx={{ mt: '.25rem' }}>
-          {numberToCurrency.format(cryptoValue)}
+          {numberToCurrency.format(tuitionValue)}
         </Typography>
       </div>
 
-      <div style={divStyle} onClick={(e) => handleClick(e, 'stock')}>
-        <Typography sx={textStyle}>Stocks Value...</Typography>
+      <div style={divStyle} onClick={() => handleClick('credit')}>
+        <Typography sx={textStyle}>Credit Value...</Typography>
         <Typography sx={{ mt: '.25rem' }}>
-          {numberToCurrency.format(stocksValue)}
+          {numberToCurrency.format(creditValue)}
         </Typography>
       </div>
 
-      <div style={divStyle} onClick={(e) => handleClick(e, 'else')}>
+      <div style={divStyle} onClick={() => handleClick('else')}>
         <Typography sx={textStyle}>Everything Else...</Typography>
         <Typography sx={{ mt: '.25rem' }}>
           {numberToCurrency.format(elseValue)}
         </Typography>
       </div>
-      <AssetTableDialog
+      <AssetDebtDialog
         open={open}
         handleClose={handleClose}
-        assets={selectedAssets}
+        records={selectedDebts}
         title={title}
       />
     </>

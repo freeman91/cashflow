@@ -5,9 +5,9 @@ import { Grid } from '@mui/material';
 import { getAssets } from '../../store/assets';
 import { getDebts } from '../../store/debts';
 import { getNetworths } from '../../store/networths';
-import NetWorthCard from '../../components/Card/NetWorthCard';
-import AssetsCard from '../../components/Card/AssetsCard';
-import DebtsCard from '../../components/Card/DebtsCard';
+import NetWorthContainer from '../../components/containers/NetWorthContainer';
+import AssetsContainer from '../../components/containers/AssetsContainer';
+import DebtsContainer from '../../components/containers/DebtsContainer';
 import NetworthChart from '../../components/charts/NetworthChart';
 
 export default function Networth() {
@@ -22,13 +22,13 @@ export default function Networth() {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} sx={{ mb: '2rem', mt: '2rem' }}>
-        <NetWorthCard />
+        <NetWorthContainer />
       </Grid>
       <Grid item xs={6}>
-        <AssetsCard />
+        <AssetsContainer />
       </Grid>
       <Grid item xs={6}>
-        <DebtsCard />
+        <DebtsContainer />
       </Grid>
       <Grid item xs={12} sx={{ mt: '2rem' }}>
         <NetworthChart />

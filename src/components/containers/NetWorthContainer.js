@@ -6,7 +6,7 @@ import { Divider, Typography } from '@mui/material';
 import { numberToCurrency } from '../../helpers/currency';
 import { divStyle } from './styles';
 
-export default function AssetsCard() {
+export default function NetWorthContainer() {
   const { data: assets } = useSelector((state) => state.assets);
   const { data: debts } = useSelector((state) => state.debts);
 

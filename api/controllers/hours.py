@@ -11,7 +11,7 @@ hours = Blueprint("hours", __name__)
 def _get_recent_hours():
     try:
         end = datetime.now() + timedelta(days=1)
-        start = end - timedelta(days=8)
+        start = end - timedelta(days=20)
         return success_result(
             {"hours": Hours.in_range(start.timestamp(), end.timestamp())}
         )

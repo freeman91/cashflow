@@ -13,7 +13,7 @@ export default function SettingsDialog({
   handleSubmit,
   handleDelete,
   selectedItem,
-  selectedButton,
+  selectedType,
 }) {
   const [text, setText] = useState('');
 
@@ -30,8 +30,8 @@ export default function SettingsDialog({
     <Dialog open={mode !== ''} onClose={handleClose}>
       <DialogTitle id='settings-dialog-title'>
         {mode === 'add'
-          ? `Add to ${selectedButton}`
-          : `Update value in ${selectedButton}`}
+          ? `Add to ${selectedType}`
+          : `Update value in ${selectedType}`}
       </DialogTitle>
       <DialogContent sx={{ width: '25rem' }}>
         <form onSubmit={onSubmit}>

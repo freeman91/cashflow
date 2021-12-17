@@ -11,7 +11,7 @@ expenses = Blueprint("expenses", __name__)
 def _get_recent_expenses():
     try:
         end = datetime.now() + timedelta(days=1)
-        start = end - timedelta(days=8)
+        start = end - timedelta(days=20)
         return success_result(
             {"expenses": Expenses.in_range(start.timestamp(), end.timestamp())}
         )

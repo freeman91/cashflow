@@ -104,6 +104,7 @@ def migrate_hours():
 
 
 def migrate_networths():
+    Networths.delete_all()
     networths = Connection("192.168.0.42").run(
         "cat repos/cashflow-api/seed/networths.csv", hide=True
     )
@@ -354,9 +355,9 @@ def generate_debts():
 
 
 def migrate_all():
-    migrate_expenses()
-    migrate_incomes()
-    migrate_hours()
+    # migrate_expenses()
+    # migrate_incomes()
+    # migrate_hours()
     migrate_networths()
     # generate_assets()
     # generate_debts()

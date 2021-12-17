@@ -3,7 +3,7 @@ import { useMount } from 'react-use';
 import dayjs from 'dayjs';
 import { filter } from 'lodash';
 
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import {
   getExpensesInRangeAPI,
@@ -12,7 +12,7 @@ import {
 } from '../../api';
 
 import RecordSummaryTable from '../../components/Table/RecordSummaryTable';
-import SummaryTotalTable from '../../components/Table/SummaryTotalTable';
+import SummaryTotalsContainer from '../../components/containers/SummaryTotalsContainer';
 
 const defaultRange = [
   dayjs().date(1).hour(0),
@@ -83,19 +83,12 @@ export default function Summary() {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={6}>
-        <SummaryTotalTable
+      <Grid item xs={12}>
+        <SummaryTotalsContainer
           expenses={expenses}
           incomes={incomes}
           hours={hours}
         />
-      </Grid>
-      <Grid item xs={6}>
-        <Paper sx={{ height: 250 }}>
-          <Typography variant='h4' sx={{ pt: 5 }}>
-            Chart 1
-          </Typography>
-        </Paper>
       </Grid>
       <Grid item xs={12}>
         <RecordSummaryTable

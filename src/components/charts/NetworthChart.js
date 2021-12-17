@@ -5,7 +5,7 @@ import { Typography } from '@mui/material';
 import { ComposedChart, XAxis, YAxis, Tooltip, Bar, Line } from 'recharts';
 
 import { NetworthTooltip } from './NetworthTooltip';
-import { divStyle } from '../Card/styles';
+import { divStyle } from '../containers/styles';
 import { numberToCurrency } from '../../helpers/currency';
 import NetworthDialog from '../Dialog/NetworthDialog';
 

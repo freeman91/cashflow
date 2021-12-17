@@ -9,44 +9,35 @@ import {
   TableCell,
   TableBody,
   TableContainer,
-  TableHead,
   TableRow,
   TableFooter,
   TablePagination,
   Typography,
+  Select,
+  MenuItem,
 } from '@mui/material';
 
 import { putUserSettings } from '../../store/user';
 import SettingsDialog from '../../components/Dialog/SettingsDialog';
 
-const buttonStyle = {
-  mt: '2rem',
-  display: 'block',
-  width: '10rem',
-};
-
 export default function Networth() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const [selectedButton, setSelectedButton] = useState('expense.types');
+  const [selectedType, setSelectedType] = useState('expense.types');
   const [selectedItem, setSelectedItem] = useState('');
   const [dialogMode, setDialogMode] = useState('');
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(0);
-  const itemsPerPage = 6;
+  const itemsPerPage = 10;
 
   useEffect(() => {
-    setItems(sortBy(get(user, selectedButton)));
-  }, [user, selectedButton]);
+    setItems(sortBy(get(user, selectedType)));
+  }, [user, selectedType]);
 
   const handleCellClick = (e) => {
     let item = e.target.textContent;
-    if (item === '+ create') {
-      setDialogMode('add');
-    } else {
-      setDialogMode('update');
-      setSelectedItem(item);
-    }
+    setDialogMode('update');
+    setSelectedItem(item);
   };
 
   const handleClose = (e) => {
@@ -56,7 +47,7 @@ export default function Networth() {
   };
 
   const handleSubmit = (e, updatedItem) => {
-    let _updatedList = toArray(get(user, selectedButton));
+    let _updatedList = toArray(get(user, selectedType));
 
     if (selectedItem !== '+ create') {
       remove(_updatedList, (item) => item === selectedItem);
@@ -64,146 +55,96 @@ export default function Networth() {
 
     _updatedList = sortBy(concat(_updatedList, updatedItem));
 
-    dispatch(
-      putUserSettings({ updated: _updatedList, setting: selectedButton })
-    );
+    dispatch(putUserSettings({ updated: _updatedList, setting: selectedType }));
     handleClose(e);
   };
 
   const handleDelete = (e) => {
-    let _updatedList = toArray(get(user, selectedButton));
+    let _updatedList = toArray(get(user, selectedType));
     remove(_updatedList, (item) => item === selectedItem);
 
-    dispatch(
-      putUserSettings({ updated: _updatedList, setting: selectedButton })
-    );
+    dispatch(putUserSettings({ updated: _updatedList, setting: selectedType }));
     handleClose(e);
+  };
+
+  const handleChange = (e) => {
+    setSelectedType(e.target.value);
   };
 
   let itemsInPage = items.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
 
   return (
-    <>
-      <Paper
-        sx={{
-          p: 2,
-          margin: 'auto',
-          width: '30rem',
-          flexGrow: 1,
-          height: '30rem',
-        }}
-      >
+    <Grid container justifyContent='center'>
+      <Grid item xs={12}>
         <Typography align='left' variant='h5' sx={{ mb: '1rem' }}>
           User Settings
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Button
-              variant={
-                selectedButton === 'expense.types' ? 'contained' : 'outlined'
-              }
-              sx={{ ...buttonStyle, mt: '0' }}
-              onClick={() => setSelectedButton('expense.types')}
-            >
-              Expense Types
-            </Button>
-            <Button
-              variant={
-                selectedButton === 'expense.vendors' ? 'contained' : 'outlined'
-              }
-              sx={buttonStyle}
-              onClick={() => setSelectedButton('expense.vendors')}
-            >
-              Expense Vendors
-            </Button>
-            <Button
-              variant={
-                selectedButton === 'income.types' ? 'contained' : 'outlined'
-              }
-              sx={buttonStyle}
-              onClick={() => setSelectedButton('income.types')}
-            >
-              Income Types
-            </Button>
-            <Button
-              variant={
-                selectedButton === 'income.sources' ? 'contained' : 'outlined'
-              }
-              sx={buttonStyle}
-              onClick={() => setSelectedButton('income.sources')}
-            >
-              Income Sources
-            </Button>
-            <Button
-              variant={
-                selectedButton === 'asset.types' ? 'contained' : 'outlined'
-              }
-              sx={buttonStyle}
-              onClick={() => setSelectedButton('asset.types')}
-            >
-              Asset Types
-            </Button>
-            <Button
-              variant={
-                selectedButton === 'debt.types' ? 'contained' : 'outlined'
-              }
-              sx={buttonStyle}
-              onClick={() => setSelectedButton('debt.types')}
-            >
-              Debt Types
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <TableContainer component={Paper} sx={{ border: '1px solid grey' }}>
-              <Table>
-                <TableHead>
-                  <TableRow hover>
-                    <TableCell onClick={handleCellClick}>+ create</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {itemsInPage.map((item) => (
-                    <TableRow key={item} hover>
-                      <TableCell
-                        component='th'
-                        scope='row'
-                        onClick={handleCellClick}
-                      >
-                        {item}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-                {items.length > itemsPerPage ? (
-                  <TableFooter>
-                    <TableRow>
-                      <TablePagination
-                        rowsPerPageOptions={[itemsPerPage]}
-                        colSpan={1}
-                        count={items.length}
-                        rowsPerPage={itemsPerPage}
-                        page={page}
-                        SelectProps={{
-                          native: true,
-                        }}
-                        onPageChange={(e, newPage) => setPage(newPage)}
-                      />
-                    </TableRow>
-                  </TableFooter>
-                ) : null}
-              </Table>
-            </TableContainer>
-          </Grid>
-        </Grid>
-      </Paper>
+      </Grid>
+      <Grid item xs={12}>
+        <Select
+          variant='standard'
+          id='type-select'
+          value={selectedType}
+          onChange={handleChange}
+          sx={{ mb: '1rem', width: '10rem', mr: '2rem' }}
+        >
+          <MenuItem value={'expense.types'}>Expense Types</MenuItem>
+          <MenuItem value={'expense.vendors'}>Expense Vendors</MenuItem>
+          <MenuItem value={'income.types'}>Income Types</MenuItem>
+          <MenuItem value={'income.sources'}>Income Sources</MenuItem>
+          <MenuItem value={'asset.types'}>Asset Types</MenuItem>
+          <MenuItem value={'debt.types'}>Debt Types</MenuItem>
+        </Select>
+        <Button variant='contained' onClick={() => setDialogMode('add')}>
+          Insert
+        </Button>
+      </Grid>
+
+      <Grid item xs={4} sx={{ mt: '1rem' }} justifyContent='center'>
+        <TableContainer component={Paper} sx={{ width: '20rem' }}>
+          <Table>
+            <TableBody>
+              {itemsInPage.map((item) => (
+                <TableRow key={item} hover>
+                  <TableCell
+                    component='th'
+                    scope='row'
+                    onClick={handleCellClick}
+                  >
+                    {item}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            {items.length > itemsPerPage ? (
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[itemsPerPage]}
+                    colSpan={1}
+                    count={items.length}
+                    rowsPerPage={itemsPerPage}
+                    page={page}
+                    SelectProps={{
+                      native: true,
+                    }}
+                    onPageChange={(e, newPage) => setPage(newPage)}
+                  />
+                </TableRow>
+              </TableFooter>
+            ) : null}
+          </Table>
+        </TableContainer>
+      </Grid>
+
       <SettingsDialog
         mode={dialogMode}
         handleClose={handleClose}
         handleDelete={handleDelete}
         handleSubmit={handleSubmit}
         selectedItem={selectedItem}
-        selectedButton={selectedButton}
+        selectedType={selectedType}
       />
-    </>
+    </Grid>
   );
 }

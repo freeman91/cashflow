@@ -12,7 +12,7 @@ incomes = Blueprint("incomes", __name__)
 def _get_recent_incomes():
     try:
         end = datetime.now() + timedelta(days=1)
-        start = end - timedelta(days=8)
+        start = end - timedelta(days=20)
         return success_result(
             {"incomes": Incomes.in_range(start.timestamp(), end.timestamp())}
         )
