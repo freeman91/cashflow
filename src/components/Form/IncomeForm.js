@@ -93,33 +93,18 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
       _values.deductions = initialDeductions;
     }
 
-    if (validate()) {
-      let updatedIncome = {
-        ...income,
-        ..._values,
-        date: dayjs(_values.date).format('MM-DD-YYYY'),
-      };
-      dispatch(putIncome(updatedIncome));
-      handleDialogClose();
-    }
+    let updatedIncome = {
+      ...income,
+      ..._values,
+      date: dayjs(_values.date).format('MM-DD-YYYY'),
+    };
+    dispatch(putIncome(updatedIncome));
+    handleDialogClose();
   };
 
   const handleDelete = () => {
     dispatch(deleteIncome(get(income, '_id')));
     handleDialogClose();
-  };
-
-  const validate = () => {
-    if (
-      isNaN(values.amount) ||
-      values.type.length === 0 ||
-      !values.source ||
-      values.source.length === 0 ||
-      !values.date ||
-      values.deductions.length === 0
-    )
-      return false;
-    else return true;
   };
 
   const handleFormEnterClick = () => {
@@ -299,7 +284,6 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
           <Button
             type='submit'
             id='submit'
-            disabled={!validate()}
             sx={{ mt: '1rem' }}
             variant='outlined'
             onClick={handleSubmit}
@@ -312,7 +296,7 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
             <Button
               type='submit'
               id='update'
-              disabled={!validate() || !incomeDiff()}
+              disabled={!incomeDiff()}
               sx={{ mt: '1rem' }}
               variant='outlined'
               onClick={handleUpdate}

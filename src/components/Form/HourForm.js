@@ -45,31 +45,18 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
   };
 
   const handleUpdate = () => {
-    if (validate()) {
-      let updatedHour = {
-        ...hour,
-        ...values,
-        date: dayjs(values.date).format('MM-DD-YYYY'),
-      };
-      dispatch(putHour(updatedHour));
-      handleDialogClose();
-    }
+    let updatedHour = {
+      ...hour,
+      ...values,
+      date: dayjs(values.date).format('MM-DD-YYYY'),
+    };
+    dispatch(putHour(updatedHour));
+    handleDialogClose();
   };
 
   const handleDelete = () => {
     dispatch(deleteHour(get(hour, '_id')));
     handleDialogClose();
-  };
-
-  const validate = () => {
-    if (
-      isNaN(values.amount) ||
-      !values.source ||
-      values.source.length === 0 ||
-      !values.date
-    )
-      return false;
-    else return true;
   };
 
   const handleFormEnterClick = () => {
@@ -173,7 +160,6 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
           <Button
             type='submit'
             id='submit'
-            disabled={!validate()}
             sx={{ mt: '1rem' }}
             variant='outlined'
             onClick={handleSubmit}
@@ -186,7 +172,7 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
             <Button
               type='submit'
               id='update'
-              disabled={!validate() || !hourDiff()}
+              disabled={!hourDiff()}
               sx={{ mt: '1rem' }}
               variant='outlined'
               onClick={handleUpdate}
@@ -196,7 +182,6 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
             </Button>
             <Button
               id='delete'
-              disabled={!validate()}
               sx={{ mt: '1rem', ml: '1rem' }}
               variant='outlined'
               onClick={handleDelete}

@@ -51,15 +51,13 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
   };
 
   const handleUpdate = () => {
-    if (validate()) {
-      let updatedExpense = {
-        ...expense,
-        ...values,
-        date: dayjs(values.date).format('MM-DD-YYYY'),
-      };
-      dispatch(putExpense(updatedExpense));
-      handleDialogClose();
-    }
+    let updatedExpense = {
+      ...expense,
+      ...values,
+      date: dayjs(values.date).format('MM-DD-YYYY'),
+    };
+    dispatch(putExpense(updatedExpense));
+    handleDialogClose();
   };
 
   const handleDelete = () => {
@@ -75,18 +73,6 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
     } else {
       handleDialogClose();
     }
-  };
-
-  const validate = () => {
-    if (
-      isNaN(values.amount) ||
-      values.type.length === 0 ||
-      !values.vendor ||
-      values.vendor.length === 0 ||
-      !values.date
-    )
-      return false;
-    else return true;
   };
 
   const expenseDiff = () => {
@@ -211,7 +197,6 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
           <Button
             type='submit'
             id='submit'
-            disabled={!validate()}
             sx={{ mt: '1rem' }}
             variant='outlined'
             onClick={handleSubmit}
@@ -224,7 +209,7 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
             <Button
               type='submit'
               id='update'
-              disabled={!validate() || !expenseDiff()}
+              disabled={!expenseDiff()}
               sx={{ mt: '1rem' }}
               variant='outlined'
               onClick={handleUpdate}
@@ -234,7 +219,6 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
             </Button>
             <Button
               id='delete'
-              disabled={!validate()}
               sx={{ mt: '1rem', ml: '1rem' }}
               variant='outlined'
               onClick={handleDelete}
