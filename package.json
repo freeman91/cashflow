@@ -3,7 +3,6 @@
   "author": "Addison Freeman <addisonfreeman91@gmail.com>",
   "version": "0.0.1",
   "scripts": {
-    "cdk": "cdk",
     "start": "PORT=4242 react-scripts start"
   },
   "dependencies": {

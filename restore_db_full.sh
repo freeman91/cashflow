@@ -18,7 +18,7 @@ genSeeds()
 
 restore()
 {
-  python migrate_data.py migrate_all
+  venv/bin/python migrate_data.py migrate_all
 }
 
 while getopts ":hgr" option; do

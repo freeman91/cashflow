@@ -1,8 +1,11 @@
+# pylint: disable=import-error
+"""User controller"""
+
 from pydash import get
 from flask import request, Blueprint
 
 from api.db.user import user
-from api.controllers.__util__ import success_result
+from api.controllers.__util__ import success_result, failure_result
 
 users = Blueprint("users", __name__)
 
@@ -12,7 +15,7 @@ def _user():
     if request.method == "GET":
         return success_result(user.item)
 
-    elif request.method == "PUT":
+    if request.method == "PUT":
         payload = request.json
 
         updated_list = get(payload, "updated")
@@ -23,3 +26,5 @@ def _user():
         _user = user.refresh()
 
         return success_result(_user)
+
+    return failure_result("Not Found")

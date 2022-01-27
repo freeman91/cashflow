@@ -1,3 +1,6 @@
+# pylint: disable=missing-class-docstring, too-few-public-methods
+"""app config environment variables"""
+
 import logging
 import os
 from dotenv import load_dotenv
@@ -5,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv(verbose=True)
 
 
-class Config(object):
+class Config:
     LOG_LEVEL = logging.INFO
 
 
@@ -16,7 +19,7 @@ class DevelopmentConfig(Config):
     SECRET_KEY = "secr3t"
     APP_FQDN = "localhost:9000"
     DATABASE_HOST = os.getenv("MONGO_IP", "localhost")
-    DATABASE_PORT = os.getenv("MONGO_PORT", 27017)
+    DATABASE_PORT = os.getenv("MONGO_PORT", "27017")
 
 
 class TestConfig(Config):
@@ -25,7 +28,7 @@ class TestConfig(Config):
     SECRET_KEY = "test"
     APP_FQDN = "localhost:9000"
     DATABASE_HOST = os.getenv("MONGO_IP", "localhost")
-    DATABASE_PORT = os.getenv("MONGO_PORT", 27018)
+    DATABASE_PORT = os.getenv("MONGO_PORT", "27018")
 
 
 class ProductionConfig(Config):
@@ -35,19 +38,21 @@ class ProductionConfig(Config):
     SECRET_KEY = "s3cret"
     APP_FQDN = ""
     DATABASE_HOST = os.getenv("DATABASE_HOST", "localhost")
-    DATABASE_PORT = os.getenv("DATABASE_PORT", 27017)
+    DATABASE_PORT = os.getenv("DATABASE_PORT", "27017")
 
 
 def get_config():
+    """return config corresponding to the environment"""
+
     env = os.environ.get("ENV", "dev").lower()
     if env == "dev":
         return DevelopmentConfig
-    elif env == "test":
+    if env == "test":
         return TestConfig
-    elif env == "production":
+    if env == "production":
         return ProductionConfig
-    else:
-        return Config
+
+    return Config
 
 
 app_config = get_config()

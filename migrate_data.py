@@ -1,8 +1,11 @@
-import csv, sys
+# pylint: disable=missing-function-docstring
+"""script to migrate data from cashflow to cashflow2"""
+
+import sys
+import csv
 from datetime import datetime
 from io import StringIO
 from fabric import Connection
-from pprint import pprint
 
 from db_workbench import Assets, Debts, Expenses, Incomes, Hours, Networths
 
@@ -12,8 +15,8 @@ def migrate_expenses():
     expenses = Connection("192.168.0.42").run(
         "cat repos/cashflow-api/seed/expenses.csv", hide=True
     )
-    f = StringIO(expenses.stdout)
-    reader = csv.reader(f, delimiter="|")
+    file = StringIO(expenses.stdout)
+    reader = csv.reader(file, delimiter="|")
 
     expenses_inserted = 0
     for idx, row in enumerate(reader):
@@ -48,8 +51,8 @@ def migrate_incomes():
     other_incomes = Connection("192.168.0.42").run(
         "cat repos/cashflow-api/seed/other_incomes.csv", hide=True
     )
-    f = StringIO(incomes.stdout + other_incomes.stdout)
-    reader = csv.reader(f, delimiter="|")
+    file = StringIO(incomes.stdout + other_incomes.stdout)
+    reader = csv.reader(file, delimiter="|")
     incomes_inserted = 0
     for idx, row in enumerate(reader):
         if idx == 0:
@@ -80,8 +83,8 @@ def migrate_hours():
     hours = Connection("192.168.0.42").run(
         "cat repos/cashflow-api/seed/hours.csv", hide=True
     )
-    f = StringIO(hours.stdout)
-    reader = csv.reader(f, delimiter="|")
+    file = StringIO(hours.stdout)
+    reader = csv.reader(file, delimiter="|")
     hours_inserted = 0
     for idx, row in enumerate(reader):
         if idx == 0:
@@ -108,8 +111,8 @@ def migrate_networths():
     networths = Connection("192.168.0.42").run(
         "cat repos/cashflow-api/seed/networths.csv", hide=True
     )
-    f = StringIO(networths.stdout)
-    reader = csv.reader(f, delimiter="|")
+    file = StringIO(networths.stdout)
+    reader = csv.reader(file, delimiter="|")
     current_month = 0
     current_year = 0
     current_date = ""
@@ -120,12 +123,12 @@ def migrate_networths():
         if idx == 0:
             continue
 
-        r0 = row[0]
-        r1 = row[1]
+        item_0 = row[0]
+        item_1 = row[1]
 
-        if r0.isnumeric() and r1.isnumeric():
-            current_year = int(r0)
-            current_month = int(r1)
+        if item_0.isnumeric() and item_1.isnumeric():
+            current_year = int(item_0)
+            current_month = int(item_1)
             current_date = row[2]
             count += 1
             records.append(
@@ -385,9 +388,9 @@ def generate_debts():
 
 
 def migrate_all():
-    # migrate_expenses()
-    # migrate_incomes()
-    # migrate_hours()
+    migrate_expenses()
+    migrate_incomes()
+    migrate_hours()
     migrate_networths()
     # generate_assets()
     # generate_debts()
