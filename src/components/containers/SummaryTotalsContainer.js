@@ -8,32 +8,45 @@ import HourglassBottom from '@mui/icons-material/HourglassBottom';
 import WorkOutline from '@mui/icons-material/WorkOutline';
 import { numberToCurrency, _numberToCurrency } from '../../helpers/currency';
 
-export default function SummaryTotalsContainer({ expenses, incomes, hours }) {
+export default function SummaryTotalsContainer({
+  expenses,
+  incomes,
+  hours,
+  filterExpense,
+  filterIncome,
+  filterHour,
+}) {
   const textFieldStyle = {
     mr: '2rem',
   };
 
-  const expenseTotal = reduce(
-    expenses,
-    (sum, expense) => {
-      return sum + expense.amount;
-    },
-    0
-  );
-  const incomeTotal = reduce(
-    incomes,
-    (sum, income) => {
-      return sum + income.amount;
-    },
-    0
-  );
-  const hourTotal = reduce(
-    hours,
-    (sum, hour) => {
-      return sum + hour.amount;
-    },
-    0
-  );
+  const expenseTotal = filterExpense
+    ? 0
+    : reduce(
+        expenses,
+        (sum, expense) => {
+          return sum + expense.amount;
+        },
+        0
+      );
+  const incomeTotal = filterIncome
+    ? 0
+    : reduce(
+        incomes,
+        (sum, income) => {
+          return sum + income.amount;
+        },
+        0
+      );
+  const hourTotal = filterHour
+    ? 0
+    : reduce(
+        hours,
+        (sum, hour) => {
+          return sum + hour.amount;
+        },
+        0
+      );
 
   return (
     <>

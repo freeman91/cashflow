@@ -1,3 +1,6 @@
+# pylint: disable=missing-function-docstring
+"""Flask API"""
+
 import logging
 
 from flask import Flask, jsonify, url_for

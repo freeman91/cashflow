@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import {
@@ -38,6 +38,13 @@ export default function RecordTable({ data }) {
     dispatch(setDialog({ open: true, record: row }));
   };
 
+  useEffect(() => {
+    let maxPage = Math.ceil(data.length / 10) - 1;
+    if (page > maxPage) {
+      setPage(maxPage);
+    }
+  }, [data, page]);
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -54,7 +61,7 @@ export default function RecordTable({ data }) {
                 Category
               </TableCell>
               <TableCell align='right' sx={tableHeaderCellStyle}>
-                Source
+                Source/Vendor
               </TableCell>
               <TableCell align='right' sx={tableHeaderCellStyle}>
                 Description
@@ -69,7 +76,9 @@ export default function RecordTable({ data }) {
                 </TableCell>
                 <TableCell align='right'>{renderAmount(row)}</TableCell>
                 <TableCell align='right'>{row.category}</TableCell>
-                <TableCell align='right'>{row.source}</TableCell>
+                <TableCell align='right'>
+                  {row.category === 'expense' ? row.vendor : row.source}
+                </TableCell>
                 <TableCell align='right'>{row.description}</TableCell>
               </TableRow>
             ))}

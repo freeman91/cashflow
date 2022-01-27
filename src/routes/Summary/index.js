@@ -88,6 +88,9 @@ export default function Summary() {
           expenses={expenses}
           incomes={incomes}
           hours={hours}
+          filterExpense={filterExpense}
+          filterIncome={filterIncome}
+          filterHour={filterHour}
         />
       </Grid>
       <Grid item xs={12}>
