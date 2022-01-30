@@ -52,8 +52,13 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
 
   const handleUpdate = () => {
     let updatedExpense = {
-      ...expense,
-      ...values,
+      _id: get(expense, '_id'),
+      amount: get(values, 'amount'),
+      asset: get(values, 'asset'),
+      debt: get(values, 'debt'),
+      description: get(values, 'description'),
+      type: get(values, 'type'),
+      vendor: get(values, 'vendor'),
       date: dayjs(values.date).format('MM-DD-YYYY'),
     };
     dispatch(putExpense(updatedExpense));
