@@ -1,8 +1,11 @@
+# pylint: disable=import-error, broad-except
+"""Expenses controller"""
+
 from datetime import datetime, timedelta
+from flask import Blueprint, request
 
 from api.controllers.__util__ import failure_result, success_result
 from api.db.expenses import Expenses
-from flask import Blueprint, request
 
 expenses = Blueprint("expenses", __name__)
 
@@ -38,28 +41,29 @@ def _create_expense():
         return failure_result("Bad Request")
 
 
-@expenses.route("/expenses/<string:id>", methods=["GET", "PUT", "DELETE"])
-def _expenses(id: str):
+@expenses.route("/expenses/<string:id_>", methods=["GET", "PUT", "DELETE"])
+def _expenses(id_: str):
     try:
 
         if request.method == "GET":
-            return success_result(Expenses.get(id))
+            return success_result(Expenses.get(id_))
 
-        elif request.method == "PUT":
+        if request.method == "PUT":
             expense = request.json
             expense["amount"] = float(expense["amount"])
             expense["date"] = datetime.strptime(expense["date"], "%m-%d-%Y").replace(
                 hour=12
             )
+
             Expenses.update(expense)
             return success_result(Expenses.get(expense["_id"]))
 
-        elif request.method == "DELETE":
-            Expenses.delete(id)
+        if request.method == "DELETE":
+            Expenses.delete(id_)
             return "Expense deleted", 200
 
-        else:
-            return failure_result("Bad Request")
+        return failure_result("Bad Request")
+
     except Exception as err:
         print(f"err: {err}")
         return failure_result("Bad Request")

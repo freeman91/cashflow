@@ -1,8 +1,11 @@
+# pylint: disable=import-error, unused-import, wrong-import-position, missing-function-docstring
+"""workbench"""
+
 import os
 from pprint import pprint
 from datetime import datetime
 
-from pydash import uniq_by
+from pydash import uniq_by, reduce_
 
 os.environ["WB_DOMAIN"] = "localhost"
 os.environ["WB_PORT"] = "27017"

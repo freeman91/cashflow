@@ -41,7 +41,7 @@ class ExpensesModel:
         ]
 
     def get_all(self):
-        return [expense for expense in db.expenses.find()]
+        return list(db.expenses.find())
 
     def create(self, expense: dict):
         return db.expenses.insert_one(self.__serialize__(**expense))
