@@ -203,6 +203,8 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
           data-lpignore='true'
           id='type-select'
           autoComplete
+          autoHighlight
+          autoSelect
           freeSolo
           value={values.type}
           options={user.income.types}
@@ -224,6 +226,8 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
         <Autocomplete
           id='source-select'
           autoComplete
+          autoHighlight
+          autoSelect
           freeSolo
           value={values.source}
           options={user.income.sources}
@@ -231,7 +235,6 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
           onChange={(e, value) =>
             setValues({ ...values, source: value ? value : '' })
           }
-          autoSelect
           renderInput={(params) => (
             <TextField
               {...params}

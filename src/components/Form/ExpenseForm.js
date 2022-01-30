@@ -117,6 +117,8 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
           data-lpignore='true'
           id='type-select'
           autoComplete
+          autoHighlight
+          autoSelect
           freeSolo
           value={values.type}
           options={user.expense.types}
@@ -137,6 +139,8 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
         <Autocomplete
           id='vendor-select'
           autoComplete
+          autoHighlight
+          autoSelect
           freeSolo
           value={values.vendor}
           options={user.expense.vendors}
@@ -144,7 +148,6 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
           onChange={(e, value) =>
             setValues({ ...values, vendor: value ? value : '' })
           }
-          autoSelect
           renderInput={(params) => (
             <TextField
               {...params}

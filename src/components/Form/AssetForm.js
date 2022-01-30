@@ -244,6 +244,9 @@ export default function AssetForm({ handleClose, mode, asset }) {
           <Autocomplete
             data-lpignore='true'
             id='type-select'
+            autoComplete
+            autoHighlight
+            autoSelect
             freeSolo
             disabled={mode === 'update'}
             value={values.type}
@@ -266,6 +269,8 @@ export default function AssetForm({ handleClose, mode, asset }) {
           <Autocomplete
             id='vendor-select'
             autoComplete
+            autoHighlight
+            autoSelect
             freeSolo
             value={values.vendor}
             options={user.expense.vendors}
@@ -273,7 +278,6 @@ export default function AssetForm({ handleClose, mode, asset }) {
             onChange={(e, value) =>
               setValues({ ...values, vendor: value ? value : '' })
             }
-            autoSelect
             renderInput={(params) => (
               <TextField
                 {...params}

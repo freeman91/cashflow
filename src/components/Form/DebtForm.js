@@ -164,6 +164,8 @@ export default function DebtForm(props) {
             disabled={mode === 'update'}
             id='type-select'
             autoComplete
+            autoHighlight
+            autoSelect
             freeSolo
             value={values.type}
             options={user.debt.types}
@@ -184,6 +186,8 @@ export default function DebtForm(props) {
           <Autocomplete
             id='vendor-select'
             autoComplete
+            autoHighlight
+            autoSelect
             freeSolo
             value={values.vendor}
             options={user.expense.vendors}
@@ -191,7 +195,6 @@ export default function DebtForm(props) {
             onChange={(e, value) =>
               setValues({ ...values, vendor: value ? value : '' })
             }
-            autoSelect
             renderInput={(params) => (
               <TextField
                 {...params}

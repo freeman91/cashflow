@@ -100,6 +100,8 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
         <Autocomplete
           id='source-select'
           autoComplete
+          autoHighlight
+          autoSelect
           freeSolo
           value={values.source}
           options={user.income.sources}
@@ -107,7 +109,6 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
           onChange={(e, value) =>
             setValues({ ...values, source: value ? value : '' })
           }
-          autoSelect
           renderInput={(params) => (
             <TextField
               {...params}

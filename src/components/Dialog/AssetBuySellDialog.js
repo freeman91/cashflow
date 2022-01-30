@@ -142,12 +142,13 @@ export default function AssetBuySellDialog({ open, handleClose, asset, mode }) {
             <Autocomplete
               id='vendor-select'
               autoComplete
+              autoHighlight
+              autoSelect
               freeSolo
               value={vendor}
               options={user.expense.vendors}
               getOptionLabel={(option) => option}
               onChange={(e, value) => setVendor(value ? value : '')}
-              autoSelect
               renderInput={(params) => (
                 <TextField
                   {...params}
