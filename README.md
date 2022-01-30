@@ -29,3 +29,29 @@ SECRET_KEY=
 ### Jupiter deploy
 
 - update api/frontend port number?
+
+## docker notes
+
+## Backup
+
+```sh
+# generate a backup
+$ ./mongo-backup
+```
+
+## Restore
+
+```sh
+# copy backup to mongodb container
+docker cp ~/mongo-backups/cashflow-backup-2022-01-04/database mongodb:/data
+
+# drop database in mongodb container
+# log into shell
+docker exec -it mongodb /bin/bash
+mongo
+> use database
+> db.dropDatabase()
+
+# restore from backup
+docker exec -i mongodb mongorestore --username admin --password password /data
+```
