@@ -39,7 +39,7 @@ export default function RecordTable({ data }) {
   };
 
   useEffect(() => {
-    let maxPage = Math.ceil(data.length / 10) - 1;
+    let maxPage = Math.max([Math.ceil(data.length / 10) - 1], 0);
     if (page > maxPage) {
       setPage(maxPage);
     }
