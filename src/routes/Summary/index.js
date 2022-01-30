@@ -53,7 +53,7 @@ export default function Summary() {
         .concat(dayIncomes)
         .concat(dayHours);
       dayRecords = dayRecords.map((record, i) => {
-        if (i === 0) return { ...record, displayDate: dayStr };
+        if (i === 0) return { ...record };
         return record;
       });
       records = records.concat(dayRecords);
