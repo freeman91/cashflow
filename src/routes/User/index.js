@@ -116,20 +116,21 @@ export default function Networth() {
               ))}
             </TableBody>
           </Table>
+
+          {items.length > itemsPerPage ? (
+            <TablePagination
+              rowsPerPageOptions={[itemsPerPage]}
+              colSpan={1}
+              count={items.length}
+              rowsPerPage={itemsPerPage}
+              page={page}
+              SelectProps={{
+                native: true,
+              }}
+              onPageChange={(e, newPage) => setPage(newPage)}
+            />
+          ) : null}
         </TableContainer>
-        {items.length > itemsPerPage ? (
-          <TablePagination
-            rowsPerPageOptions={[itemsPerPage]}
-            colSpan={1}
-            count={items.length}
-            rowsPerPage={itemsPerPage}
-            page={page}
-            SelectProps={{
-              native: true,
-            }}
-            onPageChange={(e, newPage) => setPage(newPage)}
-          />
-        ) : null}
       </Grid>
 
       <SettingsDialog
