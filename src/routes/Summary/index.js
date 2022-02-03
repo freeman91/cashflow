@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useMount } from 'react-use';
+import React, { useEffect, useState, useCallback } from 'react';
 import dayjs from 'dayjs';
 import { filter } from 'lodash';
 
@@ -29,43 +28,46 @@ export default function Summary() {
   const [hours, setHours] = useState([]);
   const [range, setRange] = useState(defaultRange);
 
-  const prepareData = (expenses, incomes, hours) => {
-    var _expenses = filterExpense ? [] : expenses;
-    var _incomes = filterIncome ? [] : incomes;
-    var _hours = filterHour ? [] : hours;
+  const prepareData = useCallback(
+    (expenses, incomes, hours) => {
+      var _expenses = filterExpense ? [] : expenses;
+      var _incomes = filterIncome ? [] : incomes;
+      var _hours = filterHour ? [] : hours;
 
-    let records = [];
-    var _day = range[0];
-    while (_day <= range[1]) {
-      let dayRecords = [];
-      const dayStr = _day.format('MM-DD-YYYY');
-      let dayExpenses = filter(_expenses, (expense) => {
-        return expense.date === dayStr;
-      });
-      let dayIncomes = filter(_incomes, (income) => {
-        return income.date === dayStr;
-      });
-      let dayHours = filter(_hours, (hour) => {
-        return hour.date === dayStr;
-      });
-      dayRecords = dayRecords
-        .concat(dayExpenses)
-        .concat(dayIncomes)
-        .concat(dayHours);
-      dayRecords = dayRecords.map((record, i) => {
-        if (i === 0) return { ...record };
-        return record;
-      });
-      records = records.concat(dayRecords);
-      _day = _day.add(1, 'day');
-    }
-    setTableData(records);
-    setExpenses(_expenses);
-    setIncomes(_incomes);
-    setHours(_hours);
-  };
+      let records = [];
+      var _day = range[0];
+      while (_day <= range[1]) {
+        let dayRecords = [];
+        const dayStr = _day.format('MM-DD-YYYY');
+        let dayExpenses = filter(_expenses, (expense) => {
+          return expense.date === dayStr;
+        });
+        let dayIncomes = filter(_incomes, (income) => {
+          return income.date === dayStr;
+        });
+        let dayHours = filter(_hours, (hour) => {
+          return hour.date === dayStr;
+        });
+        dayRecords = dayRecords
+          .concat(dayExpenses)
+          .concat(dayIncomes)
+          .concat(dayHours);
+        dayRecords = dayRecords.map((record, i) => {
+          if (i === 0) return { ...record };
+          return record;
+        });
+        records = records.concat(dayRecords);
+        _day = _day.add(1, 'day');
+      }
+      setTableData(records);
+      setExpenses(_expenses);
+      setIncomes(_incomes);
+      setHours(_hours);
+    },
+    [filterExpense, filterHour, filterIncome, range]
+  );
 
-  const getRecords = async () => {
+  const getRecords = useCallback(async () => {
     const start = range[0].unix();
     const end = range[1].unix();
     Promise.all([
@@ -75,11 +77,11 @@ export default function Summary() {
     ]).then(([expenses, incomes, hours]) => {
       prepareData(expenses, incomes, hours);
     });
-  };
+  }, [range, prepareData]);
 
-  useMount(() => {
+  useEffect(() => {
     getRecords();
-  });
+  }, [getRecords]);
 
   return (
     <Grid container spacing={3}>

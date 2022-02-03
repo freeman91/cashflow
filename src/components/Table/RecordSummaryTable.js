@@ -22,6 +22,20 @@ export default function RecordSummaryTable(props) {
     setFilterHour,
   } = props;
   const [tableData, setTableData] = useState([]);
+  const [selectedRange, setSelectedRange] = useState(range);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (
+      !range[0].isSame(selectedRange[0], 'day') &&
+      !range[1].isSame(selectedRange[1], 'day')
+    ) {
+      if (selectedRange[1] > selectedRange[0]) {
+        setRange(selectedRange);
+        setOpen(false);
+      }
+    }
+  }, [selectedRange, range, setRange]);
 
   useEffect(() => {
     setTableData(
@@ -38,6 +52,10 @@ export default function RecordSummaryTable(props) {
     );
   }, [data, filterExpense, filterIncome, filterHour]);
 
+  const handleDateFieldClick = () => {
+    setOpen(!open);
+  };
+
   return (
     <>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -46,17 +64,20 @@ export default function RecordSummaryTable(props) {
         </Typography>
         <div style={{ display: 'flex', marginTop: '1rem' }}>
           <DateRangePicker
+            open={open}
+            calendars={1}
             startText='start'
             endText='end'
-            value={range}
+            value={selectedRange}
             onChange={(val) => {
-              setRange([dayjs(val[0]).hour(0), dayjs(val[1]).hour(23)]);
+              setSelectedRange([dayjs(val[0]).hour(0), dayjs(val[1]).hour(23)]);
             }}
             renderInput={(startProps, endProps) => {
               return (
                 <>
                   <TextField
                     {...startProps}
+                    onClick={handleDateFieldClick}
                     sx={{ width: 100 }}
                     InputProps={{
                       sx: { height: 30 },
@@ -65,6 +86,7 @@ export default function RecordSummaryTable(props) {
                   <Box sx={{ mx: 2 }}> - </Box>
                   <TextField
                     {...endProps}
+                    onClick={handleDateFieldClick}
                     sx={{ width: 100, mr: 5 }}
                     InputProps={{
                       sx: { height: 30 },
