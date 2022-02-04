@@ -106,6 +106,7 @@ export default function Summary() {
           setFilterIncome={setFilterIncome}
           filterHour={filterHour}
           setFilterHour={setFilterHour}
+          refresh={getRecords}
         />
       </Grid>
     </Grid>

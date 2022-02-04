@@ -20,6 +20,7 @@ export default function RecordSummaryTable(props) {
     setFilterIncome,
     filterHour,
     setFilterHour,
+    refresh,
   } = props;
   const [tableData, setTableData] = useState([]);
   const [selectedRange, setSelectedRange] = useState(range);
@@ -105,7 +106,7 @@ export default function RecordSummaryTable(props) {
               filterHour={filterHour}
               setFilterHour={setFilterHour}
             />
-            <GenerateRecordButton />
+            <GenerateRecordButton refresh={refresh} />
           </div>
         </div>
       </Toolbar>

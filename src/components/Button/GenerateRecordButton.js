@@ -3,16 +3,21 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { IconButton } from '@mui/material';
 
 import RecordGenerationDialog from '../Dialog/GenerateRecordDialog';
+import { sleep } from '../../helpers/util';
 
-export default function GenerateRecordButton() {
+export default function GenerateRecordButton({ refresh }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleButtonClick = () => {
     setDialogOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     setDialogOpen(false);
+    if (refresh) {
+      await sleep(1000);
+      refresh();
+    }
   };
 
   return (
