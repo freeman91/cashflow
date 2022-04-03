@@ -24,7 +24,7 @@ const default_state = {
   type: '',
   source: '',
   description: '',
-  date: new Date(),
+  date: dayjs(),
 };
 
 export default function IncomeForm({ handleDialogClose, mode, income }) {
@@ -35,11 +35,11 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
 
   useEffect(() => {
     var _deductions = {};
-    user.income.deductions.forEach((deduction) => {
+    user.income_deductions.forEach((deduction) => {
       _deductions[deduction] = '';
     });
     setInitialDeductions(_deductions);
-  }, [user.income.deductions]);
+  }, [user.income_deductions]);
 
   useEffect(() => {
     let _deductions = get(income, 'deductions', {});
@@ -56,7 +56,7 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
         type: get(income, 'type', ''),
         deductions: _deductions,
         description: get(income, 'description', ''),
-        date: new Date(get(income, 'date')),
+        date: dayjs(get(income, 'date', '')),
       });
     }
     // eslint-disable-next-line
@@ -103,7 +103,7 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
   };
 
   const handleDelete = () => {
-    dispatch(deleteIncome(get(income, '_id')));
+    dispatch(deleteIncome(get(income, 'id')));
     handleDialogClose();
   };
 
@@ -207,7 +207,7 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
           autoSelect
           freeSolo
           value={values.type}
-          options={user.income.types}
+          options={user.income_types}
           getOptionLabel={(option) => option}
           onChange={(e, value) =>
             setValues({ ...values, type: value ? value : '' })
@@ -230,7 +230,7 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
           autoSelect
           freeSolo
           value={values.source}
-          options={user.income.sources}
+          options={user.income_sources}
           getOptionLabel={(option) => option}
           onChange={(e, value) =>
             setValues({ ...values, source: value ? value : '' })

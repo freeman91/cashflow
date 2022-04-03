@@ -1,156 +1,85 @@
-from flask import request, Blueprint
-from datetime import datetime
-from pydash import get, assign
+# pylint: disable=import-error, broad-except
+"""Assets controller"""
 
-from api.db.assets import Assets
-from api.db.expenses import Expenses
-from api.db.incomes import Incomes
-from api.controllers.__util__ import success_result, failure_result
+from datetime import datetime
+from flask import Blueprint, request
+
+from api import mongo
+from api.controllers.__util__ import (
+    failure_result,
+    handle_exception,
+    set_date,
+    success_result,
+)
 
 assets = Blueprint("assets", __name__)
 
 
+@handle_exception
 @assets.route("/assets", methods=["POST", "GET"])
 def _assets():
-
-    try:
-        if request.method == "GET":
-            _assets = [asset for asset in Assets.get_all() if asset["value"] > 0]
-            return success_result(_assets)
-        if request.method == "POST":
-            return success_result(create())
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    if request.method == "POST":
+        return success_result(mongo.asset.create(set_date(request.json)))
+    if request.method == "GET":
+        return success_result(mongo.asset.get())
+    return failure_result()
 
 
-@assets.route("/assets/<string:_id>", methods=["GET", "PUT"])
-def _asset(_id: str):
-    try:
-        if request.method == "GET":
-            # TODO: if does not exist send back 400 error
-            return success_result(Assets.get(_id))
+@handle_exception
+@assets.route("/assets/<string:_id>", methods=["GET", "PUT", "DELETE"])
+def _assets_id(_id: str):
+    if request.method == "GET":
+        return success_result(mongo.asset.get(_id))
 
-        if request.method == "PUT":
-            asset = request.json
-            assign(
-                asset,
-                {
-                    "value": float(asset["value"]),
-                    "invested": float(asset["invested"]),
-                    "price": float(asset["price"]),
-                    "shares": float(asset["shares"]),
-                },
+    if request.method == "PUT":
+        return success_result(mongo.asset.update(set_date(request.json)))
+
+    if request.method == "DELETE":
+        return success_result(mongo.asset.delete(_id).acknowledged)
+
+    return failure_result()
+
+
+@handle_exception
+@assets.route("/assets/<string:_id>/<string:action>", methods=["PUT"])
+def _assets_id_action(_id: str, action: str):
+
+    if request.method == "PUT":
+        if action == "sell":
+            payload = request.json
+            asset = mongo.asset.get(_id)
+
+            return success_result(
+                asset.sell(
+                    payload.get("source"),
+                    float(payload.get("shares")),
+                    float(payload.get("price")),
+                )
+            )
+        if action == "buy":
+            payload = request.json
+            asset = mongo.asset.get(_id)
+
+            return success_result(
+                asset.buy(
+                    payload.get("vendor"),
+                    float(payload.get("shares")),
+                    float(payload.get("price")),
+                )
             )
 
-            if get(asset, "type") == "stock" or get(asset, "type") == "crypto":
-                value = get(asset, "price") * get(asset, "shares")
-            else:
-                value = float(asset["value"])
-
-            asset["value"] = value
-            Assets.update(asset)
-            return success_result(Assets.get(asset["_id"]))
-
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    return failure_result()
 
 
-@assets.route("/assets/<string:_id>/sell", methods=["PUT"])
-def _sell(_id: str):
-    try:
-        payload = request.json
-        asset = Assets.get(_id)
-        source = payload["source"]
-        shares_sold = float(payload["shares"])
-        sell_price = float(payload["price"])
-        sell_value = shares_sold * sell_price
+@handle_exception
+@assets.route("/assets/range/<start>/<stop>", methods=["GET"])
+def _fetch_assets_in_range(start: str, stop: str):
 
-        asset["shares"] = asset["shares"] - shares_sold
-        asset["invested"] = asset["invested"] - sell_value
-        asset["value"] = asset["shares"] * asset["price"]
+    if not (start.isnumeric() and stop.isnumeric()):
+        return failure_result("Invalid range")
 
-        Assets.update(asset)
-
-        new_income = {
-            "date": datetime.now(),
-            "amount": sell_value,
-            "type": "sale",
-            "source": source,
-            "asset": _id,
-            "deductions": {},
-            "description": f"sold {shares_sold} shares of {asset['name']}",
-        }
-
-        print(f"new_income: {new_income}")
-
-        new_income = Incomes.get(Incomes.create(new_income).inserted_id)
-
-        return success_result(
-            {"updated_asset": Assets.get(_id), "new_income": new_income}
+    return success_result(
+        mongo.asset.search(
+            datetime.fromtimestamp(int(start)), datetime.fromtimestamp(int(stop))
         )
-
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
-
-
-@assets.route("/assets/<string:_id>/buy", methods=["PUT"])
-def _buy(_id: str):
-    try:
-        payload = request.json
-        asset = Assets.get(_id)
-        vendor = payload["vendor"]
-        shares_bought = float(payload["shares"])
-        buy_price = float(payload["price"])
-        buy_value = shares_bought * buy_price
-
-        asset["shares"] = asset["shares"] + shares_bought
-        asset["invested"] = asset["invested"] + buy_value
-        asset["value"] = asset["shares"] * asset["price"]
-
-        Assets.update(asset)
-
-        # generate expense
-        new_expense = {
-            "date": datetime.now(),
-            "amount": buy_value,
-            "type": "asset",
-            "vendor": vendor,
-            "asset": _id,
-            "description": f"bought {shares_bought} shares of {asset['name']}",
-        }
-        new_expense = Expenses.get(Expenses.create(new_expense).inserted_id)
-
-        return success_result(
-            {"updated_asset": Assets.get(_id), "new_expense": new_expense}
-        )
-
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
-
-
-def create():
-    new_asset = request.json
-    new_asset["value"] = float(new_asset["value"])
-    new_asset["shares"] = float(new_asset["shares"])
-    new_asset["price"] = float(new_asset["price"])
-    new_asset["invested"] = float(new_asset["invested"])
-    new_asset["last_update"] = datetime.now()
-
-    new_asset = Assets.get(Assets.create(new_asset).inserted_id)
-
-    if new_asset["invested"] > 0:
-        # create expense
-        new_expense = {
-            "amount": new_asset["invested"],
-            "type": "asset",
-            "vendor": new_asset["vendor"],
-            "description": "asset purchase",
-            "date": datetime.now().replace(hour=12),
-        }
-        Expenses.create(new_expense)
-
-    return new_asset
+    )

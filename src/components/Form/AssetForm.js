@@ -250,7 +250,7 @@ export default function AssetForm({ handleClose, mode, asset }) {
             freeSolo
             disabled={mode === 'update'}
             value={values.type}
-            options={user.asset.types}
+            options={user.asset_types}
             getOptionLabel={(option) => option}
             onChange={(e, value) =>
               setValues({ ...values, type: value ? value : '' })
@@ -273,7 +273,7 @@ export default function AssetForm({ handleClose, mode, asset }) {
             autoSelect
             freeSolo
             value={values.vendor}
-            options={user.expense.vendors}
+            options={user.expense_vendors}
             getOptionLabel={(option) => option}
             onChange={(e, value) =>
               setValues({ ...values, vendor: value ? value : '' })

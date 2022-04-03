@@ -146,7 +146,7 @@ export default function AssetBuySellDialog({ open, handleClose, asset, mode }) {
               autoSelect
               freeSolo
               value={vendor}
-              options={user.expense.vendors}
+              options={user.expense_vendors}
               getOptionLabel={(option) => option}
               onChange={(e, value) => setVendor(value ? value : '')}
               renderInput={(params) => (

@@ -69,7 +69,7 @@ const putDebt = createAsyncThunk(
       }
       let _debts = [...storeDebts];
       remove(_debts, {
-        _id: get(result, '_id'),
+        id: get(result, 'id'),
       });
 
       return {
@@ -91,7 +91,7 @@ const debtPayment = createAsyncThunk(
   'debts/debtPayment',
   async (payload, { dispatch, getState }) => {
     try {
-      const result = await debtPaymentAPI(get(payload, 'debt._id'), {
+      const result = await debtPaymentAPI(get(payload, 'debt.id'), {
         amount: get(payload, 'amount'),
       });
       const { data: storeDebts } = getState().debts;
@@ -106,7 +106,7 @@ const debtPayment = createAsyncThunk(
       }
       let _debts = [...storeDebts];
       remove(_debts, {
-        _id: get(result, '_id'),
+        id: get(result, 'id'),
       });
 
       return {

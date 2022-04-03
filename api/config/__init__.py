@@ -55,4 +55,4 @@ def get_config():
     return Config
 
 
-app_config = get_config()
+AppConfig = get_config()

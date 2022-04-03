@@ -13,7 +13,7 @@ const default_state = {
   amount: '',
   source: '',
   description: '',
-  date: new Date(),
+  date: dayjs(),
 };
 
 export default function HourForm({ handleDialogClose, mode, hour }) {
@@ -27,7 +27,7 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
         amount: get(hour, 'amount', 0),
         source: get(hour, 'source', ''),
         description: get(hour, 'description', ''),
-        date: new Date(get(hour, 'date')),
+        date: dayjs(get(hour, 'date')),
       });
     }
   }, [mode, hour]);
@@ -55,7 +55,7 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
   };
 
   const handleDelete = () => {
-    dispatch(deleteHour(get(hour, '_id')));
+    dispatch(deleteHour(get(hour, 'id')));
     handleDialogClose();
   };
 
@@ -104,7 +104,7 @@ export default function HourForm({ handleDialogClose, mode, hour }) {
           autoSelect
           freeSolo
           value={values.source}
-          options={user.income.sources}
+          options={user.income_sources}
           getOptionLabel={(option) => option}
           onChange={(e, value) =>
             setValues({ ...values, source: value ? value : '' })

@@ -70,7 +70,7 @@ export default function RecordTable({ data }) {
           </TableHead>
           <TableBody>
             {data.slice(page * 10, page * 10 + 10).map((row) => (
-              <TableRow key={row._id} onClick={() => handleClick(row)}>
+              <TableRow key={row.id} onClick={() => handleClick(row)}>
                 <TableCell component='th' scope='row'>
                   {dayjs(row.date).format('MMMM D')}
                 </TableCell>

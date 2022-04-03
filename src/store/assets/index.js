@@ -40,7 +40,7 @@ const putAsset = createAsyncThunk(
       }
       let _assets = [...storeAssets];
       remove(_assets, {
-        _id: get(result, '_id'),
+        id: get(result, 'id'),
       });
 
       return {
@@ -61,7 +61,7 @@ const putAsset = createAsyncThunk(
 const buyAsset = createAsyncThunk(
   'assets/sellAsset',
   async (payload, { dispatch, getState }) => {
-    let assetId = get(payload, 'asset._id');
+    let assetId = get(payload, 'asset.id');
     let _payload = {
       shares: get(payload, 'shares'),
       price: get(payload, 'price'),
@@ -82,7 +82,7 @@ const buyAsset = createAsyncThunk(
       }
       let _assets = [...storeAssets];
       remove(_assets, {
-        _id: get(result, '_id'),
+        id: get(result, 'id'),
       });
       let updatedAsset = get(result, 'updated_asset');
       return {
@@ -103,7 +103,7 @@ const buyAsset = createAsyncThunk(
 const sellAsset = createAsyncThunk(
   'assets/sellAsset',
   async (payload, { dispatch, getState }) => {
-    let assetId = get(payload, 'asset._id');
+    let assetId = get(payload, 'asset.id');
     let _payload = {
       shares: get(payload, 'shares'),
       price: get(payload, 'price'),
@@ -123,7 +123,7 @@ const sellAsset = createAsyncThunk(
       }
       let _assets = [...storeAssets];
       remove(_assets, {
-        _id: get(result, '_id'),
+        id: get(result, 'id'),
       });
       let updatedAsset = get(result, 'updated_asset');
       return {

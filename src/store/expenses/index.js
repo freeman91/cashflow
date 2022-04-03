@@ -58,7 +58,7 @@ const putExpense = createAsyncThunk(
       }
       let _expenses = [...expenses];
       remove(_expenses, {
-        _id: get(result, '_id'),
+        id: get(result, 'id'),
       });
 
       return {
@@ -93,7 +93,7 @@ const deleteExpense = createAsyncThunk(
       }
 
       let _expenses = [...expenses];
-      remove(_expenses, { _id: id });
+      remove(_expenses, { id: id });
       return {
         data: _expenses,
       };

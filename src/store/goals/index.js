@@ -63,7 +63,7 @@ const putGoal = createAsyncThunk(
       }
       let _goals = [...goals];
       remove(_goals, {
-        _id: get(result, '_id'),
+        id: get(result, 'id'),
       });
 
       return {

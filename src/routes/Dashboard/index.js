@@ -7,9 +7,6 @@ import { filter, forEach } from 'lodash';
 import { getRecentExpenses } from '../../store/expenses';
 import { getRecentIncomes } from '../../store/incomes';
 import { getRecentHours } from '../../store/hours';
-import { getAssets } from '../../store/assets';
-import { getDebts } from '../../store/debts';
-import { getNetworths } from '../../store/networths';
 
 import RecentRecordsTable from '../../components/Table/RecentRecordsTable';
 
@@ -22,18 +19,11 @@ export default function Dashboard() {
   const [filterExpense, setFilterExpense] = useState(false);
   const [filterIncome, setFilterIncome] = useState(false);
   const [filterHour, setFilterHour] = useState(false);
-  // const { data: goals } = useSelector((state) => state.goals);
-  // const { data: networths } = useSelector((state) => state.networths);
-  // const { data: assets } = useSelector((state) => state.assets);
-  // const { data: debts } = useSelector((state) => state.debts);
 
   useEffect(() => {
     dispatch(getRecentExpenses());
     dispatch(getRecentIncomes());
     dispatch(getRecentHours());
-    dispatch(getAssets());
-    dispatch(getDebts());
-    dispatch(getNetworths());
   }, [dispatch]);
 
   useEffect(() => {
@@ -45,7 +35,7 @@ export default function Dashboard() {
       let records = [];
       let days = [];
       for (var i = 0; i <= 7; i++) {
-        days.push(dayjs().subtract(i, 'day').format('MM-DD-YYYY'));
+        days.push(dayjs().subtract(i, 'day').format('YYYY-MM-DD'));
       }
 
       forEach(days, (day) => {
@@ -59,14 +49,17 @@ export default function Dashboard() {
         let dayHours = filter(_hours, (hour) => {
           return hour.date === day;
         });
+
         dayRecords = dayRecords
           .concat(dayExpenses)
           .concat(dayIncomes)
           .concat(dayHours);
+
         records = records.concat(dayRecords);
       });
       return records.slice(0, 10);
     };
+
     setTableData(prepareRecentRecords(expenses, incomes, hours));
   }, [expenses, incomes, hours, filterExpense, filterIncome, filterHour]);
 

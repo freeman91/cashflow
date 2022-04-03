@@ -1,32 +1,63 @@
+# pylint: disable = missing-function-docstring, broad-except
+"""controller utility functions"""
+
+import traceback
 from datetime import datetime
+from http import HTTPStatus
+from pydash import set_
 from bson.objectid import ObjectId
-from bson.json_util import dumps
+
+
+def success_result(payload, status_code: HTTPStatus = HTTPStatus.OK):
+    return {"result": serialize(payload)}, status_code
+
+
+def failure_result(
+    message: str = "Bad Request", status_code: HTTPStatus = HTTPStatus.BAD_REQUEST
+):
+    return {"result": message}, status_code
+
+
+def set_date(item: dict):
+    return set_(
+        item,
+        "date",
+        datetime.strptime(item["date"], "%m-%d-%Y").replace(hour=12),
+    )
+
+
+def handle_exception(func):
+    """wrap the function in a try/except block"""
+
+    def wrap(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as err:
+            traceback.print_exc()
+            return failure_result(
+                f"Action unsuccessful: {err}",
+                status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+            )
+
+    return wrap
 
 
 def serialize(item):
-    if type(item) == list:
+
+    if isinstance(item, list):
         return [serialize(elem) for elem in item]
 
-    if type(item) == str:
-        return item
-    if type(item) == dict:
+    if isinstance(item, dict):
         for attr in item:
-            if type(item[attr]) == list:
-                item[attr] = serialize(item[attr])
-            if type(item[attr]) == ObjectId:
-                item[attr] = str(item[attr])
-            elif type(item[attr]) == datetime:
-                item[attr] = round(item[attr].timestamp())
+            item[attr] = serialize(item[attr])
 
-        return dumps(item)
+    if isinstance(item, ObjectId):
+        return str(item)
 
+    if isinstance(item, datetime):
+        return item.strftime("%Y-%m-%d")
 
-def success_result(payload):
-    if type(payload) == dict or type(payload) == list:
-        return {"result": serialize(payload)}, 200
-    else:
-        return payload
+    if hasattr(item, "json"):
+        return item.json()
 
-
-def failure_result(message):
-    return {"result": message}, 400
+    return item

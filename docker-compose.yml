@@ -8,18 +8,22 @@ services:
 
     volumes:
       - ./mongo-volume:/data/db
-      - ./:/appdata
+      - ./:/code
     ports:
       - '27017:27017'
     networks:
       app-net:
         ipv4_address: ${MONGO_IP}
+    healthcheck:
+      test: 'exit 0'
+
   flask:
+    restart: on-failure
     build: .
     ports:
       - '9000:9000'
     volumes:
-      - ./:/appdata
+      - ./:/code
     env_file:
       - .env
     networks:

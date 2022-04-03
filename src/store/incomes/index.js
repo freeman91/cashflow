@@ -58,7 +58,7 @@ const putIncome = createAsyncThunk(
       }
       let _incomes = [...incomes];
       remove(_incomes, {
-        _id: get(result, '_id'),
+        id: get(result, 'id'),
       });
 
       return {
@@ -93,7 +93,7 @@ const deleteIncome = createAsyncThunk(
       }
 
       let _incomes = [...incomes];
-      remove(_incomes, { _id: id });
+      remove(_incomes, { id: id });
       return {
         data: _incomes,
       };

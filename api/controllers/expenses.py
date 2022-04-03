@@ -4,78 +4,54 @@
 from datetime import datetime, timedelta
 from flask import Blueprint, request
 
-from api.controllers.__util__ import failure_result, success_result
-from api.db.expenses import Expenses
+from api import mongo
+from api.controllers.__util__ import (
+    failure_result,
+    handle_exception,
+    set_date,
+    success_result,
+)
 
 expenses = Blueprint("expenses", __name__)
 
 
+@handle_exception
 @expenses.route("/expenses/recent", methods=["GET"])
-def _get_recent_expenses():
-    try:
-        end = datetime.now() + timedelta(days=1)
-        start = end - timedelta(days=20)
-        return success_result(
-            {"expenses": Expenses.in_range(start.timestamp(), end.timestamp())}
-        )
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+def _fetch_recent_expenses():
+    stop = datetime.now() + timedelta(days=1)
+    return success_result(mongo.expense.search(stop - timedelta(days=20), stop))
 
 
+@handle_exception
 @expenses.route("/expenses", methods=["POST"])
 def _create_expense():
-    try:
-        new_expense = request.json
-        if not hasattr(new_expense, "asset"):
-            new_expense["asset"] = ""
-        if not hasattr(new_expense, "debt"):
-            new_expense["debt"] = ""
-        new_expense["date"] = datetime.strptime(
-            new_expense["date"], "%m-%d-%Y"
-        ).replace(hour=12)
-        new_expense["amount"] = float(new_expense["amount"])
-        return success_result(Expenses.get(Expenses.create(new_expense).inserted_id))
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    return success_result(mongo.expense.create(set_date(request.json)))
 
 
-@expenses.route("/expenses/<string:id_>", methods=["GET", "PUT", "DELETE"])
-def _expenses(id_: str):
-    try:
+@handle_exception
+@expenses.route("/expenses/<string:_id>", methods=["GET", "PUT", "DELETE"])
+def _expenses(_id: str):
+    if request.method == "GET":
+        return success_result(mongo.expense.get(_id))
 
-        if request.method == "GET":
-            return success_result(Expenses.get(id_))
+    if request.method == "PUT":
+        return success_result(mongo.expense.update(set_date(request.json)))
 
-        if request.method == "PUT":
-            expense = request.json
-            expense["amount"] = float(expense["amount"])
-            expense["date"] = datetime.strptime(expense["date"], "%m-%d-%Y").replace(
-                hour=12
-            )
+    if request.method == "DELETE":
+        return success_result(mongo.expense.delete(_id).acknowledged)
 
-            Expenses.update(expense)
-            return success_result(Expenses.get(expense["_id"]))
-
-        if request.method == "DELETE":
-            Expenses.delete(id_)
-            return "Expense deleted", 200
-
-        return failure_result("Bad Request")
-
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    return failure_result()
 
 
-@expenses.route("/expenses/range/<start>/<end>", methods=["GET"])
-def _expenses_in_range(start: str, end: str):
-    try:
-        if not (start.isnumeric() and end.isnumeric()):
-            return {"result": "Invalid range"}, 400
+@handle_exception
+@expenses.route("/expenses/range/<start>/<stop>", methods=["GET"])
+def _fetch_expenses_in_range(start: str, stop: str):
 
-        return success_result(Expenses.in_range(int(start), int(end)))
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    if not (start.isnumeric() and stop.isnumeric()):
+        return failure_result("Invalid range")
+
+    return success_result(
+        mongo.expense.search(
+            datetime.fromtimestamp(int(start)), datetime.fromtimestamp(int(stop))
+        )
+    )

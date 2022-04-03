@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { concat, get, remove, sortBy, toArray } from 'lodash';
+import { concat, get, map, remove, sortBy, toArray } from 'lodash';
 import {
   Button,
+  Box,
   Grid,
-  Paper,
-  Table,
-  TableCell,
-  TableBody,
-  TableContainer,
-  TableRow,
-  TablePagination,
   Typography,
   Select,
   MenuItem,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  List,
 } from '@mui/material';
 
 import { putUserSettings } from '../../store/user';
@@ -22,12 +20,10 @@ import SettingsDialog from '../../components/Dialog/SettingsDialog';
 export default function Networth() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const [selectedType, setSelectedType] = useState('expense.types');
+  const [selectedType, setSelectedType] = useState('expense_types');
   const [selectedItem, setSelectedItem] = useState('');
   const [dialogMode, setDialogMode] = useState('');
   const [items, setItems] = useState([]);
-  const [page, setPage] = useState(0);
-  const itemsPerPage = 10;
 
   useEffect(() => {
     setItems(sortBy(get(user, selectedType)));
@@ -47,11 +43,6 @@ export default function Networth() {
 
   const handleSubmit = (e, updatedItem) => {
     let _updatedList = toArray(get(user, selectedType));
-
-    if (selectedItem !== '+ create') {
-      remove(_updatedList, (item) => item === selectedItem);
-    }
-
     _updatedList = sortBy(concat(_updatedList, updatedItem));
 
     dispatch(putUserSettings({ updated: _updatedList, setting: selectedType }));
@@ -70,8 +61,6 @@ export default function Networth() {
     setSelectedType(e.target.value);
   };
 
-  let itemsInPage = items.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
-
   return (
     <Grid container justifyContent='center'>
       <Grid item xs={12}>
@@ -87,12 +76,13 @@ export default function Networth() {
           onChange={handleChange}
           sx={{ mb: '1rem', width: '10rem', mr: '2rem' }}
         >
-          <MenuItem value={'expense.types'}>Expense Types</MenuItem>
-          <MenuItem value={'expense.vendors'}>Expense Vendors</MenuItem>
-          <MenuItem value={'income.types'}>Income Types</MenuItem>
-          <MenuItem value={'income.sources'}>Income Sources</MenuItem>
-          <MenuItem value={'asset.types'}>Asset Types</MenuItem>
-          <MenuItem value={'debt.types'}>Debt Types</MenuItem>
+          <MenuItem value={'expense_types'}>Expense Types</MenuItem>
+          <MenuItem value={'expense_vendors'}>Expense Vendors</MenuItem>
+          <MenuItem value={'income_types'}>Income Types</MenuItem>
+          <MenuItem value={'income_sources'}>Income Sources</MenuItem>
+          <MenuItem value={'income_deductions'}>Income Deductions</MenuItem>
+          <MenuItem value={'asset_types'}>Asset Types</MenuItem>
+          <MenuItem value={'debt_types'}>Debt Types</MenuItem>
         </Select>
         <Button variant='contained' onClick={() => setDialogMode('add')}>
           Insert
@@ -100,37 +90,25 @@ export default function Networth() {
       </Grid>
 
       <Grid item xs={4} sx={{ mt: '1rem' }} justifyContent='center'>
-        <TableContainer component={Paper} sx={{ width: '20rem' }}>
-          <Table>
-            <TableBody>
-              {itemsInPage.map((item) => (
-                <TableRow key={item} hover>
-                  <TableCell
-                    component='th'
-                    scope='row'
-                    onClick={handleCellClick}
-                  >
-                    {item}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-
-          {items.length > itemsPerPage ? (
-            <TablePagination
-              rowsPerPageOptions={[itemsPerPage]}
-              colSpan={1}
-              count={items.length}
-              rowsPerPage={itemsPerPage}
-              page={page}
-              SelectProps={{
-                native: true,
-              }}
-              onPageChange={(e, newPage) => setPage(newPage)}
-            />
-          ) : null}
-        </TableContainer>
+        <Box
+          sx={{
+            width: '100%',
+            bgcolor: 'background.paper',
+            boxShadow: '0px 0px 1px grey',
+          }}
+        >
+          <List sx={{ overflow: 'auto', maxHeight: 800 }}>
+            {map(items, (item) => {
+              return (
+                <ListItem disablePadding key={item}>
+                  <ListItemButton onClick={handleCellClick}>
+                    <ListItemText primary={item} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Box>
       </Grid>
 
       <SettingsDialog

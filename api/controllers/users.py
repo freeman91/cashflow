@@ -1,30 +1,30 @@
-# pylint: disable=import-error
+# pylint: disable=import-error, missing-function-docstring
 """User controller"""
 
-from pydash import get
 from flask import request, Blueprint
+from pydash import get
 
-from api.db.user import user
+from api import mongo
 from api.controllers.__util__ import success_result, failure_result
+
 
 users = Blueprint("users", __name__)
 
 
 @users.route("/user", methods=["GET", "PUT"])
-def _user():
+def user_route():
     if request.method == "GET":
-        return success_result(user.item)
+        return success_result(mongo.user.get())
 
     if request.method == "PUT":
         payload = request.json
 
         updated_list = get(payload, "updated")
-        resource, setting = get(payload, "setting").split(".")
+        setting = get(payload, "setting")
 
-        user.update_setting(resource, setting, updated_list)
+        user = mongo.user.get()
+        user.update(setting, updated_list)
 
-        _user = user.refresh()
-
-        return success_result(_user)
+        return success_result(mongo.user.get())
 
     return failure_result("Not Found")

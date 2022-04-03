@@ -168,7 +168,7 @@ export default function DebtForm(props) {
             autoSelect
             freeSolo
             value={values.type}
-            options={user.debt.types}
+            options={user.debt_types}
             getOptionLabel={(option) => option}
             onChange={(e, value) =>
               setValues({ ...values, type: value ? value : '' })
@@ -190,7 +190,7 @@ export default function DebtForm(props) {
             autoSelect
             freeSolo
             value={values.vendor}
-            options={user.expense.vendors}
+            options={user.expense_vendors}
             getOptionLabel={(option) => option}
             onChange={(e, value) =>
               setValues({ ...values, vendor: value ? value : '' })

@@ -17,7 +17,7 @@ const default_state = {
   type: '',
   vendor: '',
   description: '',
-  date: new Date(),
+  date: dayjs(),
 };
 
 export default function ExpenseForm({ handleDialogClose, mode, expense }) {
@@ -32,7 +32,7 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
         type: get(expense, 'type', ''),
         vendor: get(expense, 'vendor', ''),
         description: get(expense, 'description', ''),
-        date: new Date(get(expense, 'date')),
+        date: dayjs(get(expense, 'date')),
       });
     }
   }, [mode, expense]);
@@ -52,8 +52,8 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
 
   const handleUpdate = () => {
     let updatedExpense = {
-      _id: get(expense, '_id'),
-      amount: get(values, 'amount'),
+      id: get(expense, 'id'),
+      amount: Number(get(values, 'amount')),
       asset: get(values, 'asset'),
       debt: get(values, 'debt'),
       description: get(values, 'description'),
@@ -66,7 +66,7 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
   };
 
   const handleDelete = () => {
-    dispatch(deleteExpense(get(expense, '_id')));
+    dispatch(deleteExpense(get(expense, 'id')));
     handleDialogClose();
   };
 
@@ -126,7 +126,7 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
           autoSelect
           freeSolo
           value={values.type}
-          options={user.expense.types}
+          options={user.expense_types}
           getOptionLabel={(option) => option}
           onChange={(e, value) =>
             setValues({ ...values, type: value ? value : '' })
@@ -148,7 +148,7 @@ export default function ExpenseForm({ handleDialogClose, mode, expense }) {
           autoSelect
           freeSolo
           value={values.vendor}
-          options={user.expense.vendors}
+          options={user.expense_vendors}
           getOptionLabel={(option) => option}
           onChange={(e, value) =>
             setValues({ ...values, vendor: value ? value : '' })

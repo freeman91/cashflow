@@ -59,7 +59,7 @@ const putHour = createAsyncThunk(
       }
       let _hours = [...hours];
       remove(_hours, {
-        _id: get(result, '_id'),
+        id: get(result, 'id'),
       });
 
       return {
@@ -94,7 +94,7 @@ const deleteHour = createAsyncThunk(
       }
 
       let _hours = [...hours];
-      remove(_hours, { _id: id });
+      remove(_hours, { id: id });
       return {
         data: _hours,
       };

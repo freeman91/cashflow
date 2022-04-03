@@ -1,68 +1,57 @@
-from flask import request, Blueprint
-from datetime import datetime, timedelta
+# pylint: disable=import-error, broad-except
+"""Hours controller"""
 
-from api.db.hours import Hours
-from api.controllers.__util__ import success_result, failure_result
+from datetime import datetime, timedelta
+from flask import Blueprint, request
+
+from api import mongo
+from api.controllers.__util__ import (
+    failure_result,
+    handle_exception,
+    set_date,
+    success_result,
+)
 
 hours = Blueprint("hours", __name__)
 
 
+@handle_exception
 @hours.route("/hours/recent", methods=["GET"])
-def _get_recent_hours():
-    try:
-        end = datetime.now() + timedelta(days=1)
-        start = end - timedelta(days=20)
-        return success_result(
-            {"hours": Hours.in_range(start.timestamp(), end.timestamp())}
-        )
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+def _fetch_recent_hours():
+    stop = datetime.now() + timedelta(days=1)
+    return success_result(mongo.hour.search(stop - timedelta(days=20), stop))
 
 
+@handle_exception
 @hours.route("/hours", methods=["POST"])
 def _create_hour():
-    try:
-        new_hour = request.json
-        new_hour["date"] = round(
-            datetime.strptime(new_hour["date"], "%m-%d-%Y").replace(hour=12).timestamp()
+    return success_result(mongo.hour.create(set_date(request.json)))
+
+
+@handle_exception
+@hours.route("/hours/<string:_id>", methods=["GET", "PUT", "DELETE"])
+def _hours(_id: str):
+    if request.method == "GET":
+        return success_result(mongo.hour.get(_id))
+
+    if request.method == "PUT":
+        return success_result(mongo.hour.update(set_date(request.json)))
+
+    if request.method == "DELETE":
+        return success_result(mongo.hour.delete(_id).acknowledged)
+
+    return failure_result()
+
+
+@handle_exception
+@hours.route("/hours/range/<start>/<stop>", methods=["GET"])
+def _fetch_hours_in_range(start: str, stop: str):
+
+    if not (start.isnumeric() and stop.isnumeric()):
+        return failure_result("Invalid range")
+
+    return success_result(
+        mongo.hour.search(
+            datetime.fromtimestamp(int(start)), datetime.fromtimestamp(int(stop))
         )
-        new_hour["amount"] = float(new_hour["amount"])
-        return success_result(Hours.get(Hours.create(new_hour).inserted_id))
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
-
-
-@hours.route("/hours/<string:id>", methods=["GET", "PUT", "DELETE"])
-def _hours(id: str):
-    try:
-        if request.method == "GET":
-            # if does not exist send back 400 error
-            return success_result(Hours.get(id))
-
-        if request.method == "PUT":
-            hour = request.json
-            hour["amount"] = float(hour["amount"])
-            hour["date"] = datetime.strptime(hour["date"], "%m-%d-%Y").replace(hour=12)
-            Hours.update(hour)
-            return success_result(Hours.get(hour["_id"]))
-
-        if request.method == "DELETE":
-            Hours.delete(id)
-            return "Expense deleted", 200
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
-
-
-@hours.route("/hours/range/<start>/<end>", methods=["GET"])
-def _hours_in_range(start: str, end: str):
-    try:
-        if not (start.isnumeric() and end.isnumeric()):
-            return {"result": "Invalid range"}, 400
-
-        return success_result(Hours.in_range(int(start), int(end)))
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    )

@@ -1,71 +1,53 @@
-from datetime import datetime
-from flask import request, Blueprint
+# pylint: disable=import-error, broad-except
+"""Goal controller"""
 
-from api.db.goals import Goals
-from api.controllers.__util__ import success_result, failure_result
+from datetime import datetime
+from flask import Blueprint, request
+
+from api import mongo
+from api.controllers.__util__ import (
+    failure_result,
+    handle_exception,
+    set_date,
+    success_result,
+)
 
 goals = Blueprint("goals", __name__)
 
 
-@goals.route("/goals", methods=["GET", "POST"])
-def _goals():
-    try:
-        if request.method == "GET":
-            return success_result(Goals.get_all())
-
-        if request.method == "POST":
-            payload = request.json
-
-            date = datetime.strptime(payload.get("date"), "%d-%m-%Y")
-            goal = {
-                "category": "goal",
-                "date": date,
-                "month": date.month,
-                "year": date.year,
-                "values": payload.get("values"),
-            }
-
-            return success_result(Goals.get(Goals.create(goal).inserted_id))
-
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+@handle_exception
+@goals.route("/goals", methods=["POST", "GET"])
+def _create_goal():
+    if request.method == "GET":
+        return success_result(mongo.goal.get())
+    if request.method == "POST":
+        return success_result(mongo.goal.create(set_date(request.json)))
 
 
-@goals.route("/goals/<string:id>", methods=["GET", "PUT", "DELETE"])
-def _goals_id(_id: str):
-    try:
-        if request.method == "GET":
-            # if does not exist send back 400 error
-            return success_result(Goals.get(_id))
+@handle_exception
+@goals.route("/goals/<string:_id>", methods=["GET", "PUT", "DELETE"])
+def _goals(_id: str):
+    if request.method == "GET":
+        return success_result(mongo.goal.get(_id))
 
-        if request.method == "PUT":
-            # check if now is before first of month in goal payload
-            payload = request.json
+    if request.method == "PUT":
+        return success_result(mongo.goal.update(set_date(request.json)))
 
-            goal = Goals.get(payload.get("_id"))
-            goal["values"] = payload.get("values")
+    if request.method == "DELETE":
+        return success_result(mongo.goal.delete(_id).acknowledged)
 
-            Goals.update(goal)
-            return success_result(Goals.get(goal["_id"]))
-
-        if request.method == "DELETE":
-            Goals.delete(_id)
-            return "Expense deleted", 200
-
-        return
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    return failure_result()
 
 
-@goals.route("/goals/range/<start>/<end>", methods=["GET"])
-def _goals_in_range(start: str, end: str):
-    try:
-        if not (start.isnumeric() and end.isnumeric()):
-            return {"result": "Invalid range"}, 400
+@handle_exception
+@goals.route("/goals/range/<start>/<stop>", methods=["GET"])
+def _fetch_goals_in_range(start: str, stop: str):
 
-        return success_result(Goals.in_range(int(start), int(end)))
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    if not (start.isnumeric() and stop.isnumeric()):
+        return failure_result("Invalid range")
+
+    return success_result(
+        mongo.goal.search(
+            datetime.fromtimestamp(int(start)), datetime.fromtimestamp(int(stop))
+        )
+    )

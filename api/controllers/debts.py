@@ -1,81 +1,86 @@
-from datetime import datetime
-from flask import request, Blueprint
+# pylint: disable=import-error, broad-except
+"""Debts controller"""
 
-from api.db.debts import Debts
-from api.db.expenses import Expenses
-from api.controllers.__util__ import success_result, failure_result
+from datetime import datetime
+from flask import Blueprint, request
+
+from api import mongo
+from api.controllers.__util__ import (
+    failure_result,
+    handle_exception,
+    set_date,
+    success_result,
+)
 
 debts = Blueprint("debts", __name__)
 
 
+@handle_exception
 @debts.route("/debts", methods=["POST", "GET"])
-def _create_debt():
-
-    try:
-        if request.method == "GET":
-            return success_result(Debts.get_all())
-        if request.method == "POST":
-            new_debt = create()
-            return success_result(new_debt)
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
-
-    return failure_result("Bad Request")
+def _debts():
+    if request.method == "POST":
+        return success_result(mongo.debt.create(set_date(request.json)))
+    if request.method == "GET":
+        return success_result(mongo.debt.get())
+    return failure_result()
 
 
+@handle_exception
 @debts.route("/debts/<string:_id>", methods=["GET", "PUT", "DELETE"])
-def _debts(_id: str):
-    try:
-        if request.method == "GET":
-            # if does not exist send back 400 error
-            return success_result(Debts.get(_id))
+def _debts_id(_id: str):
+    if request.method == "GET":
+        return success_result(mongo.debt.get(_id))
 
-        if request.method == "PUT":
-            debt = request.json
-            debt["value"] = float(debt["value"])
-            debt["last_update"] = datetime.now()
-            Debts.update(debt)
-            return success_result(Debts.get(debt["_id"]))
+    if request.method == "PUT":
+        return success_result(mongo.debt.update(set_date(request.json)))
 
-        if request.method == "DELETE":
-            Debts.delete(id)
-            return "Expense deleted", 200
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    if request.method == "DELETE":
+        return success_result(mongo.debt.delete(_id).acknowledged)
 
-    return failure_result("Bad Request")
+    return failure_result()
 
 
-@debts.route("/debts/<string:_id>/payment", methods=["GET", "PUT", "DELETE"])
-def _payment(_id: str):
-    debt = Debts.get(_id)
-    payload = request.json
+@handle_exception
+@debts.route("/debts/<string:_id>/payment", methods=["PUT"])
+def _debts_id_payment(_id: str):
 
-    print(f"debt: {debt}")
+    if request.method == "PUT":
+        payload = request.json
+        debt = mongo.debt.get(_id)
 
-    payment_amount = float(payload["amount"])
-    debt["value"] = debt["value"] - payment_amount
-    Debts.update(debt)
+        payment_amount = float(payload.get("amount"))
+        debt.value = debt.value - payment_amount
+        debt.save()
 
-    # generate expense
-    new_expense = {
-        "date": datetime.now(),
-        "amount": payment_amount,
-        "type": "debt",
-        "vendor": debt["vendor"],
-        "debt": _id,
-        "description": f"debt payment for {debt['name']}",
-    }
-    new_expense = Expenses.get(Expenses.create(new_expense).inserted_id)
+        # generate expense
+        return success_result(
+            {
+                "updated_debt": debt,
+                "new_expense": mongo.expense.create(
+                    {
+                        "date": datetime.now(),
+                        "amount": payment_amount,
+                        "type": "debt",
+                        "vendor": debt.vendor,
+                        "debt": _id,
+                        "description": f"debt payment for {debt.name}",
+                    }
+                ),
+            }
+        )
 
-    return success_result(Debts.get(debt["_id"]))
+    return failure_result()
 
 
-def create():
-    new_debt = request.json
-    new_debt["value"] = float(new_debt["value"])
-    new_debt["last_update"] = datetime.now()
+@handle_exception
+@debts.route("/debts/range/<start>/<stop>", methods=["GET"])
+def _fetch_debts_in_range(start: str, stop: str):
 
-    return Debts.get(Debts.create(new_debt).inserted_id)
+    if not (start.isnumeric() and stop.isnumeric()):
+        return failure_result("Invalid range")
+
+    return success_result(
+        mongo.debt.search(
+            datetime.fromtimestamp(int(start)), datetime.fromtimestamp(int(stop))
+        )
+    )

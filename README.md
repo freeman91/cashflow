@@ -48,7 +48,7 @@ docker cp ~/mongo-backups/cashflow-backup-2022-01-04/database mongodb:/data
 # drop database in mongodb container
 # log into shell
 docker exec -it mongodb /bin/bash
-mongo
+mongo --username admin --password password
 > use database
 > db.dropDatabase()
 

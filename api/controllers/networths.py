@@ -1,58 +1,54 @@
-from flask import request, Blueprint
+# pylint: disable=import-error, broad-except
+"""Networths controller"""
 
-from api.db.networths import Networths
-from api.controllers.__util__ import success_result, failure_result
+from datetime import datetime
+from flask import Blueprint, request
+
+from api import mongo
+from api.controllers.__util__ import (
+    failure_result,
+    handle_exception,
+    set_date,
+    success_result,
+)
 
 networths = Blueprint("networths", __name__)
 
 
-@networths.route("/networths", methods=["POST"])
-def _create_networth():
-    try:
-        return success_result(Networths.get(Networths.create(request.json).inserted_id))
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+@handle_exception
+@networths.route("/networths", methods=["POST", "GET"])
+def _networths():
+    if request.method == "POST":
+        return success_result(mongo.networth.create(set_date(request.json)))
+    if request.method == "GET":
+        return success_result(mongo.networth.get())
+    return failure_result()
 
 
-@networths.route("/networths", methods=["GET"])
-def _get_networths():
-    try:
-        if request.method == "GET":
-            return success_result(Networths.get_all())
+@handle_exception
+@networths.route("/networths/<string:_id>", methods=["GET", "PUT", "DELETE"])
+def _networth(_id: str):
+    if request.method == "GET":
+        return success_result(mongo.networth.get(_id))
 
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    if request.method == "PUT":
+        return success_result(mongo.networth.update(set_date(request.json)))
 
+    if request.method == "DELETE":
+        return success_result(mongo.networth.delete(_id).acknowledged)
 
-@networths.route("/networths/<string:id>", methods=["GET", "PUT", "DELETE"])
-def _networths(id: str):
-    try:
-        if request.method == "GET":
-            # if does not exist send back 400 error
-            return success_result(Networths.get(id))
-
-        if request.method == "PUT":
-            networth = request.json
-            Networths.update(networth)
-            return success_result(Networths.get(networth["_id"]))
-
-        if request.method == "DELETE":
-            Networths.delete(id)
-            return "Expense deleted", 200
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    return failure_result()
 
 
-@networths.route("/networths/range/<start>/<end>", methods=["GET"])
-def _networths_in_range(start: str, end: str):
-    try:
-        if not (start.isnumeric() and end.isnumeric()):
-            return {"result": "Invalid range"}, 400
+@handle_exception
+@networths.route("/networths/range/<start>/<stop>", methods=["GET"])
+def _fetch_networths_in_range(start: str, stop: str):
 
-        return success_result(Networths.in_range(int(start), int(end)))
-    except Exception as err:
-        print(f"err: {err}")
-        return failure_result("Bad Request")
+    if not (start.isnumeric() and stop.isnumeric()):
+        return failure_result("Invalid range")
+
+    return success_result(
+        mongo.networth.search(
+            datetime.fromtimestamp(int(start)), datetime.fromtimestamp(int(stop))
+        )
+    )

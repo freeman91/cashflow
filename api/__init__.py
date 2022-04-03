@@ -8,6 +8,7 @@ from flask_meter import FlaskMeter
 from flask_cors import CORS
 
 from api.controllers.users import users
+
 from api.controllers.expenses import expenses
 from api.controllers.incomes import incomes
 from api.controllers.hours import hours
@@ -17,7 +18,7 @@ from api.controllers.debts import debts
 from api.controllers.networths import networths
 from api.controllers.cronjobs import cronjobs
 
-from api.config import app_config
+from api.config import AppConfig
 
 flask_meter = FlaskMeter()
 
@@ -35,9 +36,9 @@ def create_app():
     CORS(app)
 
     logger = logging.getLogger()
-    logger.setLevel(app_config.LOG_LEVEL)
+    logger.setLevel(AppConfig.LOG_LEVEL)
 
-    app.config.from_object(app_config)
+    app.config.from_object(AppConfig)
 
     flask_meter.init_app(app)
 

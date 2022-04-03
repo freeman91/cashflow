@@ -38,7 +38,7 @@ export default function Summary() {
       var _day = range[0];
       while (_day <= range[1]) {
         let dayRecords = [];
-        const dayStr = _day.format('MM-DD-YYYY');
+        const dayStr = _day.format('YYYY-MM-DD');
         let dayExpenses = filter(_expenses, (expense) => {
           return expense.date === dayStr;
         });
