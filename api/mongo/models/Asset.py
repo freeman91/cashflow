@@ -81,4 +81,4 @@ class Asset(BaseModel):
         return database.assets.delete_one({"_id": PydanticObjectId(self.id)})
 
     def __repr__(self):
-        return f"<{self.category}, {self.id}, {self.amount}, {self.date}>"
+        return f"<{self.name}, {self.id}, {self.value}>"
