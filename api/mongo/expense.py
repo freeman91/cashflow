@@ -5,8 +5,9 @@
 from datetime import datetime
 from typing import List, Union
 
-from pydash import get as _get
+from pydash import get as _get, concat
 
+from api import mongo
 from api.mongo.models.Expense import Expense
 from .connection import database
 from .models.common import PydanticObjectId
@@ -59,6 +60,8 @@ def create(expense: dict) -> Expense:
         - asset: asset_id
         - debt: debt_id
     """
+
+    save_vendor(_get(expense, "vendor"))
     return get(Expense(**expense).create())
 
 
@@ -76,17 +79,19 @@ def update(expense: dict) -> Expense:
         - debt: debt_id
     """
 
-    expense_obj = get(_get(expense, "id"))
-    expense_obj.amount = float(_get(expense, "amount"))
-    expense_obj.date = _get(expense, "date")
-    expense_obj.type = _get(expense, "type")
-    expense_obj.vendor = _get(expense, "vendor")
-    expense_obj.description = _get(expense, "description")
-    expense_obj.asset = _get(expense, "asset")
-    expense_obj.debt = _get(expense, "debt")
+    expense_record = get(_get(expense, "id"))
+    expense_record.amount = float(_get(expense, "amount"))
+    expense_record.date = _get(expense, "date")
+    expense_record.type = _get(expense, "type")
+    expense_record.vendor = _get(expense, "vendor")
+    expense_record.description = _get(expense, "description")
+    expense_record.asset = _get(expense, "asset")
+    expense_record.debt = _get(expense, "debt")
 
-    expense_obj.save()
-    return expense_obj
+    save_vendor(expense_record.vendor)
+
+    expense_record.save()
+    return expense_record
 
 
 def delete(_id: str):
@@ -96,3 +101,9 @@ def delete(_id: str):
     mongo.expense.delete<expense_id>): deleted an expense in the db if it exists
     """
     return database.expenses.delete_one({"_id": PydanticObjectId(_id)})
+
+
+def save_vendor(vendor: str):
+    user = mongo.user.get()
+    if vendor not in user.expense_vendors:
+        user.update("expense_vendors", concat(user.expense_vendors, vendor))
