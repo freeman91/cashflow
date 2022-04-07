@@ -12,7 +12,9 @@ from .connection import database
 from .models.common import PydanticObjectId
 
 
-def get(_id: str = None) -> Union[Networth, List[Networth]]:
+def get(
+    _id: str = None, year: int = None, month: int = None
+) -> Union[Networth, List[Networth]]:
     """
     GET
 
@@ -22,6 +24,10 @@ def get(_id: str = None) -> Union[Networth, List[Networth]]:
 
     if _id:
         return Networth(**database.networths.find_one({"_id": PydanticObjectId(_id)}))
+
+    if year and month:
+        networth = database.networths.find_one({"year": year, "month": month})
+        return Networth(**networth) if networth else None
 
     return [Networth(**networth) for networth in database.networths.find()]
 
