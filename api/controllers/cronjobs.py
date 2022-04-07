@@ -1,9 +1,9 @@
-# pylint: disable=import-error, broad-except, protected-access
+# pylint: disable=import-error, broad-except, protected-access, cell-var-from-loop
 """Cronjob controller"""
 
 import os
 from datetime import datetime
-from pydash import filter_, map_
+from pydash import filter_, map_, find, remove
 from flask import request, Blueprint
 from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
@@ -35,7 +35,7 @@ def get_stock_price(ticker: str):
 @cronjobs.route("/cronjobs/update_crypto_prices", methods=["GET"])
 def update_crypto_prices():
     """
-    0 12,18 * * * curl localhost:9000/cronjobs/update_crypto_prices
+    0 18 * * * curl localhost:9000/cronjobs/update_crypto_prices
     """
 
     if request.method == "GET":
@@ -49,7 +49,7 @@ def update_crypto_prices():
         for asset in crypto_assets:
             asset.price = prices[f"{asset.name.upper()}"]["USD"]
             asset.value = asset.price * asset.shares
-            asset.update()
+            asset.save()
 
         return success_result("assets updated")
 
@@ -60,21 +60,21 @@ def update_crypto_prices():
 @cronjobs.route("/cronjobs/update_stock_prices", methods=["GET"])
 def update_stock_prices():
     """
-    0 12,18 * * * curl localhost:9000/cronjobs/update_stock_prices
+    0 18 * * * curl localhost:9000/cronjobs/update_stock_prices
     """
 
     if request.method == "GET":
-        # stock_assets = list(
-        #     filter_(mongo.asset.get(), lambda asset: asset.type == "stock")
-        # )
+        stock_assets = list(
+            filter_(mongo.asset.get(), lambda asset: asset.type == "stock")
+        )
 
-        # tickers = map_(stock_assets, lambda asset: asset.name.upper())
-        # prices = get_stock_prices(tickers)
+        tickers = map_(stock_assets, lambda asset: asset.name.upper())
+        for ticker in tickers:
+            asset = find(stock_assets, lambda asset: asset.name == ticker)
+            asset.price = get_stock_price(ticker.upper())
 
-        # for asset in stock_assets:
-        #     asset.price = prices[f"{asset.name.upper()}"]["USD"]
-        #     asset.value = asset.price * asset.shares
-        #     asset.update()
+            asset.value = asset.price * asset.shares
+            asset.save()
 
         return success_result("assets updated")
 
@@ -85,7 +85,9 @@ def update_stock_prices():
 @cronjobs.route("/cronjobs/networth_snapshot", methods=["POST"])
 def networth_snapshot():
     """
-    59 23 L * * curl localhost:9000/cronjobs/networth_snapshot
+    0 22 30 4,6,9,11        * curl -X POST localhost:9000/cronjobs/networth_snapshot
+    0 22 31 1,3,5,7,8,10,12 * curl -X POST localhost:9000/cronjobs/networth_snapshot
+    0 22 28 2               * curl -X POST localhost:9000/cronjobs/networth_snapshot
     """
 
     if request.method == "POST":
@@ -93,17 +95,49 @@ def networth_snapshot():
         debts = mongo.debt.get()
         _date = datetime.now()
 
-        print(f"assets: {assets}")
-        print(f"debts: {debts}")
-        print(f"date: {_date}")
+        assets = map_(
+            mongo.asset.get(),
+            lambda asset: {
+                "amount": asset.value,
+                "name": asset.name,
+                "type": asset.type,
+            },
+        )
 
-        # Networths.create(
-        #     {
-        #         "date": date,
-        #         "month": date.month,
-        #         "year": date.year,
-        #         "assets": assets,
-        #         "debts": debts,
-        #     }
-        # )
+        remove(
+            assets,
+            lambda asset: asset.get("amount") == 0,
+        )
+
+        debts = map_(
+            mongo.debt.get(),
+            lambda debt: {"amount": debt.value, "name": debt.name, "type": debt.type},
+        )
+
+        remove(
+            debts,
+            lambda debt: debt.get("amount") == 0,
+        )
+
+        networth = mongo.networth.get(year=_date.year, month=_date.month)
+        if not networth:
+            mongo.networth.create(
+                {
+                    "date": _date,
+                    "month": _date.month,
+                    "year": _date.year,
+                    "assets": assets,
+                    "debts": debts,
+                }
+            )
+
+            print("Networth created")
+
+        else:
+            networth.date = _date
+            networth.assets = assets
+            networth.debts = debts
+            networth.save()
+            print("Networth updated")
+
         return success_result("Success")
