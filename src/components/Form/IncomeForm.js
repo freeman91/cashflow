@@ -36,7 +36,7 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
   useEffect(() => {
     var _deductions = {};
     user.income_deductions.forEach((deduction) => {
-      _deductions[deduction] = '';
+      _deductions[deduction] = 0;
     });
     setInitialDeductions(_deductions);
   }, [user.income_deductions]);
