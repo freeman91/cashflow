@@ -1,15 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, remove, concat } from 'lodash';
+import { get, remove, concat, cloneDeep, map, includes } from 'lodash';
 
 import { addToastr, types } from '../toastr';
 import {
-  getRecentIncomesAPI,
+  getIncomesAPI,
   postIncomeAPI,
   putIncomeAPI,
   deleteIncomeAPI,
 } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { incomes as initialState } from '../initialState';
+import dayjs from 'dayjs';
 
 const postIncome = createAsyncThunk(
   'incomes/postIncome',
@@ -109,13 +110,41 @@ const deleteIncome = createAsyncThunk(
   }
 );
 
-const getRecentIncomes = createAsyncThunk(
-  'incomes/getRecentIncomes',
-  async () => {
+const getIncomes = createAsyncThunk(
+  'incomes/getIncomes',
+  async (range, { getState }) => {
     try {
-      const result = await getRecentIncomesAPI();
+      const { data: storeIncomes } = getState().incomes;
+      let now = dayjs();
+      let start = get(range, 'start');
+      let stop = get(range, 'stop');
+
+      if (!start) {
+        start = now
+          .month(now.month() - 1)
+          .day(1)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .unix();
+      }
+
+      if (!stop) {
+        stop = now
+          .day(now.day() + 3)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .unix();
+      }
+
+      let allIncomes = cloneDeep(storeIncomes);
+      const incomes = await getIncomesAPI(start, stop);
+      let updatedIncomeIds = map(incomes, (income) => income.id);
+
+      remove(allIncomes, (income) => includes(updatedIncomeIds, income.id));
       return {
-        data: result,
+        data: concat(allIncomes, incomes),
       };
     } catch (err) {
       console.error(err);
@@ -129,11 +158,11 @@ const { reducer } = createSlice({
   reducers: {},
   extraReducers: {
     ...thunkReducer(postIncome),
-    ...thunkReducer(getRecentIncomes),
+    ...thunkReducer(getIncomes),
     ...thunkReducer(putIncome),
     ...thunkReducer(deleteIncome),
   },
 });
 
-export { postIncome, getRecentIncomes, putIncome, deleteIncome };
+export { postIncome, getIncomes, putIncome, deleteIncome };
 export default reducer;

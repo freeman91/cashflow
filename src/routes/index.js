@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import { AppBar, Box, Tabs, Tab, CssBaseline } from '@mui/material';
 import {
   AccountBox,
-  AccountBalanceWallet,
+  // AccountBalanceWallet,
   DateRange,
   Dashboard as DashboardIcon,
   TrendingUp,
@@ -15,7 +15,7 @@ import {
 import { useWindowSize } from 'react-use';
 
 import Dashboard from './Dashboard';
-import Budget from './Budget';
+// import Budget from './Budget';
 import Summary from './Summary';
 import Networth from './Networth';
 import User from './User';
@@ -126,18 +126,18 @@ export default function Navigation() {
                 width: '12rem',
               }}
             />
-            <Tab
+            {/* <Tab
               label='Budget'
               icon={<AccountBalanceWallet />}
               {...a11yProps(1)}
               sx={{
                 width: '12rem',
               }}
-            />
+            /> */}
             <Tab
               label='Summary'
               icon={<DateRange />}
-              {...a11yProps(2)}
+              {...a11yProps(1)}
               sx={{
                 width: '12rem',
               }}
@@ -145,7 +145,7 @@ export default function Navigation() {
             <Tab
               label='Net Worth'
               icon={<TrendingUp />}
-              {...a11yProps(3)}
+              {...a11yProps(2)}
               sx={{
                 width: '12rem',
               }}
@@ -153,7 +153,7 @@ export default function Navigation() {
             <Tab
               label='User'
               icon={<AccountBox />}
-              {...a11yProps(4)}
+              {...a11yProps(3)}
               sx={{
                 width: '12rem',
               }}
@@ -173,16 +173,16 @@ export default function Navigation() {
           <TabPanel value={value} index={0} dir={theme.direction}>
             <Dashboard />
           </TabPanel>
-          <TabPanel value={value} index={1} dir={theme.direction}>
+          {/* <TabPanel value={value} index={1} dir={theme.direction}>
             <Budget />
-          </TabPanel>
-          <TabPanel value={value} index={2} dir={theme.direction}>
+          </TabPanel> */}
+          <TabPanel value={value} index={1} dir={theme.direction}>
             <Summary />
           </TabPanel>
-          <TabPanel value={value} index={3} dir={theme.direction}>
+          <TabPanel value={value} index={2} dir={theme.direction}>
             <Networth />
           </TabPanel>
-          <TabPanel value={value} index={4} dir={theme.direction}>
+          <TabPanel value={value} index={3} dir={theme.direction}>
             <User />
           </TabPanel>
         </SwipeableViews>

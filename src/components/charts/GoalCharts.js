@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 
-import { getExpensesInRangeAPI } from '../../api';
+import { getExpensesAPI } from '../../api';
 import { numberToCurrency } from '../../helpers/currency';
 
 const expenseTotal = (types, expenses) => {
@@ -108,7 +108,7 @@ export default function GoalCharts() {
     async function fetchMonthExpenses() {
       let start = dayjs(`${date.year()}-${date.month() + 1}-01`);
       let stop = start.add(1, 'months');
-      let expenses = await getExpensesInRangeAPI(start.unix(), stop.unix());
+      let expenses = await getExpensesAPI(start.unix(), stop.unix());
       setChartData(
         prepareMonthData(date.year(), date.month() + 1, goals, expenses)
       );

@@ -61,6 +61,7 @@ def create(expense: dict) -> Expense:
         - debt: debt_id
     """
 
+    save_type(_get(expense, "type"))
     save_vendor(_get(expense, "vendor"))
     return get(Expense(**expense).create())
 
@@ -88,6 +89,7 @@ def update(expense: dict) -> Expense:
     expense_record.asset = _get(expense, "asset")
     expense_record.debt = _get(expense, "debt")
 
+    save_type(expense_record.type)
     save_vendor(expense_record.vendor)
 
     expense_record.save()
@@ -101,6 +103,12 @@ def delete(_id: str):
     mongo.expense.delete<expense_id>): deleted an expense in the db if it exists
     """
     return database.expenses.delete_one({"_id": PydanticObjectId(_id)})
+
+
+def save_type(_type: str):
+    user = mongo.user.get()
+    if _type not in user.expense_types:
+        user.update("expense_types", concat(user.expense_types, _type))
 
 
 def save_vendor(vendor: str):

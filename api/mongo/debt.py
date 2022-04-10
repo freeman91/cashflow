@@ -2,7 +2,6 @@
 
 """monog.debt submodule"""
 
-from datetime import datetime
 from typing import List, Union
 
 from pydash import get as _get
@@ -25,25 +24,6 @@ def get(_id: str = None) -> Union[Debt, List[Debt]]:
         return Debt(**debt)
 
     return [Debt(**debt) for debt in database.debts.find()]
-
-
-def search(start: datetime, stop: datetime) -> List[Debt]:
-    """
-    SEARCH
-
-    mongo.debt.search(<start>, <stop>): returns all debts in the given range
-    """
-    return [
-        Debt(**debt)
-        for debt in database.debts.find(
-            {
-                "date": {
-                    "$gt": start,
-                    "$lt": stop,
-                }
-            }
-        )
-    ]
 
 
 def create(debt: dict) -> Debt:

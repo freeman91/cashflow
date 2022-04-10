@@ -20,9 +20,15 @@ import './styles/App.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 
 import createStore, { history } from './store/createStore';
+import { getExpenses } from './store/expenses';
 import { getUser } from './store/user';
 
 import Navigation from './routes';
+import { getIncomes } from './store/incomes';
+import { getHours } from './store/hours';
+import { getAssets } from './store/assets';
+import { getDebts } from './store/debts';
+import { getNetworths } from './store/networths';
 
 let store = createStore();
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +46,12 @@ function App() {
 
   useMount(async () => {
     dispatch(getUser());
+    dispatch(getExpenses());
+    dispatch(getIncomes());
+    dispatch(getHours());
+    dispatch(getAssets());
+    dispatch(getDebts());
+    dispatch(getNetworths());
   });
 
   return (

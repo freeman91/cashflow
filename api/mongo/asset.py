@@ -2,7 +2,6 @@
 
 """monog.asset submodule"""
 
-from datetime import datetime
 from typing import List, Union
 
 from pydash import get as _get
@@ -25,25 +24,6 @@ def get(_id: str = None) -> Union[Asset, List[Asset]]:
         return Asset(**asset)
 
     return [Asset(**asset) for asset in database.assets.find()]
-
-
-def search(start: datetime, stop: datetime) -> List[Asset]:
-    """
-    SEARCH
-
-    mongo.asset.search(<start>, <stop>): returns all assets in the given range
-    """
-    return [
-        Asset(**asset)
-        for asset in database.assets.find(
-            {
-                "date": {
-                    "$gt": start,
-                    "$lt": stop,
-                }
-            }
-        )
-    ]
 
 
 def create(asset: dict) -> Asset:

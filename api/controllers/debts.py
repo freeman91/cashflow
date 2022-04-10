@@ -70,17 +70,3 @@ def _debts_id_payment(_id: str):
         )
 
     return failure_result()
-
-
-@handle_exception
-@debts.route("/debts/range/<start>/<stop>", methods=["GET"])
-def _fetch_debts_in_range(start: str, stop: str):
-
-    if not (start.isnumeric() and stop.isnumeric()):
-        return failure_result("Invalid range")
-
-    return success_result(
-        mongo.debt.search(
-            datetime.fromtimestamp(int(start)), datetime.fromtimestamp(int(stop))
-        )
-    )

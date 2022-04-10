@@ -1,15 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, remove, concat } from 'lodash';
+import { get, remove, concat, map, cloneDeep, includes } from 'lodash';
 
 import { addToastr, types } from '../toastr';
 import {
   deleteExpenseAPI,
-  getRecentExpensesAPI,
+  getExpensesAPI,
   postExpenseAPI,
   putExpenseAPI,
 } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { expenses as initialState } from '../initialState';
+import dayjs from 'dayjs';
 
 const postExpense = createAsyncThunk(
   'expenses/postExpense',
@@ -109,13 +110,41 @@ const deleteExpense = createAsyncThunk(
   }
 );
 
-const getRecentExpenses = createAsyncThunk(
-  'expenses/getRecentExpenses',
-  async () => {
+const getExpenses = createAsyncThunk(
+  'expenses/getExpenses',
+  async (range, { getState }) => {
     try {
-      const result = await getRecentExpensesAPI();
+      const { data: storeExpenses } = getState().expenses;
+      let now = dayjs();
+      let start = get(range, 'start');
+      let stop = get(range, 'stop');
+
+      if (!start) {
+        start = now
+          .month(now.month() - 1)
+          .day(1)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .unix();
+      }
+
+      if (!stop) {
+        stop = now
+          .day(now.day() + 3)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .unix();
+      }
+
+      let allExpenses = cloneDeep(storeExpenses);
+      const expenses = await getExpensesAPI(start, stop);
+      let updatedExpenseIds = map(expenses, (expense) => expense.id);
+
+      remove(allExpenses, (expense) => includes(updatedExpenseIds, expense.id));
       return {
-        data: result,
+        data: concat(allExpenses, expenses),
       };
     } catch (err) {
       console.error(err);
@@ -129,11 +158,11 @@ const { reducer } = createSlice({
   reducers: {},
   extraReducers: {
     ...thunkReducer(postExpense),
-    ...thunkReducer(getRecentExpenses),
+    ...thunkReducer(getExpenses),
     ...thunkReducer(putExpense),
     ...thunkReducer(deleteExpense),
   },
 });
 
-export { postExpense, putExpense, deleteExpense, getRecentExpenses };
+export { postExpense, putExpense, deleteExpense, getExpenses };
 export default reducer;

@@ -1,15 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, remove, concat } from 'lodash';
+import { get, remove, concat, cloneDeep, map, includes } from 'lodash';
 
 import { addToastr, types } from '../toastr';
-import {
-  getRecentHoursAPI,
-  postHourAPI,
-  putHourAPI,
-  deleteHourAPI,
-} from '../../api';
+import { postHourAPI, putHourAPI, deleteHourAPI, getHoursAPI } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { hours as initialState } from '../initialState';
+import dayjs from 'dayjs';
 
 const postHour = createAsyncThunk(
   'hours/postHour',
@@ -110,16 +106,47 @@ const deleteHour = createAsyncThunk(
   }
 );
 
-const getRecentHours = createAsyncThunk('hours/getRecentHours', async () => {
-  try {
-    const result = await getRecentHoursAPI();
-    return {
-      data: result,
-    };
-  } catch (err) {
-    console.error(err);
+const getHours = createAsyncThunk(
+  'hours/getHours',
+  async (range, { getState }) => {
+    try {
+      const { data: storeHours } = getState().hours;
+      let now = dayjs();
+      let start = get(range, 'start');
+      let stop = get(range, 'stop');
+
+      if (!start) {
+        start = now
+          .month(now.month() - 1)
+          .day(1)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .unix();
+      }
+
+      if (!stop) {
+        stop = now
+          .day(now.day() + 3)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .unix();
+      }
+
+      let allHours = cloneDeep(storeHours);
+      const hours = await getHoursAPI(start, stop);
+      let updatedHourIds = map(hours, (hour) => hour.id);
+
+      remove(allHours, (hour) => includes(updatedHourIds, hour.id));
+      return {
+        data: concat(allHours, hours),
+      };
+    } catch (err) {
+      console.error(err);
+    }
   }
-});
+);
 
 const { reducer } = createSlice({
   name: 'hours',
@@ -127,11 +154,11 @@ const { reducer } = createSlice({
   reducers: {},
   extraReducers: {
     ...thunkReducer(postHour),
-    ...thunkReducer(getRecentHours),
+    ...thunkReducer(getHours),
     ...thunkReducer(putHour),
     ...thunkReducer(deleteHour),
   },
 });
 
-export { postHour, getRecentHours, putHour, deleteHour };
+export { postHour, getHours, putHour, deleteHour };
 export default reducer;

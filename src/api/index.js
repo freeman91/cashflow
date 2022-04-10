@@ -33,20 +33,9 @@ export const putUserSettingsAPI = async (payload) => {
 ######## ##     ## ##        ######## ##    ##  ######  ########  ######
 */
 
-export const getRecentExpensesAPI = async () => {
+export const getExpensesAPI = async (start, stop) => {
   try {
-    const response = await axios.get(`/expenses/recent`);
-    if (get(response, 'status') === 200) {
-      return get(response, 'data.result');
-    }
-  } catch (error) {
-    console.log('error: ', error);
-  }
-};
-
-export const getExpensesInRangeAPI = async (start, end) => {
-  try {
-    const response = await axios.get(`/expenses/range/${start}/${end}`);
+    const response = await axios.get(`/expenses`, { params: { start, stop } });
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }
@@ -101,20 +90,9 @@ export const deleteExpenseAPI = async (expenseId) => {
 #### ##    ##  ######   #######  ##     ## ########  ######
 */
 
-export const getRecentIncomesAPI = async () => {
+export const getIncomesAPI = async (start, stop) => {
   try {
-    const response = await axios.get(`/incomes/recent`);
-    if (get(response, 'status') === 200) {
-      return get(response, 'data.result');
-    }
-  } catch (error) {
-    console.log('error: ', error);
-  }
-};
-
-export const getIncomesInRangeAPI = async (start, end) => {
-  try {
-    const response = await axios.get(`/incomes/range/${start}/${end}`);
+    const response = await axios.get(`/incomes`, { params: { start, stop } });
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }
@@ -169,9 +147,9 @@ export const deleteIncomeAPI = async (incomeId) => {
 ##     ##  #######   #######  ##     ##  ######
 */
 
-export const getRecentHoursAPI = async () => {
+export const getHoursAPI = async (start, stop) => {
   try {
-    const response = await axios.get(`/hours/recent`);
+    const response = await axios.get(`/hours`, { params: { start, stop } });
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }

@@ -1,7 +1,6 @@
 # pylint: disable=import-error, broad-except
 """Assets controller"""
 
-from datetime import datetime
 from flask import Blueprint, request
 
 from api import mongo
@@ -69,17 +68,3 @@ def _assets_id_action(_id: str, action: str):
             )
 
     return failure_result()
-
-
-@handle_exception
-@assets.route("/assets/range/<start>/<stop>", methods=["GET"])
-def _fetch_assets_in_range(start: str, stop: str):
-
-    if not (start.isnumeric() and stop.isnumeric()):
-        return failure_result("Invalid range")
-
-    return success_result(
-        mongo.asset.search(
-            datetime.fromtimestamp(int(start)), datetime.fromtimestamp(int(stop))
-        )
-    )
