@@ -1,70 +1,81 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { AppBar, Box, Grid, Tab, Tabs } from '@mui/material';
+import ExpensesTable from '../../components/Table/ExpensesTable';
+import IncomesTable from '../../components/Table/IncomesTable';
+import HoursTable from '../../components/Table/HoursTable';
+import SwipeableViews from 'react-swipeable-views/lib/SwipeableViews';
+import { useTheme } from '@mui/styles';
 
-import { DataGrid } from '@mui/x-data-grid';
-import { Grid } from '@mui/material';
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role='tabpanel'
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+  };
+}
 
 export default function Dashboard() {
-  const expenses = useSelector((state) => state.expenses.data);
-  // useEffect(() => {
-  //   const prepareRecentRecords = () => {
-  //     var _expenses = filterExpense ? [] : expenses;
-  //     var _incomes = filterIncome ? [] : incomes;
-  //     var _hours = filterHour ? [] : hours;
+  const theme = useTheme();
+  const [value, setValue] = useState(0);
 
-  //     let records = [];
-  //     let days = [];
-  //     for (var i = 0; i <= 7; i++) {
-  //       days.push(dayjs().subtract(i, 'day').format('YYYY-MM-DD'));
-  //     }
+  const handleChange = (e, newValue) => {
+    setValue(newValue);
+  };
 
-  //     forEach(days, (day) => {
-  //       let dayRecords = [];
-  //       let dayExpenses = filter(_expenses, (expense) => {
-  //         return expense.date === day;
-  //       });
-  //       let dayIncomes = filter(_incomes, (income) => {
-  //         return income.date === day;
-  //       });
-  //       let dayHours = filter(_hours, (hour) => {
-  //         return hour.date === day;
-  //       });
-
-  //       dayRecords = dayRecords
-  //         .concat(dayExpenses)
-  //         .concat(dayIncomes)
-  //         .concat(dayHours);
-
-  //       records = records.concat(dayRecords);
-  //     });
-  //     return records.slice(0, 10);
-  //   };
-
-  //   setTableData(prepareRecentRecords(expenses, incomes, hours));
-  // }, [expenses, incomes, hours, filterExpense, filterIncome, filterHour]);
-
-  console.log('expenses: ', expenses);
-
-  const columns = [
-    { field: 'date', headerName: 'Date', width: 150 },
-    { field: 'amount', headerName: 'Amount', width: 150 },
-    { field: 'type', headerName: 'Type', width: 150 },
-    { field: 'vendor', headerName: 'Vendor', width: 150 },
-  ];
+  const handleChangeIndex = (index) => {
+    setValue(index);
+  };
 
   return (
     <Grid container spacing={3}>
+      <Grid item xs={12}></Grid>
       <Grid item xs={12}>
-        <div style={{ height: 600, width: '100%' }}>
-          <DataGrid
-            rows={expenses}
-            columns={columns}
-            pageSize={30}
-            rowsPerPageOptions={[30]}
-            // checkboxSelection
-            // disableSelectionOnClick
-          />
-        </div>
+        <Box sx={{ bgcolor: 'background.paper', width: '100%' }}>
+          <AppBar position='static'>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor='secondary'
+              textColor='inherit'
+              variant='fullWidth'
+              aria-label='full width tabs example'
+            >
+              <Tab label='Expenses' {...a11yProps(0)} />
+              <Tab label='Incomes' {...a11yProps(1)} />
+              <Tab label='Hours' {...a11yProps(2)} />
+            </Tabs>
+          </AppBar>
+          <SwipeableViews
+            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+            index={value}
+            onChangeIndex={handleChangeIndex}
+          >
+            <TabPanel value={value} index={0} dir={theme.direction}>
+              <ExpensesTable />
+            </TabPanel>
+            <TabPanel value={value} index={1} dir={theme.direction}>
+              <IncomesTable />
+            </TabPanel>
+            <TabPanel value={value} index={2} dir={theme.direction}>
+              <HoursTable />
+            </TabPanel>
+          </SwipeableViews>
+        </Box>
       </Grid>
     </Grid>
   );
