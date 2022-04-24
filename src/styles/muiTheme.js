@@ -13,6 +13,7 @@ export const muiTheme = createTheme({
   palette: {
     mode: 'dark',
     grey: grey,
+    black: '#121212',
   },
   typography: {
     fontFamily: '"Helvetica", "Arial", sans-serif',

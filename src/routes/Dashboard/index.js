@@ -43,17 +43,16 @@ export default function Dashboard() {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}></Grid>
+      <Grid item xs={6}></Grid>
+      <Grid item xs={6}></Grid>
       <Grid item xs={12}>
-        <Box sx={{ bgcolor: 'background.paper', width: '100%' }}>
+        <Box sx={{ width: '100%' }}>
           <AppBar position='static'>
             <Tabs
               value={value}
               onChange={handleChange}
-              indicatorColor='secondary'
-              textColor='inherit'
               variant='fullWidth'
-              aria-label='full width tabs example'
+              sx={{ backgroundColor: theme.palette.black }}
             >
               <Tab label='Expenses' {...a11yProps(0)} />
               <Tab label='Incomes' {...a11yProps(1)} />
