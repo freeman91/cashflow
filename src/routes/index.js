@@ -17,6 +17,7 @@ import Summary from './Summary';
 import Networth from './Networth';
 import User from './User';
 import UpdateRecordDialog from '../components/Dialog/UpdateRecordDialog';
+import CreateRecordDialog from '../components/Dialog/CreateRecordDialog';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -143,6 +144,7 @@ export default function Navigation() {
           </TabPanel>
         </SwipeableViews>
         <UpdateRecordDialog />
+        <CreateRecordDialog />
       </main>
     </div>
   );

@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { get, capitalize } from 'lodash';
 import { Dialog, DialogTitle, DialogContent } from '@mui/material';
 
-import { setDialog } from '../../store/settings';
-import { settings as initialState } from '../../store/initialState';
+import { setUpdateDialog } from '../../store/settings';
 import ExpenseForm from '../Form/ExpenseForm';
 import IncomeForm from '../Form/IncomeForm';
 import HourForm from '../Form/HourForm';
@@ -13,19 +12,19 @@ import DebtForm from '../Form/DebtForm';
 
 export default function UpdateRecordDialog() {
   const dispatch = useDispatch();
-  const { dialog } = useSelector((state) => state.settings);
+  const { updateDialog } = useSelector((state) => state.settings);
 
   const handleClose = () => {
     dispatch(
-      setDialog({
-        open: initialState.dialog.open,
-        record: initialState.dialog.record,
+      setUpdateDialog({
+        record: {},
+        open: false,
       })
     );
   };
 
   const showRecordForm = () => {
-    let { record } = dialog;
+    let { record } = updateDialog;
     let category = get(record, 'category');
     if (category === 'expense') {
       return (
@@ -59,9 +58,9 @@ export default function UpdateRecordDialog() {
   };
 
   return (
-    <Dialog open={dialog.open} onClose={handleClose}>
+    <Dialog open={updateDialog.open} onClose={handleClose}>
       <DialogTitle>
-        Update {capitalize(get(dialog, 'record.category'))}
+        {capitalize(get(updateDialog, 'record.category'))}
       </DialogTitle>
       <DialogContent>{showRecordForm()}</DialogContent>
     </Dialog>

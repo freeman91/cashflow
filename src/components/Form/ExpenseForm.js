@@ -20,10 +20,23 @@ const default_state = {
   date: dayjs(),
 };
 
-export default function ExpenseForm({ handleDialogClose, mode, expense }) {
+export default function ExpenseForm({
+  handleDialogClose,
+  mode,
+  expense,
+  date,
+}) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
+
+  useEffect(() => {
+    setValues({
+      ...values,
+      date: date,
+    });
+    // eslint-disable-next-line
+  }, [date]);
 
   useEffect(() => {
     if (mode === 'update') {

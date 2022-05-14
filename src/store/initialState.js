@@ -1,7 +1,11 @@
 export const settings = {
-  dialog: {
+  updateDialog: {
     open: false,
     record: {},
+  },
+  createDialog: {
+    open: false,
+    date: null,
   },
 };
 

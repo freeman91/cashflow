@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import numeral from 'numeral';
 
-import { setDialog } from '../../store/settings';
+import { setUpdateDialog } from '../../store/settings';
 import { numberToCurrency } from '../../helpers/currency';
 
 const tableHeaderCellStyle = { fontWeight: 800, width: '10rem' };
@@ -35,7 +35,7 @@ export default function RecordTable({ data }) {
   };
 
   const handleClick = (row) => {
-    dispatch(setDialog({ open: true, record: row }));
+    dispatch(setUpdateDialog({ open: true, record: row }));
   };
 
   useEffect(() => {

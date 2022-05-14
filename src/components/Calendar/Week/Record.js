@@ -1,11 +1,18 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Box, Tooltip, Typography } from '@mui/material';
 import { useTheme } from '@mui/styles';
 
 import { numberToCurrency } from '../../../helpers/currency';
+import { setUpdateDialog } from '../../../store/settings';
 
 export default function Record({ data }) {
   const theme = useTheme();
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(setUpdateDialog({ open: true, record: data }));
+  };
 
   const [value, color] = (() => {
     if (data.category === 'hour') {
@@ -60,7 +67,7 @@ export default function Record({ data }) {
   };
 
   return (
-    <Tooltip title={renderTooltip()}>
+    <Tooltip title={renderTooltip()} onClick={handleClick}>
       <Box
         bgcolor={color}
         height={'1rem'}

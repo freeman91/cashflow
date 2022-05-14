@@ -27,7 +27,7 @@ const default_state = {
   date: dayjs(),
 };
 
-export default function IncomeForm({ handleDialogClose, mode, income }) {
+export default function IncomeForm({ handleDialogClose, mode, income, date }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
@@ -48,7 +48,11 @@ export default function IncomeForm({ handleDialogClose, mode, income }) {
     }
 
     if (mode === 'create') {
-      setValues({ ...values, deductions: _deductions });
+      setValues({
+        ...values,
+        deductions: _deductions,
+        date: date ? date : dayjs(),
+      });
     } else if (mode === 'update') {
       setValues({
         amount: get(income, 'amount', 0),

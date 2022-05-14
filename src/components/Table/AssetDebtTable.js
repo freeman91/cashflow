@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 
 import { numberToCurrency } from '../../helpers/currency';
-import { setDialog } from '../../store/settings';
+import { setUpdateDialog } from '../../store/settings';
 
 export default function AssetDebtTable({ rows }) {
   const tableHeaderCellStyle = { fontWeight: 800, width: '10rem' };
@@ -24,7 +24,7 @@ export default function AssetDebtTable({ rows }) {
   };
 
   const handleClick = (row) => {
-    dispatch(setDialog({ open: true, record: row }));
+    dispatch(setUpdateDialog({ open: true, record: row }));
   };
 
   return (

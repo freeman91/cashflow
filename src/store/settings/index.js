@@ -3,23 +3,39 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { thunkReducer } from '../thunkTemplate';
 import { settings as initialState } from '../initialState';
 
-const setDialog = createAsyncThunk('settings/setDialog', ({ open, record }) => {
-  return {
-    dialog: {
-      open,
-      record,
-    },
-  };
-});
+const setUpdateDialog = createAsyncThunk(
+  'settings/setUpdateDialog',
+  ({ open, record }) => {
+    return {
+      updateDialog: {
+        open,
+        record,
+      },
+    };
+  }
+);
+
+const setCreateDialog = createAsyncThunk(
+  'settings/setCreateDialog',
+  ({ open, date }) => {
+    return {
+      createDialog: {
+        open,
+        date,
+      },
+    };
+  }
+);
 
 const { reducer } = createSlice({
   name: 'settings',
   initialState,
   reducers: {},
   extraReducers: {
-    ...thunkReducer(setDialog),
+    ...thunkReducer(setUpdateDialog),
+    ...thunkReducer(setCreateDialog),
   },
 });
 
-export { setDialog };
+export { setUpdateDialog, setCreateDialog };
 export default reducer;

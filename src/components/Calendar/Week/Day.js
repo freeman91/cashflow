@@ -1,24 +1,66 @@
 import React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { IconButton, Paper, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from '@mui/styles';
 import dayjs from 'dayjs';
 import Record from './Record';
-import { map } from 'lodash';
+import { map, filter, get } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCreateDialog } from '../../../store/settings';
 
-export default function Day({ date, expenses, incomes, hours }) {
+export default function Day({ date }) {
   const theme = useTheme();
+  const dispatch = useDispatch();
   let isToday = dayjs().isSame(date, 'day');
+
+  const expenses = useSelector((state) =>
+    filter(state.expenses.data, (expense) => {
+      return get(expense, 'date') === date.format('YYYY-MM-DD');
+    })
+  );
+
+  const incomes = useSelector((state) =>
+    filter(state.incomes.data, (income) => {
+      return get(income, 'date') === date.format('YYYY-MM-DD');
+    })
+  );
+
+  const hours = useSelector((state) =>
+    filter(state.hours.data, (hour) => {
+      return get(hour, 'date') === date.format('YYYY-MM-DD');
+    })
+  );
+
+  const handleClick = () => {
+    dispatch(
+      setCreateDialog({
+        date: date,
+        open: true,
+      })
+    );
+  };
 
   return (
     <Paper
       variant='outlined'
       sx={{
-        flex: 1,
+        width: '10rem',
         height: '10rem',
         backgroundColor: theme.palette.grey[900],
-        mr: date.day() === 6 ? 0 : '.5rem',
       }}
     >
+      <IconButton
+        onClick={handleClick}
+        sx={{
+          float: 'left',
+          height: '1rem',
+          width: '1rem',
+          mt: '.3rem',
+          ml: '.5rem',
+        }}
+      >
+        <AddIcon />
+      </IconButton>
       <Typography
         sx={{
           float: 'right',
