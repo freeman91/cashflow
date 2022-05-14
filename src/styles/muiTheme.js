@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
+import { grey, blue, green, red } from '@mui/material/colors';
 
 export const breakpoints = {
   xs: 0,
@@ -13,6 +13,9 @@ export const muiTheme = createTheme({
   palette: {
     mode: 'dark',
     grey: grey,
+    blue: blue,
+    green: green,
+    red: red,
     black: '#121212',
   },
   typography: {

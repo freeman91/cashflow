@@ -15,6 +15,19 @@ from api import mongo
 from api.mongo.connection import database
 
 
+def update_crypto_shares():
+    assets = mongo.asset.get()
+    crypto_assets = filter_(assets, lambda asset: asset.type == "crypto")
+    for asset in crypto_assets:
+        shares = input(f"{asset.name} shares: ")
+
+        if shares == "s":
+            continue
+
+        asset.shares = float(shares)
+        asset.save()
+
+
 def test():
     pass
 

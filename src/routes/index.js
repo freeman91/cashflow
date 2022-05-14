@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useLifecycles } from 'react-use';
+import React from 'react';
 
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles } from '@mui/styles';
@@ -7,7 +6,6 @@ import { useTheme } from '@mui/material/styles';
 import { AppBar, Box, Tabs, Tab, CssBaseline } from '@mui/material';
 import {
   AccountBox,
-  // AccountBalanceWallet,
   DateRange,
   Dashboard as DashboardIcon,
   TrendingUp,
@@ -15,7 +13,6 @@ import {
 import { useWindowSize } from 'react-use';
 
 import Dashboard from './Dashboard';
-// import Budget from './Budget';
 import Summary from './Summary';
 import Networth from './Networth';
 import User from './User';
@@ -49,7 +46,6 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     display: 'flex',
     height: '100%',
-    width: '100%',
   },
   content: {
     flexGrow: 1,
@@ -60,36 +56,7 @@ export default function Navigation() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const isClient = typeof window === 'object';
-  const { height } = useWindowSize();
-  // eslint-disable-next-line
-  const [windowSize, setWindowSize] = useState(getSize);
-
-  function getSize() {
-    return {
-      width: isClient ? window.innerWidth : undefined,
-      height: isClient ? window.innerHeight : undefined,
-    };
-  }
-
-  function handleResize() {
-    setWindowSize(getSize());
-  }
-
-  useLifecycles(
-    () => {
-      //mount
-      if (!isClient) {
-        return false;
-      }
-
-      window.addEventListener('resize', handleResize);
-    },
-    () => {
-      //unmount
-      window.removeEventListener('resize', handleResize);
-    }
-  );
+  const { height, width } = useWindowSize();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -100,7 +67,7 @@ export default function Navigation() {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{ width: width }}>
       <CssBaseline />
       <main
         className={classes.content}
@@ -126,14 +93,6 @@ export default function Navigation() {
                 width: '12rem',
               }}
             />
-            {/* <Tab
-              label='Budget'
-              icon={<AccountBalanceWallet />}
-              {...a11yProps(1)}
-              sx={{
-                width: '12rem',
-              }}
-            /> */}
             <Tab
               label='Summary'
               icon={<DateRange />}
@@ -165,7 +124,7 @@ export default function Navigation() {
           index={value}
           onChangeIndex={handleChangeIndex}
           style={{
-            width: `${theme.breakpoints.maxWidth}px`,
+            width: width < 1000 ? width : theme.breakpoints.maxWidth,
             margin: 'auto',
             justifyContent: 'space-between',
           }}
@@ -173,9 +132,6 @@ export default function Navigation() {
           <TabPanel value={value} index={0} dir={theme.direction}>
             <Dashboard />
           </TabPanel>
-          {/* <TabPanel value={value} index={1} dir={theme.direction}>
-            <Budget />
-          </TabPanel> */}
           <TabPanel value={value} index={1} dir={theme.direction}>
             <Summary />
           </TabPanel>
