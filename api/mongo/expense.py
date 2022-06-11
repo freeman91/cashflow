@@ -2,10 +2,10 @@
 
 """monog.expense submodule"""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Union
 
-from pydash import get as _get, concat
+from pydash import get as _get, concat, reduce_, mean
 
 from api import mongo
 from api.mongo.models.Expense import Expense
@@ -26,6 +26,38 @@ def get(_id: str = None) -> Union[Expense, List[Expense]]:
         return Expense(**expense)
 
     return [Expense(**expense) for expense in database.expenses.find()]
+
+
+def get_day_expenses(day: datetime):
+    start = datetime(day.year, day.month, day.day, 0, 0, 0)
+    end = datetime(day.year, day.month, day.day, 23, 59, 59)
+    return [
+        Expense(**expense)
+        for expense in database.expenses.find(
+            {
+                "date": {
+                    "$gt": start,
+                    "$lt": end,
+                }
+            }
+        )
+    ]
+
+
+def mean_per_day(start: datetime, end: datetime) -> float:
+    sums = []
+    current_day = start
+    while current_day <= end:
+        sums.append(
+            reduce_(
+                mongo.expense.get_day_expenses(current_day),
+                lambda acc, expense: acc + expense.amount,
+                0,
+            )
+        )
+        current_day = current_day + timedelta(days=1)
+
+    return mean(sums)
 
 
 def search(start: datetime, stop: datetime) -> List[Expense]:

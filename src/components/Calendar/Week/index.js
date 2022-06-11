@@ -1,32 +1,87 @@
 import React, { useEffect, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { IconButton, Stack, Tooltip } from '@mui/material';
+import ViewComfyIcon from '@mui/icons-material/ViewComfy';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import dayjs from 'dayjs';
-import { map, range } from 'lodash';
-import Day from './Day';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import { map } from 'lodash';
+import Day from '../Day';
+import { useTheme } from '@emotion/react';
+import { WeekSelector } from '../../Selector';
+dayjs.extend(advancedFormat);
 
-export default function Week({ date }) {
+export default function Week({ date, setView }) {
+  const theme = useTheme();
   const [days, setDays] = useState([]);
+  const [day, setDay] = useState(dayjs);
 
   useEffect(() => {
-    let _date = date ? date : dayjs();
-    let firstDayOfWeek = _date.subtract(_date.day(), 'day');
-
-    setDays(
-      map(range(7), (dayOfWeek) => {
-        return firstDayOfWeek.add(dayOfWeek, 'day');
-      })
-    );
+    if (date) {
+      setDay(date);
+    }
   }, [date]);
+
+  useEffect(() => {
+    let _days = [];
+    let firstDayOfWeek = day.day(0);
+
+    let currentDay = firstDayOfWeek;
+    while (currentDay.isSame(firstDayOfWeek, 'week')) {
+      _days.push(currentDay);
+      currentDay = currentDay.add(1, 'day');
+    }
+
+    setDays(_days);
+  }, [day]);
+
+  const handleBackClick = () => {
+    setDay(day.subtract(1, 'week'));
+  };
+
+  const handleForwardClick = () => {
+    setDay(day.add(1, 'week'));
+  };
 
   return (
     <>
-      {/* RangeSelection */}
-      <Typography align='left' variant='h5' sx={{ mb: '.5rem' }}>
-        This Week
-      </Typography>
-      <Stack direction='row' justifyContent='space-around' alignItems='center'>
-        {map(days, (day) => {
-          return <Day key={`day-${day.format('YYYY-MM-DD')}`} date={day} />;
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: theme.spacing(1),
+        }}
+      >
+        <Tooltip title='View Month' placement='top'>
+          <IconButton onClick={() => setView('month')}>
+            <ViewComfyIcon />
+          </IconButton>
+        </Tooltip>
+
+        <IconButton onClick={handleBackClick}>
+          <ArrowBackIosNewIcon />
+        </IconButton>
+        <WeekSelector date={day} />
+        <IconButton onClick={handleForwardClick}>
+          <ArrowForwardIosIcon />
+        </IconButton>
+      </div>
+
+      <Stack
+        direction='row'
+        justifyContent='space-around'
+        alignItems='center'
+        spacing={1}
+        pb={1}
+      >
+        {map(days, (_day) => {
+          return (
+            <Day
+              key={`day-${_day.format('YYYY-MM-DD')}`}
+              date={_day}
+              sameMonth={_day.isSame(day, 'month')}
+            />
+          );
         })}
       </Stack>
     </>

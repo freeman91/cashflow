@@ -13,6 +13,7 @@ import {
 
 import { numberToCurrency } from '../../helpers/currency';
 import { setUpdateDialog } from '../../store/settings';
+import { sortBy } from 'lodash';
 
 export default function AssetDebtTable({ rows }) {
   const tableHeaderCellStyle = { fontWeight: 800, width: '10rem' };
@@ -27,6 +28,7 @@ export default function AssetDebtTable({ rows }) {
     dispatch(setUpdateDialog({ open: true, record: row }));
   };
 
+  let sortedRows = sortBy(rows, 'name');
   return (
     <>
       <TableContainer component={Paper}>
@@ -45,7 +47,7 @@ export default function AssetDebtTable({ rows }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * 10, page * 10 + 10).map((row) => (
+            {sortedRows.slice(page * 10, page * 10 + 10).map((row) => (
               <TableRow key={row.id} onClick={() => handleClick(row)}>
                 <TableCell align='left'>{row.name}</TableCell>
                 <TableCell align='left'>{row.type}</TableCell>
@@ -57,7 +59,7 @@ export default function AssetDebtTable({ rows }) {
           </TableBody>
         </Table>
       </TableContainer>
-      {rows.length <= 10 ? null : (
+      {sortedRows.length <= 10 ? null : (
         <TablePagination
           rowsPerPageOptions={[10]}
           component='div'

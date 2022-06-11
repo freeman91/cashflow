@@ -1,9 +1,13 @@
 # pylint: disable=missing-function-docstring, missing-class-docstring, invalid-name, too-many-instance-attributes
 """Expense Model"""
 
+import calendar
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 from pydantic import Field
+
+from api import mongo
 
 from .common import BaseModel, PydanticObjectId
 from ..connection import database
@@ -13,6 +17,7 @@ class User(BaseModel):
     id: Optional[PydanticObjectId] = Field(None, alias="_id")
     name: str
     email: str
+    average: float
     asset_types: List
     debt_types: List
     expense_types: List
@@ -21,6 +26,9 @@ class User(BaseModel):
     income_sources: List
     income_deductions: List
     goal_categories: list
+
+    def __repr__(self):
+        return f"<{self.name}>"
 
     def save(self):
         return database.users.replace_one(
@@ -48,14 +56,39 @@ class User(BaseModel):
 
         return self.save()
 
-    def __repr__(self):
-        return f"<{self.name}>"
+    def set_average(self):
+        yesterday = datetime.now()
+
+        # overall
+        start1 = datetime(2018, 11, 19, 12, 0)
+        mean_overall = mongo.expense.mean_per_day(start1, yesterday)
+
+        # 120 days
+        start2 = yesterday - timedelta(days=120)
+        mean_120 = mongo.expense.mean_per_day(start2, yesterday)
+
+        # 30 days
+        start3 = yesterday - timedelta(days=30)
+        mean_30 = mongo.expense.mean_per_day(start3, yesterday)
+
+        # this month last year
+        last_year = datetime(yesterday.year - 1, yesterday.month, yesterday.day)
+        fdom, ldom = calendar.monthrange(last_year.year, last_year.month)
+        mean_ly = mongo.expense.mean_per_day(
+            last_year.replace(day=fdom), last_year.replace(day=ldom)
+        )
+
+        self.average = (
+            (mean_overall * 0.2) + (mean_120 * 0.2) + (mean_30 * 0.3) + (mean_ly * 0.3)
+        )
+        self.save()
 
 
 user = {
     "_id": "61bab417161ad1abbd958c47",
     "name": "Addison Freeman",
     "email": "addisonmellow@hotmail.com",
+    "average": 110,
     "asset_types": [
         "cash",
         "checking",

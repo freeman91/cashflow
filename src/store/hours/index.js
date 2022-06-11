@@ -7,6 +7,37 @@ import { thunkReducer } from '../thunkTemplate';
 import { hours as initialState } from '../initialState';
 import dayjs from 'dayjs';
 
+const getHours = createAsyncThunk(
+  'hours/getHours',
+  async (range, { getState }) => {
+    try {
+      const { data: storeHours } = getState().hours;
+      let now = dayjs();
+      let start = get(range, 'start');
+      let stop = get(range, 'stop');
+
+      if (!start) {
+        start = now.subtract(4, 'month').date(1).hour(0).unix();
+      }
+
+      if (!stop) {
+        stop = now.add(3, 'day').hour(23).unix();
+      }
+
+      let allHours = cloneDeep(storeHours);
+      const hours = await getHoursAPI(start, stop);
+      let updatedHourIds = map(hours, (hour) => hour.id);
+
+      remove(allHours, (hour) => includes(updatedHourIds, hour.id));
+      return {
+        data: concat(allHours, hours),
+      };
+    } catch (err) {
+      console.error(err);
+    }
+  }
+);
+
 const postHour = createAsyncThunk(
   'hours/postHour',
   async (new_hour, { dispatch, getState }) => {
@@ -102,48 +133,6 @@ const deleteHour = createAsyncThunk(
           message: err,
         })
       );
-    }
-  }
-);
-
-const getHours = createAsyncThunk(
-  'hours/getHours',
-  async (range, { getState }) => {
-    try {
-      const { data: storeHours } = getState().hours;
-      let now = dayjs();
-      let start = get(range, 'start');
-      let stop = get(range, 'stop');
-
-      if (!start) {
-        start = now
-          .month(now.month() - 1)
-          .day(1)
-          .hour(0)
-          .minute(0)
-          .second(0)
-          .unix();
-      }
-
-      if (!stop) {
-        stop = now
-          .day(now.day() + 3)
-          .hour(0)
-          .minute(0)
-          .second(0)
-          .unix();
-      }
-
-      let allHours = cloneDeep(storeHours);
-      const hours = await getHoursAPI(start, stop);
-      let updatedHourIds = map(hours, (hour) => hour.id);
-
-      remove(allHours, (hour) => includes(updatedHourIds, hour.id));
-      return {
-        data: concat(allHours, hours),
-      };
-    } catch (err) {
-      console.error(err);
     }
   }
 );

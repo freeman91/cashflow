@@ -4,14 +4,14 @@
 
 from typing import List, Union
 
-from pydash import get as _get
+from pydash import get as _get, filter_
 
 from api.mongo.models.Asset import Asset
 from .connection import database
 from .models.common import PydanticObjectId
 
 
-def get(_id: str = None) -> Union[Asset, List[Asset]]:
+def get(_id: str = None, type_: str = None) -> Union[Asset, List[Asset]]:
     """
     GET
 
@@ -22,6 +22,9 @@ def get(_id: str = None) -> Union[Asset, List[Asset]]:
     if _id:
         asset = database.assets.find_one({"_id": PydanticObjectId(_id)})
         return Asset(**asset)
+
+    if type_:
+        return filter_(get(), lambda asset: asset.type == type_)
 
     return [Asset(**asset) for asset in database.assets.find()]
 
@@ -61,13 +64,13 @@ def update(asset: dict) -> Asset:
     """
 
     asset_obj = get(_get(asset, "id"))
-    asset_obj.name = _get(asset, "name")
+    # asset_obj.name = _get(asset, "name")
     asset_obj.value = float(_get(asset, "value"))
-    asset_obj.type = _get(asset, "type")
+    # asset_obj.type = _get(asset, "type")
     asset_obj.shares = float(_get(asset, "shares"))
     asset_obj.price = float(_get(asset, "price"))
-    asset_obj.vendor = _get(asset, "vendor")
-    asset_obj.debt = _get(asset, "debt")
+    # asset_obj.vendor = _get(asset, "vendor")
+    # asset_obj.debt = _get(asset, "debt")
     asset_obj.invested = float(_get(asset, "invested"))
     asset_obj.description = _get(asset, "description")
 

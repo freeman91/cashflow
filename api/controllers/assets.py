@@ -31,7 +31,7 @@ def _assets_id(_id: str):
         return success_result(mongo.asset.get(_id))
 
     if request.method == "PUT":
-        return success_result(mongo.asset.update(set_date(request.json)))
+        return success_result(mongo.asset.update(request.json))
 
     if request.method == "DELETE":
         return success_result(mongo.asset.delete(_id).acknowledged)

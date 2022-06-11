@@ -42,7 +42,6 @@ const putAsset = createAsyncThunk(
       remove(_assets, {
         id: get(result, 'id'),
       });
-
       return {
         data: concat(_assets, result),
       };

@@ -9,21 +9,17 @@ import HourForm from '../Form/HourForm';
 
 export default function CreateRecordDialog() {
   const dispatch = useDispatch();
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('expense');
   const { createDialog } = useSelector((state) => state.settings);
 
   const handleClose = () => {
-    setCategory('');
+    setCategory('expense');
     dispatch(
       setCreateDialog({
         date: null,
         open: false,
       })
     );
-  };
-
-  const handleKeyPress = (event) => {
-    console.log('event: ', event);
   };
 
   const renderContent = () => {
@@ -70,7 +66,6 @@ export default function CreateRecordDialog() {
           <Button
             variant={category === 'expense' ? 'contained' : 'outlined'}
             onClick={() => setCategory('expense')}
-            onKeyUp={handleKeyPress}
           >
             Expense
           </Button>

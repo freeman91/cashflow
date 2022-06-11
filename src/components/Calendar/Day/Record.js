@@ -67,7 +67,11 @@ export default function Record({ data }) {
   };
 
   return (
-    <Tooltip title={renderTooltip()} onClick={handleClick}>
+    <Tooltip
+      title={renderTooltip()}
+      onClick={handleClick}
+      placement='right-start'
+    >
       <Box
         bgcolor={color}
         height={'1rem'}

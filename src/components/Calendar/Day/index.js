@@ -8,7 +8,7 @@ import { map, filter, get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCreateDialog } from '../../../store/settings';
 
-export default function Day({ date }) {
+export default function Day({ date, sameMonth }) {
   const theme = useTheme();
   const dispatch = useDispatch();
   let isToday = dayjs().isSame(date, 'day');
@@ -47,6 +47,7 @@ export default function Day({ date }) {
         width: '10rem',
         height: '10rem',
         backgroundColor: theme.palette.grey[900],
+        opacity: sameMonth ? 1 : 0.5,
       }}
     >
       <IconButton
@@ -71,7 +72,7 @@ export default function Day({ date }) {
           bgcolor: isToday
             ? theme.palette.red[800]
             : theme.palette.background.paper,
-          borderRadius: '.5rem',
+          borderRadius: '10px',
         }}
       >
         {date.date()}

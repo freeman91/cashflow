@@ -70,16 +70,9 @@ export default function AssetForm({ handleClose, mode, asset }) {
     let updatedAsset = {
       ...asset,
       value: values.value,
-    };
-    dispatch(putAsset(updatedAsset));
-    handleClose();
-  };
-
-  const handleUpdatePrice = (e) => {
-    e.preventDefault();
-    let updatedAsset = {
-      ...asset,
+      shares: values.shares,
       price: values.price,
+      invested: values.invested,
     };
     dispatch(putAsset(updatedAsset));
     handleClose();
@@ -191,35 +184,26 @@ export default function AssetForm({ handleClose, mode, asset }) {
             Sell
           </Button>
         );
-        buttons.push(
-          <Button
-            type='submit'
-            id='update-price'
-            key='update-price-button'
-            disabled={asset.price === values.price}
-            sx={{ mt: '1rem', width: '5rem' }}
-            variant='outlined'
-            onClick={handleUpdatePrice}
-            color='info'
-          >
-            Update
-          </Button>
-        );
-      } else
-        buttons.push(
-          <Button
-            type='submit'
-            id='update-value'
-            key='update-value-button'
-            disabled={asset.value === values.value}
-            sx={{ mt: '1rem', width: '5rem' }}
-            variant='outlined'
-            onClick={handleUpdate}
-            color='success'
-          >
-            Update
-          </Button>
-        );
+      }
+      buttons.push(
+        <Button
+          type='submit'
+          id='update'
+          key='update-button'
+          disabled={
+            asset.price === values.price &&
+            asset.shares === values.shares &&
+            asset.value === values.value &&
+            asset.invested === values.invested
+          }
+          sx={{ mt: '1rem', width: '5rem' }}
+          variant='outlined'
+          onClick={handleUpdate}
+          color='success'
+        >
+          Update
+        </Button>
+      );
     }
 
     return <>{map(buttons, (button) => button)}</>;
@@ -293,7 +277,6 @@ export default function AssetForm({ handleClose, mode, asset }) {
             id='value-input'
             label='value'
             name='value'
-            disabled={isSharedAsset}
             required={!isSharedAsset}
             value={calculateValue()}
             variant='outlined'
@@ -315,7 +298,6 @@ export default function AssetForm({ handleClose, mode, asset }) {
                 id='shares-input'
                 label='shares'
                 name='shares'
-                disabled={mode === 'update' ? true : false}
                 value={
                   mode === 'create'
                     ? values.shares
@@ -357,7 +339,6 @@ export default function AssetForm({ handleClose, mode, asset }) {
               id='invested-input'
               label='invested'
               name='invested'
-              disabled={mode === 'update' ? true : false}
               value={values.invested}
               variant='outlined'
               placeholder='0'
