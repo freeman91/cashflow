@@ -121,11 +121,7 @@ export default function AssetForm({ handleClose, mode, asset }) {
         return values.value;
       }
     } else {
-      if (isSharedAsset) {
-        return _numberToCurrency.format(values.value);
-      } else {
-        return values.value;
-      }
+      return values.value;
     }
   };
 

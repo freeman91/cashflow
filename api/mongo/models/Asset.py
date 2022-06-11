@@ -29,6 +29,7 @@ class Asset(BaseModel):
         return database.assets.insert_one(self.bson()).inserted_id
 
     def save(self):
+        self.last_update = datetime.now()
         return database.assets.replace_one(
             {"_id": PydanticObjectId(self.id)}, self.bson()
         )
