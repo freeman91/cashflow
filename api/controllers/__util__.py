@@ -26,6 +26,14 @@ def set_date(item: dict):
     )
 
 
+def set_last_update(item: dict):
+    return set_(
+        item,
+        "last_update",
+        datetime.now().replace(hour=12),
+    )
+
+
 def handle_exception(func):
     """wrap the function in a try/except block"""
 

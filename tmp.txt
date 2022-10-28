@@ -1,0 +1,558 @@
+                  Name                             Nickname           OFX Home
+======================================= ============================= ========
+1st Advantage FCU                       firstadvantage                542     
+1st National Bank Of South Florida      firstnatl                     838     
+1st Source Bank                         firstsource                   840     
+5 Star Bank                             fivestar                      774     
+ABCO Federal Credit Union               abco                          841     
+Affinity Federal Credit Union           affinityfcu                   846     
+AIM Investments                         aim                           497     
+Air Academy FCU                         aafcu-alt                     1522    
+Alarion Bank                            alarion                       848     
+Allegacy Federal Credit Union           allegacy                      849     
+Alliance Bank of Arizona                alliance                      851     
+Allied First Bank                       alliedfirst                   852     
+Allsouth Federal Credit Union           allsouth                      853     
+Alpine Bank                             alpine                        854     
+ALTA Alliance Bank                      alta                          855     
+Altra Federal Credit Union              altra                         856     
+Altra Federal CU                        altra-alt                     1523    
+Amegy Bank of Texas                     amegy-tx                      857     
+America First Credit Union              americafirst                  533     
+American Community Bank of IN           acbank                        860     
+American Express Card                   amex                          424     
+American Momentum Bank                  momentum                      859     
+American National Bank                  americannatl                  669     
+Ameriprise Brokerage 133 Direct         ameriprise-alt                861     
+Ameriprise Financial Services, Inc.     ameriprise                    489     
+Ameriprise MasterCard                   ameriprise-cc                 862     
+AmeriServ Financial Bank                ameriserv                     864     
+Ameritrade                              ameritrade                    865     
+Anchor Bank, N.A.                       anchor                        866     
+Andover Bank-RO                         andover                       867     
+Andrews FCU                             andrews                       868     
+APCO EMPLOYEES CREDIT UNION             apco                          521     
+Ariel Mutual Funds                      ariel                         566     
+Arizona Federal Credit Union            azfederal                     637     
+Arkansas Best FCU                       abfcu                         871     
+Arthur State Bank                       arthur                        873     
+Athol Savings Bank DC Quicken           athol                         874     
+Atlanta Postal Credit Union             apcu                          875     
+Atlantic Capital Bank                   atlantic                      876     
+Atlantic Stewardship Bank               asb                           877     
+Atomic Credit Union                     atomic                        878     
+BancFirst                               bancfirst                     644     
+Bancorpsouth                            bancorpsouth                  803     
+Bangor Savings Bank Direct              bangor                        882     
+Bank at United                          united                        884     
+Bank of Akron                           akron                         885     
+Bank of America                         bofa                          639     
+Bank of America (Formerly Fleet)        fleet                         674     
+Bank of America - access.ofx            bofa-alt                      790     
+Bank of California - Direct             bancofcal                     880     
+Bank of Colorado QN DC                  colorado                      887     
+Bank of Dickson                         dickson                       889     
+Bank of Dudley                          dudley                        890     
+The Bank of Greene County               greenecounty                  1423    
+Bank of Herrin                          herrin                        892     
+Bank of Internet, USA                   internet                      787     
+Bank of North Carolina                  bnc                           896     
+The Bank of Princeton                   princeton                     897     
+Bank of Tampa, The                      tampa                         522     
+Bank of the James                       james                         899     
+Bank OfCanaan                           canaan                        894     
+The Bank ofCanaan                       canaan-alt                    910     
+Bank One (Chicago)                      bankone-il                    672     
+Bank One (Michigan and Florida)         bankone-mi                    673     
+Bank OZK                                ozk                           1530    
+Bank San Juans                          sanjuans                      901     
+Bank X                                  bankx                         902     
+BankBoston PC Banking                   boston                        675     
+bankfinancial                           financial                     762     
+BankPlus                                bankplus                      908     
+BankUnited                              bankunited                    909     
+Bar Harbor Bank and Trust               barharbor                     911     
+Barclays Bank Plc.                      barclays                      912     
+Bay State Savings Bank                  baystate                      914     
+BayPort Credit Union                    bayport                       915     
+BB&T                                    bbt                           475     
+BBCN Bank - Direct Connect              bbcn                          916     
+Beacon Federal Credit Union             beacon                        917     
+BECU                                    becu                          825     
+Benchmark Bank                          benchmark                     918     
+Bernstein                               bernstein-alt                 921     
+Bernstein Global Wealth Mgmt            bernstein                     605     
+Beverly Cooperative Bank (043T)         beverlycoop                   923     
+Black Hills Federal Credit Union        bhfcu                         924     
+BofI Advisor                            bofiadvisor                   926     
+Boone Bank & Trust                      boone                         927     
+Boston Private Bank & Trust Co          bostonprivate                 1524    
+The Brand Banking Company               brand                         1425    
+Bridgehampton National Bank             bridgehampton                 932     
+Broward Bank of Commerce                browardcomm                   934     
+Brunswick Bank and Trust                brunswick                     935     
+Bryn Mawr Trust                         brynmawr                      936     
+Buckeye Community FCU                   buckeye                       938     
+Bulldog Federal Credit Union            bulldog                       939     
+buryport Five Cents Sv Bank             newburyport                   1269    
+The Business Bank of St Louis           business                      1426    
+C-Plant FCU                             cplant                        942     
+C1 Bank                                 c1                            943     
+Cache Valley Bank                       cachevalley                   944     
+CAHP Credit Union                       cahp                          945     
+California Bank and Trust               cbandt                        946     
+Caltech Employees Federal CU            cefcu                         949     
+Cambridge Savings Bank                  cambridge                     760     
+Cape Bank                               cape                          953     
+Capital Credit Union                    capitalcu                     954     
+Capitol View CU                         capview                       955     
+Carolina Alliance Bank                  carolina                      957     
+Carrollton Bank                         carrollton                    958     
+CASE Credit Union                       case                          959     
+Cashmere Valley Bank                    cashmerevalley                960     
+Castle Rock Bank                        castlerock                    961     
+CBFC-Quickbooks                         cbfc                          962     
+Cedar Falls Community CU                cfccu                         964     
+Centier Bank                            centier                       834     
+Central Bank                            cb                            965     
+Central Bank Utah                       cbutah                        820     
+Central State Bank                      centralstate                  963     
+Central Valley Community Bank           centralvalley                 971     
+Centric Bank                            centric                       972     
+Centrue Bank                            centrue                       974     
+CertusBank, NA                          certus                        976     
+CFBank                                  cfbank                        977     
+Charles Schwab & Co., Inc.              schwab-alt                    979     
+Charles Schwab Bank, N.A.               schwabbank                    578     
+Charles Schwab Retirement               schwabrps-alt                 729     
+Charles Schwab Retirement Plan Services schwabrps                     730     
+Charles Schwab&Co., INC                 schwab                        433     
+Charlotte Metro Credit Union            cmcu                          980     
+Charter One                             charterone                    982     
+Charter One Small Business              charterone-biz                983     
+Chase (credit card)                     chase                         636     
+CheckFree Direct                        checkfree                     984     
+Chevron Federal Credit Union            chevron                       987     
+Christian Community Credit Union        cccu                          988     
+Citi Personal Wealth Management         citi-invest                   671     
+Citibank                                citi                          678     
+Citizens & Farmers Bank                 candf                         941     
+Citizens Alliance Bank                  citizensalliance              989     
+Citizens Federal Credit Union           citizensfcu                   991     
+Citizens Savings Bank                   citizenssb                    992     
+Citizens State Bank - La Crosse         csb-lacrosse                  993     
+Citizens State Bank Norwood Youn        csbnya                        994     
+City County Credit Union                citycounty                    996     
+City National Bank of Florida           citynational                  1000    
+Clarke County State Bank                clarkecounty                  1001    
+Coconut Grove Bank FL                   coconutgrove                  1003    
+Colonial Cooperative Bank               colonialcoop                  1006    
+The Columbia Bank                       columbia                      1430    
+Columbia Management                     columbiafunds                 1007    
+Commencement Bank                       commencement                  1008    
+Commerce Natl Bank and Trust of FL      cnbt                          1009    
+Commonwealth Bank and Trust             commonwealth                  1010    
+Communication FCU                       communication                 1011    
+Community Bank and Trust of Florida     cbtfl                         1012    
+Community Bank NA                       community                     1016    
+Community Bank of Broward               broward                       1013    
+Community Bank of the South FL          cbos                          1015    
+Community Choice Credit Union           communitychoice               1017    
+Community Credit Union Florida          ccu                           1018    
+Community Resource Bank                 communityresource             600     
+Community State Bank - Shelbina         communitysb                   1021    
+Community Trust Credit Union            communitytrustcu              1022    
+CommunityAmerica CU Direct              communityamerica              1023    
+Country Bank Arizona                    countryaz                     1025    
+Country Bank for Savings                country                       1026    
+Coventry Credit Union                   coventry                      1029    
+Credit Suisse Securities USA LLC        creditsuisse                  753     
+Dakota Plains CU                        dakotaplains                  1032    
+Dakota West Credit Union                dakotawest                    1033    
+Dakota Western Bank                     dakotawestern                 1034    
+Damariscotta Bank & Trust               damariscotta                  1035    
+DATCU                                   datcu                         682     
+Dawson Co-op CU                         dawson                        1038    
+Department of Commerce FCU              docfcu                        1041    
+Devon Bank                              devon                         1044    
+Dodge&Cox Funds                         dodgeandcox                   621     
+DuPont Goodrich FCU                     dugood                        1046    
+DWS Scudder Investments                 dws                           1043    
+E*TRADE                                 etrade                        446     
+EAB                                     eab                           685     
+Earlham Savings Bank                    earlham                       1048    
+East Idaho CU                           eastidaho                     1049    
+East West Bank                          eastwest                      1050    
+Eastman Credit Union                    eastman                       1052    
+Eastwood Bank                           eastwood                      1053    
+Edvest College Savings Plan             edvest                        833     
+EdwardsFederalCreditUnion               edwards                       1054    
+Elevations Credit Union IB WC-DC        elevations                    752     
+Empire National Bank                    empire                        1058    
+Empire State Bank                       empirestate                   1059    
+EnerGComm FCU                           energcomm                     1060    
+England FCU                             england                       1268    
+Enterprise Bank                         enterprise                    1062    
+Equitable Bank, Nebraska                equitable-ne                  1065    
+Essential Federal Credit Union          essential                     1066    
+EWEB Employees FCU                      eweb                          1069    
+Exchange Bank                           exchange                      1070    
+Farmers & Merchant Bank Berlin          farmersmerchant               1071    
+Farmers State Bank                      farmers                       1072    
+The Fauquier Bank                       fauquier                      1431    
+Fidelis Catholic FCU                    fidelis                       1277    
+Fidelity Bank                           fidelitybank                  1073    
+Fidelity Bank and Trust                 fidelitytrust                 1074    
+Fidelity Investments                    fidelity                      449     
+Fidelity NetBenefits                    netbenefits                   558     
+Fifth Third Bancorp                     fifththird                    450     
+Fifth Third Bank                        fifththird-alt                1075    
+Financial Security Bank                 financialsecurity             1076    
+The First and Farmers Bank              firstandfarmers               1432    
+First Bank                              firstbank                     1080    
+First Bank - NJ                         firstbank-nj                  1081    
+First Citizens                          firstcitizens                 690     
+First Clearing, LLC                     firstclearing                 689     
+First Community Bank-San Benito         fcb                           1083    
+First Community Credit Union            firstcommunity                1084    
+First Federal S & L of Delta            firstfeddelta                 1085    
+First Federal S&L of Lorain             fflorain                      1086    
+First Financial Bank                    firstfinancial                1088    
+First Illinois CU                       firstillinois                 1089    
+First Internet Bank of Indiana          firstib                       642     
+First National Bank & Trust             fnb-trust                     1092    
+First National Bank Chisholm            fnb-chisholm                  1094    
+The First National Bank of Long         fnbli                         1100    
+First National Bank of Moose Lake       firstmooselake                1099    
+The First National Bank of Odon         fnbodon                       1435    
+First National Bank of Pasco            fnb-pasco                     1096    
+First Natl Bank-Ames Natl Corp          fnb-ames                      1093    
+First Piedmont                          firstpiedmont                 1102    
+First Republic Bank                     firstrepublic                 770     
+First State Bank - Lynnville            fsb-lynnville                 1104    
+First State Bank Buxton                 fsb-buxton                    1105    
+First State Bank Warner                 fsb-warner                    1108    
+First Tennessee                         firsttn                       795     
+First Trust Bank of Illinois            firsttrust-il                 1109    
+FirstBank of Colorado                   firstbank-co                  554     
+Flint Creek Valley Bank                 granitemt                     1139    
+Florida Central Credit Union            flcentral                     1116    
+Florida Gulf Bank                       flgulf                        1113    
+Florida West Coast CU                   fwccu                         1115    
+FNB Bank NA                             fnb                           1117    
+Fort Sill Federal Credit Union          fsfcu                         1119    
+Fortress                                fortress                      1106    
+Freedom Bank of America                 freedom                       1121    
+Freedom Community Credit Union          freedomccu                    1122    
+FSU Credit Union                        fsucu                         1114    
+Ft Worth Community Credit Union         ftwccu                        1120    
+Fulda Area CUFulda, MN                  fuldaarea                     1124    
+Fulton Bank                             fulton                        1125    
+Fulton Bank ofJersey                    fultonnj                      1126    
+Georgia Bank and Trust                  georgia                       1127    
+Georgia Commerce Bank                   gacommerce                    1128    
+Georgia Primary Bank                    gaprimary                     1129    
+German American - Direct                germanamerican                1130    
+German American Business Online         germanamerican-biz            1131    
+Girard National Bank                    girard                        1133    
+Golden Plains CU                        goldenplains                  1135    
+Golden Valley Bank Retail               goldenvalley                  1136    
+The Golden1 Credit Union                golden1                       778     
+The Goose River Bank                    gooseriver                    1436    
+Grand Bank - NJ                         grandbank                     1137    
+Granite Community Bank                  granite                       1138    
+Greater Cincinnati Credit Union         gccu                          1140    
+Greater Texas FCU                       greatertx                     1141    
+GreenChoice Bank                        greenchoice                   1142    
+Greeneville Federal Bank                greeneville                   1143    
+Greylock Federal Credit Union           greylock                      1145    
+Guilford Savings Bank                   guilford                      1437    
+Gulf Coast Educators FCU TX             gcefcu                        1148    
+Gulf Credit Union                       gecu                          1149    
+Hampton Roads Bancshares                hamptonroads                  1150    
+Harbor Funds                            harborfunds                   1153    
+Hawaii National Bank                    hawaii                        1156    
+Health Care Credit Union-UT             healthcare                    1157    
+HealthNet FCU                           healthnet                     1158    
+Heritage Bank                           heritage                      1159    
+Heritage Bank KY                        heritage-ky                   1160    
+Heritage First Bank                     heritagefirst                 1162    
+Heritage Group                          heritagegroup                 1161    
+HEW FCU                                 hewfcu                        1163    
+Hewitt Associates LLC                   hewitt                        572     
+HFS Federal Credit Union                hfs                           562     
+Holladay Bank & Trust                   holladay                      1165    
+Home Federal Savings Bank(MN/IA)        homefed                       594     
+HomeBanc N.A.                           homebanc                      1167    
+Hometown CU                             hometowncu                    1171    
+Hopewell Valley Community Bank          hopewellvalley                1172    
+Horizon Credit Union                    hzcu                          1173    
+Horizon Financial Bank                  horizon                       1174    
+Hughes Federal Credit Union             hughes                        745     
+IBERIABANK                              iberia                        1175    
+iGObanking                              igobanking                    1177    
+IH Mississippi Valley CU                ihmvcu                        1178    
+Independent Bank                        independent                   1179    
+Indiana University Credit Union         iucu                          1185    
+Island Federal Credit Union             island                        1184    
+J.P. Morgan                             jpmorgan                      700     
+J.P. Morgan Funds                       jpmorganfunds                 1186    
+J.P. Morgan Private Banking             jpmorgan-invest               740     
+Janus                                   janus                         615     
+Juniata Valley Bank                     jvb                           1438    
+Kaw Valley State Bank and Trust         kawvalley                     1194    
+Kearny Cunty Bank                       kearny                        1195    
+KEMBA Financial CU Direct               kemba                         1196    
+Kennebunk Savings Direct Connect        kennebunk                     1197    
+KeyBank                                 keybank                       453     
+Keys Federal CU                         keys                          1198    
+Kingsley State Bank                     kingsley                      1199    
+Kirtland Federal Credit Union           kirtland                      544     
+KleinBank                               kleinbank                     1200    
+L&N Federal Credit Union                lnfcu                         1204    
+L.A. Police Federal Credit Union        lapfcu                        1205    
+Lafayette Amabassador Bank              lafayette                     1206    
+LaGrange Banking Co                     lagrange                      950     
+Lake Community Bank                     lcbank                        1207    
+Lake Trust CU                           laketrust                     1210    
+Langley FCU                             langley                       1211    
+LCNB                                    lcnb                          1213    
+Lea County State Bank                   leacounty                     1214    
+Lead Bank BO                            lead                          1215    
+Lee County Bank and Trust, N.A          leecounty                     1216    
+Legacy CFCU                             legacycfcu                    1217    
+LegacyTexas Bank                        legacytx                      1219    
+Liberty Bank                            liberty                       1527    
+Los Angeles Federal Credit Union        lafcu                         1223    
+Los Angeles Firemens CU                 firefighters                  1078    
+Louisiana USA FCU                       lausa                         1224    
+M & T Bank                              mtb                           702     
+MainStreet Bank                         mainst                        1228    
+Malvern Federal Savings Bank            malvern                       1229    
+Manufacturers Bank and Trust            mfr                           1230    
+The Marion Center Bank                  marioncenter                  1439    
+Marquette Banks                         marquette                     703     
+Marthas Vineyard Savings Bank           marthas                       1231    
+Meadows Bank                            meadows                       1234    
+Mechanics Savings Bank QBDC             mechanics                     1235    
+Member One Federal Credit Union         memberone                     1237    
+Memory Bank                             memory                        1533    
+Merchants Bank                          merchants                     1239    
+Mercy-City-Lehigh FamilyMason C         mclf                          1240    
+Meritrust Credit Union                  meritrust                     1241    
+Merrill Lynch Online Payment            merrill-pay                   705     
+Merrill Lynch&Co., Inc.                 merrill                       510     
+MFS Retirement Access (Employee)        mfs-employee                  1345    
+Michigan Educational Credit Unio        michedcu                      1245    
+Michigan State University Federal CU    msufcu                        649     
+Mid Oregon Federal Credit Union         midoregon                     1247    
+Mid-Atlantic FCU                        midatlantic                   1248    
+Mid-Hudson Valley FCU                   mhvfcu                        1246    
+Midland States Bank                     midland                       1249    
+MidSouth  National Bank - LA            midsouth                      1250    
+Midtown Bank                            midtown                       1090    
+Mifflinburg Bank and Trust              mifflinburg                   1251    
+Mile High Federal CU                    milehigh                      1252    
+Minnesota Valley FCU                    mnvalley                      1253    
+Mohave State Bank                       mohave                        1256    
+Montgomery Bank                         montgomery                    1258    
+Morgan Stanley                          msbank                        1259    
+Morgan Stanley ClientServ               ms                            500     
+Morgan Stanley ClientServ - Quicken Win ms-alt                        806     
+Mountain America Credit Union           macu                          657     
+Mt. Washington Savings Bank             mtwashington                  1499    
+Nassau Educators FCU                    nassau                        1260    
+National Bank of Arizona                nbaz                          1261    
+National Bank of Commerce-Direct        nbc                           1262    
+Navigant Credit Union                   navigant                      1264    
+Needham Bank                            needham                       1265    
+NetBank                                 netbank                       1266    
+Nevada State Bank                       nevada                        1267    
+Nevada State Bank - OLD                 nevada-old                    708     
+NIH Federal Credit Union                nih                           1271    
+North Carolina State Employees' CU      ncsecu                        632     
+North Community Bank                    byline                        940     
+Northstar Bank Carlile Company          northstar                     1274    
+Northwest Bank Q2                       northwest                     1275    
+Northwest Community CU                  nwcu                          741     
+Norwest                                 norwest                       710     
+Nutmeg State FCU                        nutmegstate                   1279    
+Oak Bank - WI                           oak                           1280    
+Oakmark                                 Oakmark                       1281    
+Ocean City Home Bank                    oceancity                     1283    
+OceanFirst Bank                         oceanfirst                    1284    
+Ohio Healthcare FCU                     ohfcu                         1285    
+Olmsted National Bank                   olmsted                       1289    
+One Nevada Credit Union                 onenevada                     1531    
+OneAmerica                              oneamerica                    1292    
+OneAZ Credit Union                      oneazcu                       785     
+OnPointCCU Q2                           onpoint                       1293    
+Oppenheimer & Co. Inc.                  oppenheimer                   711     
+Opus Bank                               opus                          1296    
+Oregon College Savings Plan             orcollege                     712     
+Oregon Community Bank and Trust         orcommunity                   1297    
+OSU Federal                             osu                           1298    
+Otter Tail CU                           ottertail                     1300    
+Pacific Crest Savings Bank              pacificcrest                  1301    
+Partners 1st Federal Credit Union       partners1st-alt               1528    
+Path2College 529 Plan                   path2college                  1306    
+The Peoples Community Bank              peoplescommunity              1441    
+Peoples Credit Union                    peoplescu                     1311    
+Philadelphia FCU                        philadelphia                  1313    
+Picatinny Federal Credit Union          picatinny                     508     
+Pigeon Falls State Bank                 pigeonfalls                   1314    
+Pilot Bank                              pilot                         1315    
+Pineland State Bank                     pineland                      1316    
+Pinnacle Bank of Nebraska               pinnacle-ne                   835     
+Pinnacle Bank of Texas QN DC            pinnacle-tx                   1318    
+Pinnacle Bank of Wyoming QN DC          pinnacle-wy                   1319    
+Pinnacle Bank Sioux City QN DC          pinnacle-sd                   1317    
+Pinnacle Bank, GA                       pinnacle-ga                   1321    
+Plains Commerce Bank Retail             plainscommerce                1322    
+PNC Bank                                pnc                           634     
+PNC Banking Online                      pnc-alt                       818     
+Point Breeze Credit Union               point                         1323    
+Power Financial Credit Union            Power                         1325    
+Prairie Federal CU                      prairie                       1326    
+Premier America Credit Union            premieramerica                764     
+Presidential Bank, FSB                  presidential                  1330    
+Presidio Bank                           presidio                      1331    
+PrimeWay Federal Credit Union           primeway                      1332    
+Principal                               principal                     1333    
+The Private Bank of California          private                       1443    
+Prudential Retirement                   prudential                    567     
+Queensborough National Bank             queensborough                 1339    
+Quincy Credit Union                     quincy                        1340    
+Randall Story Bank                      randallstory                  1343    
+Regions Bank                            regions                       462     
+Regions Bank (Post 2016)                regions-alt                   831     
+Republic Bank & Trust Company           republic                      1344    
+Reunion Bank of Florida                 reunion                       1346    
+RichfieldBloomington Credit Union       rbcu                          1347    
+Richland FCU                            richland                      1348    
+Rocky Mountain Bank                     rockymountain                 1351    
+Royal Bank America                      royal                         1352    
+Ruby Valley National Bank               rubyvalley                    1353    
+Rumson-Fair Haven Bank                  rumson-fairhaven              1354    
+San Antonio National Bank               sanantonio                    1356    
+ScholarShare CSP                        scholarshare                  1360    
+Schools Financial CU                    schools                       1361    
+Security State Bank - Marine            security-marine               1363    
+Security State Bank of Lewiston         security-lewiston             1364    
+Securityplus Federal CreditUnion        securityplus                  1365    
+Senath State Bank Senath, MO            senath                        1368    
+Service Credit Union                    servicecu                     1369    
+ServisFirst Bank                        servisfirst                   1370    
+Share Advantage CU                      shareadvantage                1371    
+Sharonview Federal Credit Union         sharonview                    1372    
+The Shelby State Bank                   shelbystate                   1447    
+Shore Bank                              shore                         1373    
+Sierra Central Credit Union             sierra                        502     
+Signature Bank - Minnetonka, MN         signature                     1374    
+Sikorsky CU                             sikorsky                      1375    
+Silicon Valley Bank                     siliconvalley                 1412    
+Simmons Bank                            simmons                       1376    
+SMW 104  FCU San Leandro, CA            smw-ca                        1377    
+SMW Federal Credit Union                smw                           1378    
+South Carolina Bank and Trust           southstate                    755     
+South Trust Bank                        southtrust                    716     
+Southern Community Bank & Trust (SCB&T) scbt                          751     
+Southwest Bank                          southwest                     1380    
+Southwest Capital Bank                  swcapital                     1381    
+Southwest Securities, FSB               swsecurities                  1382    
+Spectrum CU                             spectrum                      1383    
+Spokane City Credit Union               sccu                          1385    
+Spring Bank                             spring                        1386    
+Springfield First Community             sfc                           1387    
+St. Mary's Credit Union                 stmaryscu                     815     
+Standard Federal Bank                   standardfed                   717     
+Standard Register FCU                   stdregfcu                     1392    
+Stanley Bank                            stanley                       1394    
+Star Bank                               star                          1395    
+Star Choice Credit Union                starchoice                    1396    
+Star One Credit Union                   starone                       807     
+State Bank & Trust Co.                  statebank                     1397    
+State Bank of Blue Mound                bluemound                     1398    
+State bank of Countryside               countryside                   1399    
+Stifel Nicolaus                         stifel                        1402    
+Suffolk FCU                             suffolk                       1405    
+Sun East Federal Credit Union           suneast                       1409    
+Sunshine Bank                           sunshine                      1410    
+SVB                                     svb                           791     
+Swineford National Bank                 swineford                     1413    
+T. Rowe Price                           troweprice                    466     
+TD Ameritrade                           ameritrade-alt                425     
+Technology Credit Union - DC            techcu                        1416    
+Telhio Credit Union                     telhio                        1418    
+Test One Nevada                         onenevada-test                1532    
+TheBANK of Edwardsville                 thebank                       1450    
+Think Bank-Direct Connect               thinkbank                     1451    
+Thrivent Federal Credit Union           thrivent                      1454    
+TIAA-CREF                               tiaacref                      767     
+TIAA-CREF Retirement Services           tiaacref-retire               797     
+The Tipton Latham Bank N.A.             tiptonlatham                  1448    
+TopLine Federal Credit Union            topline                       1457    
+Total Community CU                      tccu                          1459    
+Tower Federal Credit Union              towerfcu                      769     
+TowneBank                               townebank                     1462    
+Tradesmen Community CU                  tradesmen                     1463    
+Traverse City State Bank                tcsb                          1464    
+Treasury Department FCU                 tdfcu                         1465    
+Tri County Area FCU                     tcafcu                        1466    
+Triumph Community Bank - Direct         triumph                       1468    
+Truity Credit Union                     truity                        1469    
+TruWest Credit Union                    truwest                       1470    
+Two harbors FCU                         twoharbors                    1471    
+Two River Community Bank                tworiver                      1472    
+U.S. Federal Credit Union               usfederal                     1079    
+UCF FCU                                 ucf                           1473    
+UFB Direct                              ufb                           1474    
+Ukrainian Future CU                     ukrfuture                     1476    
+Ukrainian Selfreliance FCU              ukrfcu                        1477    
+Ulster Savings Bank                     ulster                        1478    
+UNI CU Cedar Falls                      uni                           1479    
+Union Bank & Trust Company              unionbank                     1480    
+Union State Bank                        unionstate                    1481    
+United Bank & Trust                     ubank                         1483    
+United Bank - Alabama                   unitedbank                    1484    
+United California Bank                  unitedca                      718     
+United Health Services CU               uhscu                         1485    
+Unity One Credit Union                  unityone                      827     
+Universal 1 CU Quicken QB DC            u1                            1486    
+University FCU                          universityfcu                 1487    
+Univest Bank & Trust Co                 univest                       1488    
+USAA Federal Savings Bank               usaa                          483     
+USAA Investment Mgmt Co                 usaa-invest                   665     
+UW Credit Union                         uwcu                          638     
+Valero Federal Credit Union             valero                        1414    
+VALIC                                   valic                         720     
+Valley Bank and Trust                   valley                        1489    
+Valley Business Bank                    valleybusiness                1490    
+Valley Central Bank WC DC               valleycentral                 1491    
+Van Kampen Funds, Inc.                  vankampen                     721     
+Vanguard Group, The                     vanguard                      479     
+Vibe Credit Union                       vibe                          1493    
+Victory State Bank                      victory                       1494    
+Virginia Company Bank                   vgna                          1496    
+Waddell & Reed - Ivy Funds              waddell                       724     
+The Washington Trust Company            washtrust                     1449    
+Webster Five Cents Savings Bank         web5                          1501    
+Wells Fargo                             wells                         473     
+Wells Fargo Advantage Funds             wellsadvantage                591     
+Wells Fargo Advisors                    wellsadvisor                  737     
+Wells Fargo Bank                        wells-alt                     749     
+Wells Fargo Trust                       wellstrust                    1503    
+Wells Fargo Trust-Investment Mgt        wellstrust-invest             622     
+West End Bank, S.B.                     westend                       1504    
+West Shore Bank                         westshore                     1505    
+Westamerica Bank                        westamerica                   1506    
+Wilmington Savings Bank                 wilmington                    1512    
+Wilshire Bank                           wilshire                      1513    
+Windward Community FCU                  wcfcu                         604     
+Winston Salem FCU                       wsfcu                         1515    
+WSECU                                   wsecu                         575     
+Wyo Central                             wyocentral                    1516    
+Wyoming Community Bank                  wyocb                         1517    
+Xceed Financial Credit Union            xceed                         1518    
+Yolo Federal Credit Union               yolo                          1520    
+Zions First National Bank               zionsfirst                    1521    

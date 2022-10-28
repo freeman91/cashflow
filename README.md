@@ -1,4 +1,4 @@
-```
+sh```
 docker-compose up -d
 
 python -m venv venv
@@ -7,12 +7,14 @@ pip3 install -r requirements.txt
 pip3 install -r requirements-dev.txt
 
 # run db workbench
+
 python -i db_workbench.py
-```
+
+````
 
 .env file
 
-```
+sh```
 ENV=dev
 
 FRONTEND_IP=http://localhost:9000
@@ -24,7 +26,8 @@ MONGO_INITDB_ROOT_PASSWORD=password
 MONGO_IP=172.19.199.3
 MONGO_PORT=27017
 SECRET_KEY=
-```
+
+````
 
 ### Jupiter deploy
 
@@ -55,3 +58,7 @@ mongo --username admin --password password
 # restore from backup
 docker exec -i mongodb mongorestore --username admin --password password /data
 ```
+
+## monog container wont build
+
+if issue is mongod.lock not empty, delete mongo-volume/, rebuild, restore db

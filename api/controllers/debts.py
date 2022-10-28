@@ -8,7 +8,7 @@ from api import mongo
 from api.controllers.__util__ import (
     failure_result,
     handle_exception,
-    set_date,
+    set_last_update,
     success_result,
 )
 
@@ -19,7 +19,7 @@ debts = Blueprint("debts", __name__)
 @debts.route("/debts", methods=["POST", "GET"])
 def _debts():
     if request.method == "POST":
-        return success_result(mongo.debt.create(set_date(request.json)))
+        return success_result(mongo.debt.create(set_last_update(request.json)))
     if request.method == "GET":
         return success_result(mongo.debt.get())
     return failure_result()
@@ -32,7 +32,7 @@ def _debts_id(_id: str):
         return success_result(mongo.debt.get(_id))
 
     if request.method == "PUT":
-        return success_result(mongo.debt.update(set_date(request.json)))
+        return success_result(mongo.debt.create(set_last_update(request.json)))
 
     if request.method == "DELETE":
         return success_result(mongo.debt.delete(_id).acknowledged)

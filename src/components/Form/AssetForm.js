@@ -121,7 +121,7 @@ export default function AssetForm({ handleClose, mode, asset }) {
         return values.value;
       }
     } else {
-      return values.value;
+      return _numberToCurrency.format(values.value);
     }
   };
 
@@ -131,7 +131,6 @@ export default function AssetForm({ handleClose, mode, asset }) {
         id='cancel-button'
         key='cancel-button'
         sx={{ mr: '1rem', mt: '1rem', width: '5rem' }}
-        variant='outlined'
         color='info'
         onClick={handleClose}
       >
@@ -210,16 +209,19 @@ export default function AssetForm({ handleClose, mode, asset }) {
       <Box>
         <form onSubmit={handleFormEnterClick}>
           <TextField
-            fullWidth
             id='name-input'
             label='name'
             name='name'
             required={mode === 'create'}
             disabled={mode === 'update'}
             value={values.name}
-            variant='outlined'
+            variant='standard'
             onChange={(e) => setValues({ ...values, name: e.target.value })}
             margin='dense'
+            InputProps={{
+              readOnly: true,
+              disableUnderline: true,
+            }}
           />
           <Autocomplete
             data-lpignore='true'
@@ -241,8 +243,12 @@ export default function AssetForm({ handleClose, mode, asset }) {
                 required={mode === 'create'}
                 disabled={mode === 'update'}
                 label='type'
-                variant='outlined'
+                variant='standard'
                 margin='dense'
+                InputProps={{
+                  readOnly: true,
+                  disableUnderline: true,
+                }}
               />
             )}
           />
@@ -263,19 +269,23 @@ export default function AssetForm({ handleClose, mode, asset }) {
                 {...params}
                 disabled={mode === 'update'}
                 label='vendor'
-                variant='outlined'
+                variant='standard'
                 margin='dense'
+                InputProps={{
+                  readOnly: true,
+                  disableUnderline: true,
+                }}
               />
             )}
           />
           <TextField
             fullWidth
             id='value-input'
-            label='value'
+            label='current value'
             name='value'
             required={!isSharedAsset}
             value={calculateValue()}
-            variant='outlined'
+            variant='standard'
             placeholder='0'
             onChange={(e) => setValues({ ...values, value: e.target.value })}
             margin='dense'
@@ -297,9 +307,9 @@ export default function AssetForm({ handleClose, mode, asset }) {
                 value={
                   mode === 'create'
                     ? values.shares
-                    : Math.round(values.shares * 100000) / 100000
+                    : Math.round(values.shares * 100000000) / 100000000
                 }
-                variant='outlined'
+                variant='standard'
                 placeholder='0'
                 onChange={(e) =>
                   setValues({ ...values, shares: e.target.value })
@@ -313,7 +323,7 @@ export default function AssetForm({ handleClose, mode, asset }) {
                 name='price'
                 required
                 value={values.price}
-                variant='outlined'
+                variant='standard'
                 placeholder='0'
                 onChange={(e) =>
                   setValues({ ...values, price: e.target.value })
@@ -336,7 +346,7 @@ export default function AssetForm({ handleClose, mode, asset }) {
               label='invested'
               name='invested'
               value={values.invested}
-              variant='outlined'
+              variant='standard'
               placeholder='0'
               onChange={(e) =>
                 setValues({ ...values, invested: e.target.value })
@@ -358,7 +368,7 @@ export default function AssetForm({ handleClose, mode, asset }) {
             label='description'
             name='description'
             value={values.description}
-            variant='outlined'
+            variant='standard'
             margin='dense'
             onChange={(e) =>
               setValues({ ...values, description: e.target.value })
@@ -379,7 +389,13 @@ export default function AssetForm({ handleClose, mode, asset }) {
               setValues({ ...values, last_update: value });
             }}
             renderInput={(params) => (
-              <TextField fullWidth {...params} margin='dense' required />
+              <TextField
+                fullWidth
+                {...params}
+                margin='dense'
+                required
+                variant='standard'
+              />
             )}
           />
           {renderButtons()}

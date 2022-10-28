@@ -7,7 +7,7 @@ from api import mongo
 from api.controllers.__util__ import (
     failure_result,
     handle_exception,
-    set_date,
+    set_last_update,
     success_result,
 )
 
@@ -18,7 +18,7 @@ assets = Blueprint("assets", __name__)
 @assets.route("/assets", methods=["POST", "GET"])
 def _assets():
     if request.method == "POST":
-        return success_result(mongo.asset.create(set_date(request.json)))
+        return success_result(mongo.asset.create(set_last_update(request.json)))
     if request.method == "GET":
         return success_result(mongo.asset.get())
     return failure_result()

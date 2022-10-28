@@ -22,7 +22,7 @@ const getExpenses = createAsyncThunk(
       let stop = get(range, 'stop');
 
       if (!start) {
-        start = now.subtract(4, 'month').date(1).hour(0).unix();
+        start = now.subtract(12, 'month').date(1).hour(0).unix();
       }
 
       if (!stop) {

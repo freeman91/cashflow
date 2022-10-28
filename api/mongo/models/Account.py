@@ -1,8 +1,8 @@
 # pylint: disable=missing-function-docstring, missing-class-docstring, invalid-name
-"""Debt Model"""
+"""Asset Model"""
 
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import Field
 
@@ -10,27 +10,25 @@ from .common import BaseModel, PydanticObjectId
 from ..connection import database
 
 
-class Debt(BaseModel):
+class Account(BaseModel):
     id: Optional[PydanticObjectId] = Field(None, alias="_id")
     name: str
-    value: float
-    type: str
-    vendor: Optional[str]
-    description: Optional[str]
+    assets: List
+    debts: List
     last_update: datetime
-    category = "debt"
+    category = "account"
 
     def create(self):
-        return database.debts.insert_one(self.bson()).inserted_id
+        return database.accounts.insert_one(self.bson()).inserted_id
 
     def save(self):
         self.last_update = datetime.now()
-        return database.debts.replace_one(
+        return database.accounts.replace_one(
             {"_id": PydanticObjectId(self.id)}, self.bson()
         )
 
     def delete(self):
-        return database.debts.delete_one({"_id": PydanticObjectId(self.id)})
+        return database.accounts.delete_one({"_id": PydanticObjectId(self.id)})
 
     def __repr__(self):
-        return f"<{self.category}, {self.id}, {self.value}>"
+        return f"<{self.name}>"
