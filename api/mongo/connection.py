@@ -10,8 +10,8 @@ from pymongo.errors import ServerSelectionTimeoutError
 load_dotenv()
 
 ENV = os.getenv("ENV") or "dev"
-DOMAIN = os.getenv("WB_DOMAIN") or os.getenv("MONGO_IP")
-PORT = os.getenv("WB_PORT") or os.getenv("MONGO_PORT")
+DOMAIN = "localhost" if os.getenv("HOSTNAME") is None else os.getenv("MONGO_IP")
+PORT = "27017" if os.getenv("HOSTNAME") is None else os.getenv("MONGO_PORT")
 MONGO_INITDB_DATABASE = os.getenv("MONGO_INITDB_DATABASE")
 MONGO_INITDB_ROOT_USERNAME = os.getenv("MONGO_INITDB_ROOT_USERNAME")
 MONGO_INITDB_ROOT_PASSWORD = os.getenv("MONGO_INITDB_ROOT_PASSWORD")
@@ -28,7 +28,6 @@ def connect():
             password=MONGO_INITDB_ROOT_PASSWORD,
         )
         _database = client[MONGO_INITDB_DATABASE]
-
         return _database
 
     except ServerSelectionTimeoutError as err:

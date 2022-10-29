@@ -1,7 +1,6 @@
 # pylint: disable=import-error, broad-except
 """Expenses controller"""
 
-from datetime import datetime
 from flask import Blueprint, request
 
 from api import mongo
@@ -19,12 +18,7 @@ expenses = Blueprint("expenses", __name__)
 @expenses.route("/expenses", methods=["POST", "GET"])
 def _expenses():
     if request.method == "GET":
-        return success_result(
-            mongo.expense.search(
-                datetime.fromtimestamp(int(request.args.get("start"))),
-                datetime.fromtimestamp(int(request.args.get("stop"))),
-            )
-        )
+        return success_result(mongo.expense.get())
     if request.method == "POST":
         return success_result(mongo.expense.create(set_date(request.json)))
 

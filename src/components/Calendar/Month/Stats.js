@@ -59,12 +59,6 @@ export default function Stats({ date }) {
     })
   );
 
-  const hours = useSelector((state) =>
-    filter(state.hours.data, (hour) => {
-      return day.isSame(dayjs(get(hour, 'date')), 'month');
-    })
-  );
-
   useEffect(() => {
     if (date) {
       setDay(date);
@@ -83,14 +77,6 @@ export default function Stats({ date }) {
     incomes,
     (acc, income) => {
       return acc + get(income, 'amount');
-    },
-    0
-  );
-
-  let hourSum = reduce(
-    hours,
-    (acc, hour) => {
-      return acc + get(hour, 'amount');
     },
     0
   );
@@ -148,11 +134,6 @@ export default function Stats({ date }) {
             : null
         }
         label='expense'
-      />
-      <StatBox
-        color={theme.palette.blue[500]}
-        value={`${hourSum} hours`}
-        label='hours'
       />
     </Stack>
   );

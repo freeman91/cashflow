@@ -21,11 +21,10 @@ export const muiTheme = createTheme({
   },
   typography: {
     fontFamily: '"Helvetica", "Arial", sans-serif',
-    fontSize: 12,
-    fontWeightLight: 100,
-    fontWeightRegular: 200,
-    fontWeightMedium: 300,
-    useNextVariants: true,
+    defaultFontSize: '0.875rem',
+    button: {
+      textTransform: 'none',
+    },
   },
   breakpoints: {
     keys: ['xs', 'sm', 'md', 'lg', 'xl'],

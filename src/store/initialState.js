@@ -33,14 +33,16 @@ export const expenses = {
 export const incomes = {
   data: [],
 };
-export const hours = {
-  data: [],
-};
+
 export const goals = {
   data: [],
 };
 
 export const networths = {
+  data: [],
+};
+
+export const accounts = {
   data: [],
 };
 

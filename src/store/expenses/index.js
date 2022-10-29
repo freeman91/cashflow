@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, remove, concat, map, cloneDeep, includes } from 'lodash';
+import { get, remove, concat } from 'lodash';
 
 import { addToastr, types } from '../toastr';
 import {
@@ -10,38 +10,16 @@ import {
 } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { expenses as initialState } from '../initialState';
-import dayjs from 'dayjs';
 
-const getExpenses = createAsyncThunk(
-  'expenses/getExpenses',
-  async (range, { getState }) => {
-    try {
-      const { data: storeExpenses } = getState().expenses;
-      let now = dayjs();
-      let start = get(range, 'start');
-      let stop = get(range, 'stop');
-
-      if (!start) {
-        start = now.subtract(12, 'month').date(1).hour(0).unix();
-      }
-
-      if (!stop) {
-        stop = now.add(3, 'day').hour(23).unix();
-      }
-
-      let allExpenses = cloneDeep(storeExpenses);
-      const expenses = await getExpensesAPI(start, stop);
-      let updatedExpenseIds = map(expenses, (expense) => expense.id);
-
-      remove(allExpenses, (expense) => includes(updatedExpenseIds, expense.id));
-      return {
-        data: concat(allExpenses, expenses),
-      };
-    } catch (err) {
-      console.error(err);
-    }
+const getExpenses = createAsyncThunk('expenses/getExpenses', async () => {
+  try {
+    return {
+      data: await getExpensesAPI(),
+    };
+  } catch (err) {
+    console.error(err);
   }
-);
+});
 
 const postExpense = createAsyncThunk(
   'expenses/postExpense',

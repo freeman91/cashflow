@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Grid } from '@mui/material';
 import Month from '../../components/Calendar/Month';
 import Week from '../../components/Calendar/Week';
-import CurrentNetWorth from './CurrentNetWorth';
 
 export default function Dashboard() {
   const [view, setView] = useState('week');
@@ -18,15 +17,12 @@ export default function Dashboard() {
   };
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={3} />
-      <Grid item xs={6}>
-        <CurrentNetWorth />
+    <>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          {render()}
+        </Grid>
       </Grid>
-
-      <Grid item xs={12}>
-        {render()}
-      </Grid>
-    </Grid>
+    </>
   );
 }

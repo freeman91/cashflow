@@ -1,0 +1,10 @@
+import React from 'react';
+import { Grid } from '@mui/material';
+
+export default function Accounts() {
+  return (
+    <Grid container spacing={3}>
+      <Grid item xs={12}></Grid>
+    </Grid>
+  );
+}

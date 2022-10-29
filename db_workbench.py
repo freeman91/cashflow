@@ -4,6 +4,7 @@
 import os
 from pprint import pprint
 from datetime import datetime, timedelta
+import inquirer
 from ofxtools import OFXClient
 from ofxtools.scripts import ofxget
 
@@ -11,9 +12,6 @@ from yahoo_fin import stock_info
 from pydash import uniq_by, reduce_, filter_, map_, find, remove, mean
 
 from api.controllers.__util__ import set_last_update
-
-os.environ["WB_DOMAIN"] = "localhost"
-os.environ["WB_PORT"] = "27017"
 
 from api import mongo
 import prompts
@@ -35,14 +33,17 @@ def ofx():
 
 
 def test():
+    account_name = input("Account Name: ")
     account = {
-        "name": "Huntington",
-        "assets": map_(prompts.assets(), lambda _asset: _asset.id),
-        "debts": map_(prompts.debts(), lambda _debt: _debt.id),
+        "name": account_name,
+        "assets": map_(prompts.assets(), lambda _asset: str(_asset.id)),
+        "debts": map_(prompts.debts(), lambda _debt: str(_debt.id)),
     }
     account = set_last_update(account)
-    print(account)
-    return account
+    pprint(account)
+
+    if input("\nSave? (y/n): ") == "y":
+        mongo.account.create(account)
 
 
 if __name__ == "__main__":

@@ -74,13 +74,15 @@ export default function Record({ data }) {
     >
       <Box
         bgcolor={color}
-        height={'1rem'}
-        ml={'.25rem'}
-        mr={'.25rem'}
-        mb={'.25rem'}
-        borderRadius={'3px'}
+        height='1rem'
+        borderRadius='3px'
+        mt='.25rem'
+        mr='.25rem'
+        ml='.25rem'
       >
-        <Typography variant='body2'>{value}</Typography>
+        <Typography variant='body2' sx={{ lineHeight: '1rem' }}>
+          {value}
+        </Typography>
       </Box>
     </Tooltip>
   );

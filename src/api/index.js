@@ -33,9 +33,9 @@ export const putUserSettingsAPI = async (payload) => {
 ######## ##     ## ##        ######## ##    ##  ######  ########  ######
 */
 
-export const getExpensesAPI = async (start, stop) => {
+export const getExpensesAPI = async () => {
   try {
-    const response = await axios.get(`/expenses`, { params: { start, stop } });
+    const response = await axios.get(`/expenses`);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }
@@ -352,6 +352,17 @@ export const getNetworthsAPI = async () => {
           debts: record['debts'],
         };
       });
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const getAccountsAPI = async () => {
+  try {
+    const response = await axios.get(`/accounts`);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
     }
   } catch (error) {
     console.log('error: ', error);

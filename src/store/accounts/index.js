@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getNetworthsAPI } from '../../api';
+import { getAccountsAPI } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
-import { networths as initialState } from '../initialState';
+import { accounts as initialState } from '../initialState';
 
-const getNetworths = createAsyncThunk('networths/getNetworths', async () => {
+const getAccounts = createAsyncThunk('accounts/getAccounts', async () => {
   try {
-    const result = await getNetworthsAPI();
+    const result = await getAccountsAPI();
     return {
       data: result,
     };
@@ -16,13 +16,13 @@ const getNetworths = createAsyncThunk('networths/getNetworths', async () => {
 });
 
 const { reducer } = createSlice({
-  name: 'networths',
+  name: 'accounts',
   initialState,
   reducers: {},
   extraReducers: {
-    ...thunkReducer(getNetworths),
+    ...thunkReducer(getAccounts),
   },
 });
 
-export { getNetworths };
+export { getAccounts };
 export default reducer;

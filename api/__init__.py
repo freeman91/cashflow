@@ -15,6 +15,7 @@ from api.controllers.hours import hours
 from api.controllers.goals import goals
 from api.controllers.assets import assets
 from api.controllers.debts import debts
+from api.controllers.accounts import accounts
 from api.controllers.networths import networths
 from api.controllers.cronjobs import cronjobs
 
@@ -49,6 +50,7 @@ def create_app():
     app.register_blueprint(goals)
     app.register_blueprint(assets)
     app.register_blueprint(debts)
+    app.register_blueprint(accounts)
     app.register_blueprint(networths)
     app.register_blueprint(cronjobs)
 

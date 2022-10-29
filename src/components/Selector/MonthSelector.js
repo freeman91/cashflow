@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Popover } from '@mui/material';
-import { MonthPicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+
+import { Button, Popover } from '@mui/material';
+import { MonthPicker } from '@mui/x-date-pickers/MonthPicker';
 
 export default function MonthSelector({ date, handleMonthChange }) {
   const [anchorEl, setAnchorEl] = useState(null);
