@@ -46,6 +46,8 @@ def update_crypto_prices():
         tickers = map_(crypto_assets, lambda asset: asset.name.upper())
         prices = get_crypto_prices(tickers)
 
+        print(f"{prices = }")
+
         for asset in crypto_assets:
             asset.price = prices[f"{asset.name.upper()}"]["USD"]
             asset.value = asset.price * asset.shares
@@ -71,7 +73,7 @@ def update_stock_prices():
         tickers = map_(stock_assets, lambda asset: asset.name.upper())
         for ticker in tickers:
             asset = find(stock_assets, lambda asset: asset.name == ticker)
-            asset.price = get_stock_price(ticker.upper())
+            asset.price = float(get_stock_price(ticker.upper()))
 
             asset.value = asset.price * asset.shares
             asset.save()

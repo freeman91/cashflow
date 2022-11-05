@@ -8,9 +8,10 @@ from ofxtools import OFXClient
 from ofxtools.scripts import ofxget
 
 from yahoo_fin import stock_info
-from pydash import uniq_by, reduce_, filter_, map_, find, remove, mean
+from pydash import uniq_by, reduce_, filter_, map_, find, remove, mean, get
 
 from api.controllers.__util__ import set_last_update
+from api.controllers.cronjobs import get_stock_price
 
 os.environ["WB_DOMAIN"] = "localhost"
 os.environ["WB_PORT"] = "27017"
@@ -35,14 +36,7 @@ def ofx():
 
 
 def test():
-    account = {
-        "name": "Huntington",
-        "assets": map_(prompts.assets(), lambda _asset: _asset.id),
-        "debts": map_(prompts.debts(), lambda _debt: _debt.id),
-    }
-    account = set_last_update(account)
-    print(account)
-    return account
+    pass
 
 
 if __name__ == "__main__":
