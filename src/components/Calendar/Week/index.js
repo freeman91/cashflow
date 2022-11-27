@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import { map } from 'lodash';
+
+import { useTheme } from '@mui/styles';
 import { IconButton, Stack, Tooltip } from '@mui/material';
 import ViewComfyIcon from '@mui/icons-material/ViewComfy';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import dayjs from 'dayjs';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
-import { map } from 'lodash';
 import Day from '../Day';
-import { useTheme } from '@emotion/react';
 import { WeekSelector } from '../../Selector';
 dayjs.extend(advancedFormat);
 
@@ -44,7 +45,7 @@ export default function Week({ date, setView }) {
   };
 
   return (
-    <>
+    <div style={{ maxWidth: 1000 }}>
       <div
         style={{
           display: 'flex',
@@ -66,7 +67,6 @@ export default function Week({ date, setView }) {
           <ArrowForwardIosIcon />
         </IconButton>
       </div>
-
       <Stack
         direction='row'
         justifyContent='space-around'
@@ -84,6 +84,6 @@ export default function Week({ date, setView }) {
           );
         })}
       </Stack>
-    </>
+    </div>
   );
 }

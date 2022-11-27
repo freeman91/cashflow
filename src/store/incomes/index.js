@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, remove, concat, cloneDeep, map, includes } from 'lodash';
+import { get, remove, concat } from 'lodash';
 
-import { addToastr, types } from '../toastr';
 import {
   getIncomesAPI,
   postIncomeAPI,
@@ -10,38 +9,17 @@ import {
 } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { incomes as initialState } from '../initialState';
-import dayjs from 'dayjs';
+import { toastr } from 'react-redux-toastr';
 
-const getIncomes = createAsyncThunk(
-  'incomes/getIncomes',
-  async (range, { getState }) => {
-    try {
-      const { data: storeIncomes } = getState().incomes;
-      let now = dayjs();
-      let start = get(range, 'start');
-      let stop = get(range, 'stop');
-
-      if (!start) {
-        start = now.subtract(4, 'month').date(1).hour(0).unix();
-      }
-
-      if (!stop) {
-        stop = now.add(3, 'day').hour(23).unix();
-      }
-
-      let allIncomes = cloneDeep(storeIncomes);
-      const incomes = await getIncomesAPI(start, stop);
-      let updatedIncomeIds = map(incomes, (income) => income.id);
-
-      remove(allIncomes, (income) => includes(updatedIncomeIds, income.id));
-      return {
-        data: concat(allIncomes, incomes),
-      };
-    } catch (err) {
-      console.error(err);
-    }
+const getIncomes = createAsyncThunk('expenses/getIncomes', async () => {
+  try {
+    return {
+      data: await getIncomesAPI(),
+    };
+  } catch (err) {
+    console.error(err);
   }
-);
+});
 
 const postIncome = createAsyncThunk(
   'incomes/postIncome',
@@ -50,25 +28,13 @@ const postIncome = createAsyncThunk(
       const result = await postIncomeAPI(new_income);
       const { data: incomes } = getState().incomes;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Income inserted',
-          })
-        );
+        toastr.success('Income created');
       }
       return {
         data: [result].concat(incomes),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );
@@ -80,13 +46,7 @@ const putIncome = createAsyncThunk(
       const result = await putIncomeAPI(updatedIncome);
       const { data: incomes } = getState().incomes;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Income updated',
-          })
-        );
+        toastr.success('Income updated');
       }
       let _incomes = [...incomes];
       remove(_incomes, {
@@ -97,13 +57,7 @@ const putIncome = createAsyncThunk(
         data: concat(_incomes, result),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );
@@ -115,13 +69,7 @@ const deleteIncome = createAsyncThunk(
       const result = await deleteIncomeAPI(id);
       const { data: incomes } = getState().incomes;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Income deleted',
-          })
-        );
+        toastr.success('Income deleted');
       }
 
       let _incomes = [...incomes];
@@ -130,13 +78,7 @@ const deleteIncome = createAsyncThunk(
         data: _incomes,
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );

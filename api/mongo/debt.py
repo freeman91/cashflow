@@ -31,6 +31,7 @@ def create(debt: dict) -> Debt:
     CREATE
 
     mongo.debt.create(<debt>): inserts new debt in the db
+        - account_id: str
         - name: str
         - value: float
         - type: str

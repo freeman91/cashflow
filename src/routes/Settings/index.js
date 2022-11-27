@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { concat, get, remove, sortBy, toArray } from 'lodash';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import { putUserSettings } from '../../store/user';
 import SettingsDialog from '../../components/Dialog/SettingsDialog';
@@ -43,9 +43,7 @@ export default function Settings() {
   return (
     <Grid container justifyContent='center'>
       <Grid item xs={12}>
-        <Typography align='left' variant='h5' sx={{ mb: '1rem' }}>
-          Settings
-        </Typography>
+        <h1>Settings</h1>
       </Grid>
 
       <SettingsDialog

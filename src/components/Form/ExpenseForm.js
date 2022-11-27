@@ -2,15 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { get } from 'lodash';
 import dayjs from 'dayjs';
+
 import {
   AttachMoney as AttachMoneyIcon,
   Description as DescriptionIcon,
 } from '@mui/icons-material';
-import DatePicker from '@mui/lab/DatePicker';
-import Autocomplete from '@mui/lab/Autocomplete';
-import { Box, Button, InputAdornment, TextField } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+import {
+  Button,
+  Checkbox,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  TextField,
+} from '@mui/material';
 
 import { deleteExpense, postExpense, putExpense } from '../../store/expenses';
+import { TextFieldListItem } from '../List/TextFieldListItem';
+import { AutocompleteListItem } from '../List/AutocompleteListItem';
 
 const default_state = {
   amount: '',
@@ -18,14 +31,10 @@ const default_state = {
   vendor: '',
   description: '',
   date: dayjs(),
+  paid: true,
 };
 
-export default function ExpenseForm({
-  handleDialogClose,
-  mode,
-  expense,
-  date,
-}) {
+export default function ExpenseForm({ mode, expense, date, handleClose }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [values, setValues] = useState(default_state);
@@ -50,7 +59,7 @@ export default function ExpenseForm({
     }
   }, [mode, expense]);
 
-  const handleSubmit = (e) => {
+  const handleCreate = (e) => {
     e.preventDefault();
     const new_expense = {
       amount: Number(values.amount),
@@ -60,7 +69,7 @@ export default function ExpenseForm({
       date: dayjs(values.date).format('MM-DD-YYYY'),
     };
     dispatch(postExpense(new_expense));
-    handleDialogClose();
+    handleClose();
   };
 
   const handleUpdate = () => {
@@ -75,22 +84,26 @@ export default function ExpenseForm({
       date: dayjs(values.date).format('MM-DD-YYYY'),
     };
     dispatch(putExpense(updatedExpense));
-    handleDialogClose();
+    handleClose();
   };
 
   const handleDelete = () => {
     dispatch(deleteExpense(get(expense, 'id')));
-    handleDialogClose();
+    handleClose();
   };
 
-  const handleFormEnterClick = () => {
+  const handleSubmit = () => {
     if (mode === 'create') {
-      handleSubmit();
+      handleCreate();
     } else if (mode === 'update') {
       handleUpdate();
     } else {
-      handleDialogClose();
+      handleClose();
     }
+  };
+
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.id]: e.target.value });
   };
 
   const expenseDiff = () => {
@@ -99,6 +112,7 @@ export default function ExpenseForm({
       values.type === get(expense, 'type') &&
       values.vendor === get(expense, 'vendor') &&
       values.description === get(expense, 'description') &&
+      values.paid === get(expense, 'paid') &&
       dayjs(values.date).format('MM-DD-YYYY') === get(expense, 'date')
     ) {
       return false;
@@ -108,21 +122,14 @@ export default function ExpenseForm({
   };
 
   return (
-    <Box>
-      <form onSubmit={handleFormEnterClick}>
-        <TextField
-          fullWidth
-          id='amount-input'
+    <form onSubmit={handleSubmit}>
+      <List>
+        <TextFieldListItem
+          id='amount'
           label='amount'
-          name='amount'
-          required
-          value={values.amount}
-          variant='outlined'
           placeholder='0'
-          onChange={(e) => {
-            setValues({ ...values, amount: String(e.target.value) });
-          }}
-          margin='dense'
+          value={values.amount}
+          onChange={handleChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position='start'>
@@ -131,62 +138,29 @@ export default function ExpenseForm({
             ),
           }}
         />
-        <Autocomplete
-          data-lpignore='true'
-          id='type-select'
-          autoComplete
-          autoHighlight
-          autoSelect
-          freeSolo
+        <AutocompleteListItem
+          id='type'
+          label='type'
           value={values.type}
           options={user.expense_types}
-          getOptionLabel={(option) => option}
-          onChange={(e, value) =>
-            setValues({ ...values, type: value ? value : '' })
-          }
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              required
-              label='type'
-              variant='outlined'
-              margin='dense'
-            />
-          )}
+          onChange={(e, value) => {
+            setValues({ ...values, type: value ? value : '' });
+          }}
         />
-        <Autocomplete
-          id='vendor-select'
-          autoComplete
-          autoHighlight
-          autoSelect
-          freeSolo
+        <AutocompleteListItem
+          id='vendor'
+          label='vendor'
           value={values.vendor}
           options={user.expense_vendors}
-          getOptionLabel={(option) => option}
-          onChange={(e, value) =>
-            setValues({ ...values, vendor: value ? value : '' })
-          }
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              required
-              label='vendor'
-              variant='outlined'
-              margin='dense'
-            />
-          )}
+          onChange={(e, value) => {
+            setValues({ ...values, vendor: value ? value : '' });
+          }}
         />
-        <TextField
-          fullWidth
-          id='description-input'
+        <TextFieldListItem
+          id='description'
           label='description'
-          name='description'
           value={values.description}
-          variant='outlined'
-          margin='dense'
-          onChange={(e) =>
-            setValues({ ...values, description: e.target.value })
-          }
+          onChange={handleChange}
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
@@ -195,61 +169,82 @@ export default function ExpenseForm({
             ),
           }}
         />
-        <DatePicker
-          label='date'
-          value={values.date}
-          onChange={(value) => {
-            setValues({ ...values, date: value });
-          }}
-          renderInput={(params) => (
-            <TextField fullWidth {...params} margin='dense' required />
-          )}
-        />
-        <Button
-          id='cancel'
-          sx={{ mr: '1rem', mt: '1rem', width: '5rem' }}
-          variant='outlined'
-          color='info'
-          onClick={handleDialogClose}
-        >
-          Cancel
-        </Button>
-        {mode === 'create' ? (
-          <Button
-            type='submit'
-            id='submit'
-            sx={{ mt: '1rem' }}
-            variant='outlined'
-            onClick={handleSubmit}
-            color='success'
-          >
-            Submit
-          </Button>
-        ) : (
-          <>
-            <Button
-              type='submit'
-              id='update'
-              disabled={!expenseDiff()}
-              sx={{ mt: '1rem' }}
-              variant='outlined'
-              onClick={handleUpdate}
-              color='success'
+        <ListItem>
+          <DatePicker
+            label='date'
+            value={values.date}
+            onChange={(value) => {
+              setValues({ ...values, date: value });
+            }}
+            renderInput={(params) => (
+              <TextField {...params} fullWidth variant='standard' />
+            )}
+          />
+        </ListItem>
+        {get(expense, 'paid', true) ? null : (
+          <ListItem key={values.paid} disablePadding>
+            <ListItemButton
+              role={undefined}
+              onClick={() => setValues({ ...values, paid: !values.paid })}
+              dense
             >
-              Update
-            </Button>
-            <Button
-              id='delete'
-              sx={{ mt: '1rem', ml: '1rem' }}
-              variant='outlined'
-              onClick={handleDelete}
-              color='error'
-            >
-              Delete
-            </Button>
-          </>
+              <ListItemIcon>
+                <Checkbox edge='start' checked={values.paid} tabIndex={-1} />
+              </ListItemIcon>
+              <ListItemText primary={values.paid ? 'Paid' : 'Unpaid'} />
+            </ListItemButton>
+          </ListItem>
         )}
-      </form>
-    </Box>
+        <ListItem>
+          <Stack
+            direction='row'
+            spacing={2}
+            sx={{ width: '100%' }}
+            justifyContent='flex-end'
+          >
+            <Button
+              id='cancel'
+              variant='outlined'
+              color='secondary'
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            {mode === 'create' ? (
+              <Button
+                type='submit'
+                id='submit'
+                variant='contained'
+                color='primary'
+                onClick={handleCreate}
+              >
+                Create
+              </Button>
+            ) : (
+              <>
+                <Button
+                  id='delete'
+                  variant='contained'
+                  onClick={handleDelete}
+                  color='error'
+                >
+                  Delete
+                </Button>
+                <Button
+                  type='submit'
+                  id='update'
+                  disabled={!expenseDiff()}
+                  variant='contained'
+                  onClick={handleUpdate}
+                  color='primary'
+                >
+                  Update
+                </Button>
+              </>
+            )}
+          </Stack>
+        </ListItem>
+      </List>
+    </form>
   );
 }

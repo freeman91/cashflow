@@ -1,24 +1,27 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { get } from 'lodash';
 import { Box, Tooltip, Typography } from '@mui/material';
 import { useTheme } from '@mui/styles';
 
 import { numberToCurrency } from '../../../helpers/currency';
-import { setUpdateDialog } from '../../../store/settings';
+import { openDialog } from '../../../store/dialogs';
 
 export default function Record({ data }) {
   const theme = useTheme();
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(setUpdateDialog({ open: true, record: data }));
+    dispatch(openDialog({ mode: 'update', attrs: data }));
   };
 
   const [value, color] = (() => {
-    if (data.category === 'hour') {
-      return [`${data.amount} hours`, theme.palette.blue[500]];
-    } else if (data.category === 'expense') {
-      return [numberToCurrency.format(data.amount), theme.palette.red[500]];
+    if (data.category === 'expense') {
+      if (get(data, 'paid', true)) {
+        return [numberToCurrency.format(data.amount), theme.palette.red[600]];
+      } else {
+        return [numberToCurrency.format(data.amount), theme.palette.red[300]];
+      }
     } else {
       return [numberToCurrency.format(data.amount), theme.palette.green[500]];
     }
@@ -48,14 +51,7 @@ export default function Record({ data }) {
       }
     }
 
-    if (data.category === 'hour' || data.category === 'income') {
-      if (data.category === 'hour') {
-        tooltipContent.push(
-          <Typography key={`tooltip-amount-${data.id}`}>
-            Amount: {`${data.amount} hours`}
-          </Typography>
-        );
-      }
+    if (data.category === 'income') {
       tooltipContent.push(
         <Typography key={`tooltip-source-${data.id}`}>
           Source: {data.source}

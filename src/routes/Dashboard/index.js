@@ -1,28 +1,84 @@
-import React, { useState } from 'react';
-import { Grid } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Toolbar from './Toolbar';
 import Month from '../../components/Calendar/Month';
-import Week from '../../components/Calendar/Week';
+import Year from '../../components/Calendar/Year';
+import dayjs from 'dayjs';
+import Ledger from './Ledger';
 
 export default function Dashboard() {
-  const [view, setView] = useState('week');
+  const user = useSelector((state) => state.user);
 
-  const render = () => {
-    if (view === 'week') {
-      return <Week setView={setView} />;
-    } else if (view === 'month') {
-      return <Month setView={setView} />;
-    } else {
-      return null;
+  const [view, setView] = useState('Calendar');
+  const [day, setDay] = useState(dayjs());
+  const [showExpenses, setShowExpenses] = useState(true);
+  const [showIncomes, setShowIncomes] = useState(true);
+  const [selectedTypes, setSelectedTypes] = useState([]);
+
+  useEffect(() => {
+    if (user.expense_types) {
+      setSelectedTypes(user.expense_types);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (view === 'Year') {
+      setDay(dayjs());
+    }
+  }, [view]);
+
+  const renderView = () => {
+    switch (view) {
+      case 'Calendar':
+        return (
+          <Month
+            day={day}
+            showExpenses={showExpenses}
+            showIncomes={showIncomes}
+            selectedTypes={selectedTypes}
+          />
+        );
+
+      case 'Ledger':
+        return (
+          <Ledger
+            day={day}
+            showExpenses={showExpenses}
+            showIncomes={showIncomes}
+            selectedTypes={selectedTypes}
+          />
+        );
+
+      case 'Year':
+        return (
+          <Year
+            day={day}
+            showExpenses={showExpenses}
+            showIncomes={showIncomes}
+            selectedTypes={selectedTypes}
+          />
+        );
+
+      default:
+        return null;
     }
   };
 
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          {render()}
-        </Grid>
-      </Grid>
+      <Toolbar
+        view={view}
+        setView={setView}
+        day={day}
+        setDay={setDay}
+        showExpenses={showExpenses}
+        setShowExpenses={setShowExpenses}
+        showIncomes={showIncomes}
+        setShowIncomes={setShowIncomes}
+        selectedTypes={selectedTypes}
+        setSelectedTypes={setSelectedTypes}
+      />
+      {renderView()}
     </>
   );
 }

@@ -2,7 +2,7 @@
 """Cronjob controller"""
 
 import os
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from pydash import filter_, map_, find, remove
 from flask import request, Blueprint
 from cryptocompare import cryptocompare
@@ -141,3 +141,43 @@ def networth_snapshot():
             print("Networth updated")
 
         return success_result("Success")
+
+
+@handle_exception
+@cronjobs.route("/cronjobs/generate_bill_expenses", methods=["GET"])
+def generate_bill_expenses():
+    """
+    0 0 1 * * curl localhost:9000/cronjobs/generate_bill_expenses
+    """
+
+    if request.method == "GET":
+        for bill in mongo.bill.get():
+            # next month
+            _datetime = datetime.now() + timedelta(days=35)
+
+            for bill_day in bill.rule[_datetime.month - 1]:
+                bill_expense = find(
+                    mongo.expense.get(),
+                    lambda expense: expense.type == bill.type
+                    and expense.vendor == bill.vendor
+                    and expense.date.date()
+                    == date(_datetime.year, _datetime.month, bill_day),
+                )
+                if not bill_expense:
+                    new_expense = {
+                        "amount": bill.amount,
+                        "date": datetime(
+                            _datetime.year, _datetime.month, bill_day, 12, 0
+                        ),
+                        "type": bill.type,
+                        "vendor": bill.vendor,
+                        "description": bill.description,
+                        "paid": False,
+                        "bill_id": bill.id,
+                    }
+                    print(new_expense)
+                    mongo.expense.create(new_expense)
+
+        return success_result("expenses generates")
+
+    return failure_result()

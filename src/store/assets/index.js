@@ -8,9 +8,9 @@ import {
   sellAssetAPI,
   postAssetAPI,
 } from '../../api';
-import { addToastr, types } from '../toastr';
 import { thunkReducer } from '../thunkTemplate';
 import { assets as initialState } from '../initialState';
+import { toastr } from 'react-redux-toastr';
 
 const getAssets = createAsyncThunk('assets/getAssets', async () => {
   try {
@@ -23,6 +23,25 @@ const getAssets = createAsyncThunk('assets/getAssets', async () => {
   }
 });
 
+const postAsset = createAsyncThunk(
+  'assets/postAsset',
+  async (newAsset, { dispatch, getState }) => {
+    try {
+      const result = await postAssetAPI(newAsset);
+      const { data: assets } = getState().assets;
+      if (result) {
+        toastr.success('Asset created');
+      }
+
+      return {
+        data: concat(assets, result),
+      };
+    } catch (err) {
+      toastr.error(err);
+    }
+  }
+);
+
 const putAsset = createAsyncThunk(
   'assets/putAsset',
   async (updatedAsset, { dispatch, getState }) => {
@@ -30,13 +49,7 @@ const putAsset = createAsyncThunk(
       const result = await putAssetAPI(updatedAsset);
       const { data: storeAssets } = getState().assets;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Asset updated',
-          })
-        );
+        toastr.success('Asset updated');
       }
       let _assets = [...storeAssets];
       remove(_assets, {
@@ -46,13 +59,7 @@ const putAsset = createAsyncThunk(
         data: concat(_assets, result),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );
@@ -71,13 +78,7 @@ const buyAsset = createAsyncThunk(
       const { data: storeAssets } = getState().assets;
 
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Shares bought',
-          })
-        );
+        toastr.success('Shares purchased');
       }
       let _assets = [...storeAssets];
       remove(_assets, {
@@ -88,13 +89,7 @@ const buyAsset = createAsyncThunk(
         data: concat(_assets, updatedAsset),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );
@@ -112,13 +107,7 @@ const sellAsset = createAsyncThunk(
       const result = await sellAssetAPI(assetId, _payload);
       const { data: storeAssets } = getState().assets;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Shares sold',
-          })
-        );
+        toastr.success('Shares sold');
       }
       let _assets = [...storeAssets];
       remove(_assets, {
@@ -129,44 +118,7 @@ const sellAsset = createAsyncThunk(
         data: concat(_assets, updatedAsset),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
-    }
-  }
-);
-
-const postAsset = createAsyncThunk(
-  'assets/postAsset',
-  async (newAsset, { dispatch, getState }) => {
-    try {
-      const result = await postAssetAPI(newAsset);
-      const { data: assets } = getState().assets;
-      if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Asset created',
-          })
-        );
-      }
-
-      return {
-        data: concat(assets, result),
-      };
-    } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );

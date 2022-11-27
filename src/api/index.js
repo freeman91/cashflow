@@ -90,9 +90,9 @@ export const deleteExpenseAPI = async (expenseId) => {
 #### ##    ##  ######   #######  ##     ## ########  ######
 */
 
-export const getIncomesAPI = async (start, stop) => {
+export const getIncomesAPI = async () => {
   try {
-    const response = await axios.get(`/incomes`, { params: { start, stop } });
+    const response = await axios.get(`/incomes`);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }
@@ -294,9 +294,9 @@ export const getDebtsAPI = async () => {
   }
 };
 
-export const postDebtAPI = async (updatedDebt) => {
+export const postDebtAPI = async (newDebt) => {
   try {
-    const response = await axios.post(`/debts`, updatedDebt);
+    const response = await axios.post(`/debts`, newDebt);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }
@@ -361,6 +361,31 @@ export const getNetworthsAPI = async () => {
 export const getAccountsAPI = async () => {
   try {
     const response = await axios.get(`/accounts`);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const postAccountAPI = async (updatedAccount) => {
+  try {
+    const response = await axios.post(`/accounts`, updatedAccount);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const putAccountAPI = async (updatedAccount) => {
+  try {
+    const response = await axios.put(
+      `/accounts/${get(updatedAccount, 'id')}`,
+      updatedAccount
+    );
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }

@@ -64,7 +64,7 @@ def update(asset: dict) -> Asset:
     """
 
     asset_obj = get(_get(asset, "id"))
-    # asset_obj.name = _get(asset, "name")
+    asset_obj.name = _get(asset, "name")
     asset_obj.value = float(_get(asset, "value"))
     # asset_obj.type = _get(asset, "type")
     asset_obj.shares = float(_get(asset, "shares"))

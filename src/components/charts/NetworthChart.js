@@ -5,7 +5,6 @@ import { Typography } from '@mui/material';
 import { ComposedChart, XAxis, YAxis, Tooltip, Bar, Line } from 'recharts';
 
 import { NetworthTooltip } from './NetworthTooltip';
-import { divStyle } from '../containers/styles';
 import { numberToCurrency } from '../../helpers/currency';
 import NetworthDialog from '../Dialog/NetworthDialog';
 
@@ -76,7 +75,13 @@ export default function NetworthChart() {
 
   return (
     <>
-      <div style={divStyle}>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
         <Typography variant='h4'>Net Worth over time</Typography>
       </div>
       <ComposedChart

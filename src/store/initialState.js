@@ -1,29 +1,29 @@
-export const settings = {
-  updateDialog: {
+export const dialogs = {
+  update: {
     open: false,
-    record: {},
+    attrs: {},
   },
-  createDialog: {
+  create: {
     open: false,
-    date: null,
+    attrs: {},
+  },
+  assets: {
+    open: false,
+    attrs: {},
+  },
+  debts: {
+    open: false,
+    attrs: {},
   },
 };
 
 export const user = {
-  expense: {
-    types: [],
-    vendors: [],
-  },
-  income: {
-    types: [],
-    sources: [],
-  },
-  asset: {
-    types: [],
-  },
-  debt: {
-    types: [],
-  },
+  expense_types: [],
+  expense_vendors: [],
+  income_types: [],
+  income_sources: [],
+  asset_types: [],
+  debt_types: [],
 };
 
 export const expenses = {
@@ -31,10 +31,6 @@ export const expenses = {
 };
 
 export const incomes = {
-  data: [],
-};
-
-export const goals = {
   data: [],
 };
 

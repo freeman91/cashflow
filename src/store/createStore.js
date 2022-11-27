@@ -11,14 +11,13 @@ import { loadingBarMiddleware } from 'react-redux-loading-bar';
 import { reducer as toastr } from 'react-redux-toastr';
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import accounts from './accounts';
-import settings from './settings';
+import dialogs from './dialogs';
 import user from './user';
 import expenses from './expenses';
 import incomes from './incomes';
 import assets from './assets';
 import debts from './debts';
 import networths from './networths';
-import toast from './toastr';
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({ history: createBrowserHistory() });
@@ -26,7 +25,7 @@ const { createReduxHistory, routerMiddleware, routerReducer } =
 export const store = configureStore({
   reducer: combineReducers({
     accounts,
-    settings,
+    dialogs,
     expenses,
     incomes,
     assets,
@@ -34,7 +33,6 @@ export const store = configureStore({
     networths,
     loadingBar: loadingBarReducer,
     router: routerReducer,
-    toast,
     toastr,
     user,
   }),

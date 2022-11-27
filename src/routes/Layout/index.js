@@ -24,12 +24,16 @@ import { Grid, Toolbar } from '@mui/material';
 import Settings from '../Settings';
 import { getNetworths } from '../../store/networths';
 import { getAccounts } from '../../store/accounts';
-// import { getNetworthsAPI } from '../../api';
+import Sidebar from '../../components/Sidebar';
+import CreateDialog from '../../components/Dialog/CreateDialog';
+import UpdateDialog from '../../components/Dialog/UpdateDialog';
+import AssetsDialog from '../../components/Dialog/AssetsDialog';
+import DebtsDialog from '../../components/Dialog/DebtsDialog';
 
 const Root = styled('div')({
   display: 'flex',
   height: '100%',
-  width: '100vw',
+  width: '99vw',
 });
 
 const Main = styled('main')(({ theme }) => ({
@@ -46,6 +50,7 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
+      style={{ width: '100%' }}
       {...other}
     >
       {value === index && <Box p={3}>{children}</Box>}
@@ -72,7 +77,8 @@ function Layout() {
     dispatch(getDebts());
     dispatch(getNetworths());
     dispatch(getAccounts());
-  });
+    /* eslint-disable-next-line */
+  }, []);
 
   const handleChange = (e, idx) => {
     setTabIndex(idx);
@@ -82,64 +88,63 @@ function Layout() {
     <Root>
       <CssBaseline />
       <Main>
-        <Grid container>
-          <Grid item xs={12}>
-            <AppBar position='static' color='default'>
-              <Toolbar>
-                <Tabs
-                  value={tabIndex}
-                  onChange={handleChange}
-                  indicatorColor='primary'
-                  textColor='primary'
-                  sx={{
-                    margin: 'auto',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Tab
-                    label='Dashboard'
-                    icon={<DashboardIcon />}
-                    {...a11yProps(0)}
-                    sx={{
-                      width: '12rem',
-                    }}
-                  />
-                  <Tab
-                    label='Transactions'
-                    icon={<ReceiptLongIcon />}
-                    {...a11yProps(1)}
-                    sx={{
-                      width: '12rem',
-                    }}
-                  />
-                  <Tab
-                    label='Accounts'
-                    icon={<AccountBalanceIcon />}
-                    {...a11yProps(2)}
-                    sx={{
-                      width: '12rem',
-                    }}
-                  />
-                  <Tab
-                    label='Settings'
-                    icon={<SettingsIcon />}
-                    {...a11yProps(3)}
-                    sx={{
-                      width: '12rem',
-                    }}
-                  />
-                </Tabs>
-              </Toolbar>
-            </AppBar>
-          </Grid>
-          <Grid item xs={2}>
-            <h4>Net Worth</h4>
-            <div style={{ marginBottom: '15rem' }}></div>
-            <h4>Month Stats</h4>
-            <div style={{ marginBottom: '15rem' }}></div>
-            <h4>Upcoming Bills</h4>
-          </Grid>
-          <Grid item xs={9}>
+        <AppBar position='static' color='default'>
+          <Toolbar sx={{ ml: 40 }}>
+            <Tabs
+              value={tabIndex}
+              onChange={handleChange}
+              indicatorColor='primary'
+              textColor='primary'
+              sx={{
+                margin: 'auto',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Tab
+                label='Dashboard'
+                icon={<DashboardIcon />}
+                {...a11yProps(0)}
+                sx={{
+                  width: '12rem',
+                }}
+              />
+              <Tab
+                label='Transactions'
+                icon={<ReceiptLongIcon />}
+                {...a11yProps(1)}
+                sx={{
+                  width: '12rem',
+                }}
+              />
+              <Tab
+                label='Accounts'
+                icon={<AccountBalanceIcon />}
+                {...a11yProps(2)}
+                sx={{
+                  width: '12rem',
+                }}
+              />
+              <Tab
+                label='Settings'
+                icon={<SettingsIcon />}
+                {...a11yProps(3)}
+                sx={{
+                  width: '12rem',
+                }}
+              />
+            </Tabs>
+          </Toolbar>
+        </AppBar>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+          }}
+        >
+          <Sidebar />
+          <Grid container spacing={1} p={2}>
             <TabPanel value={tabIndex} index={0}>
               <Dashboard />
             </TabPanel>
@@ -153,7 +158,12 @@ function Layout() {
               <Settings />
             </TabPanel>
           </Grid>
-        </Grid>
+        </div>
+
+        <AssetsDialog />
+        <DebtsDialog />
+        <CreateDialog />
+        <UpdateDialog />
       </Main>
     </Root>
   );

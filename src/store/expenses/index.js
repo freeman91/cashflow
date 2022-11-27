@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { get, remove, concat } from 'lodash';
+import { toastr } from 'react-redux-toastr';
 
-import { addToastr, types } from '../toastr';
 import {
   deleteExpenseAPI,
   getExpensesAPI,
@@ -28,25 +28,13 @@ const postExpense = createAsyncThunk(
       const result = await postExpenseAPI(new_expense);
       const { data: expenses } = getState().expenses;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Expense inserted',
-          })
-        );
+        toastr.success('Expense created');
       }
       return {
         data: [result].concat(expenses),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );
@@ -58,13 +46,7 @@ const putExpense = createAsyncThunk(
       const result = await putExpenseAPI(updatedExpense);
       const { data: expenses } = getState().expenses;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Expense updated',
-          })
-        );
+        toastr.success('Expense updated');
       }
       let _expenses = [...expenses];
       remove(_expenses, {
@@ -75,13 +57,7 @@ const putExpense = createAsyncThunk(
         data: concat(_expenses, result),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );
@@ -93,13 +69,7 @@ const deleteExpense = createAsyncThunk(
       const result = await deleteExpenseAPI(id);
       const { data: expenses } = getState().expenses;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Expense deleted',
-          })
-        );
+        toastr.success('Expense deleted');
       }
 
       let _expenses = [...expenses];
@@ -108,13 +78,7 @@ const deleteExpense = createAsyncThunk(
         data: _expenses,
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );

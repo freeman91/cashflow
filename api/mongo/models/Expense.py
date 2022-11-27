@@ -17,8 +17,9 @@ class Expense(BaseModel):
     type: str
     vendor: str
     description: Optional[str]
-    asset: Optional[PydanticObjectId]
-    debt: Optional[PydanticObjectId]
+    paid: Optional[bool]
+    bill_id: Optional[PydanticObjectId]
+    asset_id: Optional[PydanticObjectId]
     category = "expense"
 
     def create(self):

@@ -1,8 +1,5 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
-import { v4 as uuidv4 } from 'uuid';
 import ReduxToastr from 'react-redux-toastr';
 import LoadingBar from 'react-redux-loading-bar';
 
@@ -30,7 +27,7 @@ function App() {
             <Route element={<Layout />} />
           </Route>
         </Route>
-        <Route exact path='*'>
+        <Route path='*'>
           <Route index element={<Navigate to={'/app'} />} />
         </Route>
       </Routes>
@@ -40,18 +37,11 @@ function App() {
   return (
     <>
       <ReduxLoader />
-      <Helmet key={uuidv4()}>
-        <title>cashflow</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-      </Helmet>
       <ReduxToastr
-        timeOut={4000}
-        newestOnTop={false}
-        preventDuplicates
+        timeOut={10000}
         position='bottom-right'
         transitionIn='fadeIn'
         transitionOut='fadeOut'
-        progressBar
         closeOnToastrClick
       />
       <div className='App'>{renderRoutes()}</div>

@@ -13,6 +13,7 @@ from ..connection import database
 
 class Asset(BaseModel):
     id: Optional[PydanticObjectId] = Field(None, alias="_id")
+    account_id: str
     name: str
     value: float
     type: str
