@@ -12,7 +12,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Box, Button, InputAdornment, TextField, Stack } from '@mui/material';
 
-import { _numberToCurrency } from '../../helpers/currency';
 import { putAsset, postAsset } from '../../store/assets';
 
 const defaultState = {
@@ -62,10 +61,9 @@ export default function AssetForm({ mode, asset, handleClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const value = calculateValue();
     const newAsset = {
       ...values,
-      value: Number(value.replace(',', '')),
+      value: Number(values.value),
       invested: Number(values.invested),
       price: Number(values.price),
       shares: Number(values.shares),
@@ -79,7 +77,7 @@ export default function AssetForm({ mode, asset, handleClose }) {
     e.preventDefault();
     let updatedAsset = {
       ...asset,
-      value: values.value,
+      value: Number(values.value),
       shares: values.shares,
       price: values.price,
       invested: values.invested,
@@ -124,18 +122,6 @@ export default function AssetForm({ mode, asset, handleClose }) {
   };
 
   let isSharedAsset = values.type === 'stock' || values.type === 'crypto';
-
-  const calculateValue = () => {
-    if (mode === 'create') {
-      if (isSharedAsset) {
-        return _numberToCurrency.format(values.shares * values.price);
-      } else {
-        return values.value;
-      }
-    } else {
-      return _numberToCurrency.format(values.value);
-    }
-  };
 
   const renderButtons = () => {
     let buttons = [];
@@ -267,14 +253,17 @@ export default function AssetForm({ mode, asset, handleClose }) {
           />
           <TextField
             fullWidth
+            type='number'
             id='value-input'
             label='current value'
             name='value'
             required={!isSharedAsset}
-            value={calculateValue()}
+            value={Math.round(values.value * 100) / 100}
             variant='standard'
             placeholder='0'
-            onChange={(e) => setValues({ ...values, value: e.target.value })}
+            onChange={(e) => {
+              setValues({ ...values, value: e.target.value });
+            }}
             margin='dense'
             InputProps={{
               startAdornment: (

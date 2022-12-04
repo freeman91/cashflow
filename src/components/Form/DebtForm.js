@@ -10,7 +10,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Box, Button, InputAdornment, TextField, Stack } from '@mui/material';
 
-import { _numberToCurrency } from '../../helpers/currency';
 import { postDebt, putDebt } from '../../store/debts';
 
 const defaultState = {
@@ -176,10 +175,11 @@ export default function DebtForm(props) {
           />
           <TextField
             fullWidth
+            type='number'
             id='value-input'
             label='current value'
             name='value'
-            value={_numberToCurrency.format(values.value)}
+            value={Math.round(values.value * 100) / 100}
             variant='standard'
             placeholder='0'
             onChange={(e) => setValues({ ...values, value: e.target.value })}
