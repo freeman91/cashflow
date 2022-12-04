@@ -32,13 +32,13 @@ def get_stock_price(ticker: str):
 
 
 @handle_exception
-@cronjobs.route("/cronjobs/update_crypto_prices", methods=["GET"])
+@cronjobs.route("/cronjobs/update_crypto_prices", methods=["PUT"])
 def update_crypto_prices():
     """
-    0 18 * * * curl localhost:9000/cronjobs/update_crypto_prices
+    0 18 * * * curl -X PUT localhost:9000/cronjobs/update_crypto_prices
     """
 
-    if request.method == "GET":
+    if request.method == "PUT":
         crypto_assets = list(
             filter_(mongo.asset.get(), lambda asset: asset.type == "crypto")
         )
@@ -57,13 +57,13 @@ def update_crypto_prices():
 
 
 @handle_exception
-@cronjobs.route("/cronjobs/update_stock_prices", methods=["GET"])
+@cronjobs.route("/cronjobs/update_stock_prices", methods=["PUT"])
 def update_stock_prices():
     """
-    0 18 * * * curl localhost:9000/cronjobs/update_stock_prices
+    0 18 * * * curl -X PUT localhost:9000/cronjobs/update_stock_prices
     """
 
-    if request.method == "GET":
+    if request.method == "PUT":
         stock_assets = list(
             filter_(mongo.asset.get(), lambda asset: asset.type == "stock")
         )
@@ -88,6 +88,8 @@ def networth_snapshot():
     0 22 30 4,6,9,11        * curl -X POST localhost:9000/cronjobs/networth_snapshot
     0 22 31 1,3,5,7,8,10,12 * curl -X POST localhost:9000/cronjobs/networth_snapshot
     0 22 28 2               * curl -X POST localhost:9000/cronjobs/networth_snapshot
+
+    0 22 28 * * curl -X POST localhost:9000/cronjobs/networth_snapshot > /dev/null
     """
 
     if request.method == "POST":
@@ -138,24 +140,24 @@ def networth_snapshot():
             networth.assets = assets
             networth.debts = debts
             networth.save()
-            print("Networth updated")
 
         return success_result("Success")
 
 
 @handle_exception
-@cronjobs.route("/cronjobs/generate_bill_expenses", methods=["GET"])
+@cronjobs.route("/cronjobs/generate_bill_expenses", methods=["POST"])
 def generate_bill_expenses():
     """
-    0 0 1 * * curl localhost:9000/cronjobs/generate_bill_expenses
+    0 0 1 * * curl -X POST localhost:9000/cronjobs/generate_bill_expenses
     """
 
-    if request.method == "GET":
+    if request.method == "POST":
         for bill in mongo.bill.get():
             # next month
             _datetime = datetime.now() + timedelta(days=35)
 
-            for bill_day in bill.rule[_datetime.month - 1]:
+            bill_day = bill.rule[_datetime.month - 1]
+            if bill_day:
                 bill_expense = find(
                     mongo.expense.get(),
                     lambda expense: expense.type == bill.type
@@ -163,6 +165,7 @@ def generate_bill_expenses():
                     and expense.date.date()
                     == date(_datetime.year, _datetime.month, bill_day),
                 )
+
                 if not bill_expense:
                     new_expense = {
                         "amount": bill.amount,
@@ -175,7 +178,6 @@ def generate_bill_expenses():
                         "paid": False,
                         "bill_id": bill.id,
                     }
-                    print(new_expense)
                     mongo.expense.create(new_expense)
 
         return success_result("expenses generates")

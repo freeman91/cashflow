@@ -15,6 +15,7 @@ import dialogs from './dialogs';
 import user from './user';
 import expenses from './expenses';
 import incomes from './incomes';
+import bills from './bills';
 import assets from './assets';
 import debts from './debts';
 import networths from './networths';
@@ -28,6 +29,7 @@ export const store = configureStore({
     dialogs,
     expenses,
     incomes,
+    bills,
     assets,
     debts,
     networths,

@@ -11,6 +11,7 @@ import AssetForm from '../../Form/AssetForm';
 import DebtForm from '../../Form/DebtForm';
 import ExpenseForm from '../../Form/ExpenseForm';
 import IncomeForm from '../../Form/IncomeForm';
+import BillForm from '../../Form/BillForm';
 
 export default function CreateDialog() {
   const dispatch = useDispatch();
@@ -39,6 +40,9 @@ export default function CreateDialog() {
             handleClose={handleClose}
           />
         );
+
+      case 'bill':
+        return <BillForm mode='create' handleClose={handleClose} />;
 
       case 'account':
         return <AccountForm mode='create' handleClose={handleClose} />;

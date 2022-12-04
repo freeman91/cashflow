@@ -69,7 +69,7 @@ export default function DashboardToolbar(props) {
           </Select>
 
           <div>
-            <IconButton onClick={handleBackClick}>
+            <IconButton onClick={handleBackClick} size='small'>
               <ArrowBackIosNewIcon />
             </IconButton>
             <MonthYearSelector
@@ -77,7 +77,7 @@ export default function DashboardToolbar(props) {
               handleDateChange={handleDateChange}
               interval={view === 'Year' ? 'year' : 'month'}
             />
-            <IconButton onClick={handleForwardClick}>
+            <IconButton onClick={handleForwardClick} size='small'>
               <ArrowForwardIosIcon />
             </IconButton>
           </div>

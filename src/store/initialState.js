@@ -34,6 +34,10 @@ export const incomes = {
   data: [],
 };
 
+export const bills = {
+  data: [],
+};
+
 export const networths = {
   data: [],
 };

@@ -56,7 +56,7 @@ def update(bill: dict) -> Bill:
     """
 
     bill_record = get(_get(bill, "id"))
-    bill_record.name = float(_get(bill, "name"))
+    bill_record.name = _get(bill, "name")
     bill_record.amount = float(_get(bill, "amount"))
     bill_record.type = _get(bill, "type")
     bill_record.vendor = _get(bill, "vendor")

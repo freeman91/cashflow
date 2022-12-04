@@ -326,6 +326,60 @@ export const putAccountAPI = async (updatedAccount) => {
   }
 };
 
+// ██████╗ ██╗██╗     ██╗     ███████╗
+// ██╔══██╗██║██║     ██║     ██╔════╝
+// ██████╔╝██║██║     ██║     ███████╗
+// ██╔══██╗██║██║     ██║     ╚════██║
+// ██████╔╝██║███████╗███████╗███████║
+// ╚═════╝ ╚═╝╚══════╝╚══════╝╚══════╝
+
+export const getBillsAPI = async () => {
+  try {
+    const response = await axios.get(`/bills`);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const postBillAPI = async (new_bill) => {
+  try {
+    const response = await axios.post(`/bills`, new_bill);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const putBillAPI = async (updatedBill) => {
+  try {
+    const response = await axios.put(
+      `/bills/${get(updatedBill, 'id')}`,
+      updatedBill
+    );
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const deleteBillAPI = async (billId) => {
+  try {
+    const response = await axios.delete(`/bills/${billId}`);
+    if (get(response, 'status') === 200) {
+      return true;
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 //  ██████╗  ██████╗  █████╗ ██╗     ███████╗
 // ██╔════╝ ██╔═══██╗██╔══██╗██║     ██╔════╝
 // ██║  ███╗██║   ██║███████║██║     ███████╗

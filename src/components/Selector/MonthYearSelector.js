@@ -33,9 +33,9 @@ export default function MonthYearSelector({
         onClick={handleYearClick}
         variant='text'
         sx={{
-          minWidth: '10rem',
           '&.MuiButton-text': {
-            fontSize: 22,
+            fontSize: 18,
+            color: 'inherit',
           },
         }}
       >

@@ -29,6 +29,7 @@ import CreateDialog from '../../components/Dialog/CreateDialog';
 import UpdateDialog from '../../components/Dialog/UpdateDialog';
 import AssetsDialog from '../../components/Dialog/AssetsDialog';
 import DebtsDialog from '../../components/Dialog/DebtsDialog';
+import { getBills } from '../../store/bills';
 
 const Root = styled('div')({
   display: 'flex',
@@ -72,6 +73,7 @@ function Layout() {
   useEffect(() => {
     dispatch(getUser());
     dispatch(getExpenses());
+    dispatch(getBills());
     dispatch(getIncomes());
     dispatch(getAssets());
     dispatch(getDebts());

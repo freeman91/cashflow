@@ -53,18 +53,18 @@ def create_bill(
             "vendor": vendor,
             "description": description,
             "rule": [
-                [31],
-                [28],
-                [31],
-                [30],
-                [31],
-                [30],
-                [31],
-                [31],
-                [30],
-                [31],
-                [30],
-                [31],
+                31,
+                28,
+                31,
+                30,
+                31,
+                30,
+                31,
+                31,
+                30,
+                31,
+                30,
+                31,
             ],
         }
     )
@@ -72,7 +72,7 @@ def create_bill(
 
 
 def test_cronjob():
-    res = requests.get("http://localhost:9000/cronjobs/generate_bill_expenses")
+    res = requests.post("http://localhost:9000/cronjobs/networth_snapshot")
     pprint(res.json())
 
 
@@ -86,7 +86,11 @@ def find_expenses():
 
 
 def test():
-    pass
+    for bill in mongo.bill.get():
+        bill.rule = map_(
+            bill.rule, lambda month_rule: None if not month_rule else month_rule[0]
+        )
+        bill.save()
 
 
 if __name__ == "__main__":

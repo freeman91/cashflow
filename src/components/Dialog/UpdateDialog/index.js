@@ -11,6 +11,7 @@ import ExpenseForm from '../../Form/ExpenseForm';
 import IncomeForm from '../../Form/IncomeForm';
 import AssetForm from '../../Form/AssetForm';
 import DebtForm from '../../Form/DebtForm';
+import BillForm from '../../Form/BillForm';
 
 export default function UpdateDialog() {
   const dispatch = useDispatch();
@@ -34,6 +35,11 @@ export default function UpdateDialog() {
       case 'income':
         return (
           <IncomeForm mode='update' income={record} handleClose={handleClose} />
+        );
+
+      case 'bill':
+        return (
+          <BillForm mode='update' bill={record} handleClose={handleClose} />
         );
 
       case 'account':
