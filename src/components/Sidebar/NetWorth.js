@@ -34,7 +34,7 @@ function NetWorth() {
   );
 
   return (
-    <Card>
+    <Card raised>
       <CardHeader
         title='Net Worth'
         sx={{ pb: 0 }}

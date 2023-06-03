@@ -1,7 +1,7 @@
 {
   "name": "cashflow2",
   "author": "Addison Freeman <addisonfreeman91@gmail.com>",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
     "start": "PORT=4242 react-scripts start"
   },

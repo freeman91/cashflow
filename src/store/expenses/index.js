@@ -23,7 +23,7 @@ const getExpenses = createAsyncThunk('expenses/getExpenses', async () => {
 
 const postExpense = createAsyncThunk(
   'expenses/postExpense',
-  async (new_expense, { dispatch, getState }) => {
+  async (new_expense, { getState }) => {
     try {
       const result = await postExpenseAPI(new_expense);
       const { data: expenses } = getState().expenses;
@@ -41,7 +41,7 @@ const postExpense = createAsyncThunk(
 
 const putExpense = createAsyncThunk(
   'expenses/putExpense',
-  async (updatedExpense, { dispatch, getState }) => {
+  async (updatedExpense, { getState }) => {
     try {
       const result = await putExpenseAPI(updatedExpense);
       const { data: expenses } = getState().expenses;
@@ -64,7 +64,7 @@ const putExpense = createAsyncThunk(
 
 const deleteExpense = createAsyncThunk(
   'expenses/deleteExpense',
-  async (id, { dispatch, getState }) => {
+  async (id, { getState }) => {
     try {
       const result = await deleteExpenseAPI(id);
       const { data: expenses } = getState().expenses;

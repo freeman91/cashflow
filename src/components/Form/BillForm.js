@@ -1,46 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { get, map } from 'lodash';
+import { get } from 'lodash';
 
 import {
   AttachMoney as AttachMoneyIcon,
   Description as DescriptionIcon,
+  AccessAlarm as AccessAlarmIcon,
 } from '@mui/icons-material';
-import {
-  Button,
-  InputAdornment,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { Button, InputAdornment, List, ListItem, Stack } from '@mui/material';
 
 import { deleteBill, postBill, putBill } from '../../store/bills';
 import { TextFieldListItem } from '../List/TextFieldListItem';
 import { AutocompleteListItem } from '../List/AutocompleteListItem';
-
-import dayjs from 'dayjs';
 
 const defaultState = {
   name: '',
   amount: '',
   type: '',
   vendor: '',
-  rule: [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-  ],
+  rule: '',
   description: '',
 };
 
@@ -64,9 +42,7 @@ export default function BillForm({ mode, bill, date, handleClose }) {
         amount: get(bill, 'amount', 0),
         type: get(bill, 'type', ''),
         vendor: get(bill, 'vendor', ''),
-        rule: get(bill, 'rule', []).map((monthRule) =>
-          monthRule ? String(monthRule) : null
-        ),
+        rule: get(bill, 'rule', ''),
         description: get(bill, 'description', ''),
       });
     }
@@ -80,9 +56,7 @@ export default function BillForm({ mode, bill, date, handleClose }) {
       amount: Number(values.amount),
       type: values.type,
       vendor: values.vendor,
-      rule: values.rule.map((monthRule) =>
-        monthRule ? Number(monthRule) : null
-      ),
+      rule: values.rule,
       description: values.description,
     };
     dispatch(postBill(newBill));
@@ -98,9 +72,7 @@ export default function BillForm({ mode, bill, date, handleClose }) {
       amount: Number(get(values, 'amount')),
       description: get(values, 'description'),
       type: get(values, 'type'),
-      rule: values.rule.map((monthRule) =>
-        monthRule ? Number(monthRule) : null
-      ),
+      rule: get(values, 'rule'),
       vendor: get(values, 'vendor'),
     };
     dispatch(putBill(updatedBill));
@@ -124,17 +96,6 @@ export default function BillForm({ mode, bill, date, handleClose }) {
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.id]: e.target.value });
-  };
-
-  const handleChangeRule = (value, idx) => {
-    if (value !== '' && (value < 1 || value > 31)) {
-      return;
-    }
-
-    let _rule = values.rule;
-    _rule[idx] = value;
-
-    setValues({ ...values, rule: _rule });
   };
 
   const billDiff = () => {
@@ -194,6 +155,19 @@ export default function BillForm({ mode, bill, date, handleClose }) {
           }}
         />
         <TextFieldListItem
+          id='rule'
+          label='rule "day month"'
+          value={values.rule}
+          onChange={handleChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <AccessAlarmIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextFieldListItem
           id='description'
           label='description'
           value={values.description}
@@ -206,25 +180,6 @@ export default function BillForm({ mode, bill, date, handleClose }) {
             ),
           }}
         />
-        <ListItem>
-          <ListItemText align='center'>Rule</ListItemText>
-        </ListItem>
-        {map(values.rule, (monthRule, idx) => {
-          return (
-            <ListItem key={`month-rule-${idx}`}>
-              <ListItemText align='left'>
-                {dayjs().month(idx).format('MMMM')}
-              </ListItemText>
-              <TextField
-                variant='standard'
-                type='number'
-                value={monthRule ? monthRule : ''}
-                onChange={(e) => handleChangeRule(e.target.value, idx)}
-              />
-            </ListItem>
-          );
-        })}
-
         <ListItem>
           <Stack
             direction='row'

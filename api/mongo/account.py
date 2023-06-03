@@ -1,6 +1,4 @@
-# pylint: disable= missing-function-docstring
-
-"""monog.account submodule"""
+"""mongo.account submodule"""
 
 from typing import List, Union
 from pydash import get as _get, filter_

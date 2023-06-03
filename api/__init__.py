@@ -18,6 +18,7 @@ from api.controllers.debts import debts
 from api.controllers.accounts import accounts
 from api.controllers.networths import networths
 from api.controllers.cronjobs import cronjobs
+from api.controllers.spy_data import spy_data
 
 from api.config import AppConfig
 
@@ -53,6 +54,7 @@ def create_app():
     app.register_blueprint(accounts)
     app.register_blueprint(networths)
     app.register_blueprint(cronjobs)
+    app.register_blueprint(spy_data)
 
     @app.route("/")
     def index():

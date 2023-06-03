@@ -55,6 +55,7 @@ export default function ExpenseForm({ mode, expense, date, handleClose }) {
         vendor: get(expense, 'vendor', ''),
         description: get(expense, 'description', ''),
         date: dayjs(get(expense, 'date')),
+        paid: get(expense, 'paid'),
       });
     }
   }, [mode, expense]);
@@ -62,10 +63,8 @@ export default function ExpenseForm({ mode, expense, date, handleClose }) {
   const handleCreate = (e) => {
     e.preventDefault();
     const new_expense = {
+      ...values,
       amount: Number(values.amount),
-      type: values.type,
-      vendor: values.vendor,
-      description: values.description,
       date: dayjs(values.date).format('MM-DD-YYYY'),
     };
     dispatch(postExpense(new_expense));
@@ -74,13 +73,9 @@ export default function ExpenseForm({ mode, expense, date, handleClose }) {
 
   const handleUpdate = () => {
     let updatedExpense = {
+      ...values,
       id: get(expense, 'id'),
       amount: Number(get(values, 'amount')),
-      asset: get(values, 'asset'),
-      debt: get(values, 'debt'),
-      description: get(values, 'description'),
-      type: get(values, 'type'),
-      vendor: get(values, 'vendor'),
       date: dayjs(values.date).format('MM-DD-YYYY'),
     };
     dispatch(putExpense(updatedExpense));
@@ -181,20 +176,18 @@ export default function ExpenseForm({ mode, expense, date, handleClose }) {
             )}
           />
         </ListItem>
-        {get(expense, 'paid', true) ? null : (
-          <ListItem key={values.paid} disablePadding>
-            <ListItemButton
-              role={undefined}
-              onClick={() => setValues({ ...values, paid: !values.paid })}
-              dense
-            >
-              <ListItemIcon>
-                <Checkbox edge='start' checked={values.paid} tabIndex={-1} />
-              </ListItemIcon>
-              <ListItemText primary={values.paid ? 'Paid' : 'Unpaid'} />
-            </ListItemButton>
-          </ListItem>
-        )}
+        <ListItem key={values.paid} disablePadding>
+          <ListItemButton
+            role={undefined}
+            onClick={() => setValues({ ...values, paid: !values.paid })}
+            dense
+          >
+            <ListItemIcon>
+              <Checkbox edge='start' checked={values.paid} tabIndex={-1} />
+            </ListItemIcon>
+            <ListItemText primary={values.paid ? 'Paid' : 'Unpaid'} />
+          </ListItemButton>
+        </ListItem>
         <ListItem>
           <Stack
             direction='row'

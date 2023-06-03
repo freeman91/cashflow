@@ -169,6 +169,17 @@ export const postAssetAPI = async (updatedAsset) => {
   }
 };
 
+export const deleteAssetAPI = async (assetId) => {
+  try {
+    const response = await axios.delete(`/assets/${assetId}`);
+    if (get(response, 'status') === 200) {
+      return true;
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 export const putAssetAPI = async (updatedAsset) => {
   try {
     const response = await axios.put(
@@ -231,6 +242,17 @@ export const postDebtAPI = async (newDebt) => {
     const response = await axios.post(`/debts`, newDebt);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const deleteDebtAPI = async (debtId) => {
+  try {
+    const response = await axios.delete(`/debts/${debtId}`);
+    if (get(response, 'status') === 200) {
+      return true;
     }
   } catch (error) {
     console.log('error: ', error);
@@ -412,6 +434,24 @@ export const postGoalAPI = async (goal) => {
 export const putGoalAPI = async (goal) => {
   try {
     const response = await axios.put(`/goals/${get(goal, 'id')}`, goal);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+// ███████╗████████╗ ██████╗  ██████╗██╗  ██╗    ██████╗  █████╗ ████████╗ █████╗
+// ██╔════╝╚══██╔══╝██╔═══██╗██╔════╝██║ ██╔╝    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
+// ███████╗   ██║   ██║   ██║██║     █████╔╝     ██║  ██║███████║   ██║   ███████║
+// ╚════██║   ██║   ██║   ██║██║     ██╔═██╗     ██║  ██║██╔══██║   ██║   ██╔══██║
+// ███████║   ██║   ╚██████╔╝╚██████╗██║  ██╗    ██████╔╝██║  ██║   ██║   ██║  ██║
+// ╚══════╝   ╚═╝    ╚═════╝  ╚═════╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+
+export const getSPYDataAPI = async () => {
+  try {
+    const response = await axios.get(`/spy_data`);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }

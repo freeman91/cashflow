@@ -7,6 +7,7 @@ import {
   buyAssetAPI,
   sellAssetAPI,
   postAssetAPI,
+  deleteAssetAPI,
 } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { assets as initialState } from '../initialState';
@@ -57,6 +58,27 @@ const putAsset = createAsyncThunk(
       });
       return {
         data: concat(_assets, result),
+      };
+    } catch (err) {
+      toastr.error(err);
+    }
+  }
+);
+
+const deleteAsset = createAsyncThunk(
+  'assets/deleteAsset',
+  async (id, { getState }) => {
+    try {
+      const result = await deleteAssetAPI(id);
+      const { data: assets } = getState().assets;
+      if (result) {
+        toastr.success('Asset deleted');
+      }
+
+      let _assets = [...assets];
+      remove(_assets, { id: id });
+      return {
+        data: _assets,
       };
     } catch (err) {
       toastr.error(err);
@@ -130,11 +152,12 @@ const { reducer } = createSlice({
   extraReducers: {
     ...thunkReducer(getAssets),
     ...thunkReducer(putAsset),
+    ...thunkReducer(deleteAsset),
     ...thunkReducer(postAsset),
     ...thunkReducer(sellAsset),
     ...thunkReducer(buyAsset),
   },
 });
 
-export { getAssets, putAsset, postAsset, sellAsset, buyAsset };
+export { getAssets, putAsset, postAsset, deleteAsset, sellAsset, buyAsset };
 export default reducer;

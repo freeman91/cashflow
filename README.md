@@ -59,6 +59,6 @@ mongo --username admin --password password
 docker exec -i mongodb mongorestore --username admin --password password /data
 ```
 
-## monog container wont build
+## mongo container wont build
 
 if issue is mongod.lock not empty, delete mongo-volume/, rebuild, restore db

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { cloneDeep, map, range } from 'lodash';
+import { useSelector } from 'react-redux';
+import { cloneDeep, get, filter, map, range, includes } from 'lodash';
+import dayjs from 'dayjs';
 
 import { useTheme } from '@mui/styles';
 import { Stack } from '@mui/material';
@@ -15,12 +17,34 @@ export default function Month({
 }) {
   const theme = useTheme();
   const [days, setDays] = useState([]);
+  const [monthExpenses, setMonthExpenses] = useState([]);
+  const [monthIncomes, setMonthIncomes] = useState([]);
+
+  const allExpenses = useSelector((state) => state.expenses.data);
+  const allIncomes = useSelector((state) => state.incomes.data);
 
   useEffect(() => {
     let firstDayOfMonth = day.date(1);
     let firstDayOfWeek = firstDayOfMonth.day(0);
-    let _days = [];
 
+    setMonthExpenses(
+      filter(allExpenses, (expense) => {
+        return (
+          dayjs(expense.date) >= firstDayOfWeek &&
+          dayjs(expense.date) <= day.endOf('month').day(6)
+        );
+      })
+    );
+    setMonthIncomes(
+      filter(allIncomes, (income) => {
+        return (
+          dayjs(income.date) >= firstDayOfWeek &&
+          dayjs(income.date) <= day.endOf('month').day(6)
+        );
+      })
+    );
+
+    let _days = [];
     let currentDay = firstDayOfWeek;
 
     while (currentDay.isBefore(firstDayOfMonth, 'month')) {
@@ -40,7 +64,7 @@ export default function Month({
     }
 
     setDays(_days);
-  }, [day]);
+  }, [day, allExpenses, allIncomes]);
 
   const renderWeeks = () => {
     let weeks = [];
@@ -59,14 +83,24 @@ export default function Month({
         >
           {map(range(7), () => {
             let _day = _days.shift();
+
+            let expenses = filter(monthExpenses, (expense) => {
+              return (
+                dayjs(expense.date).isSame(_day, 'day') &&
+                includes(selectedTypes, get(expense, 'type'))
+              );
+            });
+            let incomes = filter(monthIncomes, (income) => {
+              return dayjs(income.date).isSame(_day, 'day');
+            });
+
             return (
               <Day
                 key={`day-${_day.format('YYYY-MM-DD')}`}
                 date={_day}
                 sameMonth={_day.isSame(day, 'month')}
-                showExpenses={showExpenses}
-                showIncomes={showIncomes}
-                selectedTypes={selectedTypes}
+                expenses={showExpenses ? expenses : []}
+                incomes={showIncomes ? incomes : []}
               />
             );
           })}

@@ -1,7 +1,7 @@
 # pylint: disable=missing-function-docstring, missing-class-docstring, invalid-name
 """Bill Model"""
 
-from typing import Optional, List
+from typing import Optional
 
 from pydantic import Field
 
@@ -15,7 +15,7 @@ class Bill(BaseModel):
     amount: float
     type: str
     vendor: str
-    rule: List
+    rule: str
     description: Optional[str]
     category = "bill"
 

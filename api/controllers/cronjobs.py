@@ -9,6 +9,7 @@ from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
 
 from api import mongo
+from api.helpers.cron import is_cron_match
 from api.controllers.__util__ import failure_result, handle_exception, success_result
 
 
@@ -148,38 +149,38 @@ def networth_snapshot():
 @cronjobs.route("/cronjobs/generate_bill_expenses", methods=["POST"])
 def generate_bill_expenses():
     """
-    0 0 1 * * curl -X POST localhost:9000/cronjobs/generate_bill_expenses
+    0 0 * * * curl -X POST localhost:9000/cronjobs/generate_bill_expenses
     """
 
     if request.method == "POST":
+        new_expenses = []
+        _date = date.today() + timedelta(days=31)
         for bill in mongo.bill.get():
-            # next month
-            _datetime = datetime.now() + timedelta(days=35)
 
-            bill_day = bill.rule[_datetime.month - 1]
-            if bill_day:
+            if is_cron_match(bill.rule, _date):
                 bill_expense = find(
                     mongo.expense.get(),
                     lambda expense: expense.type == bill.type
                     and expense.vendor == bill.vendor
-                    and expense.date.date()
-                    == date(_datetime.year, _datetime.month, bill_day),
+                    and expense.date.date() == _date,
                 )
 
                 if not bill_expense:
                     new_expense = {
                         "amount": bill.amount,
-                        "date": datetime(
-                            _datetime.year, _datetime.month, bill_day, 12, 0
-                        ),
+                        "date": datetime(_date.year, _date.month, _date.day, 12, 0),
                         "type": bill.type,
                         "vendor": bill.vendor,
                         "description": bill.description,
                         "paid": False,
                         "bill_id": bill.id,
                     }
-                    mongo.expense.create(new_expense)
+                    new_expenses.append(new_expense)
 
-        return success_result("expenses generates")
+        for expense in new_expenses:
+            print(expense)
+            mongo.expense.create(expense)
+
+        return success_result(f"{len(new_expenses)} expenses generates")
 
     return failure_result()

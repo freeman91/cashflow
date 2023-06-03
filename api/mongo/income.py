@@ -1,6 +1,4 @@
-# pylint: disable= missing-function-docstring
-
-"""monog.income submodule"""
+"""mongo.income submodule"""
 
 from datetime import datetime
 from typing import List, Union

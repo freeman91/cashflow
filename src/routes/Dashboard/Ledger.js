@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 import { numberToCurrency } from '../../helpers/currency';
 import { green, grey } from '@mui/material/colors';
 import { openDialog } from '../../store/dialogs';
+import { Paper } from '@mui/material';
 
 const CustomTableCell = ({
   idx,
@@ -76,7 +77,7 @@ export default function Ledger({
       date = date.add(1, 'day');
     }
 
-    setListItems(items.reverse());
+    setListItems(items);
   }, [allExpenses, allIncomes, day, showExpenses, showIncomes, selectedTypes]);
 
   const handleRecordClick = (record) => {
@@ -86,7 +87,7 @@ export default function Ledger({
   const renderTable = () => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <TableContainer sx={{ mt: 2, maxWidth: 1000 }}>
+        <TableContainer sx={{ mt: 2, maxWidth: 1000 }} component={Paper}>
           <Table size='small'>
             <TableHead>
               <TableRow>

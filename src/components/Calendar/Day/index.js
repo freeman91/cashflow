@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { map, filter, get, includes } from 'lodash';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { map, sortBy } from 'lodash';
 import dayjs from 'dayjs';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -19,50 +19,12 @@ import {
 import Record from './Record';
 import { openDialog } from '../../../store/dialogs';
 
-export default function Day({
-  date,
-  sameMonth,
-  showExpenses,
-  showIncomes,
-  selectedTypes,
-}) {
+export default function Day({ date, sameMonth, expenses, incomes }) {
   const theme = useTheme();
   const dispatch = useDispatch();
   let isToday = dayjs().isSame(date, 'day');
 
-  const allExpenses = useSelector((state) => state.expenses.data);
-  const allIncomes = useSelector((state) => state.incomes.data);
-
   const [anchorEl, setAnchorEl] = useState(null);
-  const [expenses, setExpenses] = useState([]);
-  const [incomes, setIncomes] = useState([]);
-
-  useEffect(() => {
-    if (showExpenses) {
-      setExpenses(
-        filter(allExpenses, (expense) => {
-          return (
-            get(expense, 'date') === date.format('YYYY-MM-DD') &&
-            includes(selectedTypes, get(expense, 'type'))
-          );
-        })
-      );
-    } else {
-      setExpenses([]);
-    }
-  }, [allExpenses, date, showExpenses, selectedTypes]);
-
-  useEffect(() => {
-    if (showIncomes) {
-      setIncomes(
-        filter(allIncomes, (income) => {
-          return get(income, 'date') === date.format('YYYY-MM-DD');
-        })
-      );
-    } else {
-      setIncomes([]);
-    }
-  }, [allIncomes, date, showIncomes]);
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -127,7 +89,7 @@ export default function Day({
           {map(incomes, (income) => {
             return <Record key={income.id} data={income} />;
           })}
-          {map(expenses, (expense) => {
+          {map(sortBy(expenses, 'paid').reverse(), (expense) => {
             return <Record key={expense.id} data={expense} />;
           })}
         </Stack>

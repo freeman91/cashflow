@@ -6,11 +6,14 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import SettingsIcon from '@mui/icons-material/Settings';
+// import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import Toolbar from '@mui/material/Toolbar';
 
 import { getUser } from '../../store/user';
 import { getExpenses } from '../../store/expenses';
@@ -18,9 +21,9 @@ import { getIncomes } from '../../store/incomes';
 import { getAssets } from '../../store/assets';
 import { getDebts } from '../../store/debts';
 import Dashboard from '../Dashboard';
-import Transactions from '../Transactions';
+import Reports from '../Reports';
 import Accounts from '../Accounts';
-import { Grid, Toolbar } from '@mui/material';
+// import Trading from '../Trading';
 import Settings from '../Settings';
 import { getNetworths } from '../../store/networths';
 import { getAccounts } from '../../store/accounts';
@@ -111,7 +114,7 @@ function Layout() {
                 }}
               />
               <Tab
-                label='Transactions'
+                label='Reports'
                 icon={<ReceiptLongIcon />}
                 {...a11yProps(1)}
                 sx={{
@@ -126,6 +129,14 @@ function Layout() {
                   width: '12rem',
                 }}
               />
+              {/* <Tab
+                label='Trading'
+                icon={<TrendingUpIcon />}
+                {...a11yProps(3)}
+                sx={{
+                  width: '12rem',
+                }}
+              /> */}
               <Tab
                 label='Settings'
                 icon={<SettingsIcon />}
@@ -151,11 +162,14 @@ function Layout() {
               <Dashboard />
             </TabPanel>
             <TabPanel value={tabIndex} index={1}>
-              <Transactions />
+              <Reports />
             </TabPanel>
             <TabPanel value={tabIndex} index={2}>
               <Accounts />
             </TabPanel>
+            {/* <TabPanel value={tabIndex} index={3}>
+              <Trading />
+            </TabPanel> */}
             <TabPanel value={tabIndex} index={3}>
               <Settings />
             </TabPanel>

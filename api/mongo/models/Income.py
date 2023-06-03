@@ -33,4 +33,4 @@ class Income(BaseModel):
         return database.incomes.delete_one({"_id": PydanticObjectId(self.id)})
 
     def __repr__(self):
-        return f"<{self.category}, {self.id}, {self.amount}, {self.date}>"
+        return f"<{self.category}, {self.id}, {self.amount}, {self.date.strftime('%Y-%m-%d')}>"

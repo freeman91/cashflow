@@ -1,6 +1,6 @@
 # pylint: disable= missing-function-docstring
 
-"""monog.expense submodule"""
+"""mongo.expense submodule"""
 
 from datetime import datetime, timedelta
 from typing import List, Union
@@ -118,7 +118,7 @@ def update(expense: dict) -> Expense:
     expense_record.type = _get(expense, "type")
     expense_record.vendor = _get(expense, "vendor")
     expense_record.description = _get(expense, "description")
-    expense_record.paid = _get(expense, "paid", True)
+    expense_record.paid = _get(expense, "paid")
     expense_record.asset_id = _get(expense, "asset_id")
     expense_record.bill_id = _get(expense, "bill_id")
 

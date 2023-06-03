@@ -54,18 +54,9 @@ export default function AccountGrid({ account }) {
     dispatch(openDialog({ mode: type, attrs: account }));
   };
 
-  let equity = assetSum - debtSum;
-
   return (
     <Grid item xs={4}>
-      <Card
-        raised
-        sx={{
-          '&.MuiCard-root': {
-            backgroundImage: equity === 0 ? 'none' : '',
-          },
-        }}
-      >
+      <Card raised>
         <CardHeader
           title={account.name}
           subheader={numberToCurrency.format(assetSum - debtSum)}

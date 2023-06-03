@@ -51,7 +51,7 @@ function MonthStats() {
   }, [expenses, incomes]);
 
   return (
-    <Card>
+    <Card raised>
       <CardHeader
         title={`${monthName} Balance`}
         sx={{ pb: 0 }}

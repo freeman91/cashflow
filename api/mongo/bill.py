@@ -1,6 +1,4 @@
-# pylint: disable= missing-function-docstring
-
-"""monog.bill submodule"""
+"""mongo.bill submodule"""
 
 from typing import List, Union
 

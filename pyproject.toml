@@ -17,6 +17,7 @@ pydash = "^5.1.0"
 pydantic = "^1.9.0"
 ofxtools = "^0.9.5"
 inquirer = "^2.10.0"
+matplotlib = "^3.7.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

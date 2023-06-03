@@ -39,7 +39,7 @@ export default function MonthYearSelector({
           },
         }}
       >
-        {interval === 'year' ? date.format('YYYY') : date.format('MMMM')}
+        {interval === 'year' ? date.format('YYYY') : date.format('MMMM YYYY')}
       </Button>
 
       <Popover

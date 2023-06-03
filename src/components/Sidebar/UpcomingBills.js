@@ -25,7 +25,7 @@ function UpcomingBills() {
   }, [expenses]);
 
   return (
-    <Card>
+    <Card raised>
       <CardHeader
         title={`Upcoming Bills`}
         titleTypographyProps={{ variant: 'h6' }}

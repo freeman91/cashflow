@@ -9,10 +9,18 @@ import {
 
 import AssetBuySellDialog from '../Dialog/AssetBuySellDialog';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Autocomplete from '@mui/material/Autocomplete';
-import { Box, Button, InputAdornment, TextField, Stack } from '@mui/material';
+import {
+  Button,
+  InputAdornment,
+  TextField,
+  Stack,
+  List,
+  ListItem,
+} from '@mui/material';
 
-import { putAsset, postAsset } from '../../store/assets';
+import { putAsset, postAsset, deleteAsset } from '../../store/assets';
+import { TextFieldListItem } from '../List/TextFieldListItem';
+import { AutocompleteListItem } from '../List/AutocompleteListItem';
 
 const defaultState = {
   account_id: '',
@@ -88,6 +96,12 @@ export default function AssetForm({ mode, asset, handleClose }) {
     handleClose();
   };
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    dispatch(deleteAsset(asset.id));
+    handleClose();
+  };
+
   const handleClick = (e, dialogMode) => {
     e.preventDefault();
     setDialogMode(dialogMode);
@@ -133,7 +147,6 @@ export default function AssetForm({ mode, asset, handleClose }) {
           id='submit'
           key='submit=button'
           disabled={!validate()}
-          sx={{ mt: '1rem', width: '5rem' }}
           variant='outlined'
           onClick={handleSubmit}
           color='success'
@@ -147,19 +160,15 @@ export default function AssetForm({ mode, asset, handleClose }) {
           <Button
             id='buy'
             key='buy-button'
-            sx={{ mt: '1rem', mr: '1rem', width: '5rem' }}
             variant='outlined'
             onClick={(e) => handleClick(e, 'buy')}
             color='warning'
           >
             Buy
-          </Button>
-        );
-        buttons.push(
+          </Button>,
           <Button
             id='sell'
             key='sell-button'
-            sx={{ mt: '1rem', mr: '1rem', width: '5rem' }}
             variant='outlined'
             onClick={(e) => handleClick(e, 'sell')}
             color='success'
@@ -181,32 +190,51 @@ export default function AssetForm({ mode, asset, handleClose }) {
             asset.name === values.name &&
             asset.description === values.description
           }
-          sx={{ mt: '1rem', width: '5rem' }}
           variant='outlined'
           onClick={handleUpdate}
           color='success'
         >
           Update
+        </Button>,
+        <Button
+          id='delete'
+          key='delete-button'
+          variant='outlined'
+          onClick={handleDelete}
+          color='error'
+        >
+          Delete
         </Button>
       );
     }
 
     return (
-      <Stack direction='row' justifyContent='flex-end'>
-        {map(buttons, (button) => button)}
-      </Stack>
+      <ListItem>
+        <Stack
+          direction='row'
+          justifyContent='flex-end'
+          spacing={2}
+          sx={{ width: '100%' }}
+        >
+          {map(buttons, (button) => button)}
+        </Stack>
+      </ListItem>
     );
   };
 
+  const account = find(accounts, { id: values.account_id });
+
+  console.log('values: ', values);
+
   return (
     <>
-      <Box>
-        <form onSubmit={handleFormEnterClick}>
-          <TextField
+      <form onSubmit={handleFormEnterClick}>
+        <List>
+          <TextFieldListItem
             id='account-input'
             label='account'
             name='account'
-            value={find(accounts, { id: values.account_id })?.name}
+            value={get(account, 'name', '')}
             variant='standard'
             margin='dense'
             InputProps={{
@@ -214,7 +242,7 @@ export default function AssetForm({ mode, asset, handleClose }) {
               disableUnderline: true,
             }}
           />
-          <TextField
+          <TextFieldListItem
             id='name-input'
             label='name'
             name='name'
@@ -224,7 +252,7 @@ export default function AssetForm({ mode, asset, handleClose }) {
             margin='dense'
             fullWidth
           />
-          <Autocomplete
+          <AutocompleteListItem
             data-lpignore='true'
             id='type-select'
             autoComplete
@@ -251,7 +279,7 @@ export default function AssetForm({ mode, asset, handleClose }) {
               />
             )}
           />
-          <TextField
+          <TextFieldListItem
             fullWidth
             type='number'
             id='value-input'
@@ -275,7 +303,7 @@ export default function AssetForm({ mode, asset, handleClose }) {
           />
           {isSharedAsset ? (
             <>
-              <TextField
+              <TextFieldListItem
                 fullWidth
                 id='shares-input'
                 label='shares'
@@ -292,7 +320,7 @@ export default function AssetForm({ mode, asset, handleClose }) {
                 }
                 margin='dense'
               />
-              <TextField
+              <TextFieldListItem
                 fullWidth
                 id='price-input'
                 label='price'
@@ -316,7 +344,7 @@ export default function AssetForm({ mode, asset, handleClose }) {
             </>
           ) : null}
           {mode === 'create' || isSharedAsset ? (
-            <TextField
+            <TextFieldListItem
               fullWidth
               id='invested-input'
               label='invested'
@@ -338,7 +366,7 @@ export default function AssetForm({ mode, asset, handleClose }) {
             />
           ) : null}
 
-          <TextField
+          <TextFieldListItem
             fullWidth
             id='description'
             label='description'
@@ -357,26 +385,28 @@ export default function AssetForm({ mode, asset, handleClose }) {
               ),
             }}
           />
-          <DatePicker
-            disabled
-            label='date'
-            value={values.last_update}
-            onChange={(value) => {
-              setValues({ ...values, last_update: value });
-            }}
-            renderInput={(params) => (
-              <TextField
-                fullWidth
-                {...params}
-                margin='dense'
-                required
-                variant='standard'
-              />
-            )}
-          />
+          <ListItem>
+            <DatePicker
+              disabled
+              label='date'
+              value={values.last_update}
+              onChange={(value) => {
+                setValues({ ...values, last_update: value });
+              }}
+              renderInput={(params) => (
+                <TextField
+                  fullWidth
+                  {...params}
+                  margin='dense'
+                  required
+                  variant='standard'
+                />
+              )}
+            />
+          </ListItem>
           {renderButtons()}
-        </form>
-      </Box>
+        </List>
+      </form>
       <AssetBuySellDialog
         open={dialogOpen}
         handleClose={handleAssetBuySellDialogClose}

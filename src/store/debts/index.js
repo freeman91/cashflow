@@ -5,6 +5,7 @@ import {
   postDebtAPI,
   putDebtAPI,
   debtPaymentAPI,
+  deleteDebtAPI,
 } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { debts as initialState } from '../initialState';
@@ -63,6 +64,27 @@ const putDebt = createAsyncThunk(
   }
 );
 
+const deleteDebt = createAsyncThunk(
+  'debts/deleteDebt',
+  async (id, { getState }) => {
+    try {
+      const result = await deleteDebtAPI(id);
+      const { data: debts } = getState().debts;
+      if (result) {
+        toastr.success('Debt deleted');
+      }
+
+      let _debts = [...debts];
+      remove(_debts, { id: id });
+      return {
+        data: _debts,
+      };
+    } catch (err) {
+      toastr.error(err);
+    }
+  }
+);
+
 const debtPayment = createAsyncThunk(
   'debts/debtPayment',
   async (payload, { dispatch, getState }) => {
@@ -95,10 +117,11 @@ const { reducer } = createSlice({
   extraReducers: {
     ...thunkReducer(getDebts),
     ...thunkReducer(postDebt),
+    ...thunkReducer(deleteDebt),
     ...thunkReducer(putDebt),
     ...thunkReducer(debtPayment),
   },
 });
 
-export { getDebts, postDebt, putDebt, debtPayment };
+export { getDebts, postDebt, deleteDebt, putDebt, debtPayment };
 export default reducer;

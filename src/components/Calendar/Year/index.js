@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { filter, get, includes, map, range, reduce } from 'lodash';
 
-import { useTheme } from '@mui/styles';
-
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import {
+  Grid,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -14,6 +14,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { numberToCurrency } from '../../../helpers/currency';
+import YearChart from './Chart';
 
 const CustomTableCell = ({
   idx,
@@ -37,14 +38,12 @@ const CustomTableCell = ({
   );
 };
 
-export default function Month({
+export default function Year({
   day,
   showExpenses,
   showIncomes,
   selectedTypes,
 }) {
-  const theme = useTheme();
-
   const allExpenses = useSelector((state) => state.expenses.data);
   const allIncomes = useSelector((state) => state.incomes.data);
   const [expenses, setExpenses] = useState([]);
@@ -56,7 +55,8 @@ export default function Month({
         filter(allExpenses, (expense) => {
           return (
             dayjs(get(expense, 'date')).isSame(day, 'year') &&
-            includes(selectedTypes, get(expense, 'type'))
+            includes(selectedTypes, get(expense, 'type')) &&
+            get(expense, 'paid', true)
           );
         })
       );
@@ -77,27 +77,32 @@ export default function Month({
     }
   }, [day, allIncomes, selectedTypes, showIncomes]);
 
-  const renderTable = () => {
-    const today = dayjs();
-    const divisor = (() => {
-      if (today.isSame(day, 'year')) {
-        return day.month() + 1;
-      } else return 12;
-    })();
+  const today = dayjs();
+  const divisor = (() => {
+    if (today.isSame(day, 'year')) {
+      return day.month() + 1;
+    } else return 12;
+  })();
 
-    const incomeTotal = reduce(
-      incomes,
-      (acc, income) => acc + get(income, 'amount', 0),
-      0
-    );
-    const expenseTotal = reduce(
-      expenses,
-      (acc, expense) => acc + get(expense, 'amount', 0),
-      0
-    );
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <TableContainer sx={{ mt: 2, maxWidth: 800, minWidth: 500 }}>
+  const incomeTotal = reduce(
+    incomes,
+    (acc, income) => acc + get(income, 'amount', 0),
+    0
+  );
+  const expenseTotal = reduce(
+    expenses,
+    (acc, expense) => acc + get(expense, 'amount', 0),
+    0
+  );
+
+  return (
+    <Grid container spacing={2}>
+      <YearChart incomes={incomes} expenses={expenses} />
+      <Grid item xs={12} justifyContent='center' display='flex'>
+        <TableContainer
+          sx={{ mt: 2, maxWidth: 800, minWidth: 500 }}
+          component={Paper}
+        >
           <Table size='small'>
             <TableHead>
               <TableRow>
@@ -267,20 +272,7 @@ export default function Month({
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
-    );
-  };
-
-  return (
-    <div style={{ marginTop: theme.spacing(1) }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: theme.spacing(1),
-        }}
-      ></div>
-      {renderTable()}
-    </div>
+      </Grid>
+    </Grid>
   );
 }

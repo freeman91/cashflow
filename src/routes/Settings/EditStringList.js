@@ -53,7 +53,7 @@ export default function EditStringList({ settingName }) {
   };
 
   return (
-    <Card sx={{ mt: 2, minWidth: 400 }}>
+    <Card raised sx={{ mt: 2, minWidth: 400 }}>
       <CardContent>
         <form onSubmit={handleSave}>
           <List>
