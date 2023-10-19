@@ -1,6 +1,4 @@
-# pylint: disable= missing-function-docstring
-
-"""monog.goal submodule"""
+"""mongo.goal submodule"""
 
 from datetime import datetime
 from typing import List, Union

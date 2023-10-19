@@ -1,50 +1,57 @@
-import React from 'react';
-import { IconButton, Paper, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { map, sortBy } from 'lodash';
+import dayjs from 'dayjs';
+
 import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from '@mui/styles';
-import dayjs from 'dayjs';
-import Record from './Record';
-import { map, filter, get } from 'lodash';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCreateDialog } from '../../../store/settings';
+import {
+  Box,
+  IconButton,
+  List,
+  ListItemButton,
+  Paper,
+  Popover,
+  Stack,
+  Typography,
+} from '@mui/material';
 
-export default function Day({ date, sameMonth }) {
+import Record from './Record';
+import { openDialog } from '../../../store/dialogs';
+
+export default function Day({ date, sameMonth, expenses, incomes }) {
   const theme = useTheme();
   const dispatch = useDispatch();
   let isToday = dayjs().isSame(date, 'day');
 
-  const expenses = useSelector((state) =>
-    filter(state.expenses.data, (expense) => {
-      return get(expense, 'date') === date.format('YYYY-MM-DD');
-    })
-  );
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const incomes = useSelector((state) =>
-    filter(state.incomes.data, (income) => {
-      return get(income, 'date') === date.format('YYYY-MM-DD');
-    })
-  );
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
 
-  const hours = useSelector((state) =>
-    filter(state.hours.data, (hour) => {
-      return get(hour, 'date') === date.format('YYYY-MM-DD');
-    })
-  );
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  const handleClick = () => {
+  const handleOpenDialog = (type) => {
     dispatch(
-      setCreateDialog({
-        date: date,
-        open: true,
+      openDialog({
+        mode: 'create',
+        attrs: {
+          type,
+          date,
+        },
       })
     );
+    handleClose();
   };
 
   return (
     <Paper
       variant='outlined'
       sx={{
-        width: '10rem',
+        width: '8rem',
         height: '10rem',
         backgroundColor: theme.palette.grey[900],
         opacity: sameMonth ? 1 : 0.5,
@@ -67,7 +74,7 @@ export default function Day({ date, sameMonth }) {
           float: 'right',
           width: '1.5rem',
           mt: '.2rem',
-          mb: '1rem',
+
           mr: '.5rem',
           bgcolor: isToday
             ? theme.palette.red[800]
@@ -77,16 +84,34 @@ export default function Day({ date, sameMonth }) {
       >
         {date.date()}
       </Typography>
-      <div style={{ marginTop: '2.5rem' }} />
-      {map(hours, (hour) => {
-        return <Record key={hour.id} data={hour} />;
-      })}
-      {map(incomes, (income) => {
-        return <Record key={income.id} data={income} />;
-      })}
-      {map(expenses, (expense) => {
-        return <Record key={expense.id} data={expense} />;
-      })}
+      <Box sx={{ width: '100%', justifyContent: 'center' }}>
+        <Stack sx={{ width: '100%' }}>
+          {map(incomes, (income) => {
+            return <Record key={income.id} data={income} />;
+          })}
+          {map(sortBy(expenses, 'paid').reverse(), (expense) => {
+            return <Record key={expense.id} data={expense} />;
+          })}
+        </Stack>
+      </Box>
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <List>
+          <ListItemButton onClick={() => handleOpenDialog('expense')}>
+            Expense
+          </ListItemButton>
+          <ListItemButton onClick={() => handleOpenDialog('income')}>
+            Income
+          </ListItemButton>
+        </List>
+      </Popover>
     </Paper>
   );
 }

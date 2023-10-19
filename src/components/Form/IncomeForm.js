@@ -6,19 +6,43 @@ import {
   AttachMoney as AttachMoneyIcon,
   Description as DescriptionIcon,
 } from '@mui/icons-material';
-import DatePicker from '@mui/lab/DatePicker';
-import Autocomplete from '@mui/lab/Autocomplete';
+import { DatePicker } from '@mui/x-date-pickers';
 import {
-  Box,
   Button,
   InputAdornment,
+  List,
+  ListItem,
+  ListItemText,
+  Stack,
   TextField,
-  Typography,
 } from '@mui/material';
 
 import { postIncome, putIncome, deleteIncome } from '../../store/incomes';
+import { TextFieldListItem } from '../List/TextFieldListItem';
+import { AutocompleteListItem } from '../List/AutocompleteListItem';
 
-const default_state = {
+function TextFieldSubListItem(props) {
+  return (
+    <TextField
+      variant='standard'
+      placeholder='0'
+      sx={{
+        width: '45%',
+        margin: '.5rem',
+      }}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position='start'>
+            <AttachMoneyIcon />
+          </InputAdornment>
+        ),
+      }}
+      {...props}
+    />
+  );
+}
+
+const defaultState = {
   amount: '',
   deductions: {},
   type: '',
@@ -27,19 +51,16 @@ const default_state = {
   date: dayjs(),
 };
 
-export default function IncomeForm({ handleDialogClose, mode, income, date }) {
+export default function IncomeForm({ mode, income, date, handleClose }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const [values, setValues] = useState(default_state);
-  const [initialDeductions, setInitialDeductions] = useState({});
-
-  useEffect(() => {
-    var _deductions = {};
-    user.income_deductions.forEach((deduction) => {
-      _deductions[deduction] = 0;
-    });
-    setInitialDeductions(_deductions);
-  }, [user.income_deductions]);
+  const [values, setValues] = useState(defaultState);
+  const [initialDeductions] = useState({
+    '401k': '',
+    benefits: '',
+    tax: '',
+    other: '',
+  });
 
   useEffect(() => {
     let _deductions = get(income, 'deductions', {});
@@ -66,12 +87,21 @@ export default function IncomeForm({ handleDialogClose, mode, income, date }) {
     // eslint-disable-next-line
   }, [mode, income, initialDeductions]);
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.id]: e.target.value });
+  };
+
+  const handleCreate = (e) => {
     e.preventDefault();
 
     let _values = values;
     if (values.type !== 'paycheck') {
-      _values.deductions = initialDeductions;
+      _values.deductions = {
+        '401k': 0,
+        benefits: 0,
+        tax: 0,
+        other: 0,
+      };
     }
 
     try {
@@ -87,7 +117,7 @@ export default function IncomeForm({ handleDialogClose, mode, income, date }) {
     } catch (error) {
       console.error(error);
     } finally {
-      handleDialogClose();
+      handleClose();
     }
   };
 
@@ -103,21 +133,21 @@ export default function IncomeForm({ handleDialogClose, mode, income, date }) {
       date: dayjs(_values.date).format('MM-DD-YYYY'),
     };
     dispatch(putIncome(updatedIncome));
-    handleDialogClose();
+    handleClose();
   };
 
   const handleDelete = () => {
     dispatch(deleteIncome(get(income, 'id')));
-    handleDialogClose();
+    handleClose();
   };
 
-  const handleFormEnterClick = () => {
+  const handleSubmit = () => {
     if (mode === 'create') {
-      handleSubmit();
+      handleCreate();
     } else if (mode === 'update') {
       handleUpdate();
     } else {
-      handleDialogClose();
+      handleClose();
     }
   };
 
@@ -141,60 +171,85 @@ export default function IncomeForm({ handleDialogClose, mode, income, date }) {
 
     return (
       <>
-        <Typography>Deductions</Typography>
-        {Object.keys(values.deductions).map((deduction) => {
-          return (
-            <TextField
-              sx={{
-                width: '45%',
-                margin: '.5rem',
-              }}
-              key={`${deduction}-input`}
-              id={`${deduction}-input`}
-              label={`${deduction}`}
-              name={`${deduction}`}
-              required
-              value={values.deductions[deduction]}
-              variant='outlined'
-              placeholder='0'
-              onChange={(e) =>
-                setValues({
-                  ...values,
-                  deductions: {
-                    ...values.deductions,
-                    [deduction]: e.target.value,
-                  },
-                })
-              }
-              margin='dense'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <AttachMoneyIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          );
-        })}
+        <ListItem>
+          <ListItemText
+            primary='Deductions'
+            primaryTypographyProps={{ align: 'center' }}
+          />
+        </ListItem>
+        <ListItem>
+          <TextFieldSubListItem
+            id='401k'
+            label='401k'
+            value={values.deductions['401k']}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                deductions: {
+                  ...values.deductions,
+                  '401k': e.target.value,
+                },
+              })
+            }
+          />
+          <TextFieldSubListItem
+            id='benefits'
+            label='benefits'
+            value={values.deductions.benefits}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                deductions: {
+                  ...values.deductions,
+                  benefits: e.target.value,
+                },
+              })
+            }
+          />
+        </ListItem>
+        <ListItem>
+          <TextFieldSubListItem
+            id='tax'
+            label='tax'
+            value={values.deductions.tax}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                deductions: {
+                  ...values.deductions,
+                  tax: e.target.value,
+                },
+              })
+            }
+          />
+          <TextFieldSubListItem
+            id='other'
+            label='other'
+            value={values.deductions.other}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                deductions: {
+                  ...values.deductions,
+                  other: e.target.value,
+                },
+              })
+            }
+          />
+        </ListItem>
       </>
     );
   };
 
   return (
-    <Box>
-      <form onSubmit={handleFormEnterClick}>
-        <TextField
-          fullWidth
-          id='amount-input'
+    <form onSubmit={handleSubmit}>
+      <List>
+        <TextFieldListItem
+          id='amount'
           label='amount'
-          name='amount'
-          required
-          value={values.amount}
-          variant='outlined'
           placeholder='0'
-          onChange={(e) => setValues({ ...values, amount: e.target.value })}
-          margin='dense'
+          value={values.amount}
+          onChange={handleChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position='start'>
@@ -203,63 +258,30 @@ export default function IncomeForm({ handleDialogClose, mode, income, date }) {
             ),
           }}
         />
-        <Autocomplete
-          data-lpignore='true'
-          id='type-select'
-          autoComplete
-          autoHighlight
-          autoSelect
-          freeSolo
+        <AutocompleteListItem
+          id='type'
+          label='type'
           value={values.type}
           options={user.income_types}
-          getOptionLabel={(option) => option}
-          onChange={(e, value) =>
-            setValues({ ...values, type: value ? value : '' })
-          }
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              required
-              label='type'
-              variant='outlined'
-              margin='dense'
-            />
-          )}
+          onChange={(e, value) => {
+            setValues({ ...values, type: value ? value : '' });
+          }}
         />
-        {renderDeductions()}
-        <Autocomplete
-          id='source-select'
-          autoComplete
-          autoHighlight
-          autoSelect
-          freeSolo
+        <AutocompleteListItem
+          id='source'
+          label='source'
           value={values.source}
           options={user.income_sources}
-          getOptionLabel={(option) => option}
-          onChange={(e, value) =>
-            setValues({ ...values, source: value ? value : '' })
-          }
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              required
-              label='source'
-              variant='outlined'
-              margin='dense'
-            />
-          )}
+          onChange={(e, value) => {
+            setValues({ ...values, source: value ? value : '' });
+          }}
         />
-        <TextField
-          fullWidth
-          id='description-input'
+        {renderDeductions()}
+        <TextFieldListItem
+          id='description'
           label='description'
-          name='description'
           value={values.description}
-          variant='outlined'
-          margin='dense'
-          onChange={(e) =>
-            setValues({ ...values, description: e.target.value })
-          }
+          onChange={handleChange}
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
@@ -268,61 +290,68 @@ export default function IncomeForm({ handleDialogClose, mode, income, date }) {
             ),
           }}
         />
-        <DatePicker
-          label='date'
-          value={values.date}
-          onChange={(value) => {
-            setValues({ ...values, date: value });
-          }}
-          renderInput={(params) => (
-            <TextField fullWidth {...params} margin='dense' required />
-          )}
-        />
-        <Button
-          id='cancel'
-          sx={{ mr: '1rem', mt: '1rem', width: '5rem' }}
-          variant='outlined'
-          color='info'
-          onClick={handleDialogClose}
-        >
-          Cancel
-        </Button>
-        {mode === 'create' ? (
-          <Button
-            type='submit'
-            id='submit'
-            sx={{ mt: '1rem' }}
-            variant='outlined'
-            onClick={handleSubmit}
-            color='success'
+        <ListItem>
+          <DatePicker
+            label='date'
+            value={values.date}
+            onChange={(value) => {
+              setValues({ ...values, date: value });
+            }}
+            renderInput={(params) => (
+              <TextField {...params} fullWidth variant='standard' />
+            )}
+          />
+        </ListItem>
+        <ListItem>
+          <Stack
+            direction='row'
+            spacing={2}
+            sx={{ width: '100%' }}
+            justifyContent='flex-end'
           >
-            Submit
-          </Button>
-        ) : (
-          <>
             <Button
-              type='submit'
-              id='update'
-              disabled={!incomeDiff()}
-              sx={{ mt: '1rem' }}
+              id='cancel'
               variant='outlined'
-              onClick={handleUpdate}
-              color='success'
+              color='secondary'
+              onClick={handleClose}
             >
-              Update
+              Cancel
             </Button>
-            <Button
-              id='delete'
-              sx={{ mt: '1rem', ml: '1rem' }}
-              variant='outlined'
-              onClick={handleDelete}
-              color='error'
-            >
-              Delete
-            </Button>
-          </>
-        )}
-      </form>
-    </Box>
+            {mode === 'create' ? (
+              <Button
+                type='submit'
+                id='submit'
+                variant='contained'
+                color='primary'
+                onClick={handleCreate}
+              >
+                Create
+              </Button>
+            ) : (
+              <>
+                <Button
+                  id='delete'
+                  variant='contained'
+                  onClick={handleDelete}
+                  color='error'
+                >
+                  Delete
+                </Button>
+                <Button
+                  type='submit'
+                  id='update'
+                  disabled={!incomeDiff()}
+                  variant='contained'
+                  onClick={handleUpdate}
+                  color='primary'
+                >
+                  Update
+                </Button>
+              </>
+            )}
+          </Stack>
+        </ListItem>
+      </List>
+    </form>
   );
 }

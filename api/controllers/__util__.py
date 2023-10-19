@@ -2,7 +2,7 @@
 """controller utility functions"""
 
 import traceback
-from datetime import datetime
+from datetime import date, datetime
 from http import HTTPStatus
 from pydash import set_
 from bson.objectid import ObjectId

@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { get } from 'lodash';
+import { find, get, map } from 'lodash';
 import dayjs from 'dayjs';
+
 import {
   AttachMoney as AttachMoneyIcon,
   Description as DescriptionIcon,
 } from '@mui/icons-material';
-import DatePicker from '@mui/lab/DatePicker';
-import Autocomplete from '@mui/lab/Autocomplete';
-import { Box, Button, InputAdornment, TextField } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import {
+  Button,
+  InputAdornment,
+  TextField,
+  Stack,
+  List,
+  ListItem,
+} from '@mui/material';
 
-import DebtPaymentDialog from '../Dialog/DebtPaymentDialog';
-import { _numberToCurrency } from '../../helpers/currency';
-import { postDebt, putDebt } from '../../store/debts';
+import { deleteDebt, postDebt, putDebt } from '../../store/debts';
+import { TextFieldListItem } from '../List/TextFieldListItem';
+import { AutocompleteListItem } from '../List/AutocompleteListItem';
 
-const default_state = {
+const defaultState = {
+  account_id: '',
   name: '',
   value: '',
   type: '',
@@ -26,13 +34,15 @@ const default_state = {
 export default function DebtForm(props) {
   const { handleClose, mode, debt } = props;
   const dispatch = useDispatch();
+
+  const accounts = useSelector((state) => state.accounts.data);
   const user = useSelector((state) => state.user);
-  const [values, setValues] = useState(default_state);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [values, setValues] = useState(defaultState);
 
   useEffect(() => {
     if (mode === 'update') {
       setValues({
+        account_id: get(debt, 'account_id', ''),
         name: get(debt, 'name', ''),
         value: get(debt, 'value', 0),
         type: get(debt, 'type', ''),
@@ -41,19 +51,26 @@ export default function DebtForm(props) {
         last_update: new Date(get(debt, 'last_update')),
       });
     }
+    if (mode === 'create') {
+      setValues({
+        ...defaultState,
+        account_id: get(debt, 'account_id', ''),
+      });
+    }
   }, [mode, debt]);
 
   const handleCreate = (e) => {
     e.preventDefault();
     if (validate()) {
-      const new_debt = {
+      const newDebt = {
+        account_id: values.account_id,
         name: values.name,
         value: Number(values.value),
         type: values.type,
         vendor: values.vendor,
         description: values.description,
       };
-      dispatch(postDebt(new_debt));
+      dispatch(postDebt(newDebt));
       handleClose();
     }
   };
@@ -64,14 +81,18 @@ export default function DebtForm(props) {
       let updatedDebt = {
         ...debt,
         value: Number(values.value),
+        name: values.name,
+        description: values.description,
       };
       dispatch(putDebt(updatedDebt));
       handleClose();
     }
   };
 
-  const handlePayment = () => {
-    setDialogOpen(true);
+  const handleDelete = (e) => {
+    e.preventDefault();
+    dispatch(deleteDebt(debt.id));
+    handleClose();
   };
 
   const handleFormEnterClick = () => {
@@ -82,11 +103,6 @@ export default function DebtForm(props) {
     } else {
       handleClose();
     }
-  };
-
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-    handleClose();
   };
 
   const validate = () => {
@@ -118,112 +134,155 @@ export default function DebtForm(props) {
     }
   };
 
-  let isCredit = values.type === 'credit';
+  const renderButtons = () => {
+    let buttons = [];
+
+    if (mode === 'create') {
+      buttons.push(
+        <Button
+          type='submit'
+          id='submit'
+          key='create-button'
+          disabled={!validate()}
+          variant='outlined'
+          onClick={handleCreate}
+          color='success'
+        >
+          Submit
+        </Button>
+      );
+    } else {
+      buttons.push(
+        <Button
+          type='submit'
+          id='update'
+          key='update-button'
+          disabled={!validate() || !debtDiff()}
+          variant='contained'
+          onClick={handleUpdate}
+          color='success'
+        >
+          Update
+        </Button>,
+        <Button
+          id='delete'
+          key='delete-button'
+          variant='outlined'
+          onClick={handleDelete}
+          color='error'
+        >
+          Delete
+        </Button>
+      );
+    }
+
+    return (
+      <ListItem>
+        <Stack
+          direction='row'
+          justifyContent='flex-end'
+          spacing={2}
+          sx={{ width: '100%' }}
+        >
+          {map(buttons, (button) => button)}
+        </Stack>
+      </ListItem>
+    );
+  };
 
   return (
-    <>
-      <Box>
-        <form onSubmit={handleFormEnterClick}>
-          <TextField
-            fullWidth
-            id='name-input'
-            label='name'
-            name='name'
-            required
-            value={values.name}
-            variant='outlined'
-            onChange={(e) => setValues({ ...values, name: e.target.value })}
-            margin='dense'
-          />
-          <TextField
-            fullWidth
-            id='value-input'
-            label='value'
-            name='value'
-            disabled={mode === 'update' && !isCredit}
-            required={mode === 'create' || isCredit}
-            value={
-              mode === 'update' && !isCredit
-                ? _numberToCurrency.format(values.value)
-                : values.value
-            }
-            variant='outlined'
-            placeholder='0'
-            onChange={(e) => setValues({ ...values, value: e.target.value })}
-            margin='dense'
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Autocomplete
-            data-lpignore='true'
-            disabled={mode === 'update'}
-            id='type-select'
-            autoComplete
-            autoHighlight
-            autoSelect
-            freeSolo
-            value={values.type}
-            options={user.debt_types}
-            getOptionLabel={(option) => option}
-            onChange={(e, value) =>
-              setValues({ ...values, type: value ? value : '' })
-            }
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                required={mode === 'create'}
-                label='type'
-                variant='outlined'
-                margin='dense'
-              />
-            )}
-          />
-          <Autocomplete
-            id='vendor-select'
-            autoComplete
-            autoHighlight
-            autoSelect
-            freeSolo
-            value={values.vendor}
-            options={user.expense_vendors}
-            getOptionLabel={(option) => option}
-            onChange={(e, value) =>
-              setValues({ ...values, vendor: value ? value : '' })
-            }
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                disabled={mode === 'update'}
-                label='vendor'
-                variant='outlined'
-                margin='dense'
-              />
-            )}
-          />
-          <TextField
-            fullWidth
-            id='description-input'
-            label='description'
-            name='description'
-            value={values.description}
-            variant='outlined'
-            margin='dense'
-            onChange={(e) =>
-              setValues({ ...values, description: e.target.value })
-            }
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position='end'>
-                  <DescriptionIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+    <form onSubmit={handleFormEnterClick}>
+      <List>
+        <TextFieldListItem
+          id='account-input'
+          label='account'
+          name='account'
+          value={find(accounts, { id: values.account_id })?.name}
+          variant='standard'
+          margin='dense'
+          InputProps={{
+            readOnly: true,
+            disableUnderline: true,
+          }}
+        />
+
+        <TextFieldListItem
+          id='name-input'
+          label='name'
+          name='name'
+          value={values.name}
+          variant='standard'
+          onChange={(e) => setValues({ ...values, name: e.target.value })}
+          margin='dense'
+          fullWidth
+        />
+        <AutocompleteListItem
+          data-lpignore='true'
+          id='type-select'
+          autoComplete
+          autoHighlight
+          autoSelect
+          freeSolo
+          disabled={mode === 'update'}
+          value={values.type}
+          options={user.debt_types}
+          getOptionLabel={(option) => option}
+          onChange={(e, value) =>
+            setValues({ ...values, type: value ? value : '' })
+          }
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              disabled={mode === 'update'}
+              label='type'
+              variant='standard'
+              margin='dense'
+              fullWidth
+              InputProps={{
+                readOnly: mode === 'update',
+              }}
+            />
+          )}
+        />
+        <TextFieldListItem
+          fullWidth
+          type='number'
+          id='value-input'
+          label='current value'
+          name='value'
+          value={Math.round(values.value * 100) / 100}
+          variant='standard'
+          placeholder='0'
+          onChange={(e) => setValues({ ...values, value: e.target.value })}
+          margin='dense'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <AttachMoneyIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextFieldListItem
+          fullWidth
+          id='description'
+          label='description'
+          name='description'
+          value={values.description}
+          variant='standard'
+          margin='dense'
+          onChange={(e) =>
+            setValues({ ...values, description: e.target.value })
+          }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <DescriptionIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <ListItem>
           <DatePicker
             disabled
             label='date'
@@ -232,64 +291,18 @@ export default function DebtForm(props) {
               setValues({ ...values, last_update: value });
             }}
             renderInput={(params) => (
-              <TextField fullWidth {...params} margin='dense' required />
+              <TextField
+                fullWidth
+                {...params}
+                margin='dense'
+                required
+                variant='standard'
+              />
             )}
           />
-          <Button
-            id='cancel'
-            sx={{ mr: '1rem', mt: '1rem', width: '5rem' }}
-            variant='outlined'
-            color='info'
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-          {mode === 'create' ? (
-            <Button
-              type='submit'
-              id='submit'
-              disabled={!validate()}
-              sx={{ mt: '1rem' }}
-              variant='outlined'
-              onClick={handleCreate}
-              color='success'
-            >
-              Submit
-            </Button>
-          ) : (
-            <>
-              {isCredit ? (
-                <Button
-                  type='submit'
-                  id='update'
-                  disabled={!validate() || !debtDiff()}
-                  sx={{ mt: '1rem' }}
-                  variant='outlined'
-                  onClick={handleUpdate}
-                  color='success'
-                >
-                  Update
-                </Button>
-              ) : (
-                <Button
-                  id='payment'
-                  sx={{ mt: '1rem', ml: '1rem' }}
-                  variant='outlined'
-                  onClick={handlePayment}
-                  color='success'
-                >
-                  Payment
-                </Button>
-              )}
-            </>
-          )}
-        </form>
-      </Box>
-      <DebtPaymentDialog
-        open={dialogOpen}
-        handleClose={handleDialogClose}
-        debt={debt}
-      />
-    </>
+        </ListItem>
+        {renderButtons()}
+      </List>
+    </form>
   );
 }

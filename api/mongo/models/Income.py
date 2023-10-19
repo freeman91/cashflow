@@ -2,7 +2,7 @@
 """Income Model"""
 
 from datetime import datetime
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 from pydantic import Field
 
@@ -13,7 +13,8 @@ from ..connection import database
 class Income(BaseModel):
     id: Optional[PydanticObjectId] = Field(None, alias="_id")
     amount: float
-    deductions: Dict[str, float]
+    deductions: Dict[str, Union[float, str]]
+    # deductions: Dict[str, float]
     date: datetime
     type: str
     source: str
@@ -33,4 +34,4 @@ class Income(BaseModel):
         return database.incomes.delete_one({"_id": PydanticObjectId(self.id)})
 
     def __repr__(self):
-        return f"<{self.category}, {self.id}, {self.amount}, {self.date}>"
+        return f"<{self.category}, {self.id}, {self.amount}, {self.date.strftime('%Y-%m-%d')}>"

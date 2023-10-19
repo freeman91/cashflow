@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Union
 
 from pydantic import Field
+from pydash import reduce_, get
 
 from .common import BaseModel, PydanticObjectId
 from ..connection import database
@@ -32,3 +33,10 @@ class Networth(BaseModel):
 
     def __repr__(self):
         return f"<{self.category}, {self.id}, {self.year}, {self.month}>"
+
+    def _sum(self, category):
+        return reduce_(
+            getattr(self, category),
+            lambda acc, record: acc + get(record, "amount", 0),
+            0,
+        )

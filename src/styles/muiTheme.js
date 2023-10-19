@@ -1,5 +1,13 @@
 import { createTheme } from '@mui/material/styles';
-import { grey, blue, green, red, yellow } from '@mui/material/colors';
+import {
+  grey,
+  blue,
+  green,
+  red,
+  yellow,
+  orange,
+  purple,
+} from '@mui/material/colors';
 
 export const breakpoints = {
   xs: 0,
@@ -17,15 +25,16 @@ export const muiTheme = createTheme({
     green,
     red,
     yellow,
+    orange,
+    purple,
     black: '#121212',
   },
   typography: {
     fontFamily: '"Helvetica", "Arial", sans-serif',
-    fontSize: 12,
-    fontWeightLight: 100,
-    fontWeightRegular: 200,
-    fontWeightMedium: 300,
-    useNextVariants: true,
+    defaultFontSize: '0.875rem',
+    button: {
+      textTransform: 'none',
+    },
   },
   breakpoints: {
     keys: ['xs', 'sm', 'md', 'lg', 'xl'],

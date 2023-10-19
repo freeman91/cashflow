@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { get, concat, remove } from 'lodash';
-import { addToastr, types } from '../toastr';
 import {
   getDebtsAPI,
   postDebtAPI,
   putDebtAPI,
   debtPaymentAPI,
+  deleteDebtAPI,
 } from '../../api';
 import { thunkReducer } from '../thunkTemplate';
 import { debts as initialState } from '../initialState';
+import { toastr } from 'react-redux-toastr';
 
 const getDebts = createAsyncThunk('debts/getDebts', async () => {
   try {
@@ -28,26 +29,14 @@ const postDebt = createAsyncThunk(
       const result = await postDebtAPI(newDebt);
       const { data: debts } = getState().debts;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Debt created',
-          })
-        );
+        toastr.success('Debt created');
       }
 
       return {
         data: concat(debts, result),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );
@@ -59,13 +48,7 @@ const putDebt = createAsyncThunk(
       const result = await putDebtAPI(updatedDebt);
       const { data: storeDebts } = getState().debts;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Debt updated',
-          })
-        );
+        toastr.success('Debt updated');
       }
       let _debts = [...storeDebts];
       remove(_debts, {
@@ -76,13 +59,28 @@ const putDebt = createAsyncThunk(
         data: concat(_debts, result),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
+    }
+  }
+);
+
+const deleteDebt = createAsyncThunk(
+  'debts/deleteDebt',
+  async (id, { getState }) => {
+    try {
+      const result = await deleteDebtAPI(id);
+      const { data: debts } = getState().debts;
+      if (result) {
+        toastr.success('Debt deleted');
+      }
+
+      let _debts = [...debts];
+      remove(_debts, { id: id });
+      return {
+        data: _debts,
+      };
+    } catch (err) {
+      toastr.error(err);
     }
   }
 );
@@ -96,13 +94,7 @@ const debtPayment = createAsyncThunk(
       });
       const { data: storeDebts } = getState().debts;
       if (result) {
-        dispatch(
-          addToastr({
-            type: types.success,
-            title: 'Success',
-            message: 'Debt updated',
-          })
-        );
+        toastr.success('Debt updated');
       }
       let _debts = [...storeDebts];
       remove(_debts, {
@@ -113,13 +105,7 @@ const debtPayment = createAsyncThunk(
         data: concat(_debts, result),
       };
     } catch (err) {
-      dispatch(
-        addToastr({
-          type: types.error,
-          title: 'Error',
-          message: err,
-        })
-      );
+      toastr.error(err);
     }
   }
 );
@@ -131,10 +117,11 @@ const { reducer } = createSlice({
   extraReducers: {
     ...thunkReducer(getDebts),
     ...thunkReducer(postDebt),
+    ...thunkReducer(deleteDebt),
     ...thunkReducer(putDebt),
     ...thunkReducer(debtPayment),
   },
 });
 
-export { getDebts, postDebt, putDebt, debtPayment };
+export { getDebts, postDebt, deleteDebt, putDebt, debtPayment };
 export default reducer;

@@ -1,3 +1,3 @@
 """import mongo submodules"""
 
-from . import user, expense, income, hour, asset, debt, networth, goal, account
+from . import user, expense, income, asset, debt, networth, goal, account, bill

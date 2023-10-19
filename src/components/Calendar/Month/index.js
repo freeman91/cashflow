@@ -1,32 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { useTheme } from '@emotion/react';
-import { IconButton, Stack, Tooltip } from '@mui/material';
-import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useSelector } from 'react-redux';
+import { cloneDeep, get, filter, map, range, includes } from 'lodash';
 import dayjs from 'dayjs';
-import { cloneDeep, map, range } from 'lodash';
+
+import { useTheme } from '@mui/styles';
+import { Stack } from '@mui/material';
 
 import Day from '../Day';
-import { MonthSelector } from '../../Selector';
 import Stats from './Stats';
 
-export default function Month({ date, setView }) {
+export default function Month({
+  day,
+  showExpenses,
+  showIncomes,
+  selectedTypes,
+}) {
   const theme = useTheme();
   const [days, setDays] = useState([]);
-  const [day, setDay] = useState(dayjs());
+  const [monthExpenses, setMonthExpenses] = useState([]);
+  const [monthIncomes, setMonthIncomes] = useState([]);
 
-  useEffect(() => {
-    if (date) {
-      setDay(date);
-    }
-  }, [date]);
+  const allExpenses = useSelector((state) => state.expenses.data);
+  const allIncomes = useSelector((state) => state.incomes.data);
 
   useEffect(() => {
     let firstDayOfMonth = day.date(1);
     let firstDayOfWeek = firstDayOfMonth.day(0);
-    let _days = [];
 
+    const filterRecords = (records) => {
+      return filter(records, (record) => {
+        const expDay = dayjs(record.date);
+        const BOM = firstDayOfWeek;
+        const EOM = day.endOf('month').day(6);
+        return (
+          (expDay.isAfter(BOM, 'day') || expDay.isSame(BOM, 'day')) &&
+          (expDay.isBefore(EOM, 'day') || expDay.isSame(EOM, 'day'))
+        );
+      });
+    };
+
+    setMonthExpenses(filterRecords(allExpenses));
+    setMonthIncomes(filterRecords(allIncomes));
+
+    let _days = [];
     let currentDay = firstDayOfWeek;
 
     while (currentDay.isBefore(firstDayOfMonth, 'month')) {
@@ -46,30 +62,20 @@ export default function Month({ date, setView }) {
     }
 
     setDays(_days);
-  }, [day]);
-
-  const handleMonthChange = (selectedDate) => {
-    setDay(dayjs(selectedDate));
-  };
-
-  const handleBackClick = () => {
-    setDay(day.subtract(1, 'month'));
-  };
-
-  const handleForwardClick = () => {
-    setDay(day.add(1, 'month'));
-  };
+  }, [day, allExpenses, allIncomes]);
 
   const renderWeeks = () => {
     let weeks = [];
     let _days = cloneDeep(days);
+
+    // console.log('monthExpenses: ', monthExpenses);
 
     let week = 1;
     while (_days.length > 0) {
       weeks.push(
         <Stack
           direction='row'
-          justifyContent='space-around'
+          justifyContent='center'
           alignItems='center'
           key={`week-stack-${week}`}
           spacing={1}
@@ -77,11 +83,24 @@ export default function Month({ date, setView }) {
         >
           {map(range(7), () => {
             let _day = _days.shift();
+
+            let expenses = filter(monthExpenses, (expense) => {
+              return (
+                dayjs(expense.date).isSame(_day, 'day') &&
+                includes(selectedTypes, get(expense, 'type'))
+              );
+            });
+            let incomes = filter(monthIncomes, (income) => {
+              return dayjs(income.date).isSame(_day, 'day');
+            });
+
             return (
               <Day
                 key={`day-${_day.format('YYYY-MM-DD')}`}
                 date={_day}
                 sameMonth={_day.isSame(day, 'month')}
+                expenses={showExpenses ? expenses : []}
+                incomes={showIncomes ? incomes : []}
               />
             );
           })}
@@ -93,7 +112,7 @@ export default function Month({ date, setView }) {
   };
 
   return (
-    <>
+    <div style={{ marginTop: theme.spacing(1) }}>
       <div
         style={{
           display: 'flex',
@@ -101,22 +120,14 @@ export default function Month({ date, setView }) {
           marginBottom: theme.spacing(1),
         }}
       >
-        <Tooltip title='View Week' placement='top'>
-          <IconButton onClick={() => setView('week')}>
-            <ViewWeekIcon />
-          </IconButton>
-        </Tooltip>
-
-        <IconButton onClick={handleBackClick}>
-          <ArrowBackIosNewIcon />
-        </IconButton>
-        <MonthSelector date={day} handleMonthChange={handleMonthChange} />
-        <IconButton onClick={handleForwardClick}>
-          <ArrowForwardIosIcon />
-        </IconButton>
-        <Stats date={day} />
+        <Stats
+          date={day}
+          showExpenses={showExpenses}
+          showIncomes={showIncomes}
+          selectedTypes={selectedTypes}
+        />
       </div>
       {renderWeeks()}
-    </>
+    </div>
   );
 }

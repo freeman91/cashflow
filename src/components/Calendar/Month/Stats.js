@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { filter, get, reduce } from 'lodash';
 import dayjs from 'dayjs';
 
+import { useTheme } from '@mui/styles';
 import { numberToCurrency } from '../../../helpers/currency';
-import { useTheme } from '@emotion/react';
-import useProjectedIncome from '../../../hooks/useProjectedIncome';
-import useProjectedExpense from '../../../hooks/useProjectedExpense';
 
-function StatBox({ color, value, label, projectedValue }) {
+function StatBox({ color, value, label }) {
   const content = () => {
     return (
       <Box>
@@ -19,23 +17,12 @@ function StatBox({ color, value, label, projectedValue }) {
             borderBottom: `3px solid ${color}`,
           }}
         >
-          {value}
+          {value ? value : '$0.00'}
         </Typography>
         <Typography variant='body2'>{label}</Typography>
       </Box>
     );
   };
-
-  if (projectedValue) {
-    return (
-      <Tooltip
-        title={<Typography>Projected: {projectedValue}</Typography>}
-        placement='left'
-      >
-        {content()}
-      </Tooltip>
-    );
-  }
 
   return content();
 }
@@ -44,8 +31,6 @@ export default function Stats({ date }) {
   let now = dayjs();
   const theme = useTheme();
   const [day, setDay] = useState(now);
-  const projectedIncome = useProjectedIncome();
-  const projectedExpense = useProjectedExpense();
 
   const expenses = useSelector((state) =>
     filter(state.expenses.data, (expense) => {
@@ -56,12 +41,6 @@ export default function Stats({ date }) {
   const incomes = useSelector((state) =>
     filter(state.incomes.data, (income) => {
       return day.isSame(dayjs(get(income, 'date')), 'month');
-    })
-  );
-
-  const hours = useSelector((state) =>
-    filter(state.hours.data, (hour) => {
-      return day.isSame(dayjs(get(hour, 'date')), 'month');
     })
   );
 
@@ -87,28 +66,6 @@ export default function Stats({ date }) {
     0
   );
 
-  let hourSum = reduce(
-    hours,
-    (acc, hour) => {
-      return acc + get(hour, 'amount');
-    },
-    0
-  );
-
-  let projectedNetIncome = (() => {
-    if (
-      (projectedIncome === 0 && projectedExpense === 0) ||
-      now.month() !== day.month() ||
-      now.year() !== day.year()
-    ) {
-      return null;
-    }
-    if (projectedIncome === 0) {
-      return numberToCurrency.format(incomeSum - projectedExpense);
-    }
-    return numberToCurrency.format(projectedIncome - projectedExpense);
-  })();
-
   return (
     <Stack
       direction='row'
@@ -116,43 +73,24 @@ export default function Stats({ date }) {
       alignItems='center'
       spacing={1}
       width='100%'
+      mt={1}
     >
       <StatBox
         color={theme.palette.yellow[500]}
         value={numberToCurrency.format(incomeSum - expenseSum)}
-        projectedValue={projectedNetIncome}
         label='net'
       />
 
       <StatBox
         color={theme.palette.green[500]}
-        value={incomeSum > 0 ? numberToCurrency.format(incomeSum) : null}
-        projectedValue={
-          projectedIncome > 0 &&
-          now.month() === day.month() &&
-          now.year() === day.year()
-            ? numberToCurrency.format(projectedIncome)
-            : null
-        }
+        value={numberToCurrency.format(incomeSum)}
         label='income'
       />
 
       <StatBox
         color={theme.palette.red[500]}
         value={numberToCurrency.format(expenseSum)}
-        projectedValue={
-          projectedExpense > 0 &&
-          now.month() === day.month() &&
-          now.year() === day.year()
-            ? numberToCurrency.format(projectedExpense)
-            : null
-        }
         label='expense'
-      />
-      <StatBox
-        color={theme.palette.blue[500]}
-        value={`${hourSum} hours`}
-        label='hours'
       />
     </Stack>
   );

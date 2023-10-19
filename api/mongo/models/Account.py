@@ -2,7 +2,7 @@
 """Asset Model"""
 
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import Field
 
@@ -13,9 +13,9 @@ from ..connection import database
 class Account(BaseModel):
     id: Optional[PydanticObjectId] = Field(None, alias="_id")
     name: str
-    assets: List
-    debts: List
+    url: str
     last_update: datetime
+    description: str
     category = "account"
 
     def create(self):

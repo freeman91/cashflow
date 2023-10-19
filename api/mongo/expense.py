@@ -1,6 +1,6 @@
 # pylint: disable= missing-function-docstring
 
-"""monog.expense submodule"""
+"""mongo.expense submodule"""
 
 from datetime import datetime, timedelta
 from typing import List, Union
@@ -90,7 +90,7 @@ def create(expense: dict) -> Expense:
         - vendor: str
         - description: str
         - asset: asset_id
-        - debt: debt_id
+        - bill: bill_id
     """
 
     save_type(_get(expense, "type"))
@@ -109,7 +109,7 @@ def update(expense: dict) -> Expense:
         - vendor: str
         - description: str
         - asset: asset_id
-        - debt: debt_id
+        - bill: bill_id
     """
 
     expense_record = get(_get(expense, "id"))
@@ -118,8 +118,9 @@ def update(expense: dict) -> Expense:
     expense_record.type = _get(expense, "type")
     expense_record.vendor = _get(expense, "vendor")
     expense_record.description = _get(expense, "description")
-    expense_record.asset = _get(expense, "asset")
-    expense_record.debt = _get(expense, "debt")
+    expense_record.paid = _get(expense, "paid")
+    expense_record.asset_id = _get(expense, "asset_id")
+    expense_record.bill_id = _get(expense, "bill_id")
 
     save_type(expense_record.type)
     save_vendor(expense_record.vendor)
@@ -132,7 +133,7 @@ def delete(_id: str):
     """
     DELETE
 
-    mongo.expense.delete<expense_id>): deleted an expense in the db if it exists
+    mongo.expense.delete<expense_id>): delete an expense in the db if it exists
     """
     return database.expenses.delete_one({"_id": PydanticObjectId(_id)})
 

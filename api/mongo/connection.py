@@ -28,7 +28,6 @@ def connect():
             password=MONGO_INITDB_ROOT_PASSWORD,
         )
         _database = client[MONGO_INITDB_DATABASE]
-
         return _database
 
     except ServerSelectionTimeoutError as err:

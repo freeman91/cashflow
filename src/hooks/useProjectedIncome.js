@@ -30,7 +30,7 @@ const useProjectedIncome = (date) => {
   return reduce(
     monthIncomes,
     (acc, income) => {
-      return acc + income.amount;
+      return acc + get(income, 'amount', 0);
     },
     0
   );

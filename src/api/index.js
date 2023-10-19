@@ -33,9 +33,9 @@ export const putUserSettingsAPI = async (payload) => {
 ######## ##     ## ##        ######## ##    ##  ######  ########  ######
 */
 
-export const getExpensesAPI = async (start, stop) => {
+export const getExpensesAPI = async () => {
   try {
-    const response = await axios.get(`/expenses`, { params: { start, stop } });
+    const response = await axios.get(`/expenses`);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }
@@ -90,9 +90,9 @@ export const deleteExpenseAPI = async (expenseId) => {
 #### ##    ##  ######   #######  ##     ## ########  ######
 */
 
-export const getIncomesAPI = async (start, stop) => {
+export const getIncomesAPI = async () => {
   try {
-    const response = await axios.get(`/incomes`, { params: { start, stop } });
+    const response = await axios.get(`/incomes`);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }
@@ -138,74 +138,6 @@ export const deleteIncomeAPI = async (incomeId) => {
 };
 
 /*
-##     ##  #######  ##     ## ########   ######
-##     ## ##     ## ##     ## ##     ## ##    ##
-##     ## ##     ## ##     ## ##     ## ##
-######### ##     ## ##     ## ########   ######
-##     ## ##     ## ##     ## ##   ##         ##
-##     ## ##     ## ##     ## ##    ##  ##    ##
-##     ##  #######   #######  ##     ##  ######
-*/
-
-export const getHoursAPI = async (start, stop) => {
-  try {
-    const response = await axios.get(`/hours`, { params: { start, stop } });
-    if (get(response, 'status') === 200) {
-      return get(response, 'data.result');
-    }
-  } catch (error) {
-    console.log('error: ', error);
-  }
-};
-
-export const getHoursInRangeAPI = async (start, end) => {
-  try {
-    const response = await axios.get(`/hours/range/${start}/${end}`);
-    if (get(response, 'status') === 200) {
-      return get(response, 'data.result');
-    }
-  } catch (error) {
-    console.log('error: ', error);
-  }
-};
-
-export const postHourAPI = async (new_hour) => {
-  try {
-    const response = await axios.post(`/hours`, new_hour);
-    if (get(response, 'status') === 200) {
-      return get(response, 'data.result');
-    }
-  } catch (error) {
-    console.log('error: ', error);
-  }
-};
-
-export const putHourAPI = async (updatedHour) => {
-  try {
-    const response = await axios.put(
-      `/hours/${get(updatedHour, 'id')}`,
-      updatedHour
-    );
-    if (get(response, 'status') === 200) {
-      return get(response, 'data.result');
-    }
-  } catch (error) {
-    console.log('error: ', error);
-  }
-};
-
-export const deleteHourAPI = async (hourId) => {
-  try {
-    const response = await axios.delete(`/hours/${hourId}`);
-    if (get(response, 'status') === 200) {
-      return true;
-    }
-  } catch (error) {
-    console.log('error: ', error);
-  }
-};
-
-/*
    ###     ######   ######  ######## ########  ######
   ## ##   ##    ## ##    ## ##          ##    ##    ##
  ##   ##  ##       ##       ##          ##    ##
@@ -231,6 +163,17 @@ export const postAssetAPI = async (updatedAsset) => {
     const response = await axios.post(`/assets`, updatedAsset);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const deleteAssetAPI = async (assetId) => {
+  try {
+    const response = await axios.delete(`/assets/${assetId}`);
+    if (get(response, 'status') === 200) {
+      return true;
     }
   } catch (error) {
     console.log('error: ', error);
@@ -294,11 +237,22 @@ export const getDebtsAPI = async () => {
   }
 };
 
-export const postDebtAPI = async (updatedDebt) => {
+export const postDebtAPI = async (newDebt) => {
   try {
-    const response = await axios.post(`/debts`, updatedDebt);
+    const response = await axios.post(`/debts`, newDebt);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const deleteDebtAPI = async (debtId) => {
+  try {
+    const response = await axios.delete(`/debts/${debtId}`);
+    if (get(response, 'status') === 200) {
+      return true;
     }
   } catch (error) {
     console.log('error: ', error);
@@ -358,6 +312,96 @@ export const getNetworthsAPI = async () => {
   }
 };
 
+export const getAccountsAPI = async () => {
+  try {
+    const response = await axios.get(`/accounts`);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const postAccountAPI = async (updatedAccount) => {
+  try {
+    const response = await axios.post(`/accounts`, updatedAccount);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const putAccountAPI = async (updatedAccount) => {
+  try {
+    const response = await axios.put(
+      `/accounts/${get(updatedAccount, 'id')}`,
+      updatedAccount
+    );
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+// ██████╗ ██╗██╗     ██╗     ███████╗
+// ██╔══██╗██║██║     ██║     ██╔════╝
+// ██████╔╝██║██║     ██║     ███████╗
+// ██╔══██╗██║██║     ██║     ╚════██║
+// ██████╔╝██║███████╗███████╗███████║
+// ╚═════╝ ╚═╝╚══════╝╚══════╝╚══════╝
+
+export const getBillsAPI = async () => {
+  try {
+    const response = await axios.get(`/bills`);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const postBillAPI = async (new_bill) => {
+  try {
+    const response = await axios.post(`/bills`, new_bill);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const putBillAPI = async (updatedBill) => {
+  try {
+    const response = await axios.put(
+      `/bills/${get(updatedBill, 'id')}`,
+      updatedBill
+    );
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+export const deleteBillAPI = async (billId) => {
+  try {
+    const response = await axios.delete(`/bills/${billId}`);
+    if (get(response, 'status') === 200) {
+      return true;
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
 //  ██████╗  ██████╗  █████╗ ██╗     ███████╗
 // ██╔════╝ ██╔═══██╗██╔══██╗██║     ██╔════╝
 // ██║  ███╗██║   ██║███████║██║     ███████╗
@@ -390,6 +434,24 @@ export const postGoalAPI = async (goal) => {
 export const putGoalAPI = async (goal) => {
   try {
     const response = await axios.put(`/goals/${get(goal, 'id')}`, goal);
+    if (get(response, 'status') === 200) {
+      return get(response, 'data.result');
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
+};
+
+// ███████╗████████╗ ██████╗  ██████╗██╗  ██╗    ██████╗  █████╗ ████████╗ █████╗
+// ██╔════╝╚══██╔══╝██╔═══██╗██╔════╝██║ ██╔╝    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
+// ███████╗   ██║   ██║   ██║██║     █████╔╝     ██║  ██║███████║   ██║   ███████║
+// ╚════██║   ██║   ██║   ██║██║     ██╔═██╗     ██║  ██║██╔══██║   ██║   ██╔══██║
+// ███████║   ██║   ╚██████╔╝╚██████╗██║  ██╗    ██████╔╝██║  ██║   ██║   ██║  ██║
+// ╚══════╝   ╚═╝    ╚═════╝  ╚═════╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+
+export const getSPYDataAPI = async () => {
+  try {
+    const response = await axios.get(`/spy_data`);
     if (get(response, 'status') === 200) {
       return get(response, 'data.result');
     }

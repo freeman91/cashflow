@@ -6,7 +6,7 @@ RUN pip install -U pip
 
 RUN mkdir /code
 WORKDIR /code
-RUN pip install poetry==1.1.12
+RUN pip install poetry==1.3.2
 
 COPY . .
 RUN POETRY_VIRTUALENVS_CREATE=false poetry install --no-interaction --no-ansi

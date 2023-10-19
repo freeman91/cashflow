@@ -1,4 +1,4 @@
-import MonthSelector from './MonthSelector';
+import MonthYearSelector from './MonthYearSelector';
 import WeekSelector from './WeekSelector';
 
-export { MonthSelector, WeekSelector };
+export { MonthYearSelector, WeekSelector };

@@ -1,9 +1,6 @@
-# pylint: disable= missing-function-docstring
-
-"""monog.account submodule"""
+"""mongo.account submodule"""
 
 from typing import List, Union
-
 from pydash import get as _get, filter_
 
 from api.mongo.models.Account import Account
@@ -35,8 +32,7 @@ def create(account: dict) -> Account:
 
     mongo.account.create(<account>): inserts new account in the db
         - name: str
-        - assets: List
-        - debts: List
+        - url: str
         - description: Optional[str]
     """
     return get(Account(**account).create())
@@ -48,15 +44,12 @@ def update(account: dict) -> Account:
 
     mongo.account.update(<account>): updates an existing account in the db
         - name: str
-        - assets: List
-        - debts: List
         - description: Optional[str]
     """
 
     account_obj = get(_get(account, "id"))
     account_obj.name = _get(account, "name")
-    account_obj.assets = _get(account, "assets")
-    account_obj.debts = _get(account, "debts")
+    account_obj.url = _get(account, "url")
     account_obj.description = _get(account, "description")
 
     account_obj.save()

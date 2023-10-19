@@ -1,6 +1,4 @@
-# pylint: disable= missing-function-docstring
-
-"""monog.income submodule"""
+"""mongo.income submodule"""
 
 from datetime import datetime
 from typing import List, Union
@@ -24,7 +22,11 @@ def get(_id: str = None) -> Union[Income, List[Income]]:
         income = database.incomes.find_one({"_id": PydanticObjectId(_id)})
         return Income(**income)
 
-    return [Income(**income) for income in database.incomes.find()]
+    incomes_ = []
+    for income in database.incomes.find():
+        incomes_.append(Income(**income))
+
+    return incomes_
 
 
 def search(start: datetime, stop: datetime) -> List[Income]:

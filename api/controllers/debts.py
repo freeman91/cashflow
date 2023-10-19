@@ -32,7 +32,7 @@ def _debts_id(_id: str):
         return success_result(mongo.debt.get(_id))
 
     if request.method == "PUT":
-        return success_result(mongo.debt.create(set_last_update(request.json)))
+        return success_result(mongo.debt.update(request.json))
 
     if request.method == "DELETE":
         return success_result(mongo.debt.delete(_id).acknowledged)
