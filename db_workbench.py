@@ -10,39 +10,14 @@ from statistics import mean
 
 import requests
 from yahoo_fin import stock_info
-<<<<<<< HEAD
-from pydash import uniq_by, reduce_, filter_, map_, find, remove, mean, get
-=======
-from dateutil.relativedelta import relativedelta
-from pydash import (
-    uniq_by,
-    reduce_,
-    filter_,
-    map_,
-    find,
-    remove,
-    concat,
-    group_by,
-    sort_by,
-    range_,
-)
->>>>>>> 2a4d3b3a1513c65e04939bf9b1282dc500382c26
+from pydash import reduce_, filter_, find, remove, sort_by, group_by, range_
 
 from api.helpers.cron import decode_cron_rule, is_cron_match
 from api.controllers.__util__ import set_last_update
-<<<<<<< HEAD
 from api.controllers.cronjobs import get_stock_price
 
 os.environ["WB_DOMAIN"] = "localhost"
 os.environ["WB_PORT"] = "27017"
-=======
-from api.mongo.models.Account import Account
-from api.mongo.models.Bill import Bill
-from api.mongo.models.Expense import Expense
-from api.mongo.models.Asset import Asset
-from api.mongo.models.Debt import Debt
-from api.mongo.connection import database
->>>>>>> 2a4d3b3a1513c65e04939bf9b1282dc500382c26
 
 from api import mongo
 import prompts
@@ -233,6 +208,7 @@ def process_exps():
 
 def test():
     pass
+
 
 if __name__ == "__main__":
     pass

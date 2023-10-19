@@ -16,15 +16,17 @@ yahoo-fin = "^0.8.9"
 pydash = "^5.1.0"
 pydantic = "^1.9.0"
 ofxtools = "^0.9.5"
-inquirer = "^2.10.0"
-aws-cdk-lib = "^2.101.1"
-pynamodb = "^5.5.0"
-pynamodb-attributes = "^0.4.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+inquirer = "^2.10.0"
 black = "^22.3.0"
 fabric = "^2.7.0"
 pylint = "^2.13.4"
+
+[tool.poetry.group.aws.dependencies]
+aws-cdk-lib = "^2.102.0"
+pynamodb = "^5.5.0"
+pynamodb-attributes = "^0.4.0"
 
 [build-system]
 requires = ["poetry>=1.1.12"]

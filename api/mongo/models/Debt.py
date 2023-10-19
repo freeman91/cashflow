@@ -17,6 +17,7 @@ class Debt(BaseModel):
     value: float
     type: str
     vendor: Optional[str]
+    # lender
     description: Optional[str]
     last_update: datetime
     category = "debt"
