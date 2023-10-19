@@ -155,8 +155,8 @@ def generate_bill_expenses():
     if request.method == "POST":
         new_expenses = []
         _date = date.today() + timedelta(days=31)
-        for bill in mongo.bill.get():
 
+        for bill in mongo.bill.get():
             if is_cron_match(bill.rule, _date):
                 bill_expense = find(
                     mongo.expense.get(),
@@ -181,6 +181,6 @@ def generate_bill_expenses():
             print(expense)
             mongo.expense.create(expense)
 
-        return success_result(f"{len(new_expenses)} expenses generates")
+        return success_result(f"{len(new_expenses)} expenses generates for {_date}")
 
     return failure_result()

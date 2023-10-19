@@ -1,0 +1,973 @@
+id,amount,date,type,vendor,description,paid,bill_id,asset_id,category
+61d114d29785d7f598749016,50.0,2022-01-01 12:00:00,grocery,Rachel,,True,,,expense
+61d1b9259785d7f598749017,74.91,2022-01-02 12:00:00,electronics,Apple,Mac mini payment,True,,,expense
+61d1b96f9785d7f598749018,231.31,2022-01-02 12:00:00,home,Home Depot,,True,,,expense
+61d24b964f11dc42f7cb561f,3.27,2022-01-02 12:00:00,food,Speedway,,True,,,expense
+61d310974f11dc42f7cb5620,16.11,2022-01-03 12:00:00,entertainment,HBO,max subscription,True,,,expense
+61d312a94f11dc42f7cb5621,116.05,2022-01-03 12:00:00,utility,Nationwide Energy Partners,,True,,,expense
+61d368e34f11dc42f7cb5622,366.32,2022-01-03 12:00:00,wood,Amazon,tools,True,,,expense
+61d4a4fba6435ebb16580ae5,18.85,2022-01-04 12:00:00,grocery,Kroger,,True,,,expense
+61d4d74a5dcd165acc19e1a8,25.25,2022-01-04 12:00:00,food,Bonifacio,,True,,,expense
+61d64bb021d4417a98228d2e,21.49,2022-01-05 12:00:00,home,Amazon,,True,,,expense
+61d64bc721d4417a98228d2f,16.95,2022-01-05 12:00:00,food,Chipotle,,True,,,expense
+61dcb5351e89515a7dd69b8a,5.97,2022-01-07 12:00:00,food,Wendys,,True,,,expense
+61dcb55e1e89515a7dd69b8b,81.44,2022-01-08 12:00:00,home,U-Haul,20' truck rental,True,,,expense
+61dcb5741e89515a7dd69b8c,27.93,2022-01-07 12:00:00,home,Target,,True,,,expense
+61dcb5861e89515a7dd69b8d,22.12,2022-01-08 12:00:00,car,Shell,,True,,,expense
+61dcb5ad1e89515a7dd69b8e,71.75,2022-01-09 12:00:00,grocery,Kroger,,True,,,expense
+61dcb5c61e89515a7dd69b8f,1.06,2022-01-10 12:00:00,entertainment,Amazon,Showtime subscription,True,,,expense
+61dcb5d81e89515a7dd69b90,14.0,2022-01-10 12:00:00,fitness,LA Fitness,membership,True,,,expense
+61dcb5f01e89515a7dd69b91,80.0,2022-01-10 12:00:00,other,Matt Lease,,True,,,expense
+61dfa1f71e89515a7dd69b95,42.28,2022-01-12 12:00:00,car,Marathon,gas,True,,,expense
+61e02d321e89515a7dd69b96,6.71,2022-01-13 12:00:00,utility,AEP,,True,,,expense
+61e0a6141e89515a7dd69b98,91.35,2022-01-13 12:00:00,home,Amazon,,True,,,expense
+61e0d7ca1e89515a7dd69b99,12.0,2022-01-13 12:00:00,food,Hot Chicken Takeover,,True,,,expense
+61e21e701e89515a7dd69b9c,204.7,2022-01-14 12:00:00,home,Lowes,,True,,,expense
+61e32ebd4fca3cdfa43d7b5e,192.45,2022-01-15 12:00:00,home,Lowes,,True,,,expense
+61e394634fca3cdfa43d7b5f,49.18,2022-01-15 12:00:00,home,Home Depot,,True,,,expense
+61e48b0a4fca3cdfa43d7b60,115.67,2022-01-16 12:00:00,wood,Lowes,,True,,,expense
+61e48b324fca3cdfa43d7b61,50.0,2022-01-16 12:00:00,grocery,Rachel,,True,,,expense
+61e6dbde4fca3cdfa43d7b63,63.0,2022-01-17 12:00:00,pets,Fifth & Kenny Vet,,True,,,expense
+61ea015e4fca3cdfa43d7b67,14.0,2022-01-20 12:00:00,food,Hot Chicken Takeover,,True,,,expense
+61eb10474fca3cdfa43d7b68,209.64,2022-01-21 12:00:00,car,Autozone,battery,True,,,expense
+61eb10794fca3cdfa43d7b69,54.07,2022-01-21 12:00:00,wood,Menards,,True,,,expense
+61eb10884fca3cdfa43d7b6a,3.22,2022-01-21 12:00:00,home,ACE Hardware,,True,,,expense
+61eb10944fca3cdfa43d7b6b,9.77,2022-01-21 12:00:00,food,Wendys,,True,,,expense
+61ec7f264fca3cdfa43d7b6d,5.65,2022-01-22 12:00:00,grocery,Great Harvest,,True,,,expense
+61ec7f334fca3cdfa43d7b6e,67.85,2022-01-22 12:00:00,grocery,Kroger,,True,,,expense
+61ec7f464fca3cdfa43d7b6f,27.45,2022-01-22 12:00:00,wood,Home Depot,,True,,,expense
+61eea7b34fca3cdfa43d7b70,14.25,2022-01-23 12:00:00,grocery,Come & Go,,True,,,expense
+61ef29844fca3cdfa43d7b72,9.35,2022-01-24 12:00:00,wood,Amazon,,True,,,expense
+61f001574fca3cdfa43d7b73,8.38,2022-01-25 12:00:00,food,Raisin Canes,,True,,,expense
+61f1f85a4fca3cdfa43d7b77,85.59,2022-01-26 12:00:00,grocery,Kroger,,True,,,expense
+61f1f8704fca3cdfa43d7b78,20.5,2022-01-26 12:00:00,food,Bamboo Thai,,True,,,expense
+61f320d9ee166cf47f177883,37.88,2022-01-27 12:00:00,home,Amazon,,True,,,expense
+61f40cf35d2631b493e27a7e,21.45,2022-01-28 12:00:00,fitness,Esporta,membership,True,,,expense
+61f58b115d2631b493e27a80,30.36,2022-01-29 12:00:00,utility,Spectrum,internet,True,,,expense
+61f58b835d2631b493e27a81,102.11,2022-01-29 12:00:00,home,Quality Carpet Cleaning,,True,,,expense
+61f58bc05d2631b493e27a82,627.83,2022-01-29 12:00:00,mortgage,Huntington,,True,,,expense
+61f58c075d2631b493e27a83,2274.24,2022-01-29 12:00:00,mortgage,Metro Holdings,early lease termination fee,True,,,expense
+61f58c595d2631b493e27a84,206.65,2022-01-29 12:00:00,wood,Woodcraft,"Kreg jig, Oak 8'",True,,,expense
+61f58c985d2631b493e27a85,9.37,2022-01-29 12:00:00,food,Wendys,,True,,,expense
+61f58cb75d2631b493e27a86,43.01,2022-01-29 12:00:00,car,Marathon,gas,True,,,expense
+61f6a692564a7cd1ad04a39a,22.5,2022-01-30 12:00:00,food,Bamboo Thai,,True,,,expense
+61f6b7b9d479b8b8601bf074,165.0,2022-01-18 12:00:00,vacation,Rachel,,True,,,expense
+61f6b805d479b8b8601bf075,30.36,2022-01-28 12:00:00,utility,Spectrum,internet,True,,,expense
+61f73f1bbe5f06a847e21c5b,123.55,2022-01-30 12:00:00,home,Home Depot,,True,,,expense
+61f94ef3f0e67ec70f95619c,8.38,2022-01-31 12:00:00,food,Raisin Canes,,True,,,expense
+61f9a516f0e67ec70f95619d,4.64,2022-02-01 12:00:00,home,Lowes,plug,True,,,expense
+61fac8d9f0e67ec70f9561a0,74.99,2022-02-02 12:00:00,electronics,Apple,Mac mini payment,True,,,expense
+61fbeed13c3de6d6274ca75d,16.11,2022-02-03 12:00:00,entertainment,HBO,max subscription,True,,,expense
+61fde99dc0f1ffba56d9ab6a,31.75,2022-02-04 12:00:00,food,Bamboo Thai,,True,,,expense
+61ff07f0c0f1ffba56d9ab6b,140.34,2022-02-05 12:00:00,pets,Petco,"dog food, etc",True,,,expense
+61fff921c0f1ffba56d9ab6c,8.79,2022-02-05 12:00:00,food,Brenz,,True,,,expense
+62013386c0f1ffba56d9ab6d,11.27,2022-02-06 12:00:00,home,Lowes,,True,,,expense
+6202730dc0f1ffba56d9ab6f,9.77,2022-02-07 12:00:00,food,Wendys,,True,,,expense
+6202f996c0f1ffba56d9ab70,42.34,2022-02-08 12:00:00,grocery,Kroger,,True,,,expense
+6202f9a8c0f1ffba56d9ab71,8.15,2022-02-08 12:00:00,food,Chipotle,,True,,,expense
+6209b76aa28d553e07804e3f,44.42,2022-02-09 12:00:00,car,BP,gas,True,,,expense
+6209b790a28d553e07804e40,130.55,2022-02-09 12:00:00,grocery,Kroger,,True,,,expense
+6209b7b5a28d553e07804e41,1.06,2022-02-10 12:00:00,entertainment,Amazon,Showtime,True,,,expense
+6209b7d4a28d553e07804e42,28.96,2022-02-10 12:00:00,car,Shell,gas,True,,,expense
+6209b7e4a28d553e07804e43,12.2,2022-02-10 12:00:00,grocery,Shell,,True,,,expense
+6209b7ffa28d553e07804e44,27.67,2022-02-12 12:00:00,grocery,Walgreens,,True,,,expense
+6209b813a28d553e07804e45,21.63,2022-02-13 12:00:00,food,Starbucks,,True,,,expense
+6209b824a28d553e07804e46,44.76,2022-02-13 12:00:00,car,Shell,gas,True,,,expense
+6209b836a28d553e07804e47,16.58,2022-02-13 12:00:00,food,New China Express,,True,,,expense
+620ada87a28d553e07804e4a,9.55,2022-02-14 12:00:00,food,Chipotle,,True,,,expense
+620baa8fa28d553e07804e4b,8.38,2022-02-14 12:00:00,food,Raisin Canes,,True,,,expense
+620e5e89a28d553e07804e4d,74.71,2022-02-16 12:00:00,wood,Woodcraft,,True,,,expense
+620fa194a28d553e07804e4f,25.9,2022-02-18 12:00:00,rent,Metro Holdings,,True,,,expense
+621159fba28d553e07804e51,24.78,2022-02-18 12:00:00,food,Brenz Pizza,,True,,,expense
+62115a20a28d553e07804e52,64.49,2022-02-19 12:00:00,pets,Petco,dog bed,True,,,expense
+62115a30a28d553e07804e53,55.16,2022-02-19 12:00:00,grocery,Weilands,,True,,,expense
+6214095fa28d553e07804e54,80.0,2022-02-21 12:00:00,other,,,True,,,expense
+6214f56ca28d553e07804e56,8.38,2022-02-21 12:00:00,food,Raisin Canes,,True,,,expense
+6216de0da28d553e07804e59,47.61,2022-02-23 12:00:00,car,Marathon,gas,True,,,expense
+6216de1aa28d553e07804e5a,17.5,2022-02-23 12:00:00,food,Chipotle,,True,,,expense
+6219914fa28d553e07804e5e,9.77,2022-02-25 12:00:00,food,Wendys,,True,,,expense
+6219915aa28d553e07804e5f,77.12,2022-02-25 12:00:00,grocery,Kroger,,True,,,expense
+621c255cf71d3491e1750a47,10.0,2022-02-27 12:00:00,food,Girl Scouts,Thin Mints,True,,,expense
+621c25a6f71d3491e1750a48,135.97,2022-02-27 12:00:00,home,Lowes,,True,,,expense
+621cf1cff71d3491e1750a49,21.45,2022-02-28 12:00:00,fitness,Esporta,membership,True,,,expense
+621cf45ff71d3491e1750a4a,218.53,2022-02-03 12:00:00,utility,NEP,,True,,,expense
+621cf492f71d3491e1750a4b,52.07,2022-02-18 12:00:00,utility,AEP,electric,True,,,expense
+621cf4aff71d3491e1750a4c,3550.0,2022-02-24 12:00:00,renovations,Hamilton Fence,,True,,,expense
+621cf4c7f71d3491e1750a4d,50.0,2022-02-27 12:00:00,utility,Spectrum,internet,True,,,expense
+621cf4def71d3491e1750a4e,755.66,2022-02-28 12:00:00,mortgage,Huntington,,True,,,expense
+621e4329db10559ab93931f6,8.38,2022-02-28 12:00:00,food,Raisin Canes,,True,,,expense
+621ed017db10559ab93931f8,14.99,2022-03-01 12:00:00,financial,FreeTaxUSA.com,2021 tax preparation,True,,,expense
+6221037fdb10559ab93931fa,16.11,2022-03-03 12:00:00,entertainment,HBO,,True,,,expense
+6222bb62db10559ab93931fd,56.49,2022-03-04 12:00:00,home,Lowes,,True,,,expense
+6222bb75db10559ab93931fe,9.55,2022-03-04 12:00:00,food,Chipotle,,True,,,expense
+6223ef37db10559ab93931ff,365.58,2022-03-05 12:00:00,wood,Home Depot,,True,,,expense
+6223ef6bdb10559ab9393200,55.3,2022-03-05 12:00:00,wood,Menards,,True,,,expense
+6223ef78db10559ab9393201,9.0,2022-03-05 12:00:00,car,Sunoco,gas,True,,,expense
+6223ef84db10559ab9393202,65.56,2022-03-05 12:00:00,home,U-Haul,,True,,,expense
+62268e1edb10559ab9393207,31.18,2022-03-07 12:00:00,entertainment,chess.com,,True,,,expense
+6226ce83db10559ab9393208,10.83,2022-03-07 12:00:00,entertainment,Boosteroid,subscription,True,,,expense
+6226ce99db10559ab9393209,64.49,2022-03-07 12:00:00,entertainment,Steam,Elden Ring,True,,,expense
+6229ffd1db10559ab939320c,1.06,2022-03-10 12:00:00,entertainment,Amazon,Showtime,True,,,expense
+622a0234db10559ab939320e,679.0,2022-03-03 12:00:00,tax,US Government,,True,,,expense
+622bd04fdb10559ab9393213,80.0,2022-03-11 12:00:00,other,,,True,,,expense
+622bd05fdb10559ab9393214,10.07,2022-03-11 12:00:00,food,Wendys,,True,,,expense
+622bd074db10559ab9393215,16.95,2022-03-11 12:00:00,food,Hot Chicken Takeover,,True,,,expense
+622cc6f2fe3503a9600204f4,95.03,2022-03-12 12:00:00,home,Lowes,,True,,,expense
+622cc700fe3503a9600204f5,56.93,2022-03-12 12:00:00,home,Amazon,,True,,,expense
+622df0730536d65539f1aa82,43.0,2022-03-12 12:00:00,food,Aladdins,,True,,,expense
+622df0810536d65539f1aa84,14.0,2022-03-12 12:00:00,food,figlio,,True,,,expense
+622dfb480536d65539f1aa85,44.9,2022-03-13 12:00:00,entertainment,Amazon,Xbox controller,True,,,expense
+622e63360536d65539f1aa86,16.13,2022-03-13 12:00:00,home,Kohls,socks,True,,,expense
+6230af7f0536d65539f1aa88,8.38,2022-03-14 12:00:00,food,Raisin Canes,,True,,,expense
+6230f7a80536d65539f1aa8a,25.0,2022-03-15 12:00:00,entertainment,Kevin Kuntz,NCAAM bracket,True,,,expense
+623146a80536d65539f1aa8b,40.79,2022-03-15 12:00:00,home,Homage,,True,,,expense
+62328ef3eff34df45aed87eb,14.0,2022-03-16 12:00:00,food,Alphabet,,True,,,expense
+62328effeff34df45aed87ec,7.99,2022-03-16 12:00:00,food,Budd Dairy,,True,,,expense
+6234d13da8c2675314e42bae,9.55,2022-03-18 12:00:00,food,Chipotle,,True,,,expense
+6234d157a8c2675314e42baf,31.66,2022-03-18 12:00:00,pets,5th & Kenny Animal Hospital,,True,,,expense
+62373aada8c2675314e42bb0,27.06,2022-03-19 12:00:00,entertainment,Funny Bone,,True,,,expense
+62373ac0a8c2675314e42bb1,55.45,2022-03-19 12:00:00,car,BP,gas,True,,,expense
+62373adfa8c2675314e42bb2,38.7,2022-03-20 12:00:00,electronics,Last Pass,subscription,True,,,expense
+6237780fa8c2675314e42bb3,25.76,2022-03-20 12:00:00,home,Lowes,,True,,,expense
+623778bfa8c2675314e42bb4,48.36,2022-03-20 12:00:00,wood,Amazon,,True,,,expense
+6239dce2a8c2675314e42bb6,10.17,2022-03-21 12:00:00,food,Wendys,,True,,,expense
+6239dcf1a8c2675314e42bb7,9.55,2022-03-21 12:00:00,food,Chipotle,,True,,,expense
+623a425ea8c2675314e42bb8,63.86,2022-03-22 12:00:00,grocery,Weilands,,True,,,expense
+623d1aa5a8c2675314e42bbc,16.11,2022-03-24 12:00:00,wood,Amazon,,True,,,expense
+623df406a8c2675314e42bbe,49.21,2022-03-25 12:00:00,home,Amazon,,True,,,expense
+623e45a8a8c2675314e42bbf,68.76,2022-03-25 12:00:00,wood,Woodcraft,,True,,,expense
+623e4f00a8c2675314e42bc0,16.79,2022-03-25 12:00:00,food,Brenz Pizza,,True,,,expense
+623f47c6a8c2675314e42bc2,188.22,2022-03-02 12:00:00,utility,Columbia Gas,,True,,,expense
+623f47dda8c2675314e42bc3,29.91,2022-03-21 12:00:00,utility,AEP,,True,,,expense
+623f47fca8c2675314e42bc4,74.37,2022-03-23 12:00:00,utility,NEP,,True,,,expense
+623f4857a8c2675314e42bc5,29.16,2022-03-25 12:00:00,utility,City of Columbus,water,True,,,expense
+623f4878a8c2675314e42bc6,25.0,2022-03-27 12:00:00,utility,Spectrum,internet,True,,,expense
+623f48c0a8c2675314e42bc7,653.36,2022-03-31 12:00:00,mortgage,Huntington,,True,,,expense
+6240dfe0a8c2675314e42bc8,104.6,2022-03-27 12:00:00,home,Kohls,,True,,,expense
+6240e01fa8c2675314e42bc9,225.0,2022-03-27 12:00:00,home,Warby Parker,,True,,,expense
+6241a7fba8c2675314e42bca,31.75,2022-03-27 12:00:00,food,Bamboo Thai,,True,,,expense
+6241a8e3a8c2675314e42bcb,21.45,2022-03-28 12:00:00,fitness,Esporta,,True,,,expense
+624757f83de0edcd84ce3d37,413.0,2022-04-01 12:00:00,insurance,Root,,True,,,expense
+624758603de0edcd84ce3d38,37.71,2022-04-01 12:00:00,wood,Woodcraft,,True,,,expense
+624758703de0edcd84ce3d39,13.46,2022-04-01 12:00:00,food,Fusian,,True,,,expense
+624907722def95f31b6b8ad4,327.77,2022-04-02 12:00:00,home,Menards,,True,,,expense
+624907812def95f31b6b8ad5,31.75,2022-04-02 12:00:00,food,Bamboo Thai,,True,,,expense
+62490b0b2def95f31b6b8ad6,61.0,2022-03-22 12:00:00,fitness,CRPDSports,league fees,True,,,expense
+624a196ac301da4366fe8e04,16.11,2022-04-03 12:00:00,entertainment,HBO,max subscription,True,,,expense
+624a1981c301da4366fe8e05,16.87,2022-04-03 12:00:00,wood,Lowes,,True,,,expense
+624c3612c301da4366fe8e08,8.38,2022-04-04 12:00:00,food,Raisin Canes,,True,,,expense
+624cadc7c301da4366fe8e0a,18.62,2022-04-05 12:00:00,home,Amazon,Project Hail Mary,True,,,expense
+624e3e5462b8b3d2764074c1,6.28,2022-04-06 12:00:00,grocery,Come & Go,,True,,,expense
+62508654e4e0af7144cf2a55,10.68,2022-04-08 12:00:00,food,Fusian,,True,,,expense
+6250ad5fe4e0af7144cf2a57,6.99,2022-04-08 12:00:00,food,Brenz Pizza,,True,,,expense
+625186f1e4e0af7144cf2a58,53.29,2022-04-08 12:00:00,car,Marathon,gas,True,,,expense
+6252d35599ab730e32a71716,10.82,2022-04-08 12:00:00,entertainment,Boosteroid,,True,,,expense
+6252d37499ab730e32a71717,94.75,2022-04-09 12:00:00,wood,Woodcraft,,True,,,expense
+6252d39499ab730e32a71718,1.06,2022-04-09 12:00:00,entertainment,Showtime,,True,,,expense
+62537cb9af549bec67d53174,31.0,2022-04-10 12:00:00,food,Olive & Lime,,True,,,expense
+6259be8d0a171cd23163db27,31.66,2022-04-15 12:00:00,pets,Fifth and Kenny vet,,True,,,expense
+6259bea00a171cd23163db28,12.28,2022-04-15 12:00:00,food,Fusian,,True,,,expense
+625acd64ad90f6403f4c6a51,29.52,2022-04-14 12:00:00,entertainment,Marcus Theaters,,True,,,expense
+625c0a28ad90f6403f4c6a52,664.19,2022-04-16 12:00:00,home,Lowes,lawn mower,True,,,expense
+625c0a34ad90f6403f4c6a53,106.01,2022-04-16 12:00:00,home,Menards,,True,,,expense
+625d6c64ad90f6403f4c6a54,9.57,2022-04-16 12:00:00,entertainment,Marcus Theaters,,True,,,expense
+625ed380ad90f6403f4c6a55,8.38,2022-04-18 12:00:00,food,Raisin Canes,,True,,,expense
+625f7804ad90f6403f4c6a57,31.76,2022-04-19 12:00:00,grocery,Walgreens,,True,,,expense
+62642827195863f0cb7bc1a0,15.95,2022-04-22 12:00:00,food,Hot Chicken Takeover,,True,,,expense
+6264285e195863f0cb7bc1a1,44.8,2022-04-23 12:00:00,grocery,Farmers Market,chicken breasts,True,,,expense
+626491c4195863f0cb7bc1a2,7.97,2022-04-23 12:00:00,grocery,Come & Go,,True,,,expense
+626555e3adca192ed018d188,73.03,2022-04-02 12:00:00,utility,Columbia Gas,,True,,,expense
+6265564aadca192ed018d189,27.92,2022-04-20 12:00:00,utility,AEP,electric,True,,,expense
+62655679adca192ed018d18a,25.0,2022-04-27 12:00:00,utility,Spectrum,,True,,,expense
+626556c0adca192ed018d18b,1025.94,2022-04-22 12:00:00,mortgage,Huntington,,True,,,expense
+6265575aadca192ed018d18c,233.17,2022-04-24 12:00:00,home,Amazon,,True,,,expense
+626601964966dd16abadcb09,80.0,2022-04-24 12:00:00,other,,,True,,,expense
+6267ea694966dd16abadcb0b,8.38,2022-04-25 12:00:00,food,Raisin Canes,,True,,,expense
+62686ba74966dd16abadcb0d,26.89,2022-04-26 12:00:00,wood,Menards,,True,,,expense
+62686bf14966dd16abadcb0e,51.6,2022-04-26 12:00:00,wood,Woodcraft,,True,,,expense
+62695f824966dd16abadcb0f,15.02,2022-04-26 12:00:00,entertainment,Amazon,Party Down S1 & 2,True,,,expense
+6269b01d4966dd16abadcb10,36.5,2022-04-27 12:00:00,car,Wrench n Roll,oil change,True,,,expense
+626ab5224966dd16abadcb12,21.45,2022-04-28 12:00:00,fitness,Esporta,membership,True,,,expense
+626b09144966dd16abadcb14,10.18,2022-04-28 12:00:00,food,Brenz Pizza,,True,,,expense
+626d8e384966dd16abadcb16,54.59,2022-04-30 12:00:00,car,Marathon,gas,True,,,expense
+626d8e544966dd16abadcb17,120.59,2022-04-30 12:00:00,home,Lowes,,True,,,expense
+626ee5c04966dd16abadcb19,188.48,2022-05-01 12:00:00,home,Lowes,,True,,,expense
+62704d0de9837115630ab041,145.98,2022-05-02 12:00:00,home,Amazon,,True,,,expense
+6271614ee9837115630ab042,9.08,2022-05-03 12:00:00,food,Raisin Canes,,True,,,expense
+62716368e9837115630ab043,16.11,2022-05-03 12:00:00,entertainment,HBO,max subscription,True,,,expense
+6276af80231f9fc9c7255538,5.38,2022-05-04 12:00:00,grocery,Come & Go,,True,,,expense
+6276af94231f9fc9c7255539,14.5,2022-05-07 12:00:00,food,Florin,,True,,,expense
+627853be231f9fc9c725553a,10.48,2022-05-08 12:00:00,entertainment,Boosteroid,,True,,,expense
+627853d2231f9fc9c725553b,50.5,2022-05-08 12:00:00,home,Kroger,,True,,,expense
+627853e5231f9fc9c725553c,57.31,2022-05-08 12:00:00,food,Figlio,,True,,,expense
+627aeba1231f9fc9c725553f,1.06,2022-05-09 12:00:00,entertainment,Amazon,Showtime,True,,,expense
+627aebc7231f9fc9c7255540,11.37,2022-05-09 12:00:00,grocery,Come & Go,,True,,,expense
+627d959e231f9fc9c7255543,80.0,2022-05-12 12:00:00,other,,,True,,,expense
+627d95c1231f9fc9c7255544,137.57,2022-05-12 12:00:00,pets,Petco,,True,,,expense
+627fb4c23610e829faabfeaf,62.97,2022-05-14 12:00:00,grocery,Kroger,,True,,,expense
+627fb4ed3610e829faabfeb0,19.33,2022-05-14 12:00:00,wood,Woodcraft,,True,,,expense
+62811331f091df792f064c70,19.31,2022-05-15 12:00:00,home,Lowes,,True,,,expense
+628155acf091df792f064c71,3.73,2022-05-15 12:00:00,food,Chipotle,,True,,,expense
+628155e3f091df792f064c72,7.51,2022-05-15 12:00:00,home,Oakland Nursery,,True,,,expense
+6281ac3bf091df792f064c73,18.95,2022-05-15 12:00:00,food,Hot Chicken Takeover,,True,,,expense
+62863e23f091df792f064c77,13.5,2022-05-18 12:00:00,food,Bamboo Thai,,True,,,expense
+6286aedcf091df792f064c79,189.99,2022-05-19 12:00:00,home,Amazon,,True,,,expense
+62893a58f091df792f064c7c,148.46,2022-05-21 12:00:00,wood,Home Depot,,True,,,expense
+62893a6cf091df792f064c7d,113.32,2022-05-21 12:00:00,grocery,Kroger,,True,,,expense
+62893a78f091df792f064c7e,27.22,2022-05-21 12:00:00,wood,Amazon,,True,,,expense
+62895e4cf091df792f064c7f,10.18,2022-05-21 12:00:00,food,Brenz Pizza,,True,,,expense
+628ad6f4f091df792f064c80,2.16,2022-05-22 12:00:00,grocery,Kroger,,True,,,expense
+628c0124f091df792f064c82,62.73,2022-05-23 12:00:00,car,Marathon,gas,True,,,expense
+628c0174f091df792f064c83,337.77,2022-05-23 12:00:00,pets,5th & Kenny Vet,Cosmo's medicine,True,,,expense
+628ecee0f091df792f064c86,33.33,2022-05-25 12:00:00,food,Little Dragons,,True,,,expense
+628fef72f091df792f064c88,10.57,2022-05-26 12:00:00,food,Wendys,,True,,,expense
+628ff1faf091df792f064c89,62.66,2022-05-02 12:00:00,utility,Columbia Gas,,True,,,expense
+628ff21bf091df792f064c8a,63.42,2022-05-14 12:00:00,utility,City of Columbus,water,True,,,expense
+628ff23cf091df792f064c8b,27.25,2022-05-18 12:00:00,utility,AEP,electric,True,,,expense
+628ff24ef091df792f064c8c,25.0,2022-05-27 12:00:00,utility,Spectrum,internet,True,,,expense
+628ff260f091df792f064c8d,678.33,2022-05-27 12:00:00,mortgage,Huntington,,True,,,expense
+62901ae7f091df792f064c8e,9.08,2022-05-26 12:00:00,food,Raisin Canes,,True,,,expense
+62942eedf091df792f064c90,11.77,2022-05-27 12:00:00,food,Wendys,,True,,,expense
+62942f2af091df792f064c91,24.78,2022-05-27 12:00:00,grocery,Kroger,,True,,,expense
+62942f6ef091df792f064c92,24.0,2022-05-29 12:00:00,food,Route 6 Pub,,True,,,expense
+62942fbbf091df792f064c93,15.0,2022-05-15 12:00:00,fitness,CRPDSports,court rental,True,,,expense
+62943081f091df792f064c94,21.45,2022-05-28 12:00:00,fitness,LA Fitness,,True,,,expense
+6294c9e3f091df792f064c95,123.36,2022-05-30 12:00:00,home,Amazon,,True,,,expense
+62950b4ef091df792f064c96,265.5,2022-05-30 12:00:00,home,Lowes,,True,,,expense
+62952abaf091df792f064c97,40.0,2022-05-30 12:00:00,food,Aab Indian,,True,,,expense
+6298a908f091df792f064c9a,10.05,2022-06-01 12:00:00,food,Chipotle,,True,,,expense
+62995d60f091df792f064c9b,12.5,2022-06-02 12:00:00,food,Woodlands,,True,,,expense
+62995d6af091df792f064c9c,26.71,2022-06-02 12:00:00,food,Brenz Pizza,,True,,,expense
+6299ffe4f091df792f064c9f,16.11,2022-06-03 12:00:00,entertainment,HBO,max subscription,True,,,expense
+629b66dff091df792f064ca1,13.43,2022-06-03 12:00:00,grocery,Kroger,,True,,,expense
+629b66eef091df792f064ca2,12.28,2022-06-03 12:00:00,food,Fusian,,True,,,expense
+629b66fbf091df792f064ca3,46.55,2022-06-03 12:00:00,home,Lowes,,True,,,expense
+629bd8bbf091df792f064ca4,60.88,2022-06-04 12:00:00,wood,Woodcraft,,True,,,expense
+629bd8ccf091df792f064ca5,34.39,2022-06-04 12:00:00,home,Kroger,,True,,,expense
+629bd8d7f091df792f064ca6,71.76,2022-06-04 12:00:00,grocery,Kroger,,True,,,expense
+629bd905f091df792f064ca7,55.0,2022-06-04 12:00:00,fitness,CRPDSports,Summer league fees,True,,,expense
+629bd9c6f091df792f064ca8,46.84,2022-06-04 12:00:00,wood,PourMeARiver.com,,True,,,expense
+629d1232f091df792f064ca9,46.18,2022-06-05 12:00:00,home,Amazon,,True,,,expense
+629f5542f091df792f064cab,9.08,2022-06-06 12:00:00,food,Raisin Canes,,True,,,expense
+629f5577f091df792f064cac,69.72,2022-06-06 12:00:00,car,Sunoco,gas,True,,,expense
+62a0d574f091df792f064cae,16.11,2022-06-08 12:00:00,bike,Amazon,inner tube,True,,,expense
+62a102f5f091df792f064caf,10.32,2022-06-08 12:00:00,home,Amazon,,True,,,expense
+62a25113f091df792f064cb1,80.0,2022-06-06 12:00:00,other,,,True,,,expense
+62a25167f091df792f064cb3,15.27,2022-06-09 12:00:00,grocery,Weilands,,True,,,expense
+62a2a081f091df792f064cb4,8.3,2022-06-09 12:00:00,food,Chipotle,,True,,,expense
+62a341fef091df792f064cb5,1.06,2022-06-10 12:00:00,entertainment,Amazon,Showtime,True,,,expense
+62a38714f091df792f064cb7,64.95,2022-06-10 12:00:00,grocery,Kroger,,True,,,expense
+62a3b005f091df792f064cb8,12.06,2022-06-10 12:00:00,grocery,Menards,,True,,,expense
+62a4091d31afb40adcce5e46,14.3,2022-06-10 12:00:00,food,Chipotle,,True,,,expense
+62a5124a0a71f690cefcc2d6,57.3,2022-06-11 12:00:00,home,Lowes,,True,,,expense
+62abaa9a4f8fcaaecac40d2c,9.08,2022-06-13 12:00:00,food,Raisin Canes,,True,,,expense
+62abab924f8fcaaecac40d30,12.28,2022-06-14 12:00:00,food,Fusian,,True,,,expense
+62abab9e4f8fcaaecac40d31,27.0,2022-06-14 12:00:00,food,Bamboo Thai,,True,,,expense
+62ababab4f8fcaaecac40d32,9.4,2022-06-16 12:00:00,food,Starbucks,,True,,,expense
+62ababc04f8fcaaecac40d33,10.57,2022-06-16 12:00:00,food,Wendys,,True,,,expense
+62ade1e7a85e393fd6e52783,16.05,2022-06-17 12:00:00,food,Chipotle,,True,,,expense
+62ae489a77570f3ad9c3d167,317.83,2022-06-18 12:00:00,wood,Home Depot,,True,,,expense
+62afd44377570f3ad9c3d168,81.8,2022-06-19 12:00:00,grocery,Kroger,,True,,,expense
+62afd46a77570f3ad9c3d169,37.09,2022-06-19 12:00:00,food,CMOA Cafe,,True,,,expense
+62afd47b77570f3ad9c3d16a,5.0,2022-06-19 12:00:00,parking,CMOA,,True,,,expense
+62b1ba5b77570f3ad9c3d16c,10.05,2022-06-20 12:00:00,food,Chipotle,,True,,,expense
+62b2396777570f3ad9c3d16e,80.0,2022-06-21 12:00:00,other,,,True,,,expense
+62b3127377570f3ad9c3d16f,9.08,2022-06-21 12:00:00,food,Raisin Canes,,True,,,expense
+62b362e077570f3ad9c3d170,75.0,2022-06-22 12:00:00,health,Arlington Urget Care,visit co-pay,True,,,expense
+62b362fd77570f3ad9c3d171,41.76,2022-06-22 12:00:00,health,CVS,medicine,True,,,expense
+62b5c97877570f3ad9c3d174,79.22,2022-06-24 12:00:00,home,Amazon,,True,,,expense
+62b5df0877570f3ad9c3d175,350.0,2022-06-24 12:00:00,home,Jack Seibert,engagement ring deposit,True,,,expense
+62b6059777570f3ad9c3d177,216.1,2022-06-24 12:00:00,home,Lowes,,True,,,expense
+62b62bc577570f3ad9c3d178,12.28,2022-06-24 12:00:00,food,Fusian,,True,,,expense
+62b8db1177570f3ad9c3d179,61.75,2022-06-26 12:00:00,home,Lowes,,True,,,expense
+62b8db6b77570f3ad9c3d17a,33.33,2022-06-26 12:00:00,home,Kroger,flowers,True,,,expense
+62b8db7877570f3ad9c3d17b,8.65,2022-06-26 12:00:00,grocery,Kroger,,True,,,expense
+62b8db9077570f3ad9c3d17c,73.59,2022-06-26 12:00:00,car,Marathon,,True,,,expense
+62baf21777570f3ad9c3d17e,27.95,2022-06-27 12:00:00,home,Kohls,,True,,,expense
+62baf22377570f3ad9c3d17f,9.08,2022-06-27 12:00:00,food,Raisin Canes,,True,,,expense
+62bb09e377570f3ad9c3d181,21.45,2022-06-28 12:00:00,fitness,Esporta,membership,True,,,expense
+62bb61ff77570f3ad9c3d184,10.57,2022-06-28 12:00:00,food,Wendys,,True,,,expense
+62bc2fab77570f3ad9c3d185,51.37,2022-06-28 12:00:00,grocery,Kroger,,True,,,expense
+62bc2fb677570f3ad9c3d186,10.05,2022-06-28 12:00:00,food,Chipotle,,True,,,expense
+62bdbb5b77570f3ad9c3d187,598.84,2022-06-30 12:00:00,mortgage,Huntington,,True,,,expense
+62bdbb7e77570f3ad9c3d188,25.0,2022-06-27 12:00:00,utility,Spectrum,,True,,,expense
+62bdbb9377570f3ad9c3d189,29.17,2022-06-17 12:00:00,utility,AEP,electric,True,,,expense
+62bdbba677570f3ad9c3d18a,44.67,2022-06-02 12:00:00,utility,Columbia Gas,,True,,,expense
+62bf142077570f3ad9c3d18c,43.77,2022-06-30 12:00:00,home,Lowes,,True,,,expense
+62bf143077570f3ad9c3d18d,20.4,2022-06-30 12:00:00,grocery,Weilands,,True,,,expense
+62bf143d77570f3ad9c3d18e,21.48,2022-07-01 12:00:00,home,Lowes,,True,,,expense
+62bf14b477570f3ad9c3d18f,10.0,2022-07-01 12:00:00,car,Spot Free Car Wash,,True,,,expense
+62bf14be77570f3ad9c3d190,4.5,2022-07-01 12:00:00,food,Florin,,True,,,expense
+62c3531b77570f3ad9c3d192,16.11,2022-07-03 12:00:00,entertainment,HBO,max subscription,True,,,expense
+62c3532e77570f3ad9c3d193,175.21,2022-07-03 12:00:00,home,Wayfair,medicine cabinet,True,,,expense
+62c3533b77570f3ad9c3d194,53.83,2022-07-04 12:00:00,car,Shell,gas,True,,,expense
+62c358c277570f3ad9c3d195,3.75,2022-07-04 12:00:00,food,BJs,,True,,,expense
+62c4f1c977570f3ad9c3d197,42.41,2022-07-05 12:00:00,grocery,Kroger,,True,,,expense
+62c4f1d377570f3ad9c3d198,92.11,2022-07-05 12:00:00,home,Amazon,,True,,,expense
+62c8bc2d77570f3ad9c3d19c,10.05,2022-07-08 12:00:00,food,Chipotle,,True,,,expense
+62cacc9b77570f3ad9c3d19d,15.6,2022-07-09 12:00:00,home,Lowes,,True,,,expense
+62caccac77570f3ad9c3d19e,1.06,2022-07-10 12:00:00,entertainment,Amazon,Showtime,True,,,expense
+62cc18cf77570f3ad9c3d19f,24.45,2022-07-10 12:00:00,food,Little Dragons,,True,,,expense
+62cde41277570f3ad9c3d1a2,9.08,2022-07-11 12:00:00,food,Raisin Canes,,True,,,expense
+62ce0b7f77570f3ad9c3d1a3,127.33,2022-07-12 12:00:00,grocery,Kroger,,True,,,expense
+62ceb7ca77570f3ad9c3d1a4,79.45,2022-07-12 12:00:00,home,Target,,True,,,expense
+62cf39ba77570f3ad9c3d1a6,54.77,2022-07-13 12:00:00,home,Amazon,,True,,,expense
+62d0c9e577570f3ad9c3d1a8,10.57,2022-07-14 12:00:00,food,Wendys,,True,,,expense
+62d1b85277570f3ad9c3d1aa,120.0,2022-07-15 12:00:00,wood,Handy Man Troy,Paslode framing nailer,True,,,expense
+62d1f37177570f3ad9c3d1ab,10.05,2022-07-15 12:00:00,food,Chipotle,,True,,,expense
+62d3241777570f3ad9c3d1ac,133.69,2022-07-16 12:00:00,home,Lowes,,True,,,expense
+62d47b7377570f3ad9c3d1ad,63.71,2022-07-17 12:00:00,car,Marathon,gas,True,,,expense
+62d5e09c77570f3ad9c3d1af,80.0,2022-07-18 12:00:00,other,,,True,,,expense
+62d6acbc77570f3ad9c3d1b0,9.08,2022-07-18 12:00:00,food,Raisin Canes,,True,,,expense
+62d7f52f77570f3ad9c3d1b2,10.05,2022-07-19 12:00:00,food,Chipotle,,True,,,expense
+62d94a747a8fecca6c8d6277,27.76,2022-07-20 12:00:00,food,Brenz Pizza,,True,,,expense
+62d94aaf7a8fecca6c8d6278,1.63,2022-07-09 12:00:00,home,Staples,,True,,,expense
+62dbf15c7a8fecca6c8d627c,46.45,2022-07-23 12:00:00,home,Lowes,,True,,,expense
+62dbf1667a8fecca6c8d627d,12.28,2022-07-22 12:00:00,food,Fusian,,True,,,expense
+62dbf1707a8fecca6c8d627e,49.05,2022-07-22 12:00:00,grocery,Kroger,,True,,,expense
+62dc7f58c0411eac56701a0d,72.54,2022-07-23 12:00:00,home,Home Depot,,True,,,expense
+62dca76bc0411eac56701a0e,18.35,2022-07-23 12:00:00,food,Chipotle,,True,,,expense
+62dd9723c0411eac56701a0f,40.0,2022-07-24 12:00:00,grocery,Peach Truck,,True,,,expense
+62dd978ec0411eac56701a10,32.94,2022-07-24 12:00:00,home,Amazon,,True,,,expense
+62dffa5bc0411eac56701a12,10.05,2022-07-25 12:00:00,food,Chipotle,,True,,,expense
+62e04d0ec0411eac56701a14,9.08,2022-07-26 12:00:00,food,Raisin Canes,,True,,,expense
+62e2881a60d88491d199c1ec,21.45,2022-07-28 12:00:00,fitness,Esporta,membership,True,,,expense
+62e2c9dc60d88491d199c1ee,16.25,2022-07-28 12:00:00,food,Hot Chicken Takeover,,True,,,expense
+62e3d31a60d88491d199c1f0,26.93,2022-07-02 12:00:00,utility,Columbia Gas,gas,True,,,expense
+62e3d33060d88491d199c1f1,46.96,2022-07-18 12:00:00,utility,AEP,electric,True,,,expense
+62e3d34460d88491d199c1f2,25.0,2022-07-27 12:00:00,utility,Spectrum,internet,True,,,expense
+62e3d36260d88491d199c1f3,698.89,2022-07-27 12:00:00,mortgage,Huntington,,True,,,expense
+62e3d40160d88491d199c1f5,18.25,2022-07-28 12:00:00,food,Bamboo Thai,,True,,,expense
+62e491d260d88491d199c1f6,12.28,2022-07-29 12:00:00,food,Fusian,,True,,,expense
+62e7c7039018bc0a1302c1f2,60.85,2022-07-30 12:00:00,car,GetGo,gas,True,,,expense
+62e7c7109018bc0a1302c1f3,18.35,2022-07-31 12:00:00,food,Chipotle,,True,,,expense
+62e89a9a9018bc0a1302c1f4,9.17,2022-08-01 12:00:00,food,Wendys,,True,,,expense
+62e89aa49018bc0a1302c1f5,9.08,2022-08-01 12:00:00,food,Raisin Canes,,True,,,expense
+62e93fa79018bc0a1302c1f7,25.91,2022-08-02 12:00:00,utility,Columbia Gas,,True,,,expense
+62e976b49018bc0a1302c1f8,80.0,2022-08-01 12:00:00,other,,,True,,,expense
+62ea8fb29018bc0a1302c1fa,16.11,2022-08-03 12:00:00,entertainment,HBO,subscription,True,,,expense
+62ecefc3af64ae41e89fa39f,62.3,2022-08-04 12:00:00,pets,Amazon,,True,,,expense
+62ed1c81ac21d46cccb70278,15.88,2022-08-05 12:00:00,food,First Watch,,True,,,expense
+62eef5b8ac21d46cccb7027a,11.25,2022-08-05 12:00:00,food,Hot Chicken Takeover,,True,,,expense
+62eef69dac21d46cccb7027b,84.77,2022-08-06 12:00:00,home,Lowes,,True,,,expense
+62eef6b3ac21d46cccb7027c,144.88,2022-08-06 12:00:00,home,Nordstrom Rack,Wedding clothes,True,,,expense
+62eef6c4ac21d46cccb7027d,78.09,2022-08-06 12:00:00,grocery,Trader Joes,,True,,,expense
+62eef936ac21d46cccb7027e,33.0,2022-08-06 12:00:00,food,Seitans Realm,,True,,,expense
+62f1674fac21d46cccb7027f,20.07,2022-08-08 12:00:00,food,Brenz Pizza,,True,,,expense
+62f24f04ac21d46cccb70281,50.13,2022-08-08 12:00:00,car,Sunoco,gas,True,,,expense
+62f3b6c6098c1ebb695d5d52,1.06,2022-08-10 12:00:00,entertainment,Amazon,Showtime,True,,,expense
+62f50226098c1ebb695d5d54,31.75,2022-08-10 12:00:00,food,Bamboo Thai,,True,,,expense
+62f64987098c1ebb695d5d56,111.93,2022-08-11 12:00:00,pets,Petco,dog food,True,,,expense
+62f649e2098c1ebb695d5d57,10.57,2022-08-11 12:00:00,food,Wendys,,True,,,expense
+62f91c45098c1ebb695d5d5a,10.17,2022-08-12 12:00:00,food,Wendys,,True,,,expense
+62f91c51098c1ebb695d5d5b,15.48,2022-08-12 12:00:00,grocery,Kroger,,True,,,expense
+62f91c5d098c1ebb695d5d5c,19.16,2022-08-12 12:00:00,grocery,Kroger,ice,True,,,expense
+62f91c88098c1ebb695d5d5d,4272.5,2022-08-12 12:00:00,home,Jack Seibert,engagement ring,True,,,expense
+62fae8a952db00ee4a6d27fb,28.17,2022-08-15 12:00:00,pets,Amazon,training treats,True,,,expense
+62feaa96b8e76f75fc7893ce,15.0,2022-08-18 12:00:00,tax,Huntington,bounced check fee,True,,,expense
+630031beb8e76f75fc7893d0,10.17,2022-08-19 12:00:00,food,Wendys,,True,,,expense
+630031cab8e76f75fc7893d1,18.5,2022-08-19 12:00:00,food,Chipotle,,True,,,expense
+63021ed2b8e76f75fc7893d2,49.75,2022-08-20 12:00:00,car,Speedway,gas,True,,,expense
+63021ee1b8e76f75fc7893d3,88.1,2022-08-20 12:00:00,food,Lindey's,,True,,,expense
+63037e71b8e76f75fc7893d4,9.08,2022-08-21 12:00:00,food,Raisin Canes,,True,,,expense
+6303eff8b8e76f75fc7893d5,80.0,2022-08-22 12:00:00,other,,,True,,,expense
+63053cd0b8e76f75fc7893d8,15.22,2022-08-23 12:00:00,pets,TLC Grooming,nail trim,True,,,expense
+63053ce1b8e76f75fc7893d9,12.28,2022-08-23 12:00:00,food,Fusian,,True,,,expense
+63061483b8e76f75fc7893da,23.0,2022-08-23 12:00:00,food,Rodos,,True,,,expense
+6306148eb8e76f75fc7893db,107.49,2022-08-24 12:00:00,food,Rodos,,True,,,expense
+6306cdbfb8e76f75fc7893dd,91.72,2022-08-24 12:00:00,food,The Guild House,,True,,,expense
+6306cdffb8e76f75fc7893de,9.98,2022-08-24 12:00:00,food,Raisin Canes,,True,,,expense
+6306ce3ab8e76f75fc7893df,64.5,2022-08-24 12:00:00,fitness,Trapper Johns,,True,,,expense
+6306ce95b8e76f75fc7893e0,209.2,2022-08-24 12:00:00,home,Zola,wedding invitations,True,,,expense
+63081709b8e76f75fc7893e2,27.0,2022-08-25 12:00:00,food,Bamboo Thai,,True,,,expense
+6308171cb8e76f75fc7893e3,47.07,2022-08-25 12:00:00,home,Amazon,,True,,,expense
+6308bb87b8e76f75fc7893e4,150.0,2022-08-26 12:00:00,pets,Rachel,insurance,True,,,expense
+630957bbb8e76f75fc7893e7,13.78,2022-08-26 12:00:00,food,Brenz Pizza,,True,,,expense
+630a26efb8e76f75fc7893e8,90.54,2022-08-26 12:00:00,home,Lowes,,True,,,expense
+630b5733b8e76f75fc7893e9,11.0,2022-08-27 12:00:00,food,Rodos,,True,,,expense
+630b5748b8e76f75fc7893ea,21.45,2022-08-28 12:00:00,fitness,Esporta,membership,True,,,expense
+630b7de5b8e76f75fc7893eb,108.28,2022-08-28 12:00:00,home,Lowes,,True,,,expense
+630c0243b8e76f75fc7893ec,13.5,2022-08-28 12:00:00,food,Bamboo Thai,,True,,,expense
+630d2197b8e76f75fc7893ed,65.91,2022-08-29 12:00:00,grocery,Kroger,,True,,,expense
+630d21f9b8e76f75fc7893f0,10.57,2022-08-29 12:00:00,food,Wendys,,True,,,expense
+630e02d6b8e76f75fc7893f1,12.45,2022-08-29 12:00:00,food,Hot Chicken Takeover,,True,,,expense
+630e8452b8e76f75fc7893f3,23.77,2022-08-30 12:00:00,food,Brenz Pizza,,True,,,expense
+6310057fb8e76f75fc7893f5,105.62,2022-08-31 12:00:00,food,Martini,,True,,,expense
+63100591b8e76f75fc7893f6,3.0,2022-08-31 12:00:00,parking,City of Columbus,,True,,,expense
+63120d7db8e76f75fc7893f9,12.89,2022-09-02 12:00:00,entertainment,Apple,RHCP Unlimited Love,True,,,expense
+6312323ab8e76f75fc7893fb,25.36,2022-08-31 12:00:00,utility,Columbia Gas,,True,,,expense
+63123251b8e76f75fc7893fc,1130.31,2022-08-29 12:00:00,mortgage,Huntington,,True,,,expense
+63123260b8e76f75fc7893fd,25.0,2022-08-27 12:00:00,utility,Spectrum,,True,,,expense
+63123280b8e76f75fc7893fe,57.95,2022-08-19 12:00:00,utility,AEP,,True,,,expense
+631232d2b8e76f75fc7893ff,9.08,2022-08-08 12:00:00,food,Raisin Canes,,True,,,expense
+631530c3b8e76f75fc789400,10.0,2022-09-03 12:00:00,grocery,Cleveland Orchestra,water,True,,,expense
+631530ddb8e76f75fc789401,49.36,2022-09-02 12:00:00,car,Duchess,gas,True,,,expense
+631531a4b8e76f75fc789402,16.11,2022-09-03 12:00:00,entertainment,HBO,max subscription,True,,,expense
+6315355bb8e76f75fc789403,18.5,2022-09-04 12:00:00,food,Chipotle,,True,,,expense
+63167c86b8e76f75fc789404,226.64,2022-09-05 12:00:00,renovations,Lowes,,True,,,expense
+63168c4cb8e76f75fc789406,15.6,2022-09-05 12:00:00,food,Rodos,,True,,,expense
+63188a42b8e76f75fc789407,39.56,2022-09-06 12:00:00,renovations,Lowes,,True,,,expense
+63188a5fb8e76f75fc789408,9.98,2022-09-06 12:00:00,food,Raisin Canes,,True,,,expense
+63188a68b8e76f75fc789409,80.0,2022-09-06 12:00:00,other,,,True,,,expense
+63194363b8e76f75fc78940a,58.85,2022-09-07 12:00:00,car,Uhaul,truck rental,True,,,expense
+63194526b8e76f75fc78940b,662.67,2022-09-07 12:00:00,renovations,Home Depot,"Foam board insulation, 2x4's",True,,,expense
+6319d8bbb8e76f75fc78940c,56.97,2022-09-08 12:00:00,fitness,Whoop,Heather SuperKnit Band,True,,,expense
+6319daa7b8e76f75fc78940d,166.41,2022-09-08 12:00:00,renovations,Amazon,,True,,,expense
+631b4855b8e76f75fc78940f,18.25,2022-09-08 12:00:00,food,Bamboo Thai,,True,,,expense
+631bae5bb8e76f75fc789411,48.84,2022-09-09 12:00:00,car,Marathon,gas,True,,,expense
+631bae7ab8e76f75fc789412,145.99,2022-09-09 12:00:00,grocery,Kroger,,True,,,expense
+631baec7b8e76f75fc789413,16.95,2022-09-09 12:00:00,food,Hot Chicken Takeover,,True,,,expense
+631ca2efb8e76f75fc789414,1.06,2022-09-10 12:00:00,entertainment,Amazon,Showtime,True,,,expense
+631ca302b8e76f75fc789415,23.9,2022-09-10 12:00:00,renovations,Frank Rd C&D,garbage dump,True,,,expense
+631ca314b8e76f75fc789416,439.54,2022-09-10 12:00:00,renovations,Lowes,"Miter saw, etc",True,,,expense
+631d3cdcb8e76f75fc789417,20.41,2022-09-10 12:00:00,renovations,Amazon,,True,,,expense
+631d3d11b8e76f75fc789418,269.52,2022-09-10 12:00:00,renovations,Amazon,,True,,,expense
+631d3f6cb8e76f75fc78941a,80.24,2022-09-10 12:00:00,renovations,Lowes,,True,,,expense
+63207a48b8e76f75fc78941c,23.0,2022-09-11 12:00:00,food,Bamboo Thai,,True,,,expense
+6320f598b8e76f75fc78941f,43.39,2022-09-13 12:00:00,renovations,Home Depot,,True,,,expense
+6320f5a1b8e76f75fc789420,10.67,2022-09-13 12:00:00,food,Wendys,,True,,,expense
+63222a73b8e76f75fc789421,337.25,2022-09-14 12:00:00,home,US Post Office,Passport fees,True,,,expense
+63231c48b8e76f75fc789423,11.0,2022-09-14 12:00:00,food,Rodos,,True,,,expense
+6324690d6131594f3c6ef7a3,27.0,2022-09-15 12:00:00,food,Bamboo Thai,,True,,,expense
+6325adc3c861a33cbeaea145,18.75,2022-09-16 12:00:00,food,Brenz Pizza,,True,,,expense
+6325addfc861a33cbeaea146,100.45,2022-09-16 12:00:00,utility,City of Columbus,water bill,True,,,expense
+632677ecc861a33cbeaea147,418.18,2022-09-17 12:00:00,clothing,Express,suit,True,,,expense
+632677fec861a33cbeaea148,13.6,2022-09-17 12:00:00,food,Chipotle,,True,,,expense
+6326780dc861a33cbeaea149,356.34,2022-09-17 12:00:00,renovations,Home Depot,,True,,,expense
+6326781cc861a33cbeaea14a,140.94,2022-09-17 12:00:00,renovations,Home Depot,,True,,,expense
+63267828c861a33cbeaea14b,50.2,2022-09-17 12:00:00,renovations,Uhaul,,True,,,expense
+6327736dc861a33cbeaea14c,51.3,2022-09-18 12:00:00,utility,AEP,electric,True,,,expense
+6329b22fc861a33cbeaea14e,101.0,2022-09-01 12:00:00,fitness,CRPDSports,league fees,True,,,expense
+6329bcbcc861a33cbeaea14f,9.98,2022-09-19 12:00:00,food,Raisin Canes,,True,,,expense
+632afb20c861a33cbeaea151,30.63,2022-09-20 12:00:00,renovations,Lowes,,True,,,expense
+632afb2cc861a33cbeaea152,78.52,2022-09-20 12:00:00,grocery,Kroger,,True,,,expense
+632b8688c861a33cbeaea154,577.46,2022-09-21 12:00:00,car,Wrench n Roll,,True,,,expense
+632b8696c861a33cbeaea155,27.0,2022-09-21 12:00:00,food,Bamboo Thai,,True,,,expense
+632dd8d6c861a33cbeaea159,21.74,2022-09-23 12:00:00,home,Columbia Gas,,True,,,expense
+632efde8c861a33cbeaea15a,10.47,2022-09-23 12:00:00,food,Wendys,,True,,,expense
+632efdf1c861a33cbeaea15b,9.98,2022-09-23 12:00:00,food,Raisin Canes,,True,,,expense
+632f71a5c861a33cbeaea15c,140.2,2022-09-24 12:00:00,renovations,Lowes,2x4's,True,,,expense
+632f71bcc861a33cbeaea15d,35.27,2022-09-24 12:00:00,renovations,Uhaul,,True,,,expense
+632f71cdc861a33cbeaea15e,80.89,2022-09-24 12:00:00,home,Amazon,,True,,,expense
+632f736dc861a33cbeaea15f,808.5,2022-09-23 12:00:00,mortgage,Huntington,,True,,,expense
+632f737fc861a33cbeaea160,25.0,2022-09-27 12:00:00,utility,Spectrum,inter,True,,,expense
+632f738dc861a33cbeaea161,26.1,2022-09-29 12:00:00,utility,Columbia Gas,,True,,,expense
+633248e1c861a33cbeaea163,51.85,2022-09-26 12:00:00,car,Marathon,gas,True,,,expense
+633248ebc861a33cbeaea164,31.75,2022-09-26 12:00:00,food,Bamboo Thai,,True,,,expense
+6333627dc861a33cbeaea166,90.96,2022-09-27 12:00:00,grocery,Kroger,,True,,,expense
+6333629cc861a33cbeaea167,10.15,2022-09-27 12:00:00,food,Chipotle,,True,,,expense
+63343232c861a33cbeaea168,21.45,2022-09-28 12:00:00,fitness,Esporta,membership,True,,,expense
+6334d185c861a33cbeaea16b,170.0,2022-09-28 12:00:00,pets,5th & Kenny Vet,Cosmo 1 year appointment,True,,,expense
+6334d19dc861a33cbeaea16c,78.95,2022-09-28 12:00:00,home,Franklin County Court,Marriage License,True,,,expense
+6334d1afc861a33cbeaea16d,67.87,2022-09-28 12:00:00,home,Amazon,,True,,,expense
+63387962a9b8a820b8483fa0,13.5,2022-09-30 12:00:00,food,Bamboo Thai,,True,,,expense
+6338797ba9b8a820b8483fa1,163.6,2022-10-01 12:00:00,renovations,Lowes,,True,,,expense
+63387ac7a9b8a820b8483fa2,373.0,2022-10-01 12:00:00,insurance,Root,car,True,,,expense
+6339a79aa9b8a820b8483fa3,52.2,2022-09-30 12:00:00,utility,Columbia Gas,gas,True,,,expense
+6339a827a9b8a820b8483fa4,6.0,2022-10-02 12:00:00,parking,City of Columbus,,True,,,expense
+633a0f85a9b8a820b8483fa5,41.88,2022-10-02 12:00:00,home,Amazon,"tie, belt, pocket square",True,,,expense
+633a0fb9a9b8a820b8483fa7,27.0,2022-10-02 12:00:00,food,Bamboo Thai,,True,,,expense
+633ad97aa9b8a820b8483fa8,78.55,2022-10-02 12:00:00,renovations,Lowes,,True,,,expense
+633b24a6a9b8a820b8483fa9,16.11,2022-10-03 12:00:00,entertainment,HBO,subscription,True,,,expense
+633c66dfa9b8a820b8483fab,9.98,2022-10-03 12:00:00,food,Raisin Canes,,True,,,expense
+633d76f7a9b8a820b8483fad,92.9,2022-10-04 12:00:00,grocery,Kroger,,True,,,expense
+63415b3da9b8a820b8483fb2,128.26,2022-10-08 12:00:00,renovations,Lowes,12/2 cable,True,,,expense
+6344110a262217c2cf7f45e7,31.53,2022-10-09 12:00:00,renovations,Lowes,,True,,,expense
+63441119262217c2cf7f45e8,31.75,2022-10-09 12:00:00,food,Bamboo Thai,,True,,,expense
+6344137c262217c2cf7f45e9,30.0,2022-10-08 12:00:00,financial,Synchrony,late fee,True,,,expense
+63442937262217c2cf7f45ea,78.91,2022-10-10 12:00:00,home,Amazon,"kettle, Kai present, monkey shirt",True,,,expense
+63442a00262217c2cf7f45eb,119.68,2022-10-10 12:00:00,renovations,Amazon,garage lights,True,,,expense
+6345621f262217c2cf7f45ed,9.98,2022-10-10 12:00:00,food,Raisin Canes,,True,,,expense
+6345625f262217c2cf7f45ee,22.98,2022-10-11 12:00:00,entertainment,Amazon,Rick and Morty S6,True,,,expense
+6346c1c4262217c2cf7f45f1,85.19,2022-10-11 12:00:00,grocery,Kroger,,True,,,expense
+63487a9c262217c2cf7f45f4,160.15,2022-10-13 12:00:00,home,Amazon,"mirror, socks",True,,,expense
+6349e9f4262217c2cf7f45f6,56.56,2022-10-14 12:00:00,car,Marathon,gas,True,,,expense
+6349ea2d262217c2cf7f45f7,20.0,2022-10-13 12:00:00,entertainment,Yahoo,Fantasy basketball league fee,True,,,expense
+634d4c400b5190d0aedfec38,31.75,2022-10-16 12:00:00,food,Bamboo Thai,,True,,,expense
+634ec5f90b5190d0aedfec3a,9.98,2022-10-17 12:00:00,food,Raisin Canes,,True,,,expense
+634ec7290b5190d0aedfec3c,14.68,2022-10-16 12:00:00,financial,Synchrony,interest charge,True,,,expense
+634edcd00b5190d0aedfec3d,50.82,2022-10-17 12:00:00,utility,AEP,electric,True,,,expense
+634f3f570b5190d0aedfec3f,10.15,2022-10-18 12:00:00,food,Chipotle,,True,,,expense
+634f3f640b5190d0aedfec40,67.57,2022-10-18 12:00:00,grocery,Kroger,,True,,,expense
+6350a4a40b5190d0aedfec42,100.0,2022-10-19 12:00:00,home,Kim,Wedding Officiant,True,,,expense
+6353499e0b5190d0aedfec46,71.57,2022-10-21 12:00:00,grocery,Kroger,,True,,,expense
+63534b380b5190d0aedfec47,36.04,2022-10-21 12:00:00,home,Amazon,,True,,,expense
+63534e930b5190d0aedfec48,68.0,2022-10-03 12:00:00,fitness,CRPDSports,league fees,True,,,expense
+63540e0c0b5190d0aedfec4a,184.43,2022-10-22 12:00:00,grocery,Aldi,wedding party supplies,True,,,expense
+635687dc0b5190d0aedfec4b,17.37,2022-10-23 12:00:00,grocery,Kroger,,True,,,expense
+6357d9880b5190d0aedfec4d,9.98,2022-10-24 12:00:00,food,Raisin Canes,,True,,,expense
+635a9c710b5190d0aedfec4f,25.0,2022-10-27 12:00:00,utility,Spectrum,internet,True,,,expense
+635ac7194a0cebecc6a13440,10.15,2022-10-27 12:00:00,food,Chipotle,,True,,,expense
+635ac8304a0cebecc6a13441,52.91,2022-10-27 12:00:00,home,Amazon,books,True,,,expense
+635b12a44a0cebecc6a13442,80.0,2022-10-27 12:00:00,other,,,True,,,expense
+635bce1c4a0cebecc6a13443,21.45,2022-10-28 12:00:00,fitness,Esporta,,True,,,expense
+635d43f68a41bed520499fbd,43.98,2022-10-28 12:00:00,food,Tuccis,,True,,,expense
+635d44068a41bed520499fbe,22.28,2022-10-28 12:00:00,food,New China Express,,True,,,expense
+635d44128a41bed520499fbf,32.24,2022-10-29 12:00:00,home,Kroger,mixer,True,,,expense
+635d44218a41bed520499fc0,5.97,2022-10-29 12:00:00,grocery,Luckys,,True,,,expense
+635d44318a41bed520499fc1,15.97,2022-10-29 12:00:00,food,McDonalds,,True,,,expense
+635d44468a41bed520499fc2,288.12,2022-10-29 12:00:00,home,Orchard Lane Flowers,,True,,,expense
+635ef457bd5aea601d21ece0,54.18,2022-10-30 12:00:00,grocery,Kroger,gas,True,,,expense
+635ef4ddbd5aea601d21ece1,1182.35,2022-10-29 12:00:00,food,Lindeys,,True,,,expense
+635fbf69bd5aea601d21ece2,34.53,2022-10-31 12:00:00,utility,Columbia Gas,,True,,,expense
+635fbf7abd5aea601d21ece3,48.84,2022-10-30 12:00:00,car,Turkey Hill,gas,True,,,expense
+635fbfc9bd5aea601d21ece4,716.0,2022-10-21 12:00:00,mortgage,Huntington,,True,,,expense
+63611244bd5aea601d21ece5,9.98,2022-10-31 12:00:00,food,Raisin Canes,,True,,,expense
+63640cf3b23784ca89e3e35f,16.11,2022-11-03 12:00:00,entertainment,HBO,max subscription,True,,,expense
+636509eeb23784ca89e3e360,18.25,2022-11-03 12:00:00,food,Bamboo Thai,,True,,,expense
+63666dc4b23784ca89e3e362,71.96,2022-11-04 12:00:00,grocery,Kroger,,True,,,expense
+6367afc832173d20f4af0f76,78.72,2022-11-05 12:00:00,renovations,Lowes,,True,,,expense
+6367afdf32173d20f4af0f77,200.0,2022-11-05 12:00:00,home,,chairs,True,,,expense
+6367affa32173d20f4af0f78,24.5,2022-11-05 12:00:00,food,Aab Indian,,True,,,expense
+6367b00a32173d20f4af0f79,16.0,2022-11-05 12:00:00,food,Lion Cub's Cookies,,True,,,expense
+636809a37458b268e73123f2,84.29,2022-11-06 12:00:00,grocery,Kroger,,True,,,expense
+636a76f87a34bc6b5864a3d3,11.9,2022-11-07 12:00:00,food,Whit's,,True,,,expense
+636a77057a34bc6b5864a3d4,3.98,2022-11-07 12:00:00,food,Come & Go,,True,,,expense
+636a77167a34bc6b5864a3d5,9.98,2022-11-07 12:00:00,food,Raisin Canes,,True,,,expense
+636c4fd97a34bc6b5864a3d6,1.8,2022-11-09 12:00:00,food,Chipotle,,True,,,expense
+636d1997b883f48667d6070a,136.98,2022-11-10 12:00:00,utility,City of Columbus,water,True,,,expense
+63714589b883f48667d6070b,15.88,2022-11-11 12:00:00,food,First Watch,,True,,,expense
+63714594b883f48667d6070c,66.56,2022-11-11 12:00:00,car,Shell,gas,True,,,expense
+637145a8b883f48667d6070d,36.2,2022-11-11 12:00:00,food,Aladdins,,True,,,expense
+637145bcb883f48667d6070e,10.98,2022-11-12 12:00:00,car,Uber,,True,,,expense
+637145cbb883f48667d6070f,23.83,2022-11-13 12:00:00,food,McDonalds,,True,,,expense
+6371944cb883f48667d60710,30.02,2022-11-13 12:00:00,car,Turkey Hill,,True,,,expense
+63719463b883f48667d60711,10.15,2022-11-13 12:00:00,food,Chipotle,,True,,,expense
+637396f6b883f48667d60712,18.25,2022-11-14 12:00:00,food,Bamboo Thai,,True,,,expense
+63744978b883f48667d60713,121.19,2022-11-15 12:00:00,grocery,Kroger,,True,,,expense
+63756e821f29e6ec723eb3c1,10.3,2022-11-16 12:00:00,home,Franklin County Court,marriage abstracts,True,,,expense
+63767c641f29e6ec723eb3c3,30.81,2022-11-17 12:00:00,home,Amazon,"kettle, mouse pad, screen protectors",True,,,expense
+6377c9271f29e6ec723eb3c4,110.0,2022-11-18 12:00:00,home,Cinch,HVAC service deductible,True,,,expense
+63783d641f29e6ec723eb3c5,9.99,2022-11-18 12:00:00,food,Dave's Hot Chicken,,True,,,expense
+63791b351f29e6ec723eb3c6,174.45,2022-11-19 12:00:00,clothing,Kohls,"sweats, jeans",True,,,expense
+6379612d0007eec568de70f0,80.0,2022-11-19 12:00:00,other,,,True,,,expense
+6379613e0007eec568de70f1,52.84,2022-11-19 12:00:00,car,Speedway,gas,True,,,expense
+637ad22a824e964c0c4d5c01,32.45,2022-11-20 12:00:00,food,Huong,,True,,,expense
+637c1de5824e964c0c4d5c02,9.98,2022-11-21 12:00:00,food,Raisin Canes,,True,,,expense
+637d33c5824e964c0c4d5c03,149.43,2022-11-22 12:00:00,home,Amazon,prime membership,True,,,expense
+6380d1d98224e0f49775fdf0,68.11,2022-11-23 12:00:00,grocery,Kroger,,True,,,expense
+6380d1e58224e0f49775fdf1,1.8,2022-11-23 12:00:00,food,Chipotle,,True,,,expense
+6380d1f28224e0f49775fdf2,53.48,2022-11-23 12:00:00,food,Hound Dogs,,True,,,expense
+6380e9648224e0f49775fdf3,29.77,2022-11-17 12:00:00,utility,AEP,electric,True,,,expense
+6380e9778224e0f49775fdf4,619.73,2022-11-17 12:00:00,mortgage,Huntington,,True,,,expense
+63828095b0ee1fa206d67b09,1255.66,2022-12-14 12:00:00,mortgage,Huntington,,True,,,expense
+63829a46e8784c15d1823b10,50.0,2022-12-27 12:00:00,utility,Spectrum,internet,True,,,expense
+63829a46e8784c15d1823b11,56.73,2022-12-19 12:00:00,utility,AEP,electric,True,,,expense
+63829c3b64fbd9f9bb011da1,247.71,2023-01-03 12:00:00,utility,Columbia Gas,gas,True,,,expense
+63829ce0df997adad6e1aeb8,118.61,2022-12-01 12:00:00,utility,Columbia Gas,gas,True,,,expense
+63837ac89d590bd724f54635,25.0,2022-11-27 12:00:00,utility,Spectrum,internet,True,,,expense
+6384de7125a760b85365d631,21.45,2022-11-28 12:00:00,fitness,Esporta,membership,True,,,expense
+6385803525a760b85365d632,9.98,2022-11-28 12:00:00,food,Raisin Canes,,True,,,expense
+6388b1ab0c97596e99a76d36,31.75,2022-11-30 12:00:00,food,Bamboo Thai,,True,,,expense
+638a261d43e9033c3efc0bb8,10.67,2022-12-01 12:00:00,food,Wendys,,True,,,expense
+638ab4ba43e9033c3efc0bb9,10.15,2022-12-02 12:00:00,food,Chipotle,,True,,,expense
+638ab4cb43e9033c3efc0bba,9.98,2022-12-02 12:00:00,food,Raisin Canes,,True,,,expense
+638b604343e9033c3efc0bbb,16.11,2022-12-03 12:00:00,entertainment,HBO Max,subscription,True,,,expense
+638b651943e9033c3efc0bbc,263.51,2022-12-03 12:00:00,home,Amazon,"Kitchenaide mixer, book",True,,,expense
+638ba7b643e9033c3efc0bbd,30.17,2022-12-03 12:00:00,renovations,U-Haul,van rental,True,,,expense
+638ba7d643e9033c3efc0bbe,130.39,2022-12-03 12:00:00,renovations,Lowes,"drywall, plywood",True,,,expense
+638bc1d043e9033c3efc0bbf,80.0,2022-12-03 12:00:00,other,,,True,,,expense
+638cb87afae90ed881d7f36c,1258.69,2023-01-24 12:00:00,mortgage,Huntington,,True,,,expense
+638cb87afae90ed881d7f36d,64.99,2023-01-27 12:00:00,utility,Spectrum,internet,True,,,expense
+638cb87afae90ed881d7f36e,80.52,2023-01-20 12:00:00,utility,AEP,electric,True,,,expense
+638cb87afae90ed881d7f36f,350.13,2023-02-02 12:00:00,utility,Columbia Gas,gas,True,,,expense
+638cb87afae90ed881d7f370,21.45,2023-01-28 12:00:00,fitness,Esporta,membership,True,,,expense
+638cb87afae90ed881d7f371,16.11,2023-01-03 12:00:00,entertainment,HBO,subscription,True,,,expense
+638cb8addeb55d2354e95886,21.45,2022-12-28 12:00:00,fitness,Esporta,membership,True,,,expense
+638fac4c13e318e1a84ba48c,100.76,2022-12-06 12:00:00,grocery,Kroger,,True,,,expense
+638fac5913e318e1a84ba48d,10.15,2022-12-06 12:00:00,food,Chipotle,,True,,,expense
+63912f4513e318e1a84ba48e,87.94,2022-12-07 12:00:00,food,Olive Garden,,True,,,expense
+6393e55913e318e1a84ba48f,12.28,2022-12-09 12:00:00,food,Fusian,,True,,,expense
+6393e5a013e318e1a84ba490,46.68,2022-12-09 12:00:00,car,United Dairy Farmers,,True,,,expense
+6393e5c613e318e1a84ba491,1100.0,2022-12-09 12:00:00,vacation,All Inclusive Outlet,,True,,,expense
+6394ae5c13e318e1a84ba492,13.43,2022-12-10 12:00:00,electronics,Apple,Air Pods payment,True,,,expense
+6394b34013e318e1a84ba493,33.4,2022-12-10 12:00:00,renovations,Lowes,,True,,,expense
+63953c7113e318e1a84ba494,31.75,2022-12-10 12:00:00,food,Bamboo Thai,,True,,,expense
+63962a9013e318e1a84ba495,40.94,2022-12-11 12:00:00,renovations,Lowes,,True,,,expense
+639780cc13e318e1a84ba496,13.99,2022-12-12 12:00:00,food,Dave's Hot Chicken,,True,,,expense
+6398f23713e318e1a84ba497,49.0,2022-12-13 12:00:00,home,Amazon,,True,,,expense
+6399d79b13e318e1a84ba498,91.09,2022-12-13 12:00:00,grocery,Kroger,,True,,,expense
+639a3b0c13e318e1a84ba49a,16.09,2022-12-13 12:00:00,entertainment,Amazon,Sherlock Season 1,True,,,expense
+639b2fb113e318e1a84ba49c,31.75,2022-12-14 12:00:00,food,Bamboo Thai,,True,,,expense
+639b970e13e318e1a84ba49d,42.22,2022-12-15 12:00:00,home,Amazon,books,True,,,expense
+639caf4113e318e1a84ba49f,18.27,2022-12-16 12:00:00,pets,TLC Grooming,Cosmo nail trim,True,,,expense
+639caf6413e318e1a84ba4a0,10.67,2022-12-16 12:00:00,food,Wendys,,True,,,expense
+639f4cfe13e318e1a84ba4a1,38.78,2022-12-17 12:00:00,food,AMC Easton,,True,,,expense
+639f4d0d13e318e1a84ba4a2,7.14,2022-12-18 12:00:00,renovations,Lowes,,True,,,expense
+639f4d3013e318e1a84ba4a3,240.0,2022-12-18 12:00:00,fitness,Whoop,membership,True,,,expense
+63a3bc7313e318e1a84ba4a5,18.25,2022-12-21 12:00:00,food,Bamboo Thai,,True,,,expense
+63a8d3a613e318e1a84ba4a6,21.85,2022-12-22 12:00:00,food,Burger King,,True,,,expense
+63a8d3cc13e318e1a84ba4a7,42.06,2022-12-25 12:00:00,car,Shell,gas,True,,,expense
+63a8d42613e318e1a84ba4a8,22.7,2022-12-25 12:00:00,food,Starbucks,,True,,,expense
+63a9f11e13e318e1a84ba4a9,62.45,2022-12-26 12:00:00,home,Home Depot,,True,,,expense
+63a9f13e13e318e1a84ba4aa,9.98,2022-12-20 12:00:00,food,Raisin Canes,,True,,,expense
+63aa529f13e318e1a84ba4ab,50.05,2022-12-26 12:00:00,home,Amazon,,True,,,expense
+63adff209ecb039c9a259e05,9.98,2022-12-29 12:00:00,fast food,Raisin Canes,,True,,,expense
+63b05711cf3bd868c3249174,85.77,2022-12-30 12:00:00,wood,Woodcraft,"7.9 board ft, white oak",True,,,expense
+63b05724cf3bd868c3249175,10.15,2022-12-30 12:00:00,fast food,Chipotle,,True,,,expense
+63b05735cf3bd868c3249176,65.48,2022-12-30 12:00:00,grocery,Kroger,,True,,,expense
+63b0e6c2cf3bd868c3249178,44.44,2022-12-31 12:00:00,maintenance,Lowes,air filters,True,,,expense
+63b1135042032d221f0d13f8,1300.0,2023-02-09 12:00:00,mortgage,Huntington,,True,,,expense
+63b1135042032d221f0d13f9,125.01,2023-02-14 12:00:00,utility,City of Columbus,water,True,,,expense
+63b1135042032d221f0d13fa,64.99,2023-02-27 12:00:00,utility,Spectrum,internet,True,,,expense
+63b1135042032d221f0d13fb,58.4,2023-02-21 12:00:00,utility,AEP,electric,True,,,expense
+63b1135042032d221f0d13fc,174.49,2023-03-07 12:00:00,utility,Columbia Gas,gas,True,,,expense
+63b1135042032d221f0d13fd,21.45,2023-02-28 12:00:00,fitness,Esporta,membership,True,,,expense
+63b1135042032d221f0d13fe,16.11,2023-02-03 12:00:00,entertainment,HBO,subscription,True,,,expense
+63b2f70c42032d221f0d13ff,31.75,2023-01-01 12:00:00,fast food,Bamboo Thai,,True,,,expense
+63b42bf66bd1c51c2273b149,29.72,2023-01-02 12:00:00,maintenance,Lowes,,True,,,expense
+63b433316bd1c51c2273b14a,24.06,2023-01-03 12:00:00,electronics,Apple,,True,,,expense
+63b5ce496bd1c51c2273b14b,91.44,2023-01-04 12:00:00,pets,Petco,dog food,True,,,expense
+63b5ce586bd1c51c2273b14c,9.98,2023-01-04 12:00:00,fast food,Raisin Canes,,True,,,expense
+63b604c06bd1c51c2273b14d,1100.0,2023-01-04 12:00:00,vacation,All Inclusive Outlet,Honeymoon trip,True,,,expense
+63b740e06bd1c51c2273b14e,10.15,2023-01-05 12:00:00,fast food,Chipotle,,True,,,expense
+63b789596bd1c51c2273b14f,46.8,2023-01-05 12:00:00,car,Duchess,gas,True,,,expense
+63b789676bd1c51c2273b150,20.5,2023-01-05 12:00:00,fast food,Bamboo Thai,,True,,,expense
+63c2d97b6bd1c51c2273b151,80.0,2023-01-06 12:00:00,other,,,True,,,expense
+63c2d9ca6bd1c51c2273b152,11.58,2023-01-06 12:00:00,fast food,Famiglia MCO,,True,,,expense
+63c2d9f36bd1c51c2273b153,5.0,2023-01-06 12:00:00,vacation,driver,tip,True,,,expense
+63c2da2b6bd1c51c2273b154,20.0,2023-01-06 12:00:00,fast food,MBJ bar,drinks,True,,,expense
+63c2da446bd1c51c2273b155,14.0,2023-01-06 12:00:00,other,Cigar boutique,,True,,,expense
+63c2da6b6bd1c51c2273b156,5.0,2023-01-07 12:00:00,home,Bahia gift shop,bandaids,True,,,expense
+63c2da9d6bd1c51c2273b157,200.0,2023-01-07 12:00:00,vacation,Jamaica Tours,Reggae/Culture tour,True,,,expense
+63c2dabe6bd1c51c2273b158,85.0,2023-01-10 12:00:00,other,Bob Marley Foundation,,True,,,expense
+63c2dacf6bd1c51c2273b159,20.0,2023-01-10 12:00:00,vacation,Tour Guide,tip,True,,,expense
+63c2dafb6bd1c51c2273b15a,69.0,2023-01-10 12:00:00,vacation,Bahia gift shop,coffee gifts,True,,,expense
+63c2db3e6bd1c51c2273b15c,887.87,2023-01-12 12:00:00,vacation,All Inclusive Outlet,,True,,,expense
+63c2dcac6bd1c51c2273b15e,88.83,2023-01-13 12:00:00,wood,Amazon,knife sharpener,True,,,expense
+63c2dcbd6bd1c51c2273b15f,27.96,2023-01-13 12:00:00,pets,Amazon,treats,True,,,expense
+63c2dcd16bd1c51c2273b160,10.69,2023-01-13 12:00:00,home,Amazon,dad book,True,,,expense
+63c2dcea6bd1c51c2273b161,45.0,2023-01-13 12:00:00,dining,MBJ Bobsled cafe,,True,,,expense
+63c2fd266bd1c51c2273b162,18.5,2023-01-14 12:00:00,fast food,Chipotle,,True,,,expense
+63c543f47d6c6956b75f5cc3,31.75,2023-01-15 12:00:00,fast food,Bamboo Thai,,True,,,expense
+63c7ffa87d6c6956b75f5cc4,10.15,2023-01-17 12:00:00,fast food,Chipotle,,True,,,expense
+63c7ffb87d6c6956b75f5cc5,80.0,2023-01-17 12:00:00,other,,,True,,,expense
+63c800567d6c6956b75f5cc6,12.95,2023-01-16 12:00:00,grocery,Hello Fresh,,True,,,expense
+63c84fca7d6c6956b75f5cc7,85.0,2023-01-18 12:00:00,pets,5th & Kenny Vet,appointment & medicine,True,,,expense
+63c95fbfea1e2ce21b755742,92.5,2023-01-18 12:00:00,grocery,Kroger,,True,,,expense
+63c95fd7ea1e2ce21b755743,8.48,2023-01-18 12:00:00,fast food,Wendys,,True,,,expense
+63ca914fea1e2ce21b755744,10.74,2023-01-19 12:00:00,entertainment,Amazon,Sherlock S2,True,,,expense
+63cfda39ea1e2ce21b755746,9.98,2023-01-23 12:00:00,fast food,Raisin Canes,,True,,,expense
+63d05cb4ea1e2ce21b755747,71.38,2023-01-22 12:00:00,grocery,Kroger,,True,,,expense
+63d69d2a76f231f570cccc68,120.17,2023-01-28 12:00:00,renovations,Home Depot,paint,True,,,expense
+63d6e0f276f231f570cccc69,78.88,2023-01-29 12:00:00,grocery,Kroger,,True,,,expense
+63d922df76f231f570cccc6b,9.98,2023-01-30 12:00:00,fast food,Raisin Canes,,True,,,expense
+63de918c8384387c12499592,5.4,2023-02-03 12:00:00,maintenance,Lowes,,True,,,expense
+63de919d8384387c12499593,11.07,2023-02-03 12:00:00,fast food,Wendys,,True,,,expense
+63de91ae8384387c12499594,14.49,2023-02-04 12:00:00,maintenance,Lowes,,True,,,expense
+63de91c28384387c12499595,113.62,2023-02-04 12:00:00,grocery,Kroger,,True,,,expense
+63dfc8e88384387c12499596,68.0,2022-12-05 12:00:00,fitness,CRPDSports,basketball fees,True,,,expense
+63dfd09c8384387c12499597,29.83,2023-02-05 12:00:00,electronics,Apple,air pods payment,True,,,expense
+63e015588384387c12499598,5.58,2023-02-05 12:00:00,maintenance,Lowes,,True,,,expense
+63e2586aacdd7695d85b5fc9,9.98,2023-02-06 12:00:00,fast food,Raisin Canes,,True,,,expense
+63e50f5bd8261d2289c069b2,10.0,2023-01-17 12:00:00,bank fee,Huntington,monthly checking fee,True,,,expense
+63e630e9d8261d2289c069b3,31.75,2023-02-09 12:00:00,fast food,Bamboo Thai,,True,,,expense
+63e70b60d8261d2289c069b4,83.27,2023-02-10 12:00:00,home,Amazon,,True,,,expense
+63e7d416d8261d2289c069b5,10.7,2023-02-11 12:00:00,home,Amazon,,True,,,expense
+63e7d439d8261d2289c069b6,37.63,2023-02-11 12:00:00,renovations,Lowes,Carpet measurement,True,,,expense
+63e813c8d8261d2289c069b7,80.0,2023-02-11 12:00:00,other,,,True,,,expense
+63e85918d8261d2289c069b8,93.77,2023-02-11 12:00:00,dining,Daruma,,True,,,expense
+63eb967ad8261d2289c069b9,14.61,2023-02-13 12:00:00,car,Lyft,,True,,,expense
+63eb96bed8261d2289c069ba,10.15,2023-02-13 12:00:00,fast food,Chipotle,,True,,,expense
+63ecdc28d8261d2289c069bb,14.04,2023-02-14 12:00:00,fast food,Raisin Canes,,True,,,expense
+63f0e8e15ca327821f3685b1,162.65,2023-02-17 12:00:00,grocery,Kroger,,True,,,expense
+63f0e8fd5ca327821f3685b2,36.23,2023-02-17 12:00:00,fast food,Brenz Pizza,,True,,,expense
+63f0ea1c5ca327821f3685b3,1208.69,2023-03-17 12:00:00,mortgage,Huntington,,True,,,expense
+63f0ea1d5ca327821f3685b4,64.99,2023-03-27 12:00:00,utility,Spectrum,internet,True,,,expense
+63f0ea1d5ca327821f3685b5,72.67,2023-03-22 12:00:00,utility,AEP,electric,True,,,expense
+63f0ea1d5ca327821f3685b6,137.87,2023-04-05 12:00:00,utility,Columbia Gas,gas,True,,,expense
+63f0ea1d5ca327821f3685b7,21.45,2023-03-28 12:00:00,fitness,Esporta,membership,True,,,expense
+63f0ea1d5ca327821f3685b8,17.19,2023-03-03 12:00:00,entertainment,HBO,subscription,True,,,expense
+63f0f44e5ca327821f3685b9,0.21,2023-02-18 12:00:00,home,Staples,print job,True,,,expense
+63f1620d5ca327821f3685ba,7.51,2023-02-18 12:00:00,home,Staples,,True,,,expense
+63f162205ca327821f3685bb,34.2,2023-02-18 12:00:00,car,Marathon,gas,True,,,expense
+63f3b7095ca327821f3685bc,5.0,2023-02-20 12:00:00,car,The UPS Store,notary,True,,,expense
+63f3b7195ca327821f3685bd,10.15,2023-02-20 12:00:00,fast food,Chipotle,,True,,,expense
+63f403cc5ca327821f3685be,647.25,2023-02-20 12:00:00,renovations,Lowes,carpet installation,True,,,expense
+63f4e0505ca327821f3685bf,18.25,2023-02-20 12:00:00,fast food,Bamboo Thai,,True,,,expense
+63f4e09c5ca327821f3685c0,10.0,2023-02-13 12:00:00,bank fee,Huntington,monthly checking fee,True,,,expense
+63f910a65ca327821f3685c4,50.0,2023-02-24 12:00:00,car,Wrench n Roll,finders fee,True,,,expense
+63fdf88bc06cc90677e63a25,9.98,2023-02-27 12:00:00,fast food,Raisin Canes,,True,,,expense
+63fedbd0c06cc90677e63a26,1258.69,2023-04-21 12:00:00,mortgage,Huntington,,True,,,expense
+63fedbd0c06cc90677e63a28,64.99,2023-04-27 12:00:00,utility,Spectrum,internet,True,,,expense
+63fedbd0c06cc90677e63a29,67.9,2023-04-20 12:00:00,utility,AEP,electric,True,,,expense
+63fedbd0c06cc90677e63a2a,118.09,2023-05-08 12:00:00,utility,Columbia Gas,gas,True,,,expense
+63fedbd0c06cc90677e63a2b,21.45,2023-04-28 12:00:00,fitness,Esporta,membership,True,,,expense
+63fedbd0c06cc90677e63a2c,17.19,2023-04-03 12:00:00,entertainment,HBO,subscription,True,,,expense
+64001111c06cc90677e63a2d,19.25,2023-02-28 12:00:00,fast food,Chipotle,,True,,,expense
+64001150c06cc90677e63a2e,11.9,2023-03-01 12:00:00,fast food,Whit's,,True,,,expense
+640104efc06cc90677e63a2f,14.58,2023-03-02 12:00:00,fast food,Firehouse Subs,,True,,,expense
+64010506c06cc90677e63a30,42.53,2023-03-02 12:00:00,car,Marathon,gas,True,,,expense
+6401053fc06cc90677e63a31,300.99,2023-03-02 12:00:00,home,Wayfair,rocker chair,True,,,expense
+64016eacc06cc90677e63a32,9.98,2023-03-02 12:00:00,fast food,Raisin Canes,,True,,,expense
+64041360c06cc90677e63a33,37.46,2023-03-04 12:00:00,car,BP,gas,True,,,expense
+6404137dc06cc90677e63a34,29.07,2023-03-04 12:00:00,fast food,First Watch,,True,,,expense
+640413a5c06cc90677e63a35,65.0,2023-03-04 12:00:00,dining,Blue Sushi,,True,,,expense
+64051294c06cc90677e63a36,99.81,2023-03-05 12:00:00,renovations,Lowes,,True,,,expense
+6405e83bc06cc90677e63a37,6.0,2023-03-04 12:00:00,parking,Cleveland Mall,,True,,,expense
+6405e854c06cc90677e63a38,31.75,2023-03-05 12:00:00,fast food,Bamboo Thai,,True,,,expense
+6407ac98c06cc90677e63a39,31.18,2023-03-07 12:00:00,entertainment,chess.com,subscription,True,,,expense
+6407acd7c06cc90677e63a3a,29.54,2023-03-07 12:00:00,electronics,Apple,Air Pods payment,True,,,expense
+6407ad28c06cc90677e63a3b,80.0,2023-03-07 12:00:00,other,,,True,,,expense
+6408bc58c06cc90677e63a3c,11.07,2023-03-07 12:00:00,fast food,Wendys,,True,,,expense
+640b8ca315923760e517b681,56.5,2023-03-10 12:00:00,home,Amazon,"dog treats, supplements",True,,,expense
+640cc6fb15923760e517b684,74.42,2023-03-11 12:00:00,renovations,Lowes,,True,,,expense
+640cc71115923760e517b685,51.6,2023-03-11 12:00:00,renovations,Lowes,,True,,,expense
+640dce1b15923760e517b686,90.52,2023-03-11 12:00:00,dining,Lola & Guiseppie's,,True,,,expense
+641070b052dec2640c2e97c4,18.25,2023-03-13 12:00:00,fast food,Bamboo Thai,,True,,,expense
+6411159652dec2640c2e97c5,575.85,2023-03-14 12:00:00,renovations,Mr Electric,circuit to garage subpanel,True,,,expense
+641115b252dec2640c2e97c6,37.8,2023-03-14 12:00:00,car,Speedway,gas,True,,,expense
+64123d5c52dec2640c2e97c7,25.0,2023-03-15 12:00:00,entertainment,Kevin Kuntz,March Madness bracket,True,,,expense
+64147f4052dec2640c2e97c9,68.0,2023-03-13 12:00:00,fitness,CRPDSports,basketball fees,True,,,expense
+6415bd9a52dec2640c2e97ca,18.5,2023-03-17 12:00:00,fast food,Chipotle,,True,,,expense
+641648ff52dec2640c2e97cb,7000.0,2023-03-21 12:00:00,car,Wells Fargo,Forester down payment 1,True,,,expense
+6416491b52dec2640c2e97cc,3000.0,2023-03-25 12:00:00,car,Wells Fargo,Forester down payment 2,True,,,expense
+6419a06f52dec2640c2e97d6,18.25,2023-03-20 12:00:00,fast food,Bamboo Thai,,True,,,expense
+6419af8452dec2640c2e97d7,5.36,2023-03-21 12:00:00,entertainment,Apple,Paramount+ subscription,True,,,expense
+641af56f260f3cd6b496d9e4,38.7,2023-03-20 12:00:00,electronics,LastPass,membership,True,,,expense
+641c415b260f3cd6b496d9e5,4.29,2023-03-23 12:00:00,entertainment,Wow!,subscription,True,,,expense
+641e2331260f3cd6b496d9e8,23.34,2023-03-24 12:00:00,pets,TLC Grooming,Cosmo nail trim,True,,,expense
+641f45dd260f3cd6b496d9e9,16.26,2023-03-25 12:00:00,dining,Tupelo Honey,,True,,,expense
+641f45f8260f3cd6b496d9ea,37.53,2023-03-25 12:00:00,renovations,Oakland Nursery,top soil,True,,,expense
+641f4600260f3cd6b496d9eb,80.0,2023-03-25 12:00:00,other,,,True,,,expense
+641f5e44260f3cd6b496d9ec,87.97,2023-03-25 12:00:00,renovations,Amazon,,True,,,expense
+642060a6260f3cd6b496d9ed,31.02,2023-03-26 12:00:00,car,Uhaul,truck rental,True,,,expense
+642060b7260f3cd6b496d9ee,5.0,2023-03-26 12:00:00,car,Sunoco,gas,True,,,expense
+642060d3260f3cd6b496d9ef,167.93,2023-03-26 12:00:00,renovations,Lowes,drywall,True,,,expense
+64206139260f3cd6b496d9f0,77.95,2023-03-25 12:00:00,grocery,Kroger,,True,,,expense
+64218e84260f3cd6b496d9f1,54.0,2023-03-26 12:00:00,dining,Aab Indian,,True,,,expense
+64218e94260f3cd6b496d9f2,40.96,2023-03-26 12:00:00,renovations,Lowes,,True,,,expense
+6421b931260f3cd6b496d9f3,12.89,2023-03-27 12:00:00,entertainment,Paramount+,subscription,True,,,expense
+6422dee8260f3cd6b496d9f4,9.98,2023-03-27 12:00:00,fast food,Raisin Canes,,True,,,expense
+64272c39260f3cd6b496d9f6,10.15,2023-03-31 12:00:00,fast food,Chipotle,,True,,,expense
+64287879260f3cd6b496d9f8,31.02,2023-04-01 12:00:00,car,Uhaul,van rental,True,,,expense
+6428788c260f3cd6b496d9f9,94.95,2023-03-31 12:00:00,grocery,Kroger,,True,,,expense
+642878ad260f3cd6b496d9fa,132.38,2023-04-01 12:00:00,renovations,Lowes,,True,,,expense
+642ae97b260f3cd6b496d9fc,25.78,2023-04-02 12:00:00,home,Kroger,Jared & Kevin bday beers,True,,,expense
+642ae9ee260f3cd6b496d9fd,11.81,2023-04-03 12:00:00,entertainment,Disney,Disney+ subscription,True,,,expense
+642c2fc1260f3cd6b496d9fe,9.98,2023-04-03 12:00:00,fast food,Raisin Canes,,True,,,expense
+642c2fdd260f3cd6b496d9ff,0.99,2023-04-04 12:00:00,home,Apple,iCloud storage,True,,,expense
+642d821f260f3cd6b496da00,29.83,2023-03-31 12:00:00,electronics,Apple,AirPods payment,True,,,expense
+642d8368260f3cd6b496da01,74.04,2023-04-05 12:00:00,insurance,Progressive,auto premium,True,,,expense
+64300df3260f3cd6b496da05,62.73,2023-04-06 12:00:00,home,Amazon,,True,,,expense
+643160d5260f3cd6b496da06,45.37,2023-04-07 12:00:00,renovations,Lowes,,True,,,expense
+643160f2260f3cd6b496da07,18.5,2023-04-07 12:00:00,fast food,Chipotle,,True,,,expense
+64340345260f3cd6b496da08,96.95,2023-04-08 12:00:00,pets,Petco,dog food,True,,,expense
+6434036d260f3cd6b496da09,102.06,2023-04-08 12:00:00,renovations,Lowes,,True,,,expense
+64340381260f3cd6b496da0a,31.75,2023-04-09 12:00:00,fast food,Bamboo Thai,,True,,,expense
+64342573260f3cd6b496da0b,1308.69,2023-05-30 12:00:00,mortgage,Huntington,,True,,,expense
+64342573260f3cd6b496da0c,144.01,2023-06-09 12:00:00,utility,City of Columbus,water,True,,,expense
+64342573260f3cd6b496da0d,64.99,2023-05-27 12:00:00,utility,Spectrum,internet,True,,,expense
+64342573260f3cd6b496da0e,69.81,2023-05-22 12:00:00,utility,AEP,electric,True,,,expense
+64342573260f3cd6b496da0f,89.46,2023-06-07 12:00:00,utility,Columbia Gas,gas,True,,,expense
+64342573260f3cd6b496da11,17.19,2023-05-03 12:00:00,entertainment,HBO,subscription,True,,,expense
+64342574260f3cd6b496da12,74.04,2023-05-05 12:00:00,insurance,Progressive,"Forester, Corolla",True,,,expense
+64342574260f3cd6b496da13,16.65,2023-05-08 12:00:00,entertainment,Netflix,subscription,True,,,expense
+64342574260f3cd6b496da14,4.29,2023-05-23 12:00:00,entertainment,Wow,subscription,True,,,expense
+64342574260f3cd6b496da15,11.81,2023-05-02 12:00:00,entertainment,Disney,Disney+ subscription,True,,,expense
+64342574260f3cd6b496da16,7.51,2023-05-16 12:00:00,entertainment,Apple,subscription,True,,,expense
+64342574260f3cd6b496da17,5.36,2023-05-27 12:00:00,entertainment,Apple,Paramount+ subscription,True,,,expense
+64342574260f3cd6b496da18,2000.0,2023-04-27 12:00:00,car,Wells Fargo,Forester payment,True,,,expense
+6434399b260f3cd6b496da19,16.65,2023-04-10 12:00:00,entertainment,Netflix,subscription,True,,,expense
+643551a8260f3cd6b496da1a,9.98,2023-04-10 12:00:00,fast food,Raisin Canes,,True,,,expense
+64359ac1260f3cd6b496da1b,11.0,2023-04-11 12:00:00,fast food,Pizza Cottage,,True,,,expense
+64359ad2260f3cd6b496da1c,83.64,2023-04-11 12:00:00,grocery,Kroger,,True,,,expense
+643945d6260f3cd6b496da1d,56.34,2023-04-12 12:00:00,grocery,Kroger,,True,,,expense
+64394601260f3cd6b496da1e,27.45,2023-04-12 12:00:00,grocery,Mediteranean,,True,,,expense
+643aec0a260f3cd6b496da1f,47.4,2023-04-14 12:00:00,renovations,Lowes,,True,,,expense
+643aec22260f3cd6b496da20,12.0,2023-04-15 12:00:00,car,Moo Moo Express,car wash,True,,,expense
+643d3cf4260f3cd6b496da21,34.72,2023-04-16 12:00:00,grocery,Kroger,,True,,,expense
+643d3d18260f3cd6b496da22,7.51,2023-04-17 12:00:00,entertainment,Apple,Apple+ subscription,True,,,expense
+643e1179260f3cd6b496da23,9.98,2023-04-17 12:00:00,fast food,Raisin Canes,,True,,,expense
+643fe78110e810b6c9aa100a,11.0,2023-04-18 12:00:00,fast food,Rodos,,True,,,expense
+643fe7a610e810b6c9aa100b,51.65,2023-04-18 12:00:00,car,United Dairy Farmers,gas,True,,,expense
+6442a2d410e810b6c9aa100c,80.0,2023-04-20 12:00:00,other,,,True,,,expense
+6444193110e810b6c9aa100f,11.62,2023-04-21 12:00:00,fitness,Amazon,ankle brace,True,,,expense
+6444194910e810b6c9aa1010,31.91,2023-04-22 12:00:00,home,Amazon,,True,,,expense
+644419a710e810b6c9aa1011,20.38,2023-04-22 12:00:00,home,Lowes,,True,,,expense
+6444981910e810b6c9aa1012,100.0,2023-04-22 12:00:00,grocery,Kroger,,True,,,expense
+6444983c10e810b6c9aa1013,4.29,2023-04-24 12:00:00,entertainment,Wow!,subscription,True,,,expense
+6447cdf110e810b6c9aa1014,9.98,2023-04-24 12:00:00,fast food,Raisin Canes,,True,,,expense
+6449182c10e810b6c9aa1015,29.5,2023-04-25 12:00:00,fast food,Los Guachos,,True,,,expense
+64493c2b10e810b6c9aa1016,81.34,2023-04-26 12:00:00,grocery,Kroger,,True,,,expense
+64493f6a10e810b6c9aa1017,12.89,2023-04-26 12:00:00,entertainment,Paramount+,subscription,True,,,expense
+644c0d6a858da6d30ee6a9e3,161.08,2023-04-28 12:00:00,car,Ohio BMV,Forester registration,True,,,expense
+644c0d88858da6d30ee6a9e4,13.77,2023-04-28 12:00:00,fast food,City Barbeque,,True,,,expense
+644e95ab858da6d30ee6a9e5,71.4,2023-04-29 12:00:00,dining,Strongwater,,True,,,expense
+644e95c2858da6d30ee6a9e6,64.86,2023-04-30 12:00:00,grocery,Kroger,,True,,,expense
+644e95dc858da6d30ee6a9e7,20.59,2023-04-30 12:00:00,renovations,Lowes,,True,,,expense
+64514515858da6d30ee6a9e9,9.98,2023-05-01 12:00:00,fast food,Raisin Canes,,True,,,expense
+6452e9c3858da6d30ee6a9ea,35.73,2023-05-03 12:00:00,car,Turkey Hill,gas,True,,,expense
+6453a4b2858da6d30ee6a9eb,0.99,2023-05-04 12:00:00,home,Apple,iCloud storage,True,,,expense
+645503ad858da6d30ee6a9ec,11.07,2023-05-04 12:00:00,fast food,Wendys,,True,,,expense
+6455b934858da6d30ee6a9ee,87.87,2023-05-05 12:00:00,grocery,Kroger,,True,,,expense
+6457064e858da6d30ee6a9f0,32.5,2023-05-06 12:00:00,fast food,Bamboo Thai,,True,,,expense
+64570662858da6d30ee6a9f1,47.28,2023-05-06 12:00:00,renovations,Lowes,,True,,,expense
+6459b7b9858da6d30ee6a9f2,9.98,2023-05-08 12:00:00,fast food,Raisin Canes,,True,,,expense
+645c2681858da6d30ee6a9f3,20.0,2023-05-10 12:00:00,home,,baby clothes,True,,,expense
+645d0891858da6d30ee6a9f4,68.0,2023-05-11 12:00:00,fitness,CRPDSports,basketball fees,True,,,expense
+645ef8f1858da6d30ee6a9f5,101.13,2023-05-12 12:00:00,grocery,Kroger,,True,,,expense
+645ef903858da6d30ee6a9f6,18.5,2023-05-12 12:00:00,fast food,Chipotle,,True,,,expense
+64610457858da6d30ee6a9f7,69.09,2023-05-14 12:00:00,dining,Brenz Pizza,,True,,,expense
+646149fa858da6d30ee6a9f8,10.74,2023-05-14 12:00:00,entertainment,ESPN,ESPN+ subscription,True,,,expense
+646284e1858da6d30ee6a9f9,80.0,2023-05-15 12:00:00,other,,,True,,,expense
+6467ce6d858da6d30ee6a9fc,18.27,2023-05-19 12:00:00,pets,TLC Grooming,Cosmo nail trim,True,,,expense
+6467d184858da6d30ee6a9fd,93.95,2023-05-19 12:00:00,home,Amazon,,True,,,expense
+646a3feb858da6d30ee6a9fe,2.89,2023-05-21 12:00:00,fast food,Tim Hortons,,True,,,expense
+646a3ffb858da6d30ee6a9ff,32.01,2023-05-21 12:00:00,car,BP,gas,True,,,expense
+646b5d5ef2c90915a26a9f49,34.17,2023-05-21 12:00:00,car,BP,gas,True,,,expense
+646e1e61f2c90915a26a9f4a,1458.69,2023-06-15 12:00:00,mortgage,Huntington,,True,,,expense
+646e1e61f2c90915a26a9f4b,64.99,2023-06-27 12:00:00,utility,Spectrum,internet,True,,,expense
+646e1e61f2c90915a26a9f4c,65.65,2023-06-19 12:00:00,utility,AEP,electric,True,,,expense
+646e1e61f2c90915a26a9f4d,57.43,2023-07-07 12:00:00,utility,Columbia Gas,gas,True,,,expense
+646e1e61f2c90915a26a9f4f,17.19,2023-06-05 12:00:00,entertainment,HBO,subscription,True,,,expense
+646e1e61f2c90915a26a9f50,74.04,2023-06-06 12:00:00,insurance,Progressive,"Forester, Corolla",True,,,expense
+646e1e62f2c90915a26a9f51,16.65,2023-06-08 12:00:00,entertainment,Netflix,subscription,True,,,expense
+646e1e62f2c90915a26a9f52,4.29,2023-06-23 12:00:00,entertainment,Wow,subscription,True,,,expense
+646e1e62f2c90915a26a9f53,11.81,2023-06-02 12:00:00,entertainment,Disney,Disney+ subscription,True,,,expense
+646e1e62f2c90915a26a9f54,7.51,2023-06-15 12:00:00,entertainment,Apple,subscription,True,,,expense
+646e1e62f2c90915a26a9f56,2100.0,2023-06-29 12:00:00,car,Wells Fargo,Forester payment,True,,,expense
+646e1e62f2c90915a26a9f57,0.99,2023-06-05 12:00:00,electronics,Apple,rachel's,True,,,expense
+646ec12bf2c90915a26a9f58,32.5,2023-05-24 12:00:00,fast food,Bamboo Thai,,True,,,expense
+64754cd0f2c90915a26a9f5a,12.89,2023-05-30 12:00:00,entertainment,Apple,Paramount+ subscription,True,,,expense
+64754d02f2c90915a26a9f5b,102.49,2023-05-30 12:00:00,grocery,Kroger,,True,,,expense
+64754eb2f2c90915a26a9f5c,25.5,2023-05-29 12:00:00,renovations,Lowes,,True,,,expense
+64755afed3a4d34d5f59076b,1550.0,2023-05-30 12:00:00,car,Wells Fargo,Forester payment,True,,,expense
+6478933bd3a4d34d5f59076d,3.43,2023-05-31 12:00:00,grocery,Kroger,,True,,,expense
+6478934bd3a4d34d5f59076e,20.3,2023-05-31 12:00:00,fast food,Chipotle,,True,,,expense
+6478b271d3a4d34d5f590770,1310.0,2023-07-14 12:00:00,mortgage,Huntington,,True,,,expense
+6478b271d3a4d34d5f590771,64.99,2023-07-27 12:00:00,utility,Spectrum,internet,True,,,expense
+6478b271d3a4d34d5f590772,93.47,2023-07-20 12:00:00,utility,AEP,electric,True,,,expense
+6478b271d3a4d34d5f590774,17.19,2023-07-03 12:00:00,entertainment,HBO,subscription,True,,,expense
+6478b271d3a4d34d5f590775,74.04,2023-07-06 12:00:00,insurance,Progressive,"Forester, Corolla",True,,,expense
+6478b271d3a4d34d5f590776,16.65,2023-07-10 12:00:00,entertainment,Netflix,subscription,True,,,expense
+6478b271d3a4d34d5f590777,5.36,2023-07-23 12:00:00,entertainment,Wow,subscription,True,,,expense
+6478b271d3a4d34d5f590778,11.81,2023-07-03 12:00:00,entertainment,Disney,Disney+ subscription,True,,,expense
+6478b271d3a4d34d5f590779,7.51,2023-07-17 12:00:00,entertainment,Apple,subscription,True,,,expense
+6478b271d3a4d34d5f59077a,12.89,2023-07-05 12:00:00,entertainment,Apple,Paramount+ subscription,True,,,expense
+6478b271d3a4d34d5f59077b,1500.0,2023-07-28 12:00:00,car,Wells Fargo,Forester payment,True,,,expense
+6478b271d3a4d34d5f59077c,0.99,2023-07-05 12:00:00,electronics,Apple,rachel's,True,,,expense
+6479fd93d3a4d34d5f59077d,29.85,2023-05-31 12:00:00,electronics,Apple,Air Pods payment,True,,,expense
+647b4694d3a4d34d5f59077f,12.99,2023-06-02 12:00:00,fast food,Dave's Hot Chicken,,True,,,expense
+647b5186d3a4d34d5f590780,161.19,2023-06-03 12:00:00,home,Keekaroo,changing station,True,,,expense
+647b6e5345bbb9a2d67baba3,0.99,2023-08-04 12:00:00,electronics,Apple,rachel's iCloud,True,,,expense
+647b7cd3b38f3cc872da878b,322.48,2023-06-03 12:00:00,fitness,Dicks Sporting Goods,Lifetime basketball hoop,True,,,expense
+647ca6b0b38f3cc872da878c,300.0,2023-06-05 12:00:00,grocery,Costco,,True,,,expense
+647ca6bfb38f3cc872da878d,79.61,2023-06-05 12:00:00,grocery,Kroger,,True,,,expense
+647ca6f0b38f3cc872da878e,17.19,2023-07-05 12:00:00,entertainment,HBO,subscription,True,,,expense
+647d0047b38f3cc872da878f,52.75,2023-06-04 12:00:00,wood,Amazon,wood storage shelves,True,,,expense
+647f2b06b38f3cc872da8790,18.75,2023-06-05 12:00:00,fast food,Bamboo Thai,,True,,,expense
+647f9566b38f3cc872da8791,337.77,2023-06-06 12:00:00,pets,5th & Kenny Vet,HeartGard & NexGard,True,,,expense
+6480ecf8b38f3cc872da8792,116.25,2023-06-07 12:00:00,renovations,Lowes,,True,,,expense
+6483c7b2b38f3cc872da8793,64.34,2023-06-09 12:00:00,home,Amazon,,True,,,expense
+6483c7ccb38f3cc872da8794,31.18,2023-06-09 12:00:00,electronics,Apple,Air Tag,True,,,expense
+6483c7feb38f3cc872da8795,12.0,2023-06-09 12:00:00,car,Moo Moo Express,car wash,True,,,expense
+6483c815b38f3cc872da8796,9.98,2023-06-09 12:00:00,fast food,Raisin Canes,,True,,,expense
+6485c81fb38f3cc872da8797,78.7,2023-06-10 12:00:00,grocery,Weilands,,True,,,expense
+648711a8b38f3cc872da8798,57.38,2023-06-11 12:00:00,grocery,Kroger,,True,,,expense
+648711c3b38f3cc872da8799,3.15,2023-06-11 12:00:00,home,Lowes,,True,,,expense
+6487d1bdb38f3cc872da879a,9.98,2023-06-12 12:00:00,fast food,Raisin Canes,,True,,,expense
+648a25923b960ebbc0adbdd6,80.0,2023-06-12 12:00:00,other,,,True,,,expense
+648a26853b960ebbc0adbdd7,77.88,2023-06-14 12:00:00,grocery,Kroger,,True,,,expense
+648b65273b960ebbc0adbdd9,124.57,2023-06-15 12:00:00,wood,Lowes,,True,,,expense
+648db1a63b960ebbc0adbddb,11.67,2023-06-16 12:00:00,fast food,Wendys,,True,,,expense
+648db1b93b960ebbc0adbddc,10.15,2023-06-16 12:00:00,fast food,Chipotle,,True,,,expense
+648db1ca3b960ebbc0adbddd,3.75,2023-06-16 12:00:00,renovations,Woodcraft,,True,,,expense
+648f22b13b960ebbc0adbdde,33.64,2023-06-17 12:00:00,wood,Lowes,,True,,,expense
+648f4b3b3b960ebbc0adbddf,26.06,2023-06-18 12:00:00,home,Amazon,,True,,,expense
+6490487c3b960ebbc0adbde0,13.0,2023-06-18 12:00:00,fast food,Whit's,,True,,,expense
+649178263b960ebbc0adbde1,18.75,2023-06-19 12:00:00,fast food,Bamboo Thai,,True,,,expense
+64934d32dac360d82873a6d5,69.59,2023-06-21 12:00:00,grocery,Kroger,,True,,,expense
+64934d43dac360d82873a6d6,12.78,2023-06-21 12:00:00,fast food,Fusian,,True,,,expense
+64959464b0e590058f340a75,22.53,2023-06-23 12:00:00,wood,Amazon,magnets,True,,,expense
+64979648b0e590058f340a76,64.44,2023-06-24 12:00:00,renovations,Amazon,magnets,True,,,expense
+649796d4b0e590058f340a77,103.82,2023-06-24 12:00:00,grocery,Kroger,,True,,,expense
+64988376b0e590058f340a78,74.15,2023-06-25 12:00:00,renovations,Lowes,select pine 1x10x4,True,,,expense
+649a4910b0e590058f340a79,9.98,2023-06-26 12:00:00,fast food,Raisin Canes,,True,,,expense
+649b01a3b0e590058f340a7a,50.79,2023-06-27 12:00:00,home,Amazon,,True,,,expense
+649b025cb0e590058f340a7b,42.83,2023-06-23 12:00:00,home,Amazon,,True,,,expense
+649ec9c7b0e590058f340a7d,18.75,2023-06-29 12:00:00,fast food,Bamboo Thai,,True,,,expense
+64a076b4b0e590058f340a7f,11.67,2023-06-30 12:00:00,fast food,Wendys,,True,,,expense
+64a076d5b0e590058f340a80,13.03,2023-06-30 12:00:00,renovations,Lowes,"drywall hook, drywall anchors",True,,,expense
+64a076f3b0e590058f340a81,38.06,2023-07-01 12:00:00,wood,Lowes,"painters tape, 2"" PVC, screws",True,,,expense
+64a07726b0e590058f340a82,40.83,2023-07-01 12:00:00,renovations,Lowes,1x10x8 Select Pine,True,,,expense
+64a319b6b0e590058f340a84,80.0,2023-07-03 12:00:00,other,,,True,,,expense
+64a42bccb0e590058f340a85,9.8,2023-07-03 12:00:00,fast food,Chipotle,,True,,,expense
+64a4356f7330c28c8c0ab3e8,17.19,2023-08-03 12:00:00,entertainment,HBO,subscription,True,,,expense
+64a4356f7330c28c8c0ab3e9,74.06,2023-08-07 12:00:00,insurance,Progressive,"Forester, Corolla",True,,,expense
+64a4356f7330c28c8c0ab3ea,12.89,2023-07-27 12:00:00,entertainment,Apple,Paramount+ subscription,True,,,expense
+64a48aaa8ba83c1afdd24642,48.93,2023-07-04 12:00:00,car,United Dairy Farmers,gas,True,,,expense
+64a6d6f18ba83c1afdd24643,55.8,2023-08-07 12:00:00,utility,Columbia Gas,gas,True,,,expense
+64a6f97e8ba83c1afdd24644,9.43,2023-07-06 12:00:00,fast food,Panera Bread,,True,,,expense
+64a8493f8ba83c1afdd24645,98.7,2023-07-07 12:00:00,pets,Petco,Cosmo food,True,,,expense
+64a8494c8ba83c1afdd24646,12.78,2023-07-07 12:00:00,fast food,Fusian,,True,,,expense
+64a8c8c08ba83c1afdd24647,69.66,2023-07-07 12:00:00,home,Tommy John,underwear,True,,,expense
+64a8c8df8ba83c1afdd24648,250.0,2023-07-07 12:00:00,home,Costco,freezer,True,,,expense
+64a979f18ba83c1afdd24649,16.65,2023-08-08 12:00:00,entertainment,Netflix,subscription,True,,,expense
+64a9b7048ba83c1afdd2464a,2.77,2023-07-08 12:00:00,wood,Lowes,fasteners,True,,,expense
+64a9b71e8ba83c1afdd2464b,8.6,2023-07-08 12:00:00,home,MinuteKey,key copies,True,,,expense
+64ad5d3fd5221eac7f959bff,9.98,2023-07-10 12:00:00,fast food,Raisin Canes,,True,,,expense
+64ad7a26d5221eac7f959c00,46.69,2023-07-11 12:00:00,home,Amazon,"Silo: Dust, ethernet cables",True,,,expense
+64aea9d8d5221eac7f959c01,22.35,2023-07-12 12:00:00,home,Amazon,baby bibs,True,,,expense
+64b17c7157dbd6d2dbbdcf33,13.96,2023-07-17 12:00:00,entertainment,Hulu,"Disney+, ESPN+, Hulu bundle subscription",True,,,expense
+64b1a676617cbee58bcca631,10.15,2023-07-14 12:00:00,fast food,Chipotle,,True,,,expense
+64b31620617cbee58bcca632,81.16,2023-07-15 12:00:00,wood,Lowes,,True,,,expense
+64b31631617cbee58bcca633,51.0,2023-07-15 12:00:00,dining,Aab Indian,,True,,,expense
+64b3f4c8617cbee58bcca634,16.0,2023-07-15 12:00:00,fast food,Lowes,,True,,,expense
+64b532a8617cbee58bcca635,61.91,2023-07-16 12:00:00,grocery,Kroger,,True,,,expense
+64b532bd617cbee58bcca636,73.47,2023-07-16 12:00:00,wood,Lowes,,True,,,expense
+64b532da617cbee58bcca637,47.29,2023-07-16 12:00:00,car,United Dairy Farmers,gas,True,,,expense
+64b532ec617cbee58bcca638,237.93,2023-07-16 12:00:00,wood,Lowes,,True,,,expense
+64b68625617cbee58bcca639,9.98,2023-07-17 12:00:00,fast food,Raisin Canes,,True,,,expense
+64b7e54e617cbee58bcca63a,56.92,2023-07-19 12:00:00,home,Amazon,"phone case, usb adapter, adidas crocs",True,,,expense
+64b7fa70617cbee58bcca63b,133.69,2023-08-18 12:00:00,utility,AEP,electric,True,,,expense
+64b943ed617cbee58bcca63c,50.11,2023-07-19 12:00:00,grocery,Kroger,,True,,,expense
+64bab31d617cbee58bcca63d,56.2,2023-07-21 12:00:00,renovations,Lowes,,True,,,expense
+64bbfdcd617cbee58bcca63e,7.03,2023-07-22 12:00:00,renovations,Lowes,,True,,,expense
+64bbfde3617cbee58bcca63f,24.78,2023-07-22 12:00:00,entertainment,Marcus Theaters,Oppenheimer,True,,,expense
+64bc8dac617cbee58bcca640,8.17,2023-07-22 12:00:00,fast food,Speedway,candy,True,,,expense
+64bc8dbf617cbee58bcca641,50.22,2023-07-22 12:00:00,dining,Olive Garden,,True,,,expense
+64bdb982617cbee58bcca642,5.71,2023-07-23 12:00:00,grocery,Come & Go,,True,,,expense
+64bdb99c617cbee58bcca643,43.62,2023-07-23 12:00:00,renovations,Lowes,,True,,,expense
+64bec02bac477d91451f61f9,13.96,2023-08-15 12:00:00,entertainment,Hulu,"Hulu, Disney+, ESPN+ subscription bundle",True,,,expense
+64bec02bac477d91451f61fa,7.51,2023-08-16 12:00:00,entertainment,Apple,Apple TV subscription,True,,,expense
+64bec02bac477d91451f61fb,5.36,2023-08-23 12:00:00,entertainment,Wow,subscription,True,,,expense
+64bec02bac477d91451f61fc,64.99,2023-08-27 12:00:00,utility,Spectrum,internet,False,638298fc138126267146fdd2,,expense
+64bec02bac477d91451f61fd,1308.69,2023-08-11 12:00:00,mortgage,Huntington,,True,,,expense
+64bec02bac477d91451f61fe,1100.0,2023-08-28 12:00:00,car,Wells Fargo,Forester payment,True,,,expense
+64bfc75939657d900a150f4c,64.9,2023-07-24 12:00:00,grocery,Kroger,,True,,,expense
+64bfc76739657d900a150f4d,9.98,2023-07-24 12:00:00,fast food,Raisin Canes,,True,,,expense
+64bfd11539657d900a150f4e,25.0,2023-07-25 12:00:00,home,,"$ for food for Robert, Nathan, etc",True,,,expense
+64c025a039657d900a150f4f,80.0,2023-07-25 12:00:00,other,,,True,,,expense
+64c2b17139657d900a150f51,17.98,2023-07-27 12:00:00,fast food,CM Chicken,,True,,,expense
+64c3dccb39657d900a150f52,26.95,2023-07-27 12:00:00,fast food,Condados,,True,,,expense
+64c54e1b39657d900a150f54,38.76,2023-07-29 12:00:00,renovations,Lowes,paint,True,,,expense
+64c6bc5d39657d900a150f55,19.96,2023-07-30 12:00:00,home,Power + Parts,EGO String Trimmer Head Replacement,True,,,expense
+64c86df039657d900a150f56,9.98,2023-07-31 12:00:00,fast food,Raisin Canes,,True,,,expense
+64c9305139657d900a150f58,15.57,2023-08-01 12:00:00,fast food,McDonalds,,True,,,expense
+64c94cf139657d900a150f59,30.37,2023-08-01 12:00:00,dining,Prestons,,True,,,expense
+64c9bb9f39657d900a150f5a,10.8,2023-08-01 12:00:00,fast food,Chipotle,,True,,,expense
+64cd636a39657d900a150f5b,10.36,2023-08-02 12:00:00,fast food,Wendys,,True,,,expense
+64cd639239657d900a150f5c,11.79,2023-08-03 12:00:00,fast food,Panera Bread,,True,,,expense
+64cd63a739657d900a150f5d,13.96,2023-08-03 12:00:00,fast food,Wendys,,True,,,expense
+64cd63bf39657d900a150f5e,9.0,2023-08-04 12:00:00,parking,CampusParc,,True,,,expense
+64cd7f9b39657d900a150f5f,4.26,2023-08-04 12:00:00,health,CVS,rachel's prescriptions,True,,,expense
+64cd7fab39657d900a150f60,100.23,2023-08-04 12:00:00,grocery,Kroger,,True,,,expense
+64ce881f39657d900a150f61,33.98,2023-08-05 12:00:00,home,Amazon,,True,,,expense
+64d1053539657d900a150f63,81.0,2023-08-07 12:00:00,home,Amazon,"bottles, nipples, heat gun, solar glasses",True,,,expense
+64d26f1339657d900a150f64,14.45,2023-08-07 12:00:00,fast food,Raisin Canes,,True,,,expense
+64d3ea9339657d900a150f66,50.75,2023-08-09 12:00:00,car,Kroger,gas,True,,,expense
+64d409ba39657d900a150f67,66.96,2023-08-09 12:00:00,home,Lowes,,True,,,expense
+64d5020a39657d900a150f68,215.0,2023-08-10 12:00:00,vacation,Spirit,Round trip flights to FL,True,,,expense
+64d5562639657d900a150f69,56.72,2023-08-10 12:00:00,home,Amazon,"Dune book, pvc fittings, caffeine pills",True,,,expense
+64d83e2c39657d900a150f6c,47.21,2023-08-12 12:00:00,home,Amazon,"nipple shields, lens protectors, RE book, tool strap",True,,,expense
+64d8fbc339657d900a150f6d,33.02,2023-08-13 12:00:00,wood,Lowes,"pvc glue, fittings",True,,,expense
+64d8fbd439657d900a150f6e,12.0,2023-08-13 12:00:00,car,Moo Moo Express,car wash,True,,,expense
+64daa38e39657d900a150f6f,84.7,2023-08-14 12:00:00,grocery,Kroger,,True,,,expense
+64daa3a039657d900a150f70,45.24,2023-08-14 12:00:00,wood,Lowes,"pvc, caulk",True,,,expense
+64df9d8c39657d900a150f72,167.49,2023-08-18 12:00:00,utility,City of Columbus,water,True,,,expense
+64e2d25839657d900a150f73,38.3,2023-08-19 12:00:00,dining,Condados,,True,,,expense
+64e2d26a39657d900a150f74,56.58,2023-08-19 12:00:00,grocery,Kroger,,True,,,expense
+64e4c187d1a35e9e13edbfd7,18.75,2023-08-21 12:00:00,fast food,Bamboo Thai,,True,,,expense
+64e4c1a2d1a35e9e13edbfd8,39.16,2023-08-21 12:00:00,car,BP,gas,True,,,expense
+64e4c1ddd1a35e9e13edbfd9,18.48,2023-08-22 12:00:00,home,Amazon,breast pump parts,True,,,expense

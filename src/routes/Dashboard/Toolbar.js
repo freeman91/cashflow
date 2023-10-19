@@ -5,6 +5,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import TuneIcon from '@mui/icons-material/Tune';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,7 +13,6 @@ import Select from '@mui/material/Select';
 import dayjs from 'dayjs';
 
 import { MonthYearSelector } from '../../components/Selector';
-import { Chip } from '@mui/material';
 import ExpenseTypeSelector from '../../components/Selector/ExpenseTypeSelector';
 
 export default function DashboardToolbar(props) {
@@ -28,7 +28,6 @@ export default function DashboardToolbar(props) {
     selectedTypes,
     setSelectedTypes,
   } = props;
-
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -53,7 +52,15 @@ export default function DashboardToolbar(props) {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <AppBar position='static' sx={{ maxWidth: 1200 }}>
+      <AppBar
+        position='static'
+        sx={{
+          maxWidth: 1200,
+          borderRadius: 1,
+          bgcolor: 'rgba(255, 255, 255, 0.12)',
+          backgroundImage: 'none',
+        }}
+      >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Select
             variant='standard'

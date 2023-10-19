@@ -1,4 +1,4 @@
-# pylint: disable=import-error, unused-import, wrong-import-position, missing-function-docstring, unused-variable, invalid-name
+# pylint: disable=import-error, unused-import, wrong-import-position, missing-function-docstring, unused-variable, invalid-name, cell-var-from-loop
 """workbench"""
 
 import os
@@ -21,6 +21,7 @@ from pydash import (
     concat,
     group_by,
     sort_by,
+    range_,
 )
 
 from api.helpers.cron import decode_cron_rule, is_cron_match
@@ -170,8 +171,53 @@ def get_vendor_expenses(vendor):
     print(f"Average: {round(total / 12, 2)}")
 
 
+def create_bill_expenses():
+    new_expenses = []
+    bills = mongo.bill.get()
+
+    _date = date(2023, 9, 1)
+    for _ in range_(31):
+        for bill in bills:
+            if is_cron_match(bill.rule, _date):
+                bill_expense = find(
+                    mongo.expense.get(),
+                    lambda expense: expense.type == bill.type
+                    and expense.vendor == bill.vendor
+                    and expense.date.date() == _date,
+                )
+
+                if not bill_expense:
+                    new_expense = {
+                        "amount": bill.amount,
+                        "date": datetime(_date.year, _date.month, _date.day, 12, 0),
+                        "type": bill.type,
+                        "vendor": bill.vendor,
+                        "description": bill.description,
+                        "paid": False,
+                        "bill_id": bill.id,
+                    }
+                    new_expenses.append(new_expense)
+
+        _date += timedelta(days=1)
+
+    for expense in new_expenses:
+        print(expense)
+        mongo.expense.create(expense)
+
+
 def test():
-    pass
+    expenses = mongo.expense.search(
+        datetime(2022, 1, 1, 0), datetime(2023, 8, 31, 0, 0)
+    )
+    expenses = [exp.__dict__ for exp in expenses]
+    with open("expenses.csv", mode="w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=expenses[0].keys())
+
+        # Write header row
+        writer.writeheader()
+
+        # Write data rows
+        writer.writerows(expenses)
 
 
 if __name__ == "__main__":

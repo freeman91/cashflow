@@ -3,7 +3,7 @@
   "author": "Addison Freeman <addisonfreeman91@gmail.com>",
   "version": "0.1.0",
   "scripts": {
-    "start": "PORT=4242 react-scripts start"
+    "start": "react-scripts start"
   },
   "dependencies": {
     "@babel/core": "^7.19.6",

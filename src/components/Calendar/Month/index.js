@@ -27,22 +27,20 @@ export default function Month({
     let firstDayOfMonth = day.date(1);
     let firstDayOfWeek = firstDayOfMonth.day(0);
 
-    setMonthExpenses(
-      filter(allExpenses, (expense) => {
+    const filterRecords = (records) => {
+      return filter(records, (record) => {
+        const expDay = dayjs(record.date);
+        const BOM = firstDayOfWeek;
+        const EOM = day.endOf('month').day(6);
         return (
-          dayjs(expense.date) >= firstDayOfWeek &&
-          dayjs(expense.date) <= day.endOf('month').day(6)
+          (expDay.isAfter(BOM, 'day') || expDay.isSame(BOM, 'day')) &&
+          (expDay.isBefore(EOM, 'day') || expDay.isSame(EOM, 'day'))
         );
-      })
-    );
-    setMonthIncomes(
-      filter(allIncomes, (income) => {
-        return (
-          dayjs(income.date) >= firstDayOfWeek &&
-          dayjs(income.date) <= day.endOf('month').day(6)
-        );
-      })
-    );
+      });
+    };
+
+    setMonthExpenses(filterRecords(allExpenses));
+    setMonthIncomes(filterRecords(allIncomes));
 
     let _days = [];
     let currentDay = firstDayOfWeek;
@@ -69,6 +67,8 @@ export default function Month({
   const renderWeeks = () => {
     let weeks = [];
     let _days = cloneDeep(days);
+
+    // console.log('monthExpenses: ', monthExpenses);
 
     let week = 1;
     while (_days.length > 0) {

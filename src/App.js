@@ -42,6 +42,8 @@ function App() {
         position='bottom-right'
         transitionIn='fadeIn'
         transitionOut='fadeOut'
+        progressBar
+        preventDuplicates
         closeOnToastrClick
       />
       <div className='App'>{renderRoutes()}</div>

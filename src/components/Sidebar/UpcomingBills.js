@@ -37,13 +37,21 @@ function UpcomingBills() {
           return (
             <ListItem key={expense.id}>
               <ListItemText
+                sx={{ width: '25%' }}
                 primary={_date.format('MMM DD')}
                 primaryTypographyProps={{
                   align: 'left',
                 }}
               />
-              <ListItemText primary={expense.vendor} />
               <ListItemText
+                sx={{ width: '40%' }}
+                primary={expense.vendor}
+                primaryTypographyProps={{
+                  align: 'left',
+                }}
+              />
+              <ListItemText
+                sx={{ width: '35%' }}
                 primary={numberToCurrency.format(expense.amount)}
                 primaryTypographyProps={{
                   align: 'right',

@@ -13,12 +13,15 @@ def decode_cron_rule(cron_expression: str):
 
 
 def is_cron_match(cron_expression: str, target_date: date):
-    day_of_month, month = decode_cron_rule(cron_expression)
+    day_of_month, months = decode_cron_rule(cron_expression)
+
+    if months != "*":
+        months = [int(substring) for substring in months.split(",")]
 
     if day_of_month != "*" and target_date.day != int(day_of_month):
         return False
 
-    if month != "*" and target_date.month != int(month):
+    if months != "*" and str((target_date.month)) not in months:
         return False
 
     return True

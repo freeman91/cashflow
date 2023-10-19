@@ -9,11 +9,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import ExpensesByType from './ExpensesByType';
-import IncomesByType from './IncomesByType';
 import { MonthYearSelector } from '../../../components/Selector';
 import { numberToCurrency } from '../../../helpers/currency';
 
@@ -99,41 +96,61 @@ export default function MonthReport(props) {
   );
 
   return (
-    <Grid container item xs={6} spacing={2}>
+    <Grid
+      container
+      item
+      xs={6}
+      spacing={2}
+      height={'100%'}
+      alignItems='flex-start'
+    >
       <Grid item xs={12}>
         <Card raised>
-          <CardContent sx={{ paddingBottom: '8px !important', pt: 1 }}>
-            <Stack
-              direction='row'
-              justifyContent='space-between'
-              alignItems='center'
-            >
-              <Typography variant='h6'>Net Income</Typography>
-              <div>
-                <IconButton onClick={handleBackClick} size='small'>
-                  <ArrowBackIosNewIcon />
-                </IconButton>
-                <MonthYearSelector
-                  date={date}
-                  handleDateChange={handleDateChange}
-                  interval={'month'}
-                />
-                <IconButton onClick={handleForwardClick} size='small'>
-                  <ArrowForwardIosIcon />
-                </IconButton>
-              </div>
-              <Typography variant='h6'>
+          <CardContent
+            sx={{
+              paddingBottom: '8px !important',
+              pt: 1,
+            }}
+          >
+            <div>
+              <IconButton onClick={handleBackClick} size='small'>
+                <ArrowBackIosNewIcon />
+              </IconButton>
+              <MonthYearSelector
+                date={date}
+                handleDateChange={handleDateChange}
+                interval={'month'}
+              />
+              <IconButton onClick={handleForwardClick} size='small'>
+                <ArrowForwardIosIcon />
+              </IconButton>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography align='left' variant='h6'>
+                Income
+              </Typography>
+              <Typography align='right' variant='h6'>
+                {numberToCurrency.format(incTotal)}
+              </Typography>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography align='left' variant='h6'>
+                Expenses
+              </Typography>
+              <Typography align='right' variant='h6'>
+                {numberToCurrency.format(expTotal)}
+              </Typography>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography align='left' variant='h6'>
+                Net
+              </Typography>
+              <Typography align='right' variant='h6'>
                 {numberToCurrency.format(incTotal - expTotal)}
               </Typography>
-            </Stack>
+            </div>
           </CardContent>
         </Card>
-      </Grid>
-      <Grid item xs={12} sx={{ minHeight: 200 }}>
-        <IncomesByType incomes={incomes} incomeTotal={incTotal} />
-      </Grid>
-      <Grid item xs={12} sx={{ minHeight: 800 }}>
-        <ExpensesByType expenses={expenses} expenseTotal={expTotal} />
       </Grid>
     </Grid>
   );
