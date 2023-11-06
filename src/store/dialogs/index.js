@@ -6,15 +6,18 @@ const { reducer, actions } = createSlice({
   initialState,
   reducers: {
     openDialog: (state, action) => {
-      const { mode, attrs } = action.payload;
-      state[mode].open = true;
-      state[mode].attrs = attrs;
+      const { type, mode, id, attrs } = action.payload;
+      state[type].open = true;
+      state[type].mode = mode;
+      state[type].id = id;
+      state[type].attrs = attrs;
     },
     closeDialog: (state, action) => {
-      state.update = initialState.update;
-      state.create = initialState.create;
-      state.assets = initialState.assets;
-      state.debts = initialState.debts;
+      if (action.payload) {
+        state[action.payload] = initialState[action.payload];
+      } else {
+        state = initialState;
+      }
     },
   },
   extraReducers: {},

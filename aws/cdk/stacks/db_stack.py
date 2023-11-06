@@ -5,7 +5,7 @@ from aws_cdk import NestedStack, Stack
 from aws_cdk import aws_dynamodb as dynamodb
 
 
-ENV: str = os.getenv("REACT_APP_ENV")
+ENV: str = os.getenv("ENV")
 APP_ID: str = os.getenv("APP_ID")
 
 
@@ -15,28 +15,42 @@ class DynamoDBTable:
     def __init__(
         self, scope, item_type: str, partition_key: str, sort_key: str
     ) -> None:
-        name = f"{APP_ID}-{ENV}-{item_type}s"
-        dynamodb.Table(
+        self.id = f"{APP_ID}-{ENV}-{item_type}s"
+        print(f"\tDynamoDBTable: {self.id}")
+
+        self.table = dynamodb.Table(
             scope,
-            name,
-            table_name=name,
+            self.id,
+            table_name=self.id,
             partition_key=dynamodb.Attribute(
                 name=partition_key, type=dynamodb.AttributeType.STRING
             ),
             sort_key=dynamodb.Attribute(
                 name=sort_key, type=dynamodb.AttributeType.STRING
             ),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+        )
+
+    def add_gsi(self, attr: str):
+        print(f"\tDynamoDBTable.GSI: {self.table.table_name}{attr}")
+
+        self.table.add_global_secondary_index(
+            index_name=f"{APP_ID}-{ENV}-gsi-{attr}",
+            partition_key=dynamodb.Attribute(
+                name="user_id", type=dynamodb.AttributeType.STRING
+            ),
+            sort_key=dynamodb.Attribute(name=attr, type=dynamodb.AttributeType.STRING),
+            projection_type=dynamodb.ProjectionType.ALL,
         )
 
 
 class DyanmoDbStack(NestedStack):
     """Stack for DynamoDB resources"""
 
-    def __init__(self, scope: Stack):
-        super().__init__(
-            scope,
-            f"{APP_ID}-{ENV}-dynamodb-stack",
-        )
+    def __init__(self, scope: Stack) -> None:
+        self.id = f"{APP_ID}-{ENV}-dynamdb-stack"
+        print(f"DynamoDBStack: {self.id}")
+        super().__init__(scope, self.id)
 
         DynamoDBTable(self, "account", "user_id", "account_id")
         DynamoDBTable(self, "purchase", "user_id", "purchase_id")
@@ -49,5 +63,8 @@ class DyanmoDbStack(NestedStack):
         DynamoDBTable(self, "expense", "user_id", "expense_id")
         DynamoDBTable(self, "income", "user_id", "income_id")
         DynamoDBTable(self, "networth", "user_id", "networth_id")
+        DynamoDBTable(self, "option_list", "user_id", "option_type")
         DynamoDBTable(self, "paycheck", "user_id", "paycheck_id")
         DynamoDBTable(self, "user", "user_id", "email")
+
+        # expense_table.add_gsi("date")

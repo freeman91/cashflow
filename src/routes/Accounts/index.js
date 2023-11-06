@@ -1,95 +1,130 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { filter, get, map, reduce, sortBy } from 'lodash';
+import React from 'react';
+// import { useDispatch } from 'react-redux';
+import { map } from 'lodash';
 
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { useTheme } from '@mui/styles';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
 import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-import AccountGrid from './AccountGrid';
-import { openDialog } from '../../store/dialogs';
-import AssetsBarChart from './AssetsBarChart';
-import NetWorthsChart from './NetWorthsChart';
-import DebtsBarChart from './DebtsBarChart';
+import { numberToCurrency } from '../../helpers/currency';
+// import { openDialog } from '../../store/dialogs';
+
+const CATERGORIES = [
+  {
+    category: 'bank',
+    accounts: [
+      {
+        name: 'Huntington',
+        description: 'Student Checking, Joint Checking, Mortgage',
+        value: -195000,
+      },
+      { name: 'Ally', description: 'Savings', value: 2150 },
+      { name: 'Apple Card', description: 'Goldman Sachs', value: 0 },
+      { name: 'NelNet', description: 'Student Loans', value: -28065 },
+      { name: 'Lowes MVP Card', description: 'Synchrony', value: 0 },
+      { name: 'Home Depot Card', description: 'CitiBank', value: 0 },
+      { name: 'Wells Fargo', description: 'Forester loan', value: -20657 },
+    ],
+  },
+  {
+    category: 'brokerage',
+    accounts: [
+      { name: 'Fidelity', value: 31250 },
+      { name: 'Webull', value: 1678 },
+      { name: 'Kraken', value: 3356 },
+      { name: 'Uphold', value: 6.78 },
+      { name: 'BlockFi', value: 2150 },
+    ],
+  },
+  {
+    category: 'property',
+    accounts: [
+      { name: '3437 Beulah Rd', value: 237000 },
+      { name: '2021 Subaru Forester', value: 33000 },
+    ],
+  },
+];
+
+function AccountCard({ title, subheader, value }) {
+  return (
+    <Card sx={{ width: '100%' }} raised>
+      <CardHeader
+        title={title}
+        subheader={subheader}
+        titleTypographyProps={{ align: 'left' }}
+        subheaderTypographyProps={{ align: 'left' }}
+        sx={{
+          '.MuiCardHeader-action': { alignSelf: 'center' },
+        }}
+        action={
+          <Stack
+            direction='row'
+            mr={2}
+            spacing={0}
+            alignItems='center'
+            justifyContent='flex-end'
+          >
+            <Typography align='center'>
+              {numberToCurrency.format(value)}
+            </Typography>
+          </Stack>
+        }
+      />
+    </Card>
+  );
+}
 
 export default function Accounts() {
-  const dispatch = useDispatch();
-  const allAccounts = useSelector((state) => state.accounts.data);
-  const allAssets = useSelector((state) => state.assets.data);
-  const allDebts = useSelector((state) => state.debts.data);
+  // const dispatch = useDispatch();
+  const theme = useTheme();
+  // const allAccounts = useSelector((state) => state.accounts.data);
+  // const allAssets = useSelector((state) => state.assets.data);
+  // const allDebts = useSelector((state) => state.debts.data);
 
-  const [accounts, setAccounts] = useState({});
+  // const [accounts, setAccounts] = useState({});
 
-  useEffect(() => {
-    const _sum = (items) =>
-      reduce(
-        items,
-        (acc, item) => {
-          return acc + get(item, 'value', 0);
-        },
-        0
-      );
+  // const handleClick = () => {
+  //   dispatch(
+  //     openDialog({
+  //       type: 'account',
+  //       mode: 'create',
+  //     })
+  //   );
+  // };
 
-    if (allAccounts && allAssets && allDebts) {
-      let _accounts = map(sortBy(allAccounts), (account) => {
-        let assets = filter(allAssets, { account_id: account.id });
-        let debts = filter(allDebts, { account_id: account.id });
-        let aSum = _sum(assets);
-        let dSum = _sum(debts);
-
-        return { ...account, equity: aSum - dSum };
-      });
-
-      let pAccounts = filter(_accounts, (account) => account.equity > 0);
-      let nAccounts = filter(_accounts, (account) => account.equity < 0);
-      let zAccounts = filter(_accounts, (account) => account.equity === 0);
-
-      setAccounts([...pAccounts, ...nAccounts, ...zAccounts]);
-    }
-  }, [allAccounts, allAssets, allDebts]);
-
-  const handleClick = () => {
-    dispatch(
-      openDialog({
-        mode: 'create',
-        attrs: {
-          type: 'account',
-        },
-      })
+  const renderAccounts = (category) => {
+    return (
+      <React.Fragment key={category.category}>
+        <Typography key={category} align='left' sx={{ width: '100%' }}>
+          {category.category}
+        </Typography>
+        {map(category.accounts, (account) => (
+          <AccountCard
+            key={account.name}
+            title={account.name}
+            value={account.value}
+            subheader={account?.description}
+          />
+        ))}
+      </React.Fragment>
     );
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Grid container spacing={3} sx={{ maxWidth: 1200 }}>
-        {map(accounts, (account) => {
-          return <AccountGrid key={account.id} account={account} />;
-        })}
-        <Grid item xs={12}>
-          <Stack
-            spacing={3}
-            direction='row'
-            alignItems='center'
-            justifyContent='flex-end'
-          >
-            <Typography color='primary'>All Assets</Typography>
-            <Typography color='primary'>All Debts</Typography>
-            <Tooltip title='Create Account'>
-              <IconButton onClick={handleClick}>
-                <AddCircleOutlineIcon />
-              </IconButton>
-            </Tooltip>
-          </Stack>
-        </Grid>
-
-        <NetWorthsChart />
-        <AssetsBarChart />
-        <DebtsBarChart />
-      </Grid>
+    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+      <Stack
+        direction='column'
+        justifyContent='center'
+        alignItems='center'
+        spacing={1}
+        padding={2}
+        sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
+      >
+        {CATERGORIES.map(renderAccounts)}
+      </Stack>
     </Box>
   );
 }

@@ -1,55 +1,40 @@
-export const dialogs = {
-  update: {
-    open: false,
-    attrs: {},
-  },
-  create: {
-    open: false,
-    attrs: {},
-  },
-  assets: {
-    open: false,
-    attrs: {},
-  },
-  debts: {
-    open: false,
-    attrs: {},
-  },
+const details = {
+  loading: false,
+  currentRequestId: undefined,
+  error: null,
 };
+
+export const dialogs = (() => {
+  return [
+    'account',
+    'asset',
+    'bill',
+    'borrow',
+    'debt',
+    'expense',
+    'income',
+    'networth',
+    'paycheck',
+    'purchase',
+    'repayment',
+    'sale',
+    'newTransaction',
+  ].reduce((acc, resourceType) => {
+    acc[resourceType] = {
+      open: false,
+      mode: '',
+      attrs: {},
+    };
+    return acc;
+  }, {});
+})();
 
 export const user = {
-  expense_types: [],
-  expense_vendors: [],
-  income_types: [],
-  income_sources: [],
-  asset_types: [],
-  debt_types: [],
+  ...details,
+  item: {},
 };
 
-export const expenses = {
+export const items = {
   data: [],
-};
-
-export const incomes = {
-  data: [],
-};
-
-export const bills = {
-  data: [],
-};
-
-export const networths = {
-  data: [],
-};
-
-export const accounts = {
-  data: [],
-};
-
-export const assets = {
-  data: [],
-};
-
-export const debts = {
-  data: [],
+  ...details,
 };

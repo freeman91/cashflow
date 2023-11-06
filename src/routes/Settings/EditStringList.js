@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { cloneDeep, get, map, pullAt } from 'lodash';
 import { Stack } from '@mui/system';
-import { putUserSettings } from '../../store/user';
 
 export default function EditStringList({ settingName }) {
   const dispatch = useDispatch();
@@ -32,12 +31,10 @@ export default function EditStringList({ settingName }) {
   const handleDelete = (idx) => {
     let _values = cloneDeep(get(user, settingName));
     pullAt(_values, [idx]);
-    dispatch(putUserSettings({ setting: settingName, updated: _values }));
   };
 
   const handleSave = (e) => {
     e.preventDefault();
-    dispatch(putUserSettings({ setting: settingName, updated: values }));
   };
 
   const handleChange = (idx, value) => {
@@ -49,7 +46,6 @@ export default function EditStringList({ settingName }) {
   const handleCreateClick = () => {
     let _values = cloneDeep(get(user, settingName));
     _values.push('**NEW**');
-    dispatch(putUserSettings({ setting: settingName, updated: _values }));
   };
 
   return (
