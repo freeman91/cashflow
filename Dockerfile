@@ -13,4 +13,4 @@ RUN POETRY_VIRTUALENVS_CREATE=false poetry install --no-interaction --no-ansi
 
 EXPOSE 9000
 
-CMD python run.py
+CMD python aws/main.py --script run_api

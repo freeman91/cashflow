@@ -1,84 +1,90 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import Toolbar from './Toolbar';
-import Month from '../../components/Calendar/Month';
-import Year from '../../components/Calendar/Year';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import Ledger from './Ledger';
+
+import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Grid from '@mui/material/Grid';
+import LinearProgress from '@mui/material/LinearProgress';
+
+function DashboardCardHeader({ title }) {
+  return (
+    <CardHeader
+      title={title}
+      titleTypographyProps={{
+        variant: 'h6',
+        align: 'left',
+        sx: { fontWeight: 800 },
+      }}
+    />
+  );
+}
+
+function DashboardGridItem(props) {
+  const { children } = props;
+  return (
+    <Grid item xs={12} md={6}>
+      {children}
+    </Grid>
+  );
+}
 
 export default function Dashboard() {
-  const user = useSelector((state) => state.user);
-
-  const [view, setView] = useState('Calendar');
-  const [day, setDay] = useState(dayjs());
-  const [showExpenses, setShowExpenses] = useState(true);
-  const [showIncomes, setShowIncomes] = useState(true);
-  const [selectedTypes, setSelectedTypes] = useState([]);
-
-  useEffect(() => {
-    if (user.expense_types) {
-      setSelectedTypes(user.expense_types);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (view === 'Year') {
-      setDay(dayjs());
-    }
-  }, [view]);
-
-  const renderView = () => {
-    switch (view) {
-      case 'Calendar':
-        return (
-          <Month
-            day={day}
-            showExpenses={showExpenses}
-            showIncomes={showIncomes}
-            selectedTypes={selectedTypes}
-          />
-        );
-
-      case 'Ledger':
-        return (
-          <Ledger
-            day={day}
-            showExpenses={showExpenses}
-            showIncomes={showIncomes}
-            selectedTypes={selectedTypes}
-          />
-        );
-
-      case 'Year':
-        return (
-          <Year
-            day={day}
-            showExpenses={showExpenses}
-            showIncomes={showIncomes}
-            selectedTypes={selectedTypes}
-          />
-        );
-
-      default:
-        return null;
-    }
-  };
+  const theme = useTheme();
+  const [month] = useState(dayjs().format('MMMM').toLowerCase());
 
   return (
-    <>
-      <Toolbar
-        view={view}
-        setView={setView}
-        day={day}
-        setDay={setDay}
-        showExpenses={showExpenses}
-        setShowExpenses={setShowExpenses}
-        showIncomes={showIncomes}
-        setShowIncomes={setShowIncomes}
-        selectedTypes={selectedTypes}
-        setSelectedTypes={setSelectedTypes}
-      />
-      {renderView()}
-    </>
+    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+      <Grid
+        container
+        spacing={1}
+        padding={2}
+        sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
+      >
+        <DashboardGridItem>
+          <Card raised>
+            <DashboardCardHeader title={`${month} cashflow`} />
+            <CardContent>
+              <p>earned vs total income</p>
+              <LinearProgress
+                variant='determinate'
+                value={(2106.48 / 4213) * 100}
+              />
+              <p>spent vs budget</p>
+              <LinearProgress
+                variant='determinate'
+                value={(1584 / 4500) * 100}
+              />
+            </CardContent>
+          </Card>
+        </DashboardGridItem>
+        <DashboardGridItem>
+          <Card raised>
+            <DashboardCardHeader title='spending' />
+            <CardContent>
+              <p>pie graph of spending by category</p>
+            </CardContent>
+          </Card>
+        </DashboardGridItem>
+        <DashboardGridItem>
+          <Card raised>
+            <DashboardCardHeader title='bills/pending' />
+            <CardContent>
+              <p>show paid bills and upcoming bills</p>
+            </CardContent>
+          </Card>
+        </DashboardGridItem>
+        <DashboardGridItem>
+          <Card raised>
+            <DashboardCardHeader title='equity' />
+            <CardContent>
+              <p>asset & debt value & net</p>
+            </CardContent>
+          </Card>
+        </DashboardGridItem>
+      </Grid>
+    </Box>
   );
 }

@@ -1,187 +1,240 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { push } from 'redux-first-history';
 
-import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/styles';
+import AddIcon from '@mui/icons-material/Add';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import PaidIcon from '@mui/icons-material/Paid';
 import SettingsIcon from '@mui/icons-material/Settings';
-// import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import AppBar from '@mui/material/AppBar';
+import MovingIcon from '@mui/icons-material/Moving';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import Fab from '@mui/material/Fab';
+import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+
+import { openDialog } from '../../store/dialogs';
+import MainContent from './MainContent';
+
+import AccountDialog from '../../components/Dialog/AccountDialog';
+import AssetDialog from '../../components/Dialog/AssetDialog';
+import BillDialog from '../../components/Dialog/BillDialog ';
+import BorrowDialog from '../../components/Dialog/BorrowDialog';
+import DebtDialog from '../../components/Dialog/DebtDialog';
+import ExpenseDialog from '../../components/Dialog/ExpenseDialog';
+import IncomeDialog from '../../components/Dialog/IncomeDialog';
+import NetworthDialog from '../../components/Dialog/NetworthDialog';
+import NewTransactionDialog from '../../components/Dialog/NewTransactionDialog';
+import PaycheckDialog from '../../components/Dialog/PaycheckDialog';
+import PurchaseDialog from '../../components/Dialog/PurchaseDialog';
+import RepaymentDialog from '../../components/Dialog/RepaymentDialog';
+import SaleDialog from '../../components/Dialog/SaleDialog';
 
 import { getUser } from '../../store/user';
-import { getExpenses } from '../../store/expenses';
-import { getIncomes } from '../../store/incomes';
-import { getAssets } from '../../store/assets';
-import { getDebts } from '../../store/debts';
-import Dashboard from '../Dashboard';
-import Reports from '../Reports';
-import Accounts from '../Accounts';
-// import Trading from '../Trading';
-import Settings from '../Settings';
-import { getNetworths } from '../../store/networths';
-import { getAccounts } from '../../store/accounts';
-import Sidebar from '../../components/Sidebar';
-import CreateDialog from '../../components/Dialog/CreateDialog';
-import UpdateDialog from '../../components/Dialog/UpdateDialog';
-import AssetsDialog from '../../components/Dialog/AssetsDialog';
-import DebtsDialog from '../../components/Dialog/DebtsDialog';
-import { getBills } from '../../store/bills';
 
-const Root = styled('div')({
-  display: 'flex',
-  height: '100%',
-  width: '99vw',
-});
+const USER_ID = process.env.REACT_APP_USER_ID;
 
-const Main = styled('main')(({ theme }) => ({
-  flexGrow: 1,
-  overflow: 'auto',
-}));
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
+function DrawerListItem({ page, icon, handlePageClick }) {
   return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      style={{ width: '100%' }}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </div>
+    <ListItem key={page} disablePadding>
+      <ListItemButton onClick={() => handlePageClick(`/${page}`)}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={page} />
+      </ListItemButton>
+    </ListItem>
   );
 }
 
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
-}
-
-function Layout() {
+function Layout(props) {
   const dispatch = useDispatch();
-  const [tabIndex, setTabIndex] = useState(0);
+  const location = useLocation();
+  const theme = useTheme();
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [pageName, setPageName] = React.useState('dashboard');
 
+  /* onMount */
   useEffect(() => {
-    dispatch(getUser());
-    dispatch(getExpenses());
-    dispatch(getBills());
-    dispatch(getIncomes());
-    dispatch(getAssets());
-    dispatch(getDebts());
-    dispatch(getNetworths());
-    dispatch(getAccounts());
+    dispatch(getUser(USER_ID));
     /* eslint-disable-next-line */
   }, []);
 
-  const handleChange = (e, idx) => {
-    setTabIndex(idx);
+  useEffect(() => {
+    let _pageName = 'dashboard';
+    if (location.pathname.startsWith('/app/accounts')) _pageName = 'accounts';
+    if (location.pathname.startsWith('/app/expenses')) _pageName = 'expenses';
+    if (location.pathname.startsWith('/app/income')) _pageName = 'income';
+    if (location.pathname.startsWith('/app/networth')) _pageName = 'networth';
+    if (location.pathname.startsWith('/app/settings')) _pageName = 'settings';
+    setPageName(_pageName);
+  }, [location]);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
-  return (
-    <Root>
-      <CssBaseline />
-      <Main>
-        <AppBar position='static' color='default'>
-          <Toolbar sx={{ ml: 40 }}>
-            <Tabs
-              value={tabIndex}
-              onChange={handleChange}
-              indicatorColor='primary'
-              textColor='primary'
-              sx={{
-                margin: 'auto',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Tab
-                label='Dashboard'
-                icon={<DashboardIcon />}
-                {...a11yProps(0)}
-                sx={{
-                  width: '12rem',
-                }}
-              />
-              <Tab
-                label='Reports'
-                icon={<ReceiptLongIcon />}
-                {...a11yProps(1)}
-                sx={{
-                  width: '12rem',
-                }}
-              />
-              <Tab
-                label='Accounts'
-                icon={<AccountBalanceIcon />}
-                {...a11yProps(2)}
-                sx={{
-                  width: '12rem',
-                }}
-              />
-              {/* <Tab
-                label='Trading'
-                icon={<TrendingUpIcon />}
-                {...a11yProps(3)}
-                sx={{
-                  width: '12rem',
-                }}
-              /> */}
-              <Tab
-                label='Settings'
-                icon={<SettingsIcon />}
-                {...a11yProps(3)}
-                sx={{
-                  width: '12rem',
-                }}
-              />
-            </Tabs>
-          </Toolbar>
-        </AppBar>
+  const handlePageClick = (page) => {
+    dispatch(push(`/app${page}`));
+    setMobileOpen(false);
+  };
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
+  const handleFabClick = () => {
+    dispatch(openDialog({ type: 'newTransaction' }));
+  };
+
+  const drawer = (
+    <div>
+      <List>
+        <ListItem key='app-name' onClick={() => handlePageClick('')}>
+          <ListItemText
+            primary='cashflow'
+            primaryTypographyProps={{ variant: 'h6', sx: { fontWeight: 800 } }}
+          />
+        </ListItem>
+        <Divider />
+        <DrawerListItem
+          page='accounts'
+          icon={<AccountBalanceIcon />}
+          handlePageClick={handlePageClick}
+        />
+        <DrawerListItem
+          page='expenses'
+          icon={<ReceiptIcon />}
+          handlePageClick={handlePageClick}
+        />
+        <DrawerListItem
+          page='income'
+          icon={<PaidIcon />}
+          handlePageClick={handlePageClick}
+        />
+        <DrawerListItem
+          page='networth'
+          icon={<MovingIcon />}
+          handlePageClick={handlePageClick}
+        />
+        <DrawerListItem
+          page='settings'
+          icon={<SettingsIcon />}
+          handlePageClick={handlePageClick}
+        />
+      </List>
+    </div>
+  );
+
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar
+        position='fixed'
+        sx={{
+          width: { sm: `calc(100% - ${theme.drawerWidth}px)` },
+          ml: { sm: `${theme.drawerWidth}px` },
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color='inherit'
+            aria-label='open drawer'
+            edge='start'
+            onClick={handleDrawerToggle}
+            sx={{
+              mr: 2,
+              display: { sm: 'none' },
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant='h6' sx={{ fontWeight: 800 }}>
+            {pageName}
+          </Typography>
+          <Typography align='right' sx={{ flexGrow: 1 }}>
+            addison@example.com
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Box
+        component='nav'
+        sx={{
+          width: { sm: theme.drawerWidth },
+          flexSh0rink: { sm: 0 },
+        }}
+      >
+        <Drawer
+          container={container}
+          variant='temporary'
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: theme.drawerWidth,
+            },
           }}
         >
-          <Sidebar />
-          <Grid container spacing={1} p={2}>
-            <TabPanel value={tabIndex} index={0}>
-              <Dashboard />
-            </TabPanel>
-            <TabPanel value={tabIndex} index={1}>
-              <Reports />
-            </TabPanel>
-            <TabPanel value={tabIndex} index={2}>
-              <Accounts />
-            </TabPanel>
-            {/* <TabPanel value={tabIndex} index={3}>
-              <Trading />
-            </TabPanel> */}
-            <TabPanel value={tabIndex} index={3}>
-              <Settings />
-            </TabPanel>
-          </Grid>
-        </div>
-
-        <AssetsDialog />
-        <DebtsDialog />
-        <CreateDialog />
-        <UpdateDialog />
-      </Main>
-    </Root>
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant='permanent'
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: theme.drawerWidth,
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <MainContent drawerWidth={theme.drawerWidth} />
+      <Fab
+        color='primary'
+        onClick={handleFabClick}
+        sx={{
+          zIndex: 9999,
+          position: 'fixed',
+          bottom: 16,
+          left: 16,
+          boxShadow: 'none',
+        }}
+      >
+        <AddIcon />
+      </Fab>
+      <AccountDialog />
+      <AssetDialog />
+      <BillDialog />
+      <BorrowDialog />
+      <DebtDialog />
+      <ExpenseDialog />
+      <IncomeDialog />
+      <NetworthDialog />
+      <NewTransactionDialog />
+      <PaycheckDialog />
+      <PurchaseDialog />
+      <RepaymentDialog />
+      <SaleDialog />
+    </Box>
   );
 }
 

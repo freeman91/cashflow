@@ -12,12 +12,18 @@ export default function Record({ data }) {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(openDialog({ mode: 'update', attrs: data }));
+    let id;
+    if (data._type === 'expense') {
+      id = data.expense_id;
+    } else if (data._type === 'income') {
+      id = data.income_id;
+    }
+    dispatch(openDialog({ type: data._type, mode: 'edit', id }));
   };
 
   const [value, color] = (() => {
-    if (data.category === 'expense') {
-      if (get(data, 'paid', true)) {
+    if (data._type === 'expense') {
+      if (!get(data, 'pending', false)) {
         return [numberToCurrency.format(data.amount), theme.palette.red[600]];
       } else {
         return [numberToCurrency.format(data.amount), theme.palette.red[300]];
@@ -30,31 +36,34 @@ export default function Record({ data }) {
   const renderTooltip = () => {
     let tooltipContent = [];
 
-    if (data.category === 'expense' || data.category === 'income') {
+    if (data._type === 'expense' || data._type === 'income') {
       tooltipContent.push(
         <Typography key={`tooltip-amount-${data.id}`}>
-          Amount: {numberToCurrency.format(data.amount)}
-        </Typography>
-      );
-      tooltipContent.push(
-        <Typography key={`tooltip-type-${data.id}`}>
-          Type: {data.type}
+          amount: {numberToCurrency.format(data.amount)}
         </Typography>
       );
 
-      if (data.category === 'expense') {
+      if (data._type === 'expense') {
         tooltipContent.push(
           <Typography key={`tooltip-vendor-${data.id}`}>
-            Vendor: {data.vendor}
+            vendor: {data.vendor}
           </Typography>
         );
       }
     }
 
-    if (data.category === 'income') {
+    if (data._type === 'income') {
       tooltipContent.push(
         <Typography key={`tooltip-source-${data.id}`}>
           Source: {data.source}
+        </Typography>
+      );
+    }
+
+    if (data.description !== '') {
+      tooltipContent.push(
+        <Typography key={`tooltip-description-${data.id}`}>
+          description: {data.description}
         </Typography>
       );
     }

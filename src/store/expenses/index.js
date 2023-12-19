@@ -1,32 +1,32 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, remove, concat } from 'lodash';
 import { toastr } from 'react-redux-toastr';
+import { get, remove, concat } from 'lodash';
 
-import {
-  deleteExpenseAPI,
-  getExpensesAPI,
-  postExpenseAPI,
-  putExpenseAPI,
-} from '../../api';
-import { thunkReducer } from '../thunkTemplate';
-import { expenses as initialState } from '../initialState';
+import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
+import { buildAsyncReducers } from '../thunkTemplate';
+import { items as initialState } from '../initialState';
 
-const getExpenses = createAsyncThunk('expenses/getExpenses', async () => {
-  try {
-    return {
-      data: await getExpensesAPI(),
-    };
-  } catch (err) {
-    console.error(err);
+const getExpenses = createAsyncThunk(
+  'expenses/getExpenses',
+  async (user_id) => {
+    try {
+      // return {
+      //   data: await getExpensesAPI(user_id),
+      // };
+    } catch (err) {
+      console.error(err);
+    }
   }
-});
+);
 
 const postExpense = createAsyncThunk(
   'expenses/postExpense',
-  async (new_expense, { getState }) => {
+  async (newExpense, { getState }) => {
     try {
-      const result = await postExpenseAPI(new_expense);
       const { data: expenses } = getState().expenses;
+      const { user_id } = getState().user.item;
+      const result = await postResourceAPI(user_id, newExpense);
+
       if (result) {
         toastr.success('Expense created');
       }
@@ -43,16 +43,15 @@ const putExpense = createAsyncThunk(
   'expenses/putExpense',
   async (updatedExpense, { getState }) => {
     try {
-      const result = await putExpenseAPI(updatedExpense);
+      const result = await putResourceAPI(updatedExpense);
       const { data: expenses } = getState().expenses;
       if (result) {
         toastr.success('Expense updated');
       }
       let _expenses = [...expenses];
       remove(_expenses, {
-        id: get(result, 'id'),
+        expense_id: get(result, 'expense_id'),
       });
-
       return {
         data: concat(_expenses, result),
       };
@@ -66,14 +65,15 @@ const deleteExpense = createAsyncThunk(
   'expenses/deleteExpense',
   async (id, { getState }) => {
     try {
-      const result = await deleteExpenseAPI(id);
       const { data: expenses } = getState().expenses;
+      const { user_id } = getState().user.item;
+      const result = await deleteResourceAPI(user_id, 'expenses', id);
+
       if (result) {
         toastr.success('Expense deleted');
       }
-
       let _expenses = [...expenses];
-      remove(_expenses, { id: id });
+      remove(_expenses, { expense_id: id });
       return {
         data: _expenses,
       };
@@ -83,17 +83,25 @@ const deleteExpense = createAsyncThunk(
   }
 );
 
-const { reducer } = createSlice({
+const { reducer, actions } = createSlice({
   name: 'expenses',
   initialState,
-  reducers: {},
-  extraReducers: {
-    ...thunkReducer(postExpense),
-    ...thunkReducer(getExpenses),
-    ...thunkReducer(putExpense),
-    ...thunkReducer(deleteExpense),
+  reducers: {
+    setExpenses: (state, action) => {
+      state.data = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    buildAsyncReducers(builder, [
+      getExpenses,
+      postExpense,
+      putExpense,
+      deleteExpense,
+    ]);
   },
 });
 
-export { postExpense, putExpense, deleteExpense, getExpenses };
+const { setExpenses } = actions;
+
+export { postExpense, putExpense, deleteExpense, getExpenses, setExpenses };
 export default reducer;

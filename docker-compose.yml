@@ -1,22 +1,5 @@
 version: '3'
 services:
-  database:
-    image: 'mongo'
-    container_name: 'mongodb'
-    env_file:
-      - .env
-
-    volumes:
-      - ./mongo-volume:/data/db
-      - ./:/code
-    ports:
-      - '27017:27017'
-    networks:
-      app-net:
-        ipv4_address: ${MONGO_IP}
-    healthcheck:
-      test: 'exit 0'
-
   flask:
     restart: on-failure
     build: .
@@ -26,15 +9,3 @@ services:
       - ./:/code
     env_file:
       - .env
-    networks:
-      app-net:
-        ipv4_address: 172.19.199.2
-    depends_on:
-      - database
-
-networks:
-  app-net:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.19.199.0/24

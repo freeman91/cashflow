@@ -4,9 +4,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 
-export const AutocompleteListItem = ({ label, ...props }) => {
+const AutocompleteListItem = ({ label, ...props }) => {
   return (
-    <ListItem>
+    <ListItem sx={{ pl: 0, pr: 0 }}>
       <Autocomplete
         fullWidth
         data-lpignore='true'
@@ -23,3 +23,5 @@ export const AutocompleteListItem = ({ label, ...props }) => {
     </ListItem>
   );
 };
+
+export default AutocompleteListItem;
