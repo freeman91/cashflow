@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { get, remove, concat } from 'lodash';
+import { get, remove, concat } from 'lodash';
 
-// import { getSalesAPI, postSaleAPI, putSaleAPI, deleteSaleAPI } from '../../api';
+import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { toastr } from 'react-redux-toastr';
@@ -18,16 +18,18 @@ const getSales = createAsyncThunk('sales/getSales', async (user) => {
 
 const postSale = createAsyncThunk(
   'sales/postSale',
-  async (new_sale, { dispatch, getState }) => {
+  async (newSale, { dispatch, getState }) => {
     try {
-      // const result = await postSaleAPI(new_sale);
-      // const { data: sales } = getState().sales;
-      // if (result) {
-      //   toastr.success('Sale created');
-      // }
-      // return {
-      //   data: [result].concat(sales),
-      // };
+      const { data: sales } = getState().sales;
+      const { user_id } = getState().user.item;
+      const result = await postResourceAPI(user_id, newSale);
+
+      if (result) {
+        toastr.success('Sale created');
+      }
+      return {
+        data: [result].concat(sales),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -38,18 +40,18 @@ const putSale = createAsyncThunk(
   'sales/putSale',
   async (updatedSale, { dispatch, getState }) => {
     try {
-      // const result = await putSaleAPI(updatedSale);
-      // const { data: sales } = getState().sales;
-      // if (result) {
-      //   toastr.success('Sale updated');
-      // }
-      // let _sales = [...sales];
-      // remove(_sales, {
-      //   id: get(result, 'sale_id'),
-      // });
-      // return {
-      //   data: concat(_sales, result),
-      // };
+      const result = await putResourceAPI(updatedSale);
+      const { data: sales } = getState().sales;
+      if (result) {
+        toastr.success('Sale updated');
+      }
+      let _sales = [...sales];
+      remove(_sales, {
+        sale_id: get(result, 'sale_id'),
+      });
+      return {
+        data: concat(_sales, result),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -58,18 +60,20 @@ const putSale = createAsyncThunk(
 
 const deleteSale = createAsyncThunk(
   'sales/deleteSale',
-  async (sale_id, { dispatch, getState }) => {
+  async (id, { dispatch, getState }) => {
     try {
-      // const result = await deleteSaleAPI(id);
-      // const { data: sales } = getState().sales;
-      // if (result) {
-      //   toastr.success('Sale deleted');
-      // }
-      // let _sales = [...sales];
-      // remove(_sales, { sale_id });
-      // return {
-      //   data: _sales,
-      // };
+      const { data: sales } = getState().sales;
+      const { user_id } = getState().user.item;
+      const result = await deleteResourceAPI(user_id, 'sales', id);
+
+      if (result) {
+        toastr.success('Sale deleted');
+      }
+      let _sales = [...sales];
+      remove(_sales, { sale_id: id });
+      return {
+        data: _sales,
+      };
     } catch (err) {
       toastr.error(err);
     }

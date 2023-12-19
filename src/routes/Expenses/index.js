@@ -36,8 +36,6 @@ export default function Expenses() {
     setExpenses(allExpenses);
   }, [allExpenses]);
 
-  console.log('expenses: ', expenses);
-
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
       <Grid

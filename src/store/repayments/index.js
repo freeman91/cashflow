@@ -1,12 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { get, remove, concat } from 'lodash';
+import { get, remove, concat } from 'lodash';
 
-// import {
-//   getRepaymentsAPI,
-//   postRepaymentAPI,
-//   putRepaymentAPI,
-//   deleteRepaymentAPI,
-// } from '../../api';
+import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { toastr } from 'react-redux-toastr';
@@ -26,16 +21,18 @@ const getRepayments = createAsyncThunk(
 
 const postRepayment = createAsyncThunk(
   'repayments/postRepayment',
-  async (new_repayment, { dispatch, getState }) => {
+  async (newRepayment, { dispatch, getState }) => {
     try {
-      // const result = await postRepaymentAPI(new_repayment);
-      // const { data: repayments } = getState().repayments;
-      // if (result) {
-      //   toastr.success('Repayment created');
-      // }
-      // return {
-      //   data: [result].concat(repayments),
-      // };
+      const { data: repayments } = getState().repayments;
+      const { user_id } = getState().user.item;
+      const result = await postResourceAPI(user_id, newRepayment);
+
+      if (result) {
+        toastr.success('Repayment created');
+      }
+      return {
+        data: [result].concat(repayments),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -46,18 +43,18 @@ const putRepayment = createAsyncThunk(
   'repayments/putRepayment',
   async (updatedRepayment, { dispatch, getState }) => {
     try {
-      // const result = await putRepaymentAPI(updatedRepayment);
-      // const { data: repayments } = getState().repayments;
-      // if (result) {
-      //   toastr.success('Repayment updated');
-      // }
-      // let _repayments = [...repayments];
-      // remove(_repayments, {
-      //   id: get(result, 'repayment_id'),
-      // });
-      // return {
-      //   data: concat(_repayments, result),
-      // };
+      const result = await putResourceAPI(updatedRepayment);
+      const { data: repayments } = getState().repayments;
+      if (result) {
+        toastr.success('Repayment updated');
+      }
+      let _repayments = [...repayments];
+      remove(_repayments, {
+        repayment_id: get(result, 'repayment_id'),
+      });
+      return {
+        data: concat(_repayments, result),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -66,18 +63,20 @@ const putRepayment = createAsyncThunk(
 
 const deleteRepayment = createAsyncThunk(
   'repayments/deleteRepayment',
-  async (repayment_id, { dispatch, getState }) => {
+  async (id, { dispatch, getState }) => {
     try {
-      // const result = await deleteRepaymentAPI(id);
-      // const { data: repayments } = getState().repayments;
-      // if (result) {
-      //   toastr.success('Repayment deleted');
-      // }
-      // let _repayments = [...repayments];
-      // remove(_repayments, { repayment_id });
-      // return {
-      //   data: _repayments,
-      // };
+      const { data: repayments } = getState().repayments;
+      const { user_id } = getState().user.item;
+      const result = await deleteResourceAPI(user_id, 'repayments', id);
+
+      if (result) {
+        toastr.success('Repayment deleted');
+      }
+      let _repayments = [...repayments];
+      remove(_repayments, { repayment_id: id });
+      return {
+        data: _repayments,
+      };
     } catch (err) {
       toastr.error(err);
     }

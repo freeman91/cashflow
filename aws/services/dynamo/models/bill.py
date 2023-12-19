@@ -22,6 +22,7 @@ class Bill(BaseModel):
 
     name = UnicodeAttribute()
     amount = NumberAttribute()
+    category = UnicodeAttribute(null=True)
     vendor = UnicodeAttribute(null=True)
     rule = UnicodeAttribute(null=True)
     generates_type = UnicodeAttribute()  # expense or repayment

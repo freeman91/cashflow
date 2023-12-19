@@ -1,5 +1,4 @@
 # pylint: disable=wrong-import-position, wrong-import-order, unused-import
-#!/usr/bin/env python3
 """Dev workbench for aws"""
 
 import os
@@ -20,3 +19,7 @@ def test():
     end = datetime(2023, 10, 31, tzinfo=timezone.utc)
 
     dynamo.expense.search(user_id, start, end)
+
+
+def main():
+    test()

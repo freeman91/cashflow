@@ -1,6 +1,6 @@
-# pylint: disable=import-error, broad-except
 """Expenses controller"""
 
+from datetime import datetime
 from flask import Blueprint, request
 
 from services import dynamo
@@ -16,10 +16,20 @@ expenses = Blueprint("expenses", __name__)
 @handle_exception
 @expenses.route("/expenses/<user_id>", methods=["POST", "GET"])
 def _expenses(user_id: str):
-    print(f"request.json: {request.json}")
     if request.method == "POST":
-        # return success_result()
-        pass
+        body = request.json
+        _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
+        expense = dynamo.expense.create(
+            user_id=user_id,
+            _date=_date,
+            amount=float(body.get("amount")),
+            vendor=body.get("vendor"),
+            category=body.get("category"),
+            pending=body.get("pending"),
+            bill_id=body.get("bill_id"),
+            description=body.get("description"),
+        )
+        return success_result(expense.as_dict())
 
     if request.method == "GET":
         return success_result(
@@ -31,19 +41,30 @@ def _expenses(user_id: str):
 @handle_exception
 @expenses.route("/expenses/<user_id>/<expense_id>", methods=["GET", "PUT", "DELETE"])
 def _expense(user_id: str, expense_id: str):
-    print(f"user_id: {user_id}")
-    print(f"expense_id: {expense_id}")
-    print(f"request.json: {request.json}")
     if request.method == "GET":
-        # return success_result()
-        pass
+        return success_result(
+            dynamo.expense.get(user_id=user_id, expense_id=expense_id).as_dict()
+        )
 
     if request.method == "PUT":
-        # return success_result()
-        pass
+        expense = dynamo.expense.get(user_id=user_id, expense_id=expense_id)
+        expense.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
+        expense.amount = float(request.json.get("amount"))
+
+        for attr in [
+            "vendor",
+            "category",
+            "pending",
+            "bill_id",
+            "description",
+        ]:
+            setattr(expense, attr, request.json.get(attr))
+
+        expense.save()
+        return success_result(expense.as_dict())
 
     if request.method == "DELETE":
-        # return success_result()
-        pass
+        dynamo.expense.get(user_id=user_id, expense_id=expense_id).delete()
+        return success_result(f"{expense_id} deleted")
 
     return failure_result()

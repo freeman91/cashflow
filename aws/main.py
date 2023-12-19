@@ -1,18 +1,17 @@
+# pylint:disable=unused-import, wildcard-import, unused-wildcard-import, import-outside-toplevel, redefined-outer-name
+
 """
-$ poetry run python -i aws/main.py --script [name]
+$ poetry run python -i aws/main.py [command]
 """
 
 import os
 import argparse
-from collections import namedtuple
 import importlib
-import subprocess
 from dotenv import load_dotenv
 
-load_dotenv()
 
-
-def print_env_vars():
+def load_env_vars():
+    load_dotenv()
     variable_names = [
         "REACT_APP_API_URL",
         "HOST",
@@ -30,31 +29,22 @@ def print_env_vars():
 def parse_arguments():
     """Parse command line arguments"""
 
-    Args = namedtuple("Args", ["script"])
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--script",
+        "command",
         help="",
-        type=str,
-        default=None,
+        choices=["run_api", "deploy", "workbench"],
     )
 
-    args = parser.parse_args()
-    return Args(args.script)
-
-
-def main():
-    print_env_vars()
-
-    args = parse_arguments()
-
-    if args.script in ("run_api", "deploy"):
-        importlib.import_module(args.script).main()
-
-    if args.script == "workbench":
-        subprocess.call(["python", "-i", "aws/workbench.py"])
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
-    main()
+    load_env_vars()
+
+    args = parse_arguments()
+
+    importlib.import_module(args.command).main()
+
+    if args.command == "workbench":
+        from aws.workbench import *

@@ -1,12 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { get, remove, concat } from 'lodash';
+import { get, remove, concat } from 'lodash';
 
-// import {
-//   getBorrowsAPI,
-//   postBorrowAPI,
-//   putBorrowAPI,
-//   deleteBorrowAPI,
-// } from '../../api';
+import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { toastr } from 'react-redux-toastr';
@@ -23,16 +18,18 @@ const getBorrows = createAsyncThunk('borrows/getBorrows', async (user_id) => {
 
 const postBorrow = createAsyncThunk(
   'borrows/postBorrow',
-  async (new_borrow, { dispatch, getState }) => {
+  async (newBorrow, { dispatch, getState }) => {
     try {
-      // const result = await postBorrowAPI(new_borrow);
-      // const { data: borrows } = getState().borrows;
-      // if (result) {
-      //   toastr.success('Borrow created');
-      // }
-      // return {
-      //   data: [result].concat(borrows),
-      // };
+      const { data: borrows } = getState().borrows;
+      const { user_id } = getState().user.item;
+      const result = await postResourceAPI(user_id, newBorrow);
+
+      if (result) {
+        toastr.success('Borrow created');
+      }
+      return {
+        data: [result].concat(borrows),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -43,18 +40,18 @@ const putBorrow = createAsyncThunk(
   'borrows/putBorrow',
   async (updatedBorrow, { dispatch, getState }) => {
     try {
-      // const result = await putBorrowAPI(updatedBorrow);
-      // const { data: borrows } = getState().borrows;
-      // if (result) {
-      //   toastr.success('Borrow updated');
-      // }
-      // let _borrows = [...borrows];
-      // remove(_borrows, {
-      //   id: get(result, 'borrow_id'),
-      // });
-      // return {
-      //   data: concat(_borrows, result),
-      // };
+      const result = await putResourceAPI(updatedBorrow);
+      const { data: borrows } = getState().borrows;
+      if (result) {
+        toastr.success('Borrow updated');
+      }
+      let _borrows = [...borrows];
+      remove(_borrows, {
+        borrow_id: get(result, 'borrow_id'),
+      });
+      return {
+        data: concat(_borrows, result),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -65,16 +62,18 @@ const deleteBorrow = createAsyncThunk(
   'borrows/deleteBorrow',
   async (borrow_id, { dispatch, getState }) => {
     try {
-      // const result = await deleteBorrowAPI(borrow_id);
-      // const { data: borrows } = getState().borrows;
-      // if (result) {
-      //   toastr.success('Borrow deleted');
-      // }
-      // let _borrows = [...borrows];
-      // remove(_borrows, { borrow_id });
-      // return {
-      //   data: _borrows,
-      // };
+      const { data: borrows } = getState().borrows;
+      const { user_id } = getState().user.item;
+      const result = await deleteResourceAPI(user_id, 'borrows', borrow_id);
+
+      if (result) {
+        toastr.success('Borrow deleted');
+      }
+      let _borrows = [...borrows];
+      remove(_borrows, { borrow_id });
+      return {
+        data: _borrows,
+      };
     } catch (err) {
       toastr.error(err);
     }

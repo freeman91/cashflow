@@ -1,38 +1,38 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { get, remove, concat } from 'lodash';
+import { get, remove, concat } from 'lodash';
 
-// import {
-//   getPurchasesAPI,
-//   postPurchaseAPI,
-//   putPurchaseAPI,
-//   deletePurchaseAPI,
-// } from '../../api';
+import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { toastr } from 'react-redux-toastr';
 
-const getPurchases = createAsyncThunk('expenses/getPurchases', async (user) => {
-  try {
-    // return {
-    //   data: await getPurchasesAPI(user.user_id),
-    // };
-  } catch (err) {
-    console.error(err);
+const getPurchases = createAsyncThunk(
+  'purchases/getPurchases',
+  async (user) => {
+    try {
+      // return {
+      //   data: await getPurchasesAPI(user.user_id),
+      // };
+    } catch (err) {
+      console.error(err);
+    }
   }
-});
+);
 
 const postPurchase = createAsyncThunk(
   'purchases/postPurchase',
-  async (new_purchase, { dispatch, getState }) => {
+  async (newPurchase, { dispatch, getState }) => {
     try {
-      // const result = await postPurchaseAPI(new_purchase);
-      // const { data: purchases } = getState().purchases;
-      // if (result) {
-      //   toastr.success('Purchase created');
-      // }
-      // return {
-      //   data: [result].concat(purchases),
-      // };
+      const { data: purchases } = getState().purchases;
+      const { user_id } = getState().user.item;
+      const result = await postResourceAPI(user_id, newPurchase);
+
+      if (result) {
+        toastr.success('Purchase created');
+      }
+      return {
+        data: [result].concat(purchases),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -43,18 +43,18 @@ const putPurchase = createAsyncThunk(
   'purchases/putPurchase',
   async (updatedPurchase, { dispatch, getState }) => {
     try {
-      // const result = await putPurchaseAPI(updatedPurchase);
-      // const { data: purchases } = getState().purchases;
-      // if (result) {
-      //   toastr.success('Purchase updated');
-      // }
-      // let _purchases = [...purchases];
-      // remove(_purchases, {
-      //   id: get(result, 'purchase_id'),
-      // });
-      // return {
-      //   data: concat(_purchases, result),
-      // };
+      const result = await putResourceAPI(updatedPurchase);
+      const { data: purchases } = getState().purchases;
+      if (result) {
+        toastr.success('Purchase updated');
+      }
+      let _purchases = [...purchases];
+      remove(_purchases, {
+        purchase_id: get(result, 'purchase_id'),
+      });
+      return {
+        data: concat(_purchases, result),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -63,18 +63,20 @@ const putPurchase = createAsyncThunk(
 
 const deletePurchase = createAsyncThunk(
   'purchases/deletePurchase',
-  async (purchase_id, { dispatch, getState }) => {
+  async (id, { dispatch, getState }) => {
     try {
-      // const result = await deletePurchaseAPI(id);
-      // const { data: purchases } = getState().purchases;
-      // if (result) {
-      //   toastr.success('Purchase deleted');
-      // }
-      // let _purchases = [...purchases];
-      // remove(_purchases, { purchase_id });
-      // return {
-      //   data: _purchases,
-      // };
+      const { data: purchases } = getState().purchases;
+      const { user_id } = getState().user.item;
+      const result = await deleteResourceAPI(user_id, 'purchases', id);
+
+      if (result) {
+        toastr.success('Purchase deleted');
+      }
+      let _purchases = [...purchases];
+      remove(_purchases, { purchase_id: id });
+      return {
+        data: _purchases,
+      };
     } catch (err) {
       toastr.error(err);
     }

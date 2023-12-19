@@ -13,9 +13,7 @@ networths = Blueprint("networths", __name__)
 @handle_exception
 @networths.route("/networths/<user_id>", methods=["POST", "GET"])
 def _networths(user_id: str):
-    print(f"request.json: {request.json}")
     if request.method == "POST":
-        # return success_result()
         pass
 
     if request.method == "GET":
@@ -28,19 +26,13 @@ def _networths(user_id: str):
 @handle_exception
 @networths.route("/networths/<user_id>/<networth_id>", methods=["GET", "PUT", "DELETE"])
 def _networth(user_id: str, networth_id: str):
-    print(f"user_id: {user_id}")
-    print(f"networth_id: {networth_id}")
-    print(f"request.json: {request.json}")
     if request.method == "GET":
-        # return success_result()
         pass
 
     if request.method == "PUT":
-        # return success_result()
         pass
 
     if request.method == "DELETE":
-        # return success_result()
         pass
 
     return failure_result()

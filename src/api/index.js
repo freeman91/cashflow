@@ -11,3 +11,4 @@ export const getUserAPI = async (userId) => {
 };
 
 export * from './optionLists';
+export * from './resources';

@@ -15,7 +15,6 @@ option_lists = Blueprint("option_lists", __name__)
 def _option_lists(user_id: str):
     print(f"request.json: {request.json}")
     if request.method == "POST":
-        # return success_result()
         pass
 
     if request.method == "GET":
@@ -33,11 +32,7 @@ def _option_lists(user_id: str):
     "/option_lists/<user_id>/<option_type>", methods=["GET", "POST", "PUT", "DELETE"]
 )
 def _option_list(user_id: str, option_type: str):
-    print(f"user_id: {user_id}")
-    print(f"option_type: {option_type}")
-    print(f"request.json: {request.json}")
     if request.method == "GET":
-        # return success_result()
         pass
 
     if request.method == "POST":
@@ -57,7 +52,6 @@ def _option_list(user_id: str, option_type: str):
         return success_result(option_list.as_dict())
 
     if request.method == "DELETE":
-        # return success_result()
         pass
 
     return failure_result()

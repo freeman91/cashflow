@@ -13,10 +13,17 @@ debts = Blueprint("debts", __name__)
 @handle_exception
 @debts.route("/debts/<user_id>", methods=["POST", "GET"])
 def _debts(user_id: str):
-    print(f"request.json: {request.json}")
     if request.method == "POST":
-        # return success_result()
-        pass
+        body = request.json
+        debt = dynamo.debt.create(
+            user_id=user_id,
+            account_id=body.get("account_id"),
+            name=body.get("name"),
+            lender=body.get("lender"),
+            value=float(body.get("value")),
+            interest_rate=float(body.get("interest_rate")),
+        )
+        return success_result(debt.as_dict())
 
     if request.method == "GET":
         return success_result(
@@ -28,19 +35,28 @@ def _debts(user_id: str):
 @handle_exception
 @debts.route("/debts/<user_id>/<debt_id>", methods=["GET", "PUT", "DELETE"])
 def _debt(user_id: str, debt_id: str):
-    print(f"user_id: {user_id}")
-    print(f"debt_id: {debt_id}")
-    print(f"request.json: {request.json}")
     if request.method == "GET":
-        # return success_result()
-        pass
+        return success_result(
+            dynamo.debt.get(user_id=user_id, debt_id=debt_id).as_dict()
+        )
 
     if request.method == "PUT":
-        # return success_result()
-        pass
+        debt = dynamo.debt.get(user_id=user_id, debt_id=debt_id)
+        debt.value = float(request.json.get("value"))
+        debt.interest_rate = float(request.json.get("interest_rate"))
+
+        for attr in [
+            "account_id",
+            "name",
+            "lender",
+        ]:
+            setattr(debt, attr, request.json.get(attr))
+
+        debt.save()
+        return success_result(debt.as_dict())
 
     if request.method == "DELETE":
-        # return success_result()
-        pass
+        dynamo.debt.get(user_id=user_id, debt_id=debt_id).delete()
+        return success_result(f"{debt_id} deleted")
 
     return failure_result()

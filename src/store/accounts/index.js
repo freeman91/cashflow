@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// import { getAccountsAPI, postAccountAPI, putAccountAPI } from '../../api';
+import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { concat, get, remove } from 'lodash';
@@ -24,14 +24,16 @@ const postAccount = createAsyncThunk(
   'accounts/postAccountAPI',
   async (newAccount, { dispatch, getState }) => {
     try {
-      // const result = await postAccountAPI(newAccount);
-      // const { data: accounts } = getState().accounts;
-      // if (result) {
-      //   toastr.success('Account created');
-      // }
-      // return {
-      //   data: concat(accounts, result),
-      // };
+      const { data: accounts } = getState().accounts;
+      const { user_id } = getState().user.item;
+      const result = await postResourceAPI(user_id, newAccount);
+
+      if (result) {
+        toastr.success('Account created');
+      }
+      return {
+        data: [result].concat(accounts),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -42,18 +44,40 @@ const putAccount = createAsyncThunk(
   'accounts/putAccount',
   async (updatedAccount, { dispatch, getState }) => {
     try {
-      // const result = await putAccountAPI(updatedAccount);
-      // const { data: storeAccounts } = getState().accounts;
-      // if (result) {
-      //   toastr.success('Account updated');
-      // }
-      // let _accounts = [...storeAccounts];
-      // remove(_accounts, {
-      //   id: get(result, 'id'),
-      // });
-      // return {
-      //   data: concat(_accounts, result),
-      // };
+      const result = await putResourceAPI(updatedAccount);
+      const { data: accounts } = getState().accounts;
+      if (result) {
+        toastr.success('Account updated');
+      }
+      let _accounts = [...accounts];
+      remove(_accounts, {
+        account_id: get(result, 'account_id'),
+      });
+      return {
+        data: concat(_accounts, result),
+      };
+    } catch (err) {
+      toastr.error(err);
+    }
+  }
+);
+
+const deleteAccount = createAsyncThunk(
+  'accounts/deleteAccount',
+  async (id, { getState }) => {
+    try {
+      const { data: accounts } = getState().accounts;
+      const { user_id } = getState().user.item;
+      const result = await deleteResourceAPI(user_id, 'accounts', id);
+
+      if (result) {
+        toastr.success('Account deleted');
+      }
+      let _accounts = [...accounts];
+      remove(_accounts, { account_id: id });
+      return {
+        data: _accounts,
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -75,5 +99,5 @@ const { reducer, actions } = createSlice({
 
 const { setAccounts } = actions;
 
-export { getAccounts, postAccount, putAccount, setAccounts };
+export { getAccounts, postAccount, putAccount, deleteAccount, setAccounts };
 export default reducer;

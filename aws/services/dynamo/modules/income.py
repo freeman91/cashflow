@@ -31,3 +31,13 @@ def get(user_id: str = None, income_id: str = None) -> Income:
         return list(Income.query(user_id))
 
     return list(Income.scan())
+
+
+def search(user_id: str, start: datetime, end: datetime):
+    return list(
+        Income.query(
+            user_id,
+            Income.income_id.startswith("income"),
+            filter_condition=Income.date.between(start, end),
+        )
+    )

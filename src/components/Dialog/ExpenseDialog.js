@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import get from 'lodash/get';
+import find from 'lodash/find';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -17,13 +19,15 @@ import TextField from '@mui/material/TextField';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import { deleteExpense, postExpense, putExpense } from '../../store/expenses';
 import BaseDialog from './BaseDialog';
 import TextFieldListItem from '../List/TextFieldListItem';
 import AutocompleteListItem from '../List/AutocompleteListItem';
+import { closeDialog } from '../../store/dialogs';
 
 const defaultExpense = {
   expense_id: '',
-  date: dayjs(),
+  date: dayjs().hour(12).minute(0).second(0),
   amount: '',
   vendor: '',
   category: '',
@@ -34,20 +38,45 @@ const defaultExpense = {
 };
 
 function ExpenseDialog() {
-  // const optionLists = useSelector((state) => state.optionLists.data);
-  const { mode } = useSelector((state) => state.dialogs.expense);
+  const dispatch = useDispatch();
+  const optionLists = useSelector((state) => state.optionLists.data);
+  const expenses = useSelector((state) => state.expenses.data);
+  const { mode, id } = useSelector((state) => state.dialogs.expense);
   const [expense, setExpense] = useState(defaultExpense);
+
+  const [expenseVendors] = useState(
+    find(optionLists, { option_type: 'expense_vendor' })
+  );
+  const [expenseCategories] = useState(
+    find(optionLists, { option_type: 'expense_category' })
+  );
+
+  useEffect(() => {
+    if (id) {
+      let _expense = find(expenses, { expense_id: id });
+      setExpense(_expense);
+    }
+  }, [id]);
 
   const handleChange = (e) => {
     setExpense({ ...expense, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = (e) => {
-    console.log('e: ', e);
+    e.preventDefault();
+    if (mode === 'create') {
+      dispatch(postExpense(expense));
+    } else dispatch(putExpense(expense));
+    handleClose();
   };
 
   const handleDelete = () => {
-    console.log('delete');
+    dispatch(deleteExpense(expense.expense_id));
+  };
+
+  const handleClose = () => {
+    dispatch(closeDialog('expense'));
+    setExpense(defaultExpense);
   };
 
   return (
@@ -68,7 +97,7 @@ function ExpenseDialog() {
       }
     >
       <form onSubmit={handleSubmit}>
-        <List sx={{ width: 300 }}>
+        <List sx={{ width: 375 }}>
           {mode !== 'create' && (
             <TextFieldListItem
               id='expense_id'
@@ -85,7 +114,10 @@ function ExpenseDialog() {
               label='date'
               value={expense.date}
               onChange={(value) => {
-                setExpense({ ...expense, date: value });
+                setExpense({
+                  ...expense,
+                  date: value.hour(12).minute(0).second(0),
+                });
               }}
               renderInput={(params) => {
                 return <TextField {...params} fullWidth variant='standard' />;
@@ -117,14 +149,14 @@ function ExpenseDialog() {
             id='vendor'
             label='vendor'
             value={expense.vendor}
-            options={[]}
+            options={get(expenseVendors, 'options', [])}
             onChange={handleChange}
           />
           <AutocompleteListItem
             id='category'
             label='category'
             value={expense.category}
-            options={[]}
+            options={get(expenseCategories, 'options', [])}
             onChange={handleChange}
           />
           {expense.bill_id && (
@@ -147,8 +179,8 @@ function ExpenseDialog() {
             value={expense.description}
             onChange={handleChange}
             InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
+              endAdornment: (
+                <InputAdornment position='end'>
                   <DescriptionIcon />
                 </InputAdornment>
               ),

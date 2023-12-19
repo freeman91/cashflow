@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, request
 
 from services import dynamo
@@ -13,10 +14,17 @@ borrows = Blueprint("borrows", __name__)
 @handle_exception
 @borrows.route("/borrows/<user_id>", methods=["POST", "GET"])
 def _borrows(user_id: str):
-    print(f"request.json: {request.json}")
     if request.method == "POST":
-        # return success_result()
-        pass
+        body = request.json
+        _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
+        borrow = dynamo.borrow.create(
+            user_id=user_id,
+            _date=_date,
+            amount=float(body.get("amount")),
+            lender=body.get("lender"),
+            debt_id=body.get("debt_id"),
+        )
+        return success_result(borrow.as_dict())
 
     if request.method == "GET":
         return success_result(
@@ -28,19 +36,28 @@ def _borrows(user_id: str):
 @handle_exception
 @borrows.route("/borrows/<user_id>/<borrow_id>", methods=["GET", "PUT", "DELETE"])
 def _borrow(user_id: str, borrow_id: str):
-    print(f"user_id: {user_id}")
-    print(f"borrow_id: {borrow_id}")
-    print(f"request.json: {request.json}")
     if request.method == "GET":
-        # return success_result()
-        pass
+        return success_result(
+            dynamo.borrow.get(user_id=user_id, borrow_id=borrow_id).as_dict()
+        )
 
     if request.method == "PUT":
-        # return success_result()
-        pass
+        borrow = dynamo.borrow.get(user_id=user_id, borrow_id=borrow_id)
+        borrow.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
+        borrow.amount = float(request.json.get("amount"))
+
+        for attr in [
+            "lender",
+            "pending",
+            "debt_id",
+        ]:
+            setattr(borrow, attr, request.json.get(attr))
+
+        borrow.save()
+        return success_result(borrow.as_dict())
 
     if request.method == "DELETE":
-        # return success_result()
-        pass
+        dynamo.borrow.get(user_id=user_id, borrow_id=borrow_id).delete()
+        return success_result(f"{borrow_id} deleted")
 
     return failure_result()

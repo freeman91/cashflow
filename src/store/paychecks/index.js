@@ -1,12 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { get, remove, concat } from 'lodash';
+import { get, remove, concat } from 'lodash';
 
-// import {
-//   getPaychecksAPI,
-//   postPaycheckAPI,
-//   putPaycheckAPI,
-//   deletePaycheckAPI,
-// } from '../../api';
+import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { toastr } from 'react-redux-toastr';
@@ -26,16 +21,18 @@ const getPaychecks = createAsyncThunk(
 
 const postPaycheck = createAsyncThunk(
   'paychecks/postPaycheck',
-  async (new_paycheck, { dispatch, getState }) => {
+  async (newPaycheck, { dispatch, getState }) => {
     try {
-      // const result = await postPaycheckAPI(new_paycheck);
-      // const { data: paychecks } = getState().paychecks;
-      // if (result) {
-      //   toastr.success('Paycheck created');
-      // }
-      // return {
-      //   data: [result].concat(paychecks),
-      // };
+      const { data: paychecks } = getState().paychecks;
+      const { user_id } = getState().user.item;
+      const result = await postResourceAPI(user_id, newPaycheck);
+
+      if (result) {
+        toastr.success('Paycheck created');
+      }
+      return {
+        data: [result].concat(paychecks),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -46,18 +43,18 @@ const putPaycheck = createAsyncThunk(
   'paychecks/putPaycheck',
   async (updatedPaycheck, { dispatch, getState }) => {
     try {
-      // const result = await putPaycheckAPI(updatedPaycheck);
-      // const { data: paychecks } = getState().paychecks;
-      // if (result) {
-      //   toastr.success('Paycheck updated');
-      // }
-      // let _paychecks = [...paychecks];
-      // remove(_paychecks, {
-      //   id: get(result, 'paycheck_id'),
-      // });
-      // return {
-      //   data: concat(_paychecks, result),
-      // };
+      const result = await putResourceAPI(updatedPaycheck);
+      const { data: paychecks } = getState().paychecks;
+      if (result) {
+        toastr.success('Paycheck updated');
+      }
+      let _paychecks = [...paychecks];
+      remove(_paychecks, {
+        paycheck_id: get(result, 'paycheck_id'),
+      });
+      return {
+        data: concat(_paychecks, result),
+      };
     } catch (err) {
       toastr.error(err);
     }
@@ -66,18 +63,20 @@ const putPaycheck = createAsyncThunk(
 
 const deletePaycheck = createAsyncThunk(
   'paychecks/deletePaycheck',
-  async (paycheck_id, { dispatch, getState }) => {
+  async (id, { dispatch, getState }) => {
     try {
-      // const result = await deletePaycheckAPI(id);
-      // const { data: paychecks } = getState().paychecks;
-      // if (result) {
-      //   toastr.success('Paycheck deleted');
-      // }
-      // let _paychecks = [...paychecks];
-      // remove(_paychecks, { paycheck_id });
-      // return {
-      //   data: _paychecks,
-      // };
+      const { data: paychecks } = getState().paychecks;
+      const { user_id } = getState().user.item;
+      const result = await deleteResourceAPI(user_id, 'paychecks', id);
+
+      if (result) {
+        toastr.success('Paycheck deleted');
+      }
+      let _paychecks = [...paychecks];
+      remove(_paychecks, { paycheck_id: id });
+      return {
+        data: _paychecks,
+      };
     } catch (err) {
       toastr.error(err);
     }

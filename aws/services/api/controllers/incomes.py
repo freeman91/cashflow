@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, request
 
 from services import dynamo
@@ -13,10 +14,17 @@ incomes = Blueprint("incomes", __name__)
 @handle_exception
 @incomes.route("/incomes/<user_id>", methods=["POST", "GET"])
 def _incomes(user_id: str):
-    print(f"request.json: {request.json}")
     if request.method == "POST":
-        # return success_result()
-        pass
+        body = request.json
+        _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
+        income = dynamo.income.create(
+            user_id=user_id,
+            _date=_date,
+            amount=float(body.get("amount")),
+            source=body.get("source"),
+            description=body.get("description"),
+        )
+        return success_result(income.as_dict())
 
     if request.method == "GET":
         return success_result(
@@ -28,19 +36,24 @@ def _incomes(user_id: str):
 @handle_exception
 @incomes.route("/incomes/<user_id>/<income_id>", methods=["GET", "PUT", "DELETE"])
 def _income(user_id: str, income_id: str):
-    print(f"user_id: {user_id}")
-    print(f"income_id: {income_id}")
-    print(f"request.json: {request.json}")
     if request.method == "GET":
-        # return success_result()
-        pass
+        return success_result(
+            dynamo.income.get(user_id=user_id, income_id=income_id).as_dict()
+        )
 
     if request.method == "PUT":
-        # return success_result()
-        pass
+        income = dynamo.income.get(user_id=user_id, income_id=income_id)
+        income.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
+        income.amount = float(request.json.get("amount"))
+
+        for attr in ["source", "description"]:
+            setattr(income, attr, request.json.get(attr))
+
+        income.save()
+        return success_result(income.as_dict())
 
     if request.method == "DELETE":
-        # return success_result()
-        pass
+        dynamo.income.get(user_id=user_id, income_id=income_id).delete()
+        return success_result(f"{income_id} deleted")
 
     return failure_result()

@@ -38,8 +38,6 @@ def user_route(user_id: str):
         return success_result(result)
 
     if request.method == "PUT":
-        print(f"user_id: {user_id}")
-        print(f"request.json: {request.json}")
-        return success_result()
+        pass
 
     return failure_result("Not Found")
