@@ -161,7 +161,7 @@ def create_bill_expenses():
     new_expenses = []
     bills = mongo.bill.get()
 
-    _date = date(2023, 9, 1)
+    _date = date(2024, 1, 1)
     for _ in range_(31):
         for bill in bills:
             if is_cron_match(bill.rule, _date):
