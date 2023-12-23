@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-
-// import { filter, get, map, reduce, sortBy } from 'lodash';
+import React, { useState } from 'react';
 
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -10,6 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
 import Month from '../../components/Calendar/Month';
+import NewTransactionButton from '../../components/NewTransactionButton';
+import Bills from './Bills';
 
 function Year() {
   return <div>Year</div>;
@@ -23,18 +22,13 @@ const VIEWS = [
   { id: 'month', component: Month },
   { id: 'year', component: Year },
   { id: 'search', component: Search },
+  { id: 'bills', component: Bills },
 ];
 
 export default function Expenses() {
   const theme = useTheme();
-  const allExpenses = useSelector((state) => state.expenses.data);
 
-  const [expenses, setExpenses] = useState({});
   const [selectedView, setSelectedView] = useState(VIEWS[0]);
-
-  useEffect(() => {
-    setExpenses(allExpenses);
-  }, [allExpenses]);
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
@@ -70,6 +64,7 @@ export default function Expenses() {
           {React.createElement(selectedView.component)}
         </Grid>
       </Grid>
+      <NewTransactionButton transactionTypes={['expense', 'income', 'bill']} />
     </Box>
   );
 }

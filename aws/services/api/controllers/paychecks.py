@@ -22,10 +22,10 @@ def _paychecks(user_id: str):
             _date=_date,
             employer=body.get("employer"),
             take_home=float(body.get("take_home")),
-            gross=float(body.get("gross")),
             taxes=float(body.get("taxes")),
             retirement=float(body.get("retirement")),
             other=float(body.get("other")),
+            description=body.get("description"),
         )
         return success_result(paycheck.as_dict())
 
@@ -49,14 +49,13 @@ def _paycheck(user_id: str, paycheck_id: str):
         paycheck.date = datetime.strptime(
             request.json["date"][:19], "%Y-%m-%dT%H:%M:%S"
         )
+        paycheck.employer = request.json.get("employer")
         paycheck.take_home = float(request.json.get("take_home"))
-        paycheck.gross = float(request.json.get("gross"))
         paycheck.taxes = float(request.json.get("taxes"))
         paycheck.retirement = float(request.json.get("retirement"))
+        paycheck.benefits = float(request.json.get("benefits"))
         paycheck.other = float(request.json.get("other"))
-
-        for attr in ["employer"]:
-            setattr(paycheck, attr, request.json.get(attr))
+        paycheck.description = request.json.get("description")
 
         paycheck.save()
         return success_result(paycheck.as_dict())

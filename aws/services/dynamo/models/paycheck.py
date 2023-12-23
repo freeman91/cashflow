@@ -24,10 +24,11 @@ class Paycheck(BaseModel):
     employer = UnicodeAttribute()
 
     take_home = NumberAttribute()
-    gross = NumberAttribute(null=True)
     taxes = NumberAttribute(null=True)
     retirement = NumberAttribute(null=True)
+    benefits = NumberAttribute(null=True)
     other = NumberAttribute(null=True)
+    description = UnicodeAttribute(null=True)
 
     def __repr__(self):
         return (

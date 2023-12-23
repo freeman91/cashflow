@@ -40,7 +40,9 @@ const AppRoutes = () => {
     <Routes>
       <Route path='/app' element={<Layout />}>
         <Route path='/app' element={<Dashboard />} />
-        <Route path='/app/accounts' element={<Accounts />} />
+        <Route path='/app/accounts' element={<Accounts />}>
+          <Route path=':name' />
+        </Route>
         <Route path='/app/expenses' element={<Expenses />} />
         <Route path='/app/income' element={<Income />} />
         <Route path='/app/networth' element={<Networth />} />

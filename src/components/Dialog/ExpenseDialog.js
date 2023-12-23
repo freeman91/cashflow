@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 import find from 'lodash/find';
+import isEmpty from 'lodash/isEmpty';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DescriptionIcon from '@mui/icons-material/Description';
+import AutocompleteListItem from '../List/AutocompleteListItem';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -16,20 +18,20 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
+import TextFieldListItem from '../List/TextFieldListItem';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { deleteExpense, postExpense, putExpense } from '../../store/expenses';
-import BaseDialog from './BaseDialog';
-import TextFieldListItem from '../List/TextFieldListItem';
-import AutocompleteListItem from '../List/AutocompleteListItem';
 import { closeDialog } from '../../store/dialogs';
+import BaseDialog from './BaseDialog';
 
 const defaultExpense = {
   expense_id: '',
   date: dayjs().hour(12).minute(0).second(0),
   amount: '',
   vendor: '',
+  _type: 'expense',
   category: '',
   pending: false,
   bill_id: '',
@@ -41,22 +43,26 @@ function ExpenseDialog() {
   const dispatch = useDispatch();
   const optionLists = useSelector((state) => state.optionLists.data);
   const expenses = useSelector((state) => state.expenses.data);
-  const { mode, id } = useSelector((state) => state.dialogs.expense);
+  const { mode, id, attrs } = useSelector((state) => state.dialogs.expense);
   const [expense, setExpense] = useState(defaultExpense);
 
-  const [expenseVendors] = useState(
-    find(optionLists, { option_type: 'expense_vendor' })
-  );
-  const [expenseCategories] = useState(
-    find(optionLists, { option_type: 'expense_category' })
-  );
+  const expenseVendors = find(optionLists, { option_type: 'expense_vendor' });
+  const expenseCategories = find(optionLists, {
+    option_type: 'expense_category',
+  });
 
   useEffect(() => {
     if (id) {
       let _expense = find(expenses, { expense_id: id });
       setExpense(_expense);
     }
-  }, [id]);
+  }, [id, expenses]);
+
+  useEffect(() => {
+    if (!isEmpty(attrs)) {
+      setExpense((e) => ({ ...e, ...attrs }));
+    }
+  }, [attrs]);
 
   const handleChange = (e) => {
     setExpense({ ...expense, [e.target.id]: e.target.value });
@@ -81,22 +87,12 @@ function ExpenseDialog() {
 
   return (
     <BaseDialog
-      type='expense'
-      title={`${mode} expense`}
-      titleOptions={<MenuItem onClick={handleDelete}>Delete</MenuItem>}
-      actions={
-        <Button
-          type='submit'
-          id='submit'
-          variant='contained'
-          color='primary'
-          onClick={handleSubmit}
-        >
-          submit
-        </Button>
-      }
+      type={defaultExpense._type}
+      title={`${mode} ${defaultExpense._type}`}
+      handleClose={handleClose}
+      titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
-      <form onSubmit={handleSubmit}>
+      <form>
         <List sx={{ width: 375 }}>
           {mode !== 'create' && (
             <TextFieldListItem
@@ -203,6 +199,30 @@ function ExpenseDialog() {
               </ListItemIcon>
               <ListItemText primary={expense.pending ? 'Pending' : 'Paid'} />
             </ListItemButton>
+          </ListItem>
+          <ListItem
+            key='buttons'
+            disablePadding
+            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+          >
+            <Button
+              onClick={handleClose}
+              variant='outlined'
+              color='info'
+              sx={{ width: '45%' }}
+            >
+              cancel
+            </Button>
+            <Button
+              type='submit'
+              id='submit'
+              variant='contained'
+              color='primary'
+              onClick={handleSubmit}
+              sx={{ width: '45%' }}
+            >
+              submit
+            </Button>
           </ListItem>
         </List>
       </form>

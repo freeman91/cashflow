@@ -38,6 +38,9 @@ def user_route(user_id: str):
         return success_result(result)
 
     if request.method == "PUT":
-        pass
+        user_dict = dynamo.user.update(user_id, request.json).as_dict()
+        del user_dict["password"]
+
+        return success_result(user_dict)
 
     return failure_result("Not Found")

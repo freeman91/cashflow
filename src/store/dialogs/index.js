@@ -7,6 +7,7 @@ const { reducer, actions } = createSlice({
   reducers: {
     openDialog: (state, action) => {
       const { type, mode, id, attrs } = action.payload;
+
       state[type].open = true;
       state[type].mode = mode;
       state[type].id = id;

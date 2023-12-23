@@ -85,7 +85,7 @@ const { reducer, actions } = createSlice({
   initialState,
   reducers: {
     setIncomes: (state, action) => {
-      state.incomes = action.payload;
+      state.data = action.payload;
     },
   },
   extraReducers: (builder) => {

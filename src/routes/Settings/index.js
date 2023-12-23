@@ -27,7 +27,6 @@ const OPTIONS = [
   'expense_category',
   'income_source',
   'asset_category',
-  'debt_lender',
   'debt_category',
 ];
 
@@ -66,7 +65,7 @@ export default function Settings() {
   useEffect(() => {
     const _option = get(options, selectedOptionIdx, '');
     setSelectedOption(_option);
-  }, [selectedOptionIdx]);
+  }, [options, selectedOptionIdx]);
 
   const handleChange = (option) => {
     setSelectedOption(option);

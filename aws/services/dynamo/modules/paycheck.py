@@ -9,10 +9,11 @@ def create(
     _date: datetime,
     employer: str,
     take_home: float,
-    gross: float = None,
     taxes: float = None,
     retirement: float = None,
+    benefits: float = None,
     other: float = None,
+    description: str = None,
 ) -> Paycheck:
     paycheck = Paycheck(
         user_id=user_id,
@@ -20,10 +21,11 @@ def create(
         date=_date,
         employer=employer,
         take_home=take_home,
-        gross=gross,
         taxes=taxes,
         retirement=retirement,
+        benefits=benefits,
         other=other,
+        description=description,
     )
     paycheck.save()
     return paycheck

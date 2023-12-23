@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask import Blueprint, request
 
 from services import dynamo
@@ -16,15 +15,14 @@ bills = Blueprint("bills", __name__)
 def _bills(user_id: str):
     if request.method == "POST":
         body = request.json
-        _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
         bill = dynamo.bill.create(
             user_id=user_id,
-            _date=_date,
             name=body.get("name"),
             amount=float(body.get("amount")),
             category=body.get("category"),
             vendor=body.get("vendor"),
-            rule=body.get("rule"),
+            day_of_month=body.get("day_of_month"),
+            months=body.get("months"),
             generates_type=body.get("generates_type"),
         )
         return success_result(bill.as_dict())
@@ -46,14 +44,14 @@ def _bill(user_id: str, bill_id: str):
 
     if request.method == "PUT":
         bill = dynamo.bill.get(user_id=user_id, bill_id=bill_id)
-        bill.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
         bill.amount = float(request.json.get("amount"))
 
         for attr in [
             "name",
             "category",
             "vendor",
-            "rule",
+            "day_of_month",
+            "months",
             "generates_type",
         ]:
             setattr(bill, attr, request.json.get(attr))

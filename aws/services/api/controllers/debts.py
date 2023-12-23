@@ -19,8 +19,8 @@ def _debts(user_id: str):
             user_id=user_id,
             account_id=body.get("account_id"),
             name=body.get("name"),
-            lender=body.get("lender"),
             value=float(body.get("value")),
+            category=body.get("category"),
             interest_rate=float(body.get("interest_rate")),
         )
         return success_result(debt.as_dict())
@@ -45,11 +45,7 @@ def _debt(user_id: str, debt_id: str):
         debt.value = float(request.json.get("value"))
         debt.interest_rate = float(request.json.get("interest_rate"))
 
-        for attr in [
-            "account_id",
-            "name",
-            "lender",
-        ]:
+        for attr in ["account_id", "name", "category"]:
             setattr(debt, attr, request.json.get(attr))
 
         debt.save()

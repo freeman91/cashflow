@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
 import { useTheme } from '@mui/styles';
-import AddIcon from '@mui/icons-material/Add';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PaidIcon from '@mui/icons-material/Paid';
@@ -14,7 +13,6 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import Fab from '@mui/material/Fab';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
@@ -26,7 +24,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { openDialog } from '../../store/dialogs';
 import MainContent from './MainContent';
 
 import AccountDialog from '../../components/Dialog/AccountDialog';
@@ -37,7 +34,6 @@ import DebtDialog from '../../components/Dialog/DebtDialog';
 import ExpenseDialog from '../../components/Dialog/ExpenseDialog';
 import IncomeDialog from '../../components/Dialog/IncomeDialog';
 import NetworthDialog from '../../components/Dialog/NetworthDialog';
-import NewTransactionDialog from '../../components/Dialog/NewTransactionDialog';
 import PaycheckDialog from '../../components/Dialog/PaycheckDialog';
 import PurchaseDialog from '../../components/Dialog/PurchaseDialog';
 import RepaymentDialog from '../../components/Dialog/RepaymentDialog';
@@ -89,10 +85,6 @@ function Layout(props) {
   const handlePageClick = (page) => {
     dispatch(push(`/app${page}`));
     setMobileOpen(false);
-  };
-
-  const handleFabClick = () => {
-    dispatch(openDialog({ type: 'newTransaction' }));
   };
 
   const drawer = (
@@ -208,19 +200,6 @@ function Layout(props) {
         </Drawer>
       </Box>
       <MainContent drawerWidth={theme.drawerWidth} />
-      <Fab
-        color='primary'
-        onClick={handleFabClick}
-        sx={{
-          zIndex: 9999,
-          position: 'fixed',
-          bottom: 16,
-          left: 16,
-          boxShadow: 'none',
-        }}
-      >
-        <AddIcon />
-      </Fab>
       <AccountDialog />
       <AssetDialog />
       <BillDialog />
@@ -229,7 +208,6 @@ function Layout(props) {
       <ExpenseDialog />
       <IncomeDialog />
       <NetworthDialog />
-      <NewTransactionDialog />
       <PaycheckDialog />
       <PurchaseDialog />
       <RepaymentDialog />

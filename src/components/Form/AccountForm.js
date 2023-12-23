@@ -53,7 +53,7 @@ export default function AccountForm({ mode, account, handleClose }) {
 
     if (mode === 'create') {
       handleCreate();
-    } else if (mode === 'update') {
+    } else if (mode === 'edit') {
       handleUpdate();
     } else {
       handleClose();
@@ -138,7 +138,7 @@ export default function AccountForm({ mode, account, handleClose }) {
                 </Button>
                 <Button
                   type='submit'
-                  id='update'
+                  id='edit'
                   variant='contained'
                   onClick={handleUpdate}
                   color='primary'

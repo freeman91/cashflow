@@ -1,29 +1,172 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
+import get from 'lodash/get';
+import find from 'lodash/find';
+import isEmpty from 'lodash/isEmpty';
 
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import DescriptionIcon from '@mui/icons-material/Description';
+import AutocompleteListItem from '../List/AutocompleteListItem';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import ListItem from '@mui/material/ListItem';
+import TextField from '@mui/material/TextField';
 import TextFieldListItem from '../List/TextFieldListItem';
 
+import { deleteAccount, postAccount, putAccount } from '../../store/accounts';
+import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
+import { FormControl, InputLabel, Select } from '@mui/material';
+
+export const ACCOUNT_TYPES = ['bank', 'brokerage', 'property'];
+
+const defaultAccount = {
+  account_id: '',
+  name: '',
+  url: '',
+  account_type: 'bank',
+  _type: 'account',
+  description: '',
+};
 
 function AccountDialog() {
-  const { mode } = useSelector((state) => state.dialogs.account);
-  const [account] = useState({});
+  const dispatch = useDispatch();
+  const accounts = useSelector((state) => state.accounts.data);
+  const { mode, id, attrs } = useSelector((state) => state.dialogs.account);
+  const [account, setAccount] = useState(defaultAccount);
+
+  useEffect(() => {
+    if (id) {
+      let _account = find(accounts, { account_id: id });
+      setAccount(_account);
+    }
+  }, [id, accounts]);
+
+  useEffect(() => {
+    if (!isEmpty(attrs)) {
+      setAccount((e) => ({ ...e, ...attrs }));
+    }
+  }, [attrs]);
+
+  const handleChange = (e) => {
+    setAccount({ ...account, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (mode === 'create') {
+      dispatch(postAccount(account));
+    } else dispatch(putAccount(account));
+    handleClose();
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteAccount(account.account_id));
+  };
+
+  const handleClose = () => {
+    dispatch(closeDialog('account'));
+    setAccount(defaultAccount);
+  };
 
   return (
-    <BaseDialog type='account' title={`${mode} account`}>
-      <List>
-        {mode !== 'create' && (
+    <BaseDialog
+      type={defaultAccount._type}
+      title={`${mode} ${defaultAccount._type}`}
+      handleClose={handleClose}
+      titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
+    >
+      <form>
+        <List sx={{ width: 375 }}>
+          {mode !== 'create' && (
+            <TextFieldListItem
+              id='account_id'
+              label='account_id'
+              value={account.account_id}
+              InputProps={{
+                readOnly: true,
+                disableUnderline: true,
+              }}
+            />
+          )}
           <TextFieldListItem
-            id='account_id'
-            value={account?.account_id}
+            id='name'
+            label='name'
+            value={account.name}
+            onChange={handleChange}
+          />
+          <TextFieldListItem
+            id='url'
+            label='url'
+            value={account.url}
+            onChange={handleChange}
+          />
+          <ListItem key='account_type' disablePadding sx={{ pt: 2 }}>
+            <FormControl fullWidth>
+              <InputLabel id='account-type-label'>account type</InputLabel>
+              <Select
+                labelId='account-type-label'
+                variant='standard'
+                fullWidth
+                value={account?.account_type}
+                onChange={(e) => {
+                  setAccount({ ...account, account_type: e.target.value });
+                }}
+              >
+                {ACCOUNT_TYPES.map((type) => (
+                  <MenuItem key={type} value={type}>
+                    <ListItemText primary={type} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </ListItem>
+          <TextFieldListItem
+            id='description'
+            label='description'
+            value={account.description}
+            onChange={handleChange}
             InputProps={{
-              readOnly: true,
-              disableUnderline: true,
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <DescriptionIcon />
+                </InputAdornment>
+              ),
             }}
           />
-        )}
-      </List>
+          <ListItem
+            key='buttons'
+            disablePadding
+            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+          >
+            <Button
+              onClick={handleClose}
+              variant='outlined'
+              color='info'
+              sx={{ width: '45%' }}
+            >
+              cancel
+            </Button>
+            <Button
+              type='submit'
+              id='submit'
+              variant='contained'
+              color='primary'
+              onClick={handleSubmit}
+              sx={{ width: '45%' }}
+            >
+              submit
+            </Button>
+          </ListItem>
+        </List>
+      </form>
     </BaseDialog>
   );
 }

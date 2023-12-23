@@ -2,7 +2,12 @@
 
 import os
 from datetime import datetime, timezone
-from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
+from pynamodb.attributes import (
+    NumberAttribute,
+    ListAttribute,
+    UnicodeAttribute,
+    UTCDateTimeAttribute,
+)
 from .base import BaseModel
 
 TYPE = "bill"
@@ -24,7 +29,8 @@ class Bill(BaseModel):
     amount = NumberAttribute()
     category = UnicodeAttribute(null=True)
     vendor = UnicodeAttribute(null=True)
-    rule = UnicodeAttribute(null=True)
+    day_of_month = NumberAttribute(null=True)
+    months = ListAttribute(null=True)
     generates_type = UnicodeAttribute()  # expense or repayment
     last_update = UTCDateTimeAttribute(default=datetime.now(timezone.utc))
 

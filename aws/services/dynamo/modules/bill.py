@@ -10,7 +10,8 @@ def create(
     amount: float,
     category: str,
     vendor: str,
-    rule: str,
+    day_of_month: str,
+    months: list,
     generates_type: str,
 ) -> Bill:
     bill = Bill(
@@ -20,7 +21,8 @@ def create(
         amount=amount,
         category=category,
         vendor=vendor,
-        rule=rule,
+        day_of_month=day_of_month,
+        months=months,
         generates_type=generates_type,
         last_update=datetime.now(timezone.utc),
     )

@@ -7,9 +7,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from '@mui/styles';
 import {
   Box,
+  Button,
   IconButton,
-  List,
-  ListItemButton,
   Paper,
   Popover,
   Stack,
@@ -34,12 +33,12 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
     setAnchorEl(null);
   };
 
-  const handleOpenDialog = (type) => {
+  const handleTypeClick = (type) => {
     dispatch(
       openDialog({
+        type,
         mode: 'create',
         attrs: {
-          type,
           date,
         },
       })
@@ -99,18 +98,26 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: 'top',
+          horizontal: 'right',
         }}
       >
-        <List>
-          <ListItemButton onClick={() => handleOpenDialog('expense')}>
-            Expense
-          </ListItemButton>
-          <ListItemButton onClick={() => handleOpenDialog('income')}>
-            Income
-          </ListItemButton>
-        </List>
+        <Stack
+          direction='column'
+          justifyContent='space-between'
+          alignItems='center'
+          spacing={1}
+        >
+          {['expense', 'income'].map((type) => (
+            <Button
+              key={type}
+              variant='contained'
+              onClick={() => handleTypeClick(type)}
+            >
+              {type}
+            </Button>
+          ))}
+        </Stack>
       </Popover>
     </Paper>
   );

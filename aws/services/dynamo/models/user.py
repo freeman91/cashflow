@@ -21,9 +21,9 @@ APP_ID: str = os.getenv("APP_ID")
 class PaycheckDefaults(MapAttribute):
     employer = UnicodeAttribute(null=True)
     take_home = NumberAttribute(null=True)
-    gross = NumberAttribute(null=True)
     taxes = NumberAttribute(null=True)
     retirement = NumberAttribute(null=True)
+    benefits = NumberAttribute(null=True)
     other = NumberAttribute(null=True)
 
 

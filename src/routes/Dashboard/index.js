@@ -8,6 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
+import NewTransactionButton from '../../components/NewTransactionButton';
 
 function DashboardCardHeader({ title }) {
   return (
@@ -70,7 +71,7 @@ export default function Dashboard() {
         </DashboardGridItem>
         <DashboardGridItem>
           <Card raised>
-            <DashboardCardHeader title='bills/pending' />
+            <DashboardCardHeader title='recent expenses/bills/pending' />
             <CardContent>
               <p>show paid bills and upcoming bills</p>
             </CardContent>
@@ -85,6 +86,7 @@ export default function Dashboard() {
           </Card>
         </DashboardGridItem>
       </Grid>
+      <NewTransactionButton transactionTypes={['expense', 'income']} />
     </Box>
   );
 }

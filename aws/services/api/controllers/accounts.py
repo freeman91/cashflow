@@ -22,6 +22,8 @@ def _accounts(user_id: str):
             user_id=user_id,
             name=body.get("name"),
             url=body.get("url"),
+            account_type=body.get("account_type"),
+            description=body.get("description"),
         )
         return success_result(account.as_dict())
 
@@ -46,8 +48,7 @@ def _account(user_id: str, account_id: str):
         for attr in [
             "name",
             "url",
-            "pending",
-            "bill_id",
+            "account_type",
             "description",
         ]:
             setattr(account, attr, request.json.get(attr))

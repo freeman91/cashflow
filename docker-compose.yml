@@ -4,7 +4,7 @@ services:
     restart: on-failure
     build: .
     ports:
-      - '9000:9000'
+      - '9001:9001'
     volumes:
       - ./:/code
     env_file:

@@ -9,7 +9,7 @@ def create(
     account_id: str,
     name: str,
     value: float,
-    lender: str,
+    category: str,
     interest_rate: float = None,
 ) -> Debt:
     debt = Debt(
@@ -17,8 +17,8 @@ def create(
         debt_id=f"debt:{uuid4()}",
         account_id=account_id,
         name=name,
-        lender=lender,
         value=value,
+        category=category,
         interest_rate=interest_rate,
         last_update=datetime.now(timezone.utc),
     )

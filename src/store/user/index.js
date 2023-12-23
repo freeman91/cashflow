@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { toastr } from 'react-redux-toastr';
 
-import { getUserAPI } from '../../api';
+import { getUserAPI, putUserAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { user as initialState } from '../initialState';
 import { setAccounts } from '../accounts';
@@ -61,14 +62,31 @@ const getUser = createAsyncThunk(
   }
 );
 
+const putUser = createAsyncThunk(
+  'users/putUser',
+  async (updatedUser, { getState }) => {
+    try {
+      const user = await putUserAPI(updatedUser);
+      if (user) {
+        toastr.success('User updated');
+      }
+      return {
+        item: user,
+      };
+    } catch (err) {
+      toastr.error(err);
+    }
+  }
+);
+
 const { reducer } = createSlice({
   name: 'user',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    buildAsyncReducers(builder, [getUser]);
+    buildAsyncReducers(builder, [getUser, putUser]);
   },
 });
 
-export { getUser };
+export { getUser, putUser };
 export default reducer;

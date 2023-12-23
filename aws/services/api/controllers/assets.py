@@ -23,9 +23,8 @@ def _assets(user_id: str):
             name=body.get("name"),
             category=body.get("category"),
             value=float(body.get("value")),
-            shares=float(body.get("shares")),
-            price=float(body.get("price")),
-            vendor=body.get("vendor"),
+            shares=float(body.get("shares") or 0),
+            price=float(body.get("price") or 0),
         )
         return success_result(asset.as_dict())
 
@@ -47,14 +46,14 @@ def _asset(user_id: str, asset_id: str):
     if request.method == "PUT":
         asset = dynamo.asset.get(user_id=user_id, asset_id=asset_id)
 
-        asset.shares = float(request.json.get("shares"))
-        asset.price = float(request.json.get("price"))
+        asset.value = float(request.json.get("value"))
+        asset.shares = float(request.json.get("shares") or 0)
+        asset.price = float(request.json.get("price") or 0)
 
         for attr in [
             "account_id",
             "name",
             "category",
-            "vendor",
         ]:
             setattr(asset, attr, request.json.get(attr))
 

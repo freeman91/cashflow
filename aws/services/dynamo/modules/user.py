@@ -16,6 +16,18 @@ def create(email: str, name: str, password: str) -> User:
     return user
 
 
+def update(user_id: str, body: dict) -> User:
+    user = get(user_id=user_id)
+
+    paycheck_defaults = body.get("paycheck_defaults")
+
+    for attr in ["employer", "take_home", "taxes", "retirement", "benefits", "other"]:
+        setattr(user.paycheck_defaults, attr, paycheck_defaults.get(attr))
+
+    user.save()
+    return user
+
+
 def get(user_id: str = None) -> User:
     if user_id:
         return next(User.query(user_id))

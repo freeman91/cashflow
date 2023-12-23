@@ -12,7 +12,6 @@ def create(
     category: str,
     shares: float,
     price: float,
-    vendor: str,
 ) -> Asset:
     asset = Asset(
         user_id=user_id,
@@ -23,7 +22,6 @@ def create(
         category=category,
         shares=shares,
         price=price,
-        vendor=vendor,
         last_update=datetime.now(timezone.utc),
     )
     asset.save()
