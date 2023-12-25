@@ -10,7 +10,7 @@ def create(
     year: int,
     month: int,
     assets: float,
-    liabilities: list,
+    debts: list,
 ) -> Networth:
     networth = Networth(
         user_id=user_id,
@@ -19,13 +19,13 @@ def create(
         year=year,
         month=month,
         assets=assets,
-        liabilities=liabilities,
+        debts=debts,
     )
     networth.save()
     return networth
 
 
-def get(year: int, month: int, user_id: str = None) -> Networth:
+def get(year: int = None, month: int = None, user_id: str = None) -> Networth:
     # if user_id and networth_id:
     #     return Networth.get(user_id, networth_id)
 

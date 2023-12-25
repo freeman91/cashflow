@@ -6,13 +6,16 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 
 import { useTheme } from '@mui/styles';
+import EditIcon from '@mui/icons-material/Edit';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { ACCOUNT_TYPES } from '../../components/Dialog/AccountDialog';
+import { openDialog } from '../../store/dialogs';
 
 function AccountCard({ account }) {
   const dispatch = useDispatch();
@@ -24,11 +27,11 @@ function AccountCard({ account }) {
 
   useEffect(() => {
     setAssets(filter(allAssets, { account_id: account.account_id }));
-  }, [allAssets]);
+  }, [account.account_id, allAssets]);
 
   useEffect(() => {
     setDebts(filter(allDebts, { account_id: account.account_id }));
-  }, [allDebts]);
+  }, [account.account_id, allDebts]);
 
   useEffect(() => {
     const assetSum = assets.reduce((sum, asset) => sum + asset.value, 0);
@@ -50,22 +53,39 @@ function AccountCard({ account }) {
       <CardHeader
         title={account.name}
         subheader={account.description}
-        titleTypographyProps={{ align: 'left' }}
-        subheaderTypographyProps={{ align: 'left' }}
+        titleTypographyProps={{ align: 'left', width: '15rem' }}
         sx={{
           '.MuiCardHeader-action': { alignSelf: 'center' },
+          p: 1,
+          pl: 2,
+          pr: 2,
         }}
         action={
           <Stack
             direction='row'
             mr={2}
-            spacing={0}
+            spacing={2}
             alignItems='center'
-            justifyContent='flex-end'
+            justifyContent='space-between'
+            sx={{ width: '100%' }}
           >
             <Typography align='center'>
               {numberToCurrency.format(value)}
             </Typography>
+            <IconButton
+              color='primary'
+              onClick={() =>
+                dispatch(
+                  openDialog({
+                    type: 'account',
+                    mode: 'edit',
+                    attrs: account,
+                  })
+                )
+              }
+            >
+              <EditIcon />
+            </IconButton>
           </Stack>
         }
       />

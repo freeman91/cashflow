@@ -4,6 +4,7 @@ import os
 from pynamodb.attributes import (
     ListAttribute,
     NumberAttribute,
+    MapAttribute,
     UnicodeAttribute,
     UTCDateTimeAttribute,
 )
@@ -14,6 +15,20 @@ TYPE = "networth"
 ENV: str = os.getenv("ENV")
 REGION: str = os.getenv("REGION")
 APP_ID: str = os.getenv("APP_ID")
+
+
+class AssetMap(MapAttribute):
+    name = UnicodeAttribute()
+    value = NumberAttribute()
+    category = UnicodeAttribute()
+    vendor = UnicodeAttribute()
+
+
+class DebtMap(MapAttribute):
+    name = UnicodeAttribute()
+    value = NumberAttribute()
+    category = UnicodeAttribute()
+    lender = UnicodeAttribute()
 
 
 class Networth(BaseModel):
@@ -28,8 +43,8 @@ class Networth(BaseModel):
     date = UTCDateTimeAttribute()
     year = NumberAttribute()
     month = NumberAttribute()
-    assets = ListAttribute()
-    liabilities = ListAttribute()
+    assets = ListAttribute(of=AssetMap)
+    debts = ListAttribute(of=DebtMap)
 
     def __repr__(self):
-        return f"Income<{self.user_id}, {self.year}, {self.month}>"
+        return f"Networth<{self.user_id}, {self.year}, {self.month}>"

@@ -21,13 +21,11 @@ class Sale(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     date = UTCDateTimeAttribute()
-    asset_id = UnicodeAttribute()
     amount = NumberAttribute()
     purchaser = UnicodeAttribute()
     asset_id = UnicodeAttribute(null=True)
     shares = NumberAttribute(null=True)
     price = NumberAttribute(null=True)
-    description = UnicodeAttribute(null=True)
 
     def __repr__(self):
         return f"Sale<{self.user_id}, {self.asset_id}, {self.date}, {self.amount}>"

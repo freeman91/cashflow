@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import filter from 'lodash/filter';
 import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -14,44 +16,37 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { numberToCurrency } from '../../helpers/currency';
-import { sortBy } from 'lodash';
 import { openDialog } from '../../store/dialogs';
+import { CustomTableCell } from '../Income/IncomesTable';
 
-const CustomTableCell = ({ idx, column, record, children, ...restProps }) => {
-  return (
-    <TableCell
-      scope='row'
-      {...restProps}
-      sx={{
-        borderBottom: 0,
-        borderTop: idx === 0 ? '1px solid rgba(81, 81, 81, .5)' : 0,
-        fontWeight: column === 'date' ? 800 : 500,
-      }}
-    >
-      {children}
-    </TableCell>
-  );
-};
-
-export default function IncomesTable() {
+export default function Expenses() {
   const dispatch = useDispatch();
-  const incomes = useSelector((state) => state.incomes.data);
-  const paychecks = useSelector((state) => state.paychecks.data);
 
+  const allExpenses = useSelector((state) => state.expenses.data);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    let allData = [...incomes, ...paychecks];
-    setTableData(sortBy(allData, 'date'));
-  }, [incomes, paychecks]);
+    const today = dayjs();
+    const start = today.subtract(7, 'day');
+    const end = today.add(7, 'day');
 
-  const handleClick = (income) => {
+    let expenses = filter(allExpenses, (expense) => {
+      const date = dayjs(expense.date);
+      return date >= start && date <= end;
+    });
+
+    expenses = sortBy(expenses, 'date');
+
+    setTableData(expenses);
+  }, [allExpenses]);
+
+  const handleClick = (expense) => {
     dispatch(
       openDialog({
-        type: income._type,
+        type: expense._type,
         mode: 'edit',
-        id: income.paycheck_id ? income.paycheck_id : income.income_id,
-        attrs: income,
+        id: expense.expense_id,
+        attrs: expense,
       })
     );
   };
@@ -59,7 +54,7 @@ export default function IncomesTable() {
   return (
     <Card raised>
       <CardHeader
-        title='incomes'
+        title='expenses'
         sx={{ pt: 1, pb: 0 }}
         titleTypographyProps={{
           variant: 'h6',
@@ -74,40 +69,36 @@ export default function IncomesTable() {
             mt: 2,
             maxWidth: 1000,
           }}
-          component='div'
+          component={'div'}
         >
           <Table size='small'>
             <TableHead>
               <TableRow>
                 <TableCell>date</TableCell>
                 <TableCell align='right'>amount</TableCell>
-                <TableCell align='right'>type</TableCell>
-                <TableCell align='right'>source</TableCell>
+                <TableCell align='right'>category</TableCell>
+                <TableCell align='right'>vendor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {map(tableData, (income, idx) => {
+              {map(tableData, (expense, idx) => {
                 return (
                   <TableRow
                     hover={true}
-                    key={
-                      income.paycheck_id ? income.paycheck_id : income.income_id
-                    }
-                    onClick={() => handleClick(income)}
+                    key={expense.expense_id}
+                    onClick={() => handleClick(expense)}
                   >
                     <CustomTableCell idx={idx} component='th' column='date'>
-                      {dayjs(income.date).format('MMM D')}
+                      {dayjs(expense.date).format('MMM D')}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(
-                        income.take_home ? income.take_home : income.amount
-                      )}
+                      {numberToCurrency.format(expense.amount)}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {income._type}
+                      {expense.category}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {income.employer ? income.employer : income.source}
+                      {expense.vendor}
                     </CustomTableCell>
                   </TableRow>
                 );
@@ -119,5 +110,3 @@ export default function IncomesTable() {
     </Card>
   );
 }
-
-export { CustomTableCell };

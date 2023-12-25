@@ -1,22 +1,25 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { push } from 'redux-first-history';
 
-import EditIcon from '@mui/icons-material/Edit';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { openDialog } from '../../store/dialogs';
 
-export default function DebtCard({ debt }) {
+export default function PurchaseCard({ purchase }) {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(push(`/app/debts/${debt.debt_id}`));
+    dispatch(
+      openDialog({
+        type: purchase?._type,
+        mode: 'edit',
+        id: purchase?.purchase_id,
+      })
+    );
   };
 
   return (
@@ -24,11 +27,10 @@ export default function DebtCard({ debt }) {
       sx={{ width: '100%', cursor: 'pointer' }}
       raised
       onClick={() => handleClick()}
-      key={debt.debt_id}
+      key={purchase.purchase_id}
     >
       <CardHeader
-        title={debt.name}
-        subheader={debt.description}
+        title={purchase.date.slice(0, 10)}
         titleTypographyProps={{ align: 'left' }}
         subheaderTypographyProps={{ align: 'left' }}
         sx={{
@@ -41,27 +43,13 @@ export default function DebtCard({ debt }) {
           <Stack
             direction='row'
             mr={2}
-            spacing={2}
+            spacing={0}
             alignItems='center'
-            justifyContent='space-between'
+            justifyContent='flex-end'
           >
             <Typography align='center'>
-              {numberToCurrency.format(debt.value)}
+              {numberToCurrency.format(purchase.amount)}
             </Typography>
-            <IconButton
-              color='primary'
-              onClick={() =>
-                dispatch(
-                  openDialog({
-                    type: 'debt',
-                    mode: 'edit',
-                    attrs: debt,
-                  })
-                )
-              }
-            >
-              <EditIcon />
-            </IconButton>
           </Stack>
         }
       />

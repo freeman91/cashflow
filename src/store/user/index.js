@@ -16,6 +16,7 @@ import { setPaychecks } from '../paychecks';
 import { setPurchases } from '../purchases';
 import { setRepayments } from '../repayments';
 import { setSales } from '../sales';
+import { setNetworths } from '../networths';
 
 const getUser = createAsyncThunk(
   'user/getUser',
@@ -40,6 +41,7 @@ const getUser = createAsyncThunk(
         repayments,
         sales,
         user,
+        networths,
       } = result;
 
       dispatch(setAccounts(accounts));
@@ -54,6 +56,7 @@ const getUser = createAsyncThunk(
       dispatch(setPurchases(purchases));
       dispatch(setRepayments(repayments));
       dispatch(setSales(sales));
+      dispatch(setNetworths(networths));
 
       return { item: user };
     } catch (err) {

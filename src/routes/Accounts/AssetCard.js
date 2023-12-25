@@ -1,8 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { push } from 'redux-first-history';
 
+import EditIcon from '@mui/icons-material/Edit';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -13,9 +16,7 @@ export default function AssetCard({ asset }) {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(
-      openDialog({ type: asset._type, mode: 'edit', id: asset.asset_id })
-    );
+    dispatch(push(`/app/assets/${asset.asset_id}`));
   };
 
   return (
@@ -32,18 +33,35 @@ export default function AssetCard({ asset }) {
         subheaderTypographyProps={{ align: 'left' }}
         sx={{
           '.MuiCardHeader-action': { alignSelf: 'center' },
+          p: 1,
+          pl: 2,
+          pr: 2,
         }}
         action={
           <Stack
             direction='row'
             mr={2}
-            spacing={0}
+            spacing={2}
             alignItems='center'
-            justifyContent='flex-end'
+            justifyContent='space-between'
           >
             <Typography align='center'>
               {numberToCurrency.format(asset.value)}
             </Typography>
+            <IconButton
+              color='primary'
+              onClick={() =>
+                dispatch(
+                  openDialog({
+                    type: 'asset',
+                    mode: 'edit',
+                    attrs: asset,
+                  })
+                )
+              }
+            >
+              <EditIcon />
+            </IconButton>
           </Stack>
         }
       />

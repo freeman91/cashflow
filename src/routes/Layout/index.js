@@ -69,8 +69,11 @@ function Layout(props) {
   }, []);
 
   useEffect(() => {
-    let _pageName = 'dashboard';
+    let _pageName = '';
+    if (location.pathname.startsWith('/app')) _pageName = 'dashboard';
     if (location.pathname.startsWith('/app/accounts')) _pageName = 'accounts';
+    if (location.pathname.startsWith('/app/assets')) _pageName = 'assets';
+    if (location.pathname.startsWith('/app/debts')) _pageName = 'debts';
     if (location.pathname.startsWith('/app/expenses')) _pageName = 'expenses';
     if (location.pathname.startsWith('/app/income')) _pageName = 'income';
     if (location.pathname.startsWith('/app/networth')) _pageName = 'networth';
@@ -93,7 +96,10 @@ function Layout(props) {
         <ListItem key='app-name' onClick={() => handlePageClick('')}>
           <ListItemText
             primary='cashflow'
-            primaryTypographyProps={{ variant: 'h6', sx: { fontWeight: 800 } }}
+            primaryTypographyProps={{
+              variant: 'h6',
+              sx: { fontWeight: 800, cursor: 'pointer' },
+            }}
           />
         </ListItem>
         <Divider />

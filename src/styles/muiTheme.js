@@ -42,4 +42,13 @@ export const muiTheme = createTheme({
     maxWidth: 1000,
   },
   drawerWidth: 175,
+  chartColors: [
+    '#0088FE',
+    '#00C49F',
+    '#FFBB28',
+    '#FF8042',
+    '#54426B',
+    '#767522',
+    '#81C14B',
+  ],
 });

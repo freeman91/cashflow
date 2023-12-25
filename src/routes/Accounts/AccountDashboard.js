@@ -32,11 +32,11 @@ export default function AccountDashboard({ account_id }) {
 
   useEffect(() => {
     setAssets(filter(allAssets, { account_id }));
-  }, [allAssets]);
+  }, [allAssets, account_id]);
 
   useEffect(() => {
     setDebts(filter(allDebts, { account_id }));
-  }, [allDebts]);
+  }, [allDebts, account_id]);
 
   useEffect(() => {
     if (account_id) {
@@ -45,7 +45,7 @@ export default function AccountDashboard({ account_id }) {
     } else {
       setAccount({});
     }
-  }, [account_id]);
+  }, [accounts, account_id]);
 
   if (account_id && isEmpty(account)) return null;
 
@@ -96,7 +96,7 @@ export default function AccountDashboard({ account_id }) {
 
       {assets.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
       {assets.length > 0 && (
-        <Typography sx={{ width: '100%' }} align='left' variant='h5'>
+        <Typography sx={{ width: '100%' }} align='left'>
           assets
         </Typography>
       )}
@@ -106,7 +106,7 @@ export default function AccountDashboard({ account_id }) {
 
       {debts.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
       {debts.length > 0 && (
-        <Typography sx={{ width: '100%' }} align='left' variant='h5'>
+        <Typography sx={{ width: '100%' }} align='left'>
           debts
         </Typography>
       )}

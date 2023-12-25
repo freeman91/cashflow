@@ -18,10 +18,10 @@ export default function Income() {
         sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
       >
         <Grid item xs={12} md={6}>
-          <IncomesTable />
+          <PaycheckDefaults />
         </Grid>
         <Grid item xs={12} md={6}>
-          <PaycheckDefaults />
+          <IncomesTable />
         </Grid>
       </Grid>
       <NewTransactionButton transactionTypes={['income', 'paycheck']} />

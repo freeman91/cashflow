@@ -29,6 +29,7 @@ def user_route(user_id: str):
             "purchase",
             "repayment",
             "sale",
+            "networth",
         ]:
             # TODO: get this month and last month data only
             result[resource_type + "s"] = [

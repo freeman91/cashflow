@@ -21,13 +21,11 @@ class Repayment(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     date = UTCDateTimeAttribute()
-    amount = NumberAttribute()
     principal = NumberAttribute()
     interest = NumberAttribute()
     lender = UnicodeAttribute()
     debt_id = UnicodeAttribute()
     bill_id = UnicodeAttribute(null=True)
-    description = UnicodeAttribute(null=True)
 
     def __repr__(self):
-        return f"Repayment<{self.user_id}, {self.date}, {self.lender}, {self.amount}>"
+        return f"Repayment<{self.user_id}, {self.date}, {self.lender}, {self.principal}, {self.interest}>"

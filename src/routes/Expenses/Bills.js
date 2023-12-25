@@ -40,6 +40,9 @@ function BillCard({ bill }) {
         subheaderTypographyProps={{ align: 'left' }}
         sx={{
           '.MuiCardHeader-action': { alignSelf: 'center', width: '30%' },
+          p: 1,
+          pl: 2,
+          pr: 2,
         }}
         action={
           <Stack

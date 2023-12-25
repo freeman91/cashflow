@@ -17,14 +17,20 @@ const getNetworths = createAsyncThunk(
   }
 );
 
-const { reducer } = createSlice({
+const { reducer, actions } = createSlice({
   name: 'networths',
   initialState,
-  reducers: {},
+  reducers: {
+    setNetworths: (state, action) => {
+      state.data = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     buildAsyncReducers(builder, [getNetworths]);
   },
 });
 
-export { getNetworths };
+const { setNetworths } = actions;
+
+export { getNetworths, setNetworths };
 export default reducer;

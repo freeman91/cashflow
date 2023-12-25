@@ -3,12 +3,13 @@ import dayjs from 'dayjs';
 
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
-import LinearProgress from '@mui/material/LinearProgress';
 import NewTransactionButton from '../../components/NewTransactionButton';
+import Cashflow from './Cashflow';
+import Spending from './Spending';
+import Expenses from './Expenses';
+import NetWorth from './NetWorth';
 
 function DashboardCardHeader({ title }) {
   return (
@@ -34,7 +35,7 @@ function DashboardGridItem(props) {
 
 export default function Dashboard() {
   const theme = useTheme();
-  const [month] = useState(dayjs().format('MMMM').toLowerCase());
+  const [month] = useState(dayjs());
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
@@ -45,48 +46,25 @@ export default function Dashboard() {
         sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
       >
         <DashboardGridItem>
-          <Card raised>
-            <DashboardCardHeader title={`${month} cashflow`} />
-            <CardContent>
-              <p>earned vs total income</p>
-              <LinearProgress
-                variant='determinate'
-                value={(2106.48 / 4213) * 100}
-              />
-              <p>spent vs budget</p>
-              <LinearProgress
-                variant='determinate'
-                value={(1584 / 4500) * 100}
-              />
-            </CardContent>
-          </Card>
+          <Spending month={month} />
         </DashboardGridItem>
+
+        <Grid container item xs={12} md={6} spacing={1}>
+          <Grid item xs={12}>
+            <Cashflow month={month} />
+          </Grid>
+          <Grid item xs={12}>
+            <NetWorth />
+          </Grid>
+        </Grid>
+
         <DashboardGridItem>
-          <Card raised>
-            <DashboardCardHeader title='spending' />
-            <CardContent>
-              <p>pie graph of spending by category</p>
-            </CardContent>
-          </Card>
-        </DashboardGridItem>
-        <DashboardGridItem>
-          <Card raised>
-            <DashboardCardHeader title='recent expenses/bills/pending' />
-            <CardContent>
-              <p>show paid bills and upcoming bills</p>
-            </CardContent>
-          </Card>
-        </DashboardGridItem>
-        <DashboardGridItem>
-          <Card raised>
-            <DashboardCardHeader title='equity' />
-            <CardContent>
-              <p>asset & debt value & net</p>
-            </CardContent>
-          </Card>
+          <Expenses />
         </DashboardGridItem>
       </Grid>
       <NewTransactionButton transactionTypes={['expense', 'income']} />
     </Box>
   );
 }
+
+export { DashboardCardHeader };

@@ -12,7 +12,6 @@ def create(
     shares: float,
     price: float,
     purchaser: str,
-    description: str = None,
 ) -> Sale:
     sale = Sale(
         user_id=user_id,
@@ -23,7 +22,6 @@ def create(
         asset_id=asset_id,
         shares=shares,
         price=price,
-        description=description,
     )
     sale.save()
     return sale

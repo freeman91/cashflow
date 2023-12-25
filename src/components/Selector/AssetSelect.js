@@ -7,25 +7,25 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { sortBy } from 'lodash';
 
-function AccountSelect(props) {
+function AssetSelect(props) {
   const { resource, setResource } = props;
 
-  const accounts = useSelector((state) => state.accounts.data);
+  const assets = useSelector((state) => state.assets.data);
 
-  const handleChangeAccount = (e) => {
+  const handleChangeAsset = (e) => {
     if (e.target.value === '') return;
-    setResource({ ...resource, account_id: e.target.value });
+    setResource({ ...resource, asset_id: e.target.value });
   };
 
   return (
     <FormControl variant='standard' fullWidth>
-      <InputLabel id='account-label'>account</InputLabel>
+      <InputLabel id='asset-label'>asset</InputLabel>
       <Select
-        labelId='account-label'
+        labelId='asset-label'
         id='item_id'
-        value={resource.account_id}
-        onChange={handleChangeAccount}
-        label='Account'
+        value={resource.asset_id}
+        onChange={handleChangeAsset}
+        label='Asset'
         sx={{
           '& .MuiSelect-select': {
             display: 'flex',
@@ -33,13 +33,13 @@ function AccountSelect(props) {
           },
         }}
       >
-        {sortBy(accounts, 'name ').map((account) => (
+        {sortBy(assets, 'name ').map((asset) => (
           <MenuItem
-            key={account.account_id}
-            id={`${account.account_id}-menu-item`}
-            value={account.account_id}
+            key={asset.asset_id}
+            id={`${asset.asset_id}-menu-item`}
+            value={asset.asset_id}
           >
-            {account.name}
+            {asset.name}
           </MenuItem>
         ))}
       </Select>
@@ -47,4 +47,4 @@ function AccountSelect(props) {
   );
 }
 
-export default AccountSelect;
+export default AssetSelect;

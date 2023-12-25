@@ -90,17 +90,11 @@ function DebtDialog() {
       type={defaultDebt._type}
       title={`${mode} ${defaultDebt._type}`}
       handleClose={handleClose}
-      titleOptions={[
-        <MenuItem key='borrow' onClick={() => {}}>
-          borrow
-        </MenuItem>,
-        <MenuItem key='repayment' onClick={() => {}}>
-          repayemnt
-        </MenuItem>,
+      titleOptions={
         <MenuItem key='delete' onClick={handleDelete}>
           delete
-        </MenuItem>,
-      ]}
+        </MenuItem>
+      }
     >
       <form>
         <List sx={{ width: 375 }}>

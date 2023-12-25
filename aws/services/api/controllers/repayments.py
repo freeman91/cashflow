@@ -21,13 +21,11 @@ def _repayments(user_id: str):
         repayment = dynamo.repayment.create(
             user_id=user_id,
             _date=_date,
-            amount=float(body.get("amount")),
             principal=float(body.get("principal")),
             interest=float(body.get("interest")),
             lender=body.get("lender"),
             debt_id=body.get("debt_id"),
             bill_id=body.get("bill_id"),
-            description=body.get("description"),
         )
         return success_result(repayment.as_dict())
 
@@ -53,7 +51,6 @@ def _repayment(user_id: str, repayment_id: str):
         repayment.date = datetime.strptime(
             request.json["date"][:19], "%Y-%m-%dT%H:%M:%S"
         )
-        repayment.amount = float(request.json.get("amount"))
         repayment.principal = float(request.json.get("principal"))
         repayment.interest = float(request.json.get("interest"))
 
@@ -61,7 +58,6 @@ def _repayment(user_id: str, repayment_id: str):
             "lender",
             "debt_id",
             "bill_id",
-            "description",
         ]:
             setattr(repayment, attr, request.json.get(attr))
 

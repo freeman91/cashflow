@@ -25,7 +25,6 @@ def _sales(user_id: str):
             price=float(body.get("price")),
             asset_id=body.get("asset_id"),
             purchaser=body.get("purchaser"),
-            description=body.get("description"),
         )
         return success_result(sale.as_dict())
 
@@ -54,7 +53,6 @@ def _sale(user_id: str, sale_id: str):
         for attr in [
             "asset_id",
             "purchaser",
-            "description",
         ]:
             setattr(sale, attr, request.json.get(attr))
 

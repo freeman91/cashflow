@@ -9,13 +9,10 @@ import TextField from '@mui/material/TextField';
 import Month from '../../components/Calendar/Month';
 import NewTransactionButton from '../../components/NewTransactionButton';
 import Bills from './Bills';
+import Search from './Search';
 
 function Year() {
   return <div>Year</div>;
-}
-
-function Search() {
-  return <div>Search</div>;
 }
 
 const VIEWS = [

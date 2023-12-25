@@ -115,6 +115,7 @@ export default function Settings() {
           >
             <CardHeader
               disableTypography
+              sx={{ p: 1 }}
               title={
                 <div
                   style={{
@@ -188,6 +189,7 @@ export default function Settings() {
             <Card key={option} raised sx={{ width: '100%' }}>
               <CardHeader
                 disableTypography
+                sx={{ p: 1 }}
                 title={
                   <div
                     style={{

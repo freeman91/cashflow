@@ -16,6 +16,9 @@ import { history, store } from './store/createStore';
 
 import Layout from './routes/Layout';
 import Accounts from './routes/Accounts';
+import Assets from './routes/Assets';
+import Dashboard from './routes/Dashboard';
+import Debts from './routes/Debts';
 import Expenses from './routes/Expenses';
 import Income from './routes/Income';
 import Networth from './routes/Networth';
@@ -23,7 +26,6 @@ import Settings from './routes/Settings';
 import './styles/index.css';
 import './styles/App.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
-import Dashboard from './routes/Dashboard';
 
 console.log('_package.version: ', _package.version);
 
@@ -41,7 +43,13 @@ const AppRoutes = () => {
       <Route path='/app' element={<Layout />}>
         <Route path='/app' element={<Dashboard />} />
         <Route path='/app/accounts' element={<Accounts />}>
-          <Route path=':name' />
+          <Route path=':id' />
+        </Route>
+        <Route path='/app/assets' element={<Assets />}>
+          <Route path=':id' />
+        </Route>
+        <Route path='/app/debts' element={<Debts />}>
+          <Route path=':id' />
         </Route>
         <Route path='/app/expenses' element={<Expenses />} />
         <Route path='/app/income' element={<Income />} />
