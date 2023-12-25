@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Blueprint, request
 
 from services import dynamo
@@ -30,8 +30,10 @@ def _paychecks(user_id: str):
         return success_result(paycheck.as_dict())
 
     if request.method == "GET":
+        start = datetime.strptime(request.args.get("start"), '%Y-%m-%d')
+        end = datetime.strptime(request.args.get("end"), '%Y-%m-%d') + timedelta(hours=24)
         return success_result(
-            [paycheck.as_dict() for paycheck in dynamo.paycheck.get(user_id=user_id)]
+            [paycheck.as_dict() for paycheck in dynamo.paycheck.search(user_id=user_id, start=start, end=end)]
         )
     return failure_result()
 

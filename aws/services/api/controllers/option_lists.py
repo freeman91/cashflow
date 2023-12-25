@@ -13,7 +13,6 @@ option_lists = Blueprint("option_lists", __name__)
 @handle_exception
 @option_lists.route("/option_lists/<user_id>", methods=["POST", "GET"])
 def _option_lists(user_id: str):
-    print(f"request.json: {request.json}")
     if request.method == "POST":
         pass
 

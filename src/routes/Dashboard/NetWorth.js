@@ -45,7 +45,7 @@ export default function NetWorth() {
             {numberToCurrency.format(assetSum - debtSum)}
           </Typography>
         </div>
-        <Divider sx={{ mt: 2, mb: 2 }} />
+        <Divider sx={{ mt: 2, mb: 1 }} />
         <div
           style={{
             display: 'flex',

@@ -11,6 +11,6 @@ RUN pip install poetry==1.3.2
 COPY . .
 RUN POETRY_VIRTUALENVS_CREATE=false poetry install --no-interaction --no-ansi
 
-EXPOSE 9001
+EXPOSE 9000
 
 CMD python aws/main.py run_api -q

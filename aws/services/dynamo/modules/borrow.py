@@ -27,3 +27,12 @@ def get(user_id: str = None, borrow_id: str = None) -> Borrow:
         return list(Borrow.query(user_id))
 
     return list(Borrow.scan())
+
+def search(user_id: str, start: datetime, end: datetime):
+    return list(
+        Borrow.query(
+            user_id,
+            Borrow.borrow_id.startswith("borrow"),
+            filter_condition=Borrow.date.between(start, end),
+        )
+    )

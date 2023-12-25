@@ -70,7 +70,7 @@ export default function Cashflow({ month }) {
             {numberToCurrency.format(monthIncomeSum - monthExpenseSum)}
           </Typography>
         </div>
-        <Divider sx={{ mt: 2, mb: 2 }} />
+        <Divider sx={{ mt: 2, mb: 1 }} />
         <div
           style={{
             display: 'flex',

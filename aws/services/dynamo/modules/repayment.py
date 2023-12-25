@@ -35,3 +35,12 @@ def get(user_id: str = None, repayment_id: str = None) -> Repayment:
         return list(Repayment.query(user_id))
 
     return list(Repayment.scan())
+
+def search(user_id: str, start: datetime, end: datetime):
+    return list(
+        Repayment.query(
+            user_id,
+            Repayment.repayment_id.startswith("repayment"),
+            filter_condition=Repayment.date.between(start, end),
+        )
+    )

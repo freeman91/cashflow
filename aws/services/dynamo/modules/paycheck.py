@@ -39,3 +39,12 @@ def get(user_id: str = None, paycheck_id: str = None) -> Paycheck:
         return list(Paycheck.query(user_id))
 
     return list(Paycheck.scan())
+
+def search(user_id: str, start: datetime, end: datetime):
+    return list(
+        Paycheck.query(
+            user_id,
+            Paycheck.paycheck_id.startswith("paycheck"),
+            filter_condition=Paycheck.date.between(start, end),
+        )
+    )

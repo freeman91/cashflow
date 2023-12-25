@@ -1,20 +1,43 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, remove, concat } from 'lodash';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { toastr } from 'react-redux-toastr';
+import { cloneDeep, concat, get, remove, sortBy } from 'lodash';
 
-import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
+import {
+  deleteResourceAPI,
+  getResourcesInRangeAPI,
+  postResourceAPI,
+  putResourceAPI,
+} from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { toastr } from 'react-redux-toastr';
+import { mergeResources } from '../../helpers';
 
-const getIncomes = createAsyncThunk('incomes/getIncomes', async (user_id) => {
-  try {
-    // return {
-    //   data: await getIncomesAPI(user_id),
-    // };
-  } catch (err) {
-    console.error(err);
+const getIncomes = createAsyncThunk(
+  'incomes/getIncomes',
+  async ({ user_id, range }, { dispatch, getState }) => {
+    let oldIncomes = cloneDeep(getState().incomes.data);
+
+    try {
+      dispatch(showLoading());
+      const newIncomes = await getResourcesInRangeAPI(
+        user_id,
+        'incomes',
+        range
+      );
+
+      let incomes = mergeResources('income_id', oldIncomes, newIncomes);
+
+      return {
+        data: sortBy(incomes, 'date'),
+      };
+    } catch (err) {
+      console.error(err);
+    } finally {
+      dispatch(hideLoading());
+    }
   }
-});
+);
 
 const postIncome = createAsyncThunk(
   'incomes/postIncome',

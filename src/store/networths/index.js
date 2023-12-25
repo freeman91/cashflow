@@ -1,18 +1,29 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { toastr } from 'react-redux-toastr';
+import { concat, get, remove } from 'lodash';
 
+import {
+  deleteResourceAPI,
+  getResourcesAPI,
+  postResourceAPI,
+  putResourceAPI,
+} from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 
 const getNetworths = createAsyncThunk(
   'networths/getNetworths',
-  async (user_id) => {
+  async (user_id, { dispatch }) => {
     try {
-      // const result = await getNetworthsAPI(user_id);
-      // return {
-      //   data: result,
-      // };
+      dispatch(showLoading());
+      return {
+        data: await getResourcesAPI(user_id, 'networths'),
+      };
     } catch (err) {
       console.error(err);
+    } finally {
+      dispatch(hideLoading());
     }
   }
 );

@@ -1,21 +1,32 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, concat, remove } from 'lodash';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { toastr } from 'react-redux-toastr';
+import { concat, get, remove } from 'lodash';
 
-import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
+import {
+  deleteResourceAPI,
+  getResourcesAPI,
+  postResourceAPI,
+  putResourceAPI,
+} from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { toastr } from 'react-redux-toastr';
 
-const getDebts = createAsyncThunk('debts/getDebts', async (user_id) => {
-  try {
-    // const result = await getDebtsAPI(user_id);
-    // return {
-    //   data: result,
-    // };
-  } catch (err) {
-    console.error(err);
+const getDebts = createAsyncThunk(
+  'debts/getDebts',
+  async (user_id, { dispatch }) => {
+    try {
+      dispatch(showLoading());
+      return {
+        data: await getResourcesAPI(user_id, 'debts'),
+      };
+    } catch (err) {
+      console.error(err);
+    } finally {
+      dispatch(hideLoading());
+    }
   }
-});
+);
 
 const postDebt = createAsyncThunk(
   'debts/postDebt',

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Blueprint, request
 
 from services import dynamo
@@ -14,7 +14,6 @@ repayments = Blueprint("repayments", __name__)
 @handle_exception
 @repayments.route("/repayments/<user_id>", methods=["POST", "GET"])
 def _repayments(user_id: str):
-    print(f"request.json: {request.json}")
     if request.method == "POST":
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
@@ -30,9 +29,12 @@ def _repayments(user_id: str):
         return success_result(repayment.as_dict())
 
     if request.method == "GET":
+        start = datetime.strptime(request.args.get("start"), '%Y-%m-%d')
+        end = datetime.strptime(request.args.get("end"), '%Y-%m-%d') + timedelta(hours=24)
         return success_result(
-            [repayment.as_dict() for repayment in dynamo.repayment.get(user_id=user_id)]
+            [repayment.as_dict() for repayment in dynamo.repayment.search(user_id=user_id, start=start, end=end)]
         )
+
     return failure_result()
 
 

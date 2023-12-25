@@ -1,22 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { toastr } from 'react-redux-toastr';
+import dayjs from 'dayjs';
 
 import { getUserAPI, putUserAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { user as initialState } from '../initialState';
-import { setAccounts } from '../accounts';
-import { setAssets } from '../assets';
-import { setBills } from '../bills';
-import { setBorrows } from '../borrows';
-import { setDebts } from '../debts';
-import { setExpenses } from '../expenses';
-import { setIncomes } from '../incomes';
-import { setOptionLists } from '../optionLists';
-import { setPaychecks } from '../paychecks';
-import { setPurchases } from '../purchases';
-import { setRepayments } from '../repayments';
-import { setSales } from '../sales';
-import { setNetworths } from '../networths';
+import { getAccounts } from '../accounts';
+import { getAssets } from '../assets';
+import { getBills } from '../bills';
+import { getBorrows } from '../borrows';
+import { getDebts } from '../debts';
+import { getExpenses } from '../expenses';
+import { getIncomes } from '../incomes';
+import { getNetworths } from '../networths';
+import { getPaychecks } from '../paychecks';
+import { getPurchases } from '../purchases';
+import { getRepayments } from '../repayments';
+import { getSales } from '../sales';
 
 const getUser = createAsyncThunk(
   'user/getUser',
@@ -25,42 +26,31 @@ const getUser = createAsyncThunk(
 
     if (user?.user_id || requestId !== currentRequestId) return;
 
-    try {
-      const result = await getUserAPI(user_id);
-      const {
-        accounts,
-        assets,
-        bills,
-        borrows,
-        debts,
-        expenses,
-        incomes,
-        option_lists,
-        paychecks,
-        purchases,
-        repayments,
-        sales,
-        user,
-        networths,
-      } = result;
+    const start = dayjs().date(1).subtract(1, 'month');
+    const end = start.add(3, 'month').date(0);
 
-      dispatch(setAccounts(accounts));
-      dispatch(setAssets(assets));
-      dispatch(setBills(bills));
-      dispatch(setBorrows(borrows));
-      dispatch(setDebts(debts));
-      dispatch(setExpenses(expenses));
-      dispatch(setIncomes(incomes));
-      dispatch(setOptionLists(option_lists));
-      dispatch(setPaychecks(paychecks));
-      dispatch(setPurchases(purchases));
-      dispatch(setRepayments(repayments));
-      dispatch(setSales(sales));
-      dispatch(setNetworths(networths));
+    try {
+      dispatch(showLoading());
+
+      const user = await getUserAPI(user_id);
+      dispatch(getAccounts(user_id));
+      dispatch(getAssets(user_id));
+      dispatch(getBills(user_id));
+      dispatch(getBorrows({ user_id, range: { start, end } }));
+      dispatch(getDebts(user_id));
+      dispatch(getExpenses({ user_id, range: { start, end } }));
+      dispatch(getIncomes({ user_id, range: { start, end } }));
+      dispatch(getNetworths(user_id));
+      dispatch(getPaychecks({ user_id, range: { start, end } }));
+      dispatch(getPurchases({ user_id, range: { start, end } }));
+      dispatch(getRepayments({ user_id, range: { start, end } }));
+      dispatch(getSales({ user_id, range: { start, end } }));
 
       return { item: user };
     } catch (err) {
       console.error(err);
+    } finally {
+      dispatch(hideLoading());
     }
   }
 );

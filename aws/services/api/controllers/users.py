@@ -14,29 +14,7 @@ def user_route(user_id: str):
         user_dict = dynamo.user.get(user_id).as_dict()
         del user_dict["password"]
 
-        result = {"user": user_dict}
-
-        for resource_type in [
-            "expense",
-            "income",
-            "account",
-            "asset",
-            "bill",
-            "borrow",
-            "debt",
-            "option_list",
-            "paycheck",
-            "purchase",
-            "repayment",
-            "sale",
-            "networth",
-        ]:
-            # TODO: get this month and last month data only
-            result[resource_type + "s"] = [
-                r.as_dict() for r in getattr(dynamo, resource_type).get(user_id=user_id)
-            ]
-
-        return success_result(result)
+        return success_result(user_dict)
 
     if request.method == "PUT":
         user_dict = dynamo.user.update(user_id, request.json).as_dict()

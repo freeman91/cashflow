@@ -35,3 +35,12 @@ def get(user_id: str = None, purchase_id: str = None) -> Purchase:
         return list(Purchase.query(user_id))
 
     return list(Purchase.scan())
+
+def search(user_id: str, start: datetime, end: datetime):
+    return list(
+        Purchase.query(
+            user_id,
+            Purchase.purchase_id.startswith("purchase"),
+            filter_condition=Purchase.date.between(start, end),
+        )
+    )

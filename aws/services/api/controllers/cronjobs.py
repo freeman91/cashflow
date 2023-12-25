@@ -16,6 +16,7 @@ from services.api.controllers.__util__ import (
 )
 
 
+USER_ID = os.getenv("REACT_APP_USER_ID")
 CRYPTO_KEY = os.getenv("CRYPTO_COMPARE_KEY")
 
 
@@ -121,53 +122,56 @@ def networth_snapshot():
     """
 
     if request.method == "POST":
-        assets = dynamo.asset.get()
-        debts = dynamo.debt.get()
         _date = datetime.now()
 
-        assets = map_(
-            dynamo.asset.get(),
-            lambda asset: {
-                "amount": asset.value,
-                "name": asset.name,
-                "type": asset.type,
-            },
-        )
+        assets = []
+        debts = []
 
-        remove(
-            assets,
-            lambda asset: asset.get("amount") == 0,
-        )
+        accounts = dynamo.account.get(user_id=USER_ID)
+        allAssets = dynamo.asset.get(user_id=USER_ID)
+        debts = dynamo.asset.get(user_id=USER_ID)
 
-        debts = map_(
-            dynamo.debt.get(),
-            lambda debt: {"amount": debt.value, "name": debt.name, "type": debt.type},
-        )
+        for account in accounts:
+            account_assets = filter_(allAssets, lambda asset: asset.account_id == account.account_id)
+            for asset in account_assets:
+                if asset.value > 0:
+                    assets.append({
+                        "name": asset.name,
+                        "value": asset.value,
+                        "category": asset.category,
+                        "vendor": account.name
+                    })
 
-        remove(
-            debts,
-            lambda debt: debt.get("amount") == 0,
-        )
+            account_debts = filter_(allAssets, lambda debt: debt.account_id == account.account_id)
+            for debt in account_debts:
+                if debt.value > 0:
+                    debts.append({
+                        "name": debt.name,
+                        "value": debt.value,
+                        "category": debt.category,
+                        "lender": account.name
+                    })
+            
 
-        networth = dynamo.networth.get(year=_date.year, month=_date.month)
-        if not networth:
-            dynamo.networth.create(
-                {
-                    "date": _date,
-                    "month": _date.month,
-                    "year": _date.year,
-                    "assets": assets,
-                    "debts": debts,
-                }
-            )
+        # networth = dynamo.networth.get(year=_date.year, month=_date.month)
+        # if not networth:
+        #     dynamo.networth.create(
+        #         {
+        #             "date": _date,
+        #             "month": _date.month,
+        #             "year": _date.year,
+        #             "assets": assets,
+        #             "debts": debts,
+        #         }
+        #     )
 
-            print("Networth created")
+        #     print("Networth created")
 
-        else:
-            networth.date = _date
-            networth.assets = assets
-            networth.debts = debts
-            # networth.save()
+        # else:
+        #     networth.date = _date
+        #     networth.assets = assets
+        #     networth.debts = debts
+        #     # networth.save()
 
         return success_result("Success")
 

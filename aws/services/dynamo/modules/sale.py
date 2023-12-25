@@ -35,3 +35,12 @@ def get(user_id: str = None, sale_id: str = None) -> Sale:
         return list(Sale.query(user_id))
 
     return list(Sale.scan())
+
+def search(user_id: str, start: datetime, end: datetime):
+    return list(
+        Sale.query(
+            user_id,
+            Sale.sale_id.startswith("sale"),
+            filter_condition=Sale.date.between(start, end),
+        )
+    )

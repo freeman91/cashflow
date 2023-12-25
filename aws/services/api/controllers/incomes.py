@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Blueprint, request
 
 from services import dynamo
@@ -27,8 +27,10 @@ def _incomes(user_id: str):
         return success_result(income.as_dict())
 
     if request.method == "GET":
+        start = datetime.strptime(request.args.get("start"), '%Y-%m-%d')
+        end = datetime.strptime(request.args.get("end"), '%Y-%m-%d') + timedelta(hours=24)
         return success_result(
-            [income.as_dict() for income in dynamo.income.get(user_id=user_id)]
+            [income.as_dict() for income in dynamo.income.search(user_id=user_id, start=start, end=end)]
         )
     return failure_result()
 

@@ -1,20 +1,32 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { toastr } from 'react-redux-toastr';
-import { get, remove, concat } from 'lodash';
+import { concat, get, remove } from 'lodash';
 
-import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
+import {
+  deleteResourceAPI,
+  getResourcesAPI,
+  postResourceAPI,
+  putResourceAPI,
+} from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 
-const getBills = createAsyncThunk('bills/getBills', async (user_id) => {
-  try {
-    // return {
-    //   data: await getBillsAPI(user_id),
-    // };
-  } catch (err) {
-    console.error(err);
+const getBills = createAsyncThunk(
+  'bills/getBills',
+  async (user_id, { dispatch }) => {
+    try {
+      dispatch(showLoading());
+      return {
+        data: await getResourcesAPI(user_id, 'bills'),
+      };
+    } catch (err) {
+      console.error(err);
+    } finally {
+      dispatch(hideLoading());
+    }
   }
-});
+);
 
 const postBill = createAsyncThunk(
   'bills/postBill',

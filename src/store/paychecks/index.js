@@ -1,20 +1,40 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, remove, concat } from 'lodash';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { toastr } from 'react-redux-toastr';
+import { cloneDeep, concat, get, remove, sortBy } from 'lodash';
 
-import { deleteResourceAPI, postResourceAPI, putResourceAPI } from '../../api';
+import {
+  deleteResourceAPI,
+  getResourcesInRangeAPI,
+  postResourceAPI,
+  putResourceAPI,
+} from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { toastr } from 'react-redux-toastr';
+import { mergeResources } from '../../helpers';
 
 const getPaychecks = createAsyncThunk(
   'paychecks/getPaychecks',
-  async (user) => {
+  async ({ user_id, range }, { dispatch, getState }) => {
+    let oldPaychecks = cloneDeep(getState().paychecks.data);
+
     try {
-      // return {
-      //   data: await getPaychecksAPI(user.user_id),
-      // };
+      dispatch(showLoading());
+      const newPaychecks = await getResourcesInRangeAPI(
+        user_id,
+        'paychecks',
+        range
+      );
+
+      let paychecks = mergeResources('paycheck_id', oldPaychecks, newPaychecks);
+
+      return {
+        data: sortBy(paychecks, 'date'),
+      };
     } catch (err) {
       console.error(err);
+    } finally {
+      dispatch(hideLoading());
     }
   }
 );

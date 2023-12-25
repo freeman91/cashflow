@@ -1,6 +1,18 @@
 import axios from './xhr_libs/axios';
 import { processResponse } from '.';
 
+const getResourcesAPI = async (user_id, resource_type) => {
+  return processResponse(await axios.get(`/${resource_type}/${user_id}`));
+};
+
+const getResourcesInRangeAPI = async (user_id, resource_type, range) => {
+  const start = range.start.format('YYYY-MM-DD');
+  const end = range.end.format('YYYY-MM-DD');
+  return processResponse(
+    await axios.get(`/${resource_type}/${user_id}`, { params: { start, end } })
+  );
+};
+
 const putResourceAPI = async (resource) => {
   const id = resource[`${resource._type}_id`];
   return processResponse(
@@ -20,4 +32,10 @@ const deleteResourceAPI = async (user_id, type, resource_id) => {
   );
 };
 
-export { putResourceAPI, postResourceAPI, deleteResourceAPI };
+export {
+  getResourcesAPI,
+  getResourcesInRangeAPI,
+  putResourceAPI,
+  postResourceAPI,
+  deleteResourceAPI,
+};

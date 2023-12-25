@@ -64,7 +64,6 @@ export default function Expenses() {
       />
       <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
         <TableContainer
-          raised
           sx={{
             mt: 2,
             maxWidth: 1000,

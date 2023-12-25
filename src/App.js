@@ -3,7 +3,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { HistoryRouter } from 'redux-first-history/rr6';
 import ReduxToastr from 'react-redux-toastr';
-import { LoadingBar } from 'react-redux-loading-bar';
+import LoadingBar from 'react-redux-loading-bar';
 
 import { styled } from '@mui/material';
 import { muiTheme } from './styles/muiTheme';
@@ -30,7 +30,7 @@ import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 console.log('_package.version: ', _package.version);
 
 const ReduxLoader = styled(LoadingBar)(({ theme }) => ({
-  backgroundColor: theme.palette.grey[500],
+  backgroundColor: theme.palette.blue[500],
   height: '3px',
   position: 'absolute',
   zIndex: 99999,
