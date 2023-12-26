@@ -76,7 +76,7 @@ const deleteAccount = createAsyncThunk(
     try {
       const { data: accounts } = getState().accounts;
       const { user_id } = getState().user.item;
-      const result = await deleteResourceAPI(user_id, 'accounts', id);
+      const result = await deleteResourceAPI(user_id, 'account', id);
 
       if (result) {
         toastr.success('Account deleted');

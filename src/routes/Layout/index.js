@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
 import { useTheme } from '@mui/styles';
@@ -40,7 +40,6 @@ import RepaymentDialog from '../../components/Dialog/RepaymentDialog';
 import SaleDialog from '../../components/Dialog/SaleDialog';
 
 import { getUser } from '../../store/user';
-import { hideLoading, showLoading } from 'react-redux-loading-bar';
 
 const USER_ID = process.env.REACT_APP_USER_ID;
 

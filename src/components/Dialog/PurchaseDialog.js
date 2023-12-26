@@ -100,6 +100,7 @@ function PurchaseDialog() {
 
   const handleDelete = () => {
     dispatch(deletePurchase(purchase.purchase_id));
+    handleClose();
   };
 
   const handleClose = () => {

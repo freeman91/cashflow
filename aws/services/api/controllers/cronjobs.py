@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime, date, timedelta
-from pydash import filter_, map_, find, remove
+from pydash import filter_, map_, find
 from flask import request, Blueprint
 from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
@@ -23,26 +23,8 @@ CRYPTO_KEY = os.getenv("CRYPTO_COMPARE_KEY")
 cronjobs = Blueprint("cronjobs", __name__)
 
 
-def decode_cron_rule(cron_expression: str):
-    cron_parts = cron_expression.split()
-    day_of_month = cron_parts[0]
-    month = cron_parts[1]
-    return day_of_month, month
-
-
-def is_cron_match(cron_expression: str, target_date: date):
-    day_of_month, months = decode_cron_rule(cron_expression)
-
-    if months != "*":
-        months = [int(substring) for substring in months.split(",")]
-
-    if day_of_month != "*" and target_date.day != int(day_of_month):
-        return False
-
-    if months != "*" and str((target_date.month)) not in months:
-        return False
-
-    return True
+def estimate_interest(debt_value: float, interest_rate: float):
+    return debt_value * (interest_rate / 12)
 
 
 def get_crypto_prices(tickers: list):
@@ -67,7 +49,7 @@ def update_crypto_prices():
 
     if request.method == "PUT":
         crypto_assets = list(
-            filter_(dynamo.asset.get(), lambda asset: asset.type == "crypto")
+            filter_(dynamo.asset.get(), lambda asset: asset.category == "crypto")
         )
 
         tickers = map_(crypto_assets, lambda asset: asset.name.upper())
@@ -94,7 +76,7 @@ def update_stock_prices():
 
     if request.method == "PUT":
         stock_assets = list(
-            filter_(dynamo.asset.get(), lambda asset: asset.type == "stock")
+            filter_(dynamo.asset.get(), lambda asset: asset.category == "stock")
         )
 
         tickers = map_(stock_assets, lambda asset: asset.name.upper())
@@ -129,49 +111,60 @@ def networth_snapshot():
 
         accounts = dynamo.account.get(user_id=USER_ID)
         allAssets = dynamo.asset.get(user_id=USER_ID)
-        debts = dynamo.asset.get(user_id=USER_ID)
+        allDebts = dynamo.asset.get(user_id=USER_ID)
 
         for account in accounts:
-            account_assets = filter_(allAssets, lambda asset: asset.account_id == account.account_id)
+            account_assets = filter_(
+                allAssets, lambda asset: asset.account_id == account.account_id
+            )
             for asset in account_assets:
                 if asset.value > 0:
-                    assets.append({
-                        "name": asset.name,
-                        "value": asset.value,
-                        "category": asset.category,
-                        "vendor": account.name
-                    })
+                    assets.append(
+                        {
+                            "name": asset.name,
+                            "value": asset.value,
+                            "category": asset.category,
+                            "vendor": account.name,
+                        }
+                    )
 
-            account_debts = filter_(allAssets, lambda debt: debt.account_id == account.account_id)
+            account_debts = filter_(
+                allDebts, lambda debt: debt.account_id == account.account_id
+            )
             for debt in account_debts:
                 if debt.value > 0:
-                    debts.append({
-                        "name": debt.name,
-                        "value": debt.value,
-                        "category": debt.category,
-                        "lender": account.name
-                    })
-            
+                    debts.append(
+                        {
+                            "name": debt.name,
+                            "value": debt.value,
+                            "category": debt.category,
+                            "lender": account.name,
+                        }
+                    )
 
-        # networth = dynamo.networth.get(year=_date.year, month=_date.month)
-        # if not networth:
-        #     dynamo.networth.create(
-        #         {
-        #             "date": _date,
-        #             "month": _date.month,
-        #             "year": _date.year,
-        #             "assets": assets,
-        #             "debts": debts,
-        #         }
-        #     )
+        networth = dynamo.networth.get(
+            year=_date.year, month=_date.month, user_id=USER_ID
+        )
+        if not networth:
+            dynamo.networth.create(
+                {
+                    "user_id": USER_ID,
+                    "date": _date,
+                    "year": _date.year,
+                    "month": _date.month,
+                    "assets": assets,
+                    "debts": debts,
+                }
+            )
 
-        #     print("Networth created")
+            print("Networth created")
 
-        # else:
-        #     networth.date = _date
-        #     networth.assets = assets
-        #     networth.debts = debts
-        #     # networth.save()
+        else:
+            networth.date = _date
+            networth.assets = assets
+            networth.debts = debts
+            networth.save()
+            print("Networth updated")
 
         return success_result("Success")
 
@@ -182,36 +175,60 @@ def generate_bill_expenses():
     """
     0 0 * * * curl -X POST localhost:9000/cronjobs/generate_bill_expenses
     """
+    from pprint import pprint
 
     if request.method == "POST":
         new_expenses = []
+        new_repayments = []
+
         _date = date.today() + timedelta(days=31)
 
-        for bill in dynamo.bill.get():
-            if is_cron_match(bill.rule, _date):
-                bill_expense = find(
-                    dynamo.expense.get(),
-                    lambda expense: expense.type == bill.type
-                    and expense.vendor == bill.vendor
-                    and expense.date.date() == _date,
-                )
+        print(f"_date.day: {_date.day}")
 
-                if not bill_expense:
-                    new_expense = {
-                        "amount": bill.amount,
-                        "date": datetime(_date.year, _date.month, _date.day, 12, 0),
-                        "type": bill.type,
-                        "vendor": bill.vendor,
-                        "description": bill.description,
-                        "paid": False,
-                        "bill_id": bill.id,
+        for bill in dynamo.bill.get():
+            if _date.day == bill.day_of_month and _date.month in bill.months:
+                pprint(bill.as_dict())
+
+                if not bill.debt_id:
+                    print("create pending expense")
+                    new_expenses.append(
+                        {
+                            "user_id": USER_ID,
+                            "amount": bill.amount,
+                            "_date": datetime(
+                                _date.year, _date.month, _date.day, 12, 0
+                            ),
+                            "category": bill.category,
+                            "vendor": bill.vendor,
+                            "pending": True,
+                            "bill_id": bill.bill_id,
+                        }
+                    )
+
+                else:
+                    print("create pending repayment")
+                    debt = dynamo.debt.get(user_id=USER_ID, debt_id=bill.debt_id)
+                    interest = estimate_interest(debt.value, debt.interest_rate)
+                    new_repayment = {
+                        "user_id": USER_ID,
+                        "_date": datetime(_date.year, _date.month, _date.day, 12, 0),
+                        "principal": bill.amount - interest,
+                        "interest": interest,
+                        "lender": bill.vendor,
+                        "pending": True,
+                        "debt_id": bill.debt_id,
+                        "bill_id": bill.bill_id,
                     }
-                    new_expenses.append(new_expense)
+                    new_repayments.append(new_repayment)
 
         for expense in new_expenses:
-            print(expense)
-            dynamo.expense.create(expense)
+            dynamo.expense.create(**expense)
 
-        return success_result(f"{len(new_expenses)} expenses generates for {_date}")
+        for repayment in new_repayments:
+            dynamo.repayment.create(**repayment)
+
+        return success_result(
+            f"{len(new_expenses + new_repayments)} expenses generated for {_date}"
+        )
 
     return failure_result()

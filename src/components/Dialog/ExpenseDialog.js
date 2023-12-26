@@ -78,6 +78,7 @@ function ExpenseDialog() {
 
   const handleDelete = () => {
     dispatch(deleteExpense(expense.expense_id));
+    handleClose();
   };
 
   const handleClose = () => {

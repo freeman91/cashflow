@@ -76,7 +76,7 @@ const deleteAsset = createAsyncThunk(
     try {
       const { data: assets } = getState().assets;
       const { user_id } = getState().user.item;
-      const result = await deleteResourceAPI(user_id, 'assets', id);
+      const result = await deleteResourceAPI(user_id, 'asset', id);
 
       if (result) {
         toastr.success('Asset deleted');

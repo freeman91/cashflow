@@ -78,6 +78,11 @@ export default function Spending({ month }) {
         value: reduce(expenses, (sum, expense) => sum + expense.amount, 0),
       };
     });
+
+    if (data.length === 0) {
+      data = [{ name: 'No expenses', value: 0.0000001 }];
+    }
+
     setChartData(data);
   }, [month, allExpenses]);
 

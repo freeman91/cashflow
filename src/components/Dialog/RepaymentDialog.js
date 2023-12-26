@@ -8,8 +8,12 @@ import isEmpty from 'lodash/isEmpty';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
@@ -33,6 +37,7 @@ const defaultRepayment = {
   interest: '',
   lender: '',
   _type: 'repayment',
+  pending: false,
   debt_id: '',
   bill_id: '',
 };
@@ -103,6 +108,7 @@ function RepaymentDialog() {
 
   const handleDelete = () => {
     dispatch(deleteRepayment(repayment.repayment_id));
+    handleClose();
   };
 
   const handleClose = () => {
@@ -194,6 +200,24 @@ function RepaymentDialog() {
             value={repayment.lender}
             onChange={handleChange}
           />
+          <ListItem key='pending' disablePadding sx={{ pl: 0, pr: 0 }}>
+            <ListItemButton
+              role={undefined}
+              onClick={() =>
+                setRepayment({ ...repayment, pending: !repayment.pending })
+              }
+              dense
+            >
+              <ListItemIcon>
+                <Checkbox
+                  edge='start'
+                  checked={!repayment.pending}
+                  tabIndex={-1}
+                />
+              </ListItemIcon>
+              <ListItemText primary={repayment.pending ? 'Pending' : 'Paid'} />
+            </ListItemButton>
+          </ListItem>
           <ListItem
             key='buttons'
             disablePadding

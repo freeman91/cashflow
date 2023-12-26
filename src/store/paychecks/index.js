@@ -87,7 +87,7 @@ const deletePaycheck = createAsyncThunk(
     try {
       const { data: paychecks } = getState().paychecks;
       const { user_id } = getState().user.item;
-      const result = await deleteResourceAPI(user_id, 'paychecks', id);
+      const result = await deleteResourceAPI(user_id, 'paycheck', id);
 
       if (result) {
         toastr.success('Paycheck deleted');

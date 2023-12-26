@@ -1,25 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { toastr } from 'react-redux-toastr';
 import { get, remove, concat } from 'lodash';
 
 import {
-  // getOptionListsAPI,
+  getResourcesAPI,
   postOptionListAPI,
   putOptionListAPI,
-  // deleteOptionListAPI,
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { toastr } from 'react-redux-toastr';
 
 const getOptionLists = createAsyncThunk(
-  'optionLists/getOptionLists',
-  async (user) => {
+  'option_lists/getOptionLists',
+  async (user_id, { dispatch }) => {
     try {
-      // return {
-      //   data: await getOptionListsAPI(user.user_id),
-      // };
+      dispatch(showLoading());
+      return {
+        data: await getResourcesAPI(user_id, 'option_lists'),
+      };
     } catch (err) {
       console.error(err);
+    } finally {
+      dispatch(hideLoading());
     }
   }
 );

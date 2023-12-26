@@ -98,6 +98,7 @@ function SaleDialog() {
 
   const handleDelete = () => {
     dispatch(deleteSale(sale.sale_id));
+    handleClose();
   };
 
   const handleClose = () => {

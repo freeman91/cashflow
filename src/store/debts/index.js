@@ -76,7 +76,7 @@ const deleteDebt = createAsyncThunk(
     try {
       const { data: debts } = getState().debts;
       const { user_id } = getState().user.item;
-      const result = await deleteResourceAPI(user_id, 'debts', id);
+      const result = await deleteResourceAPI(user_id, 'debt', id);
 
       if (result) {
         toastr.success('Debt deleted');

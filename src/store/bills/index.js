@@ -76,7 +76,7 @@ const deleteBill = createAsyncThunk(
     try {
       const { data: bills } = getState().bills;
       const { user_id } = getState().user.item;
-      const result = await deleteResourceAPI(user_id, 'bills', id);
+      const result = await deleteResourceAPI(user_id, 'bill', id);
 
       if (result) {
         toastr.success('Bill deleted');

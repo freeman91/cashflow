@@ -1,14 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
-import { concat, get, remove } from 'lodash';
 
-import {
-  deleteResourceAPI,
-  getResourcesAPI,
-  postResourceAPI,
-  putResourceAPI,
-} from '../../api';
+import { getResourcesAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 

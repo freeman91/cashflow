@@ -25,6 +25,7 @@ import {
 } from '@mui/material';
 import { cloneDeep, includes, range, remove } from 'lodash';
 import dayjs from 'dayjs';
+import DebtSelect from '../Selector/DebtSelect';
 
 const defaultBill = {
   bill_id: '',
@@ -36,11 +37,14 @@ const defaultBill = {
   day_of_month: '15',
   months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
   generates_type: 'expense',
+  debt_id: '',
 };
 
 function BillDialog() {
   const dispatch = useDispatch();
   const optionLists = useSelector((state) => state.optionLists.data);
+  const accounts = useSelector((state) => state.accounts.data);
+  const debts = useSelector((state) => state.debts.data);
   const bills = useSelector((state) => state.bills.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.bill);
   const [bill, setBill] = useState(defaultBill);
@@ -63,6 +67,19 @@ function BillDialog() {
     }
   }, [attrs]);
 
+  useEffect(() => {
+    if (bill.debt_id) {
+      const debt = find(debts, { debt_id: bill.debt_id });
+      const account = find(accounts, { account_id: debt.account_id });
+      setBill((bill) => ({
+        ...bill,
+        name: debt.name,
+        vendor: account.name,
+        category: 'repayment',
+      }));
+    }
+  }, [bill.debt_id, accounts, debts]);
+
   const handleChange = (e) => {
     setBill({ ...bill, [e.target.id]: e.target.value });
   };
@@ -77,6 +94,7 @@ function BillDialog() {
 
   const handleDelete = () => {
     dispatch(deleteBill(bill.bill_id));
+    handleClose();
   };
 
   const handleClose = () => {
@@ -104,6 +122,9 @@ function BillDialog() {
               }}
             />
           )}
+          <ListItem key='generates_type' disablePadding sx={{ pt: 2, pb: 1 }}>
+            <DebtSelect resource={bill} setResource={setBill} />
+          </ListItem>
           <TextFieldListItem
             id='name'
             label='name'
@@ -215,27 +236,7 @@ function BillDialog() {
               </Select>
             </FormControl>
           </ListItem>
-          <ListItem key='generates_type' disablePadding sx={{ pt: 2, pb: 1 }}>
-            <FormControl fullWidth>
-              <InputLabel id='generates-label'>generates</InputLabel>
-              <Select
-                labelId='generates-label'
-                variant='standard'
-                fullWidth
-                value={bill?.generates_type}
-                onChange={(e) => {
-                  setBill({ ...bill, generates_type: e.target.value });
-                }}
-              >
-                <MenuItem value={'expense'}>
-                  <ListItemText primary={'expense'} />
-                </MenuItem>
-                <MenuItem value={'repayment'}>
-                  <ListItemText primary={'repayment'} />
-                </MenuItem>
-              </Select>
-            </FormControl>
-          </ListItem>
+
           <ListItem
             key='buttons'
             disablePadding

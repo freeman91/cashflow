@@ -84,6 +84,7 @@ function PaycheckDialog() {
 
   const handleDelete = () => {
     dispatch(deletePaycheck(paycheck.paycheck_id));
+    handleClose();
   };
 
   const handleClose = () => {

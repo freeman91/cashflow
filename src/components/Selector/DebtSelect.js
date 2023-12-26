@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import get from 'lodash/get';
 
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -23,7 +24,7 @@ function DebtSelect(props) {
       <Select
         labelId='debt-label'
         id='item_id'
-        value={resource.debt_id}
+        value={get(resource, 'debt_id', '')}
         onChange={handleChangeDebt}
         label='Debt'
         sx={{
@@ -33,6 +34,9 @@ function DebtSelect(props) {
           },
         }}
       >
+        <MenuItem key='none' id={`none-menu-item`} value={''}>
+          None
+        </MenuItem>
         {sortBy(debts, 'name ').map((debt) => (
           <MenuItem
             key={debt.debt_id}

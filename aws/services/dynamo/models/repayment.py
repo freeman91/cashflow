@@ -1,7 +1,12 @@
 """Repayment pynamodb model"""
 
 import os
-from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
+from pynamodb.attributes import (
+    BooleanAttribute,
+    NumberAttribute,
+    UnicodeAttribute,
+    UTCDateTimeAttribute,
+)
 
 from .base import BaseModel
 
@@ -24,6 +29,7 @@ class Repayment(BaseModel):
     principal = NumberAttribute()
     interest = NumberAttribute()
     lender = UnicodeAttribute()
+    pending = BooleanAttribute(default=False)
     debt_id = UnicodeAttribute()
     bill_id = UnicodeAttribute(null=True)
 

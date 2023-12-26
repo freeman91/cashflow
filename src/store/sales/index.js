@@ -83,7 +83,7 @@ const deleteSale = createAsyncThunk(
     try {
       const { data: sales } = getState().sales;
       const { user_id } = getState().user.item;
-      const result = await deleteResourceAPI(user_id, 'sales', id);
+      const result = await deleteResourceAPI(user_id, 'sale', id);
 
       if (result) {
         toastr.success('Sale deleted');

@@ -67,6 +67,7 @@ function IncomeDialog() {
 
   const handleDelete = () => {
     dispatch(deleteIncome(income.income_id));
+    handleClose();
   };
 
   const handleClose = () => {

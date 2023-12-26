@@ -61,6 +61,7 @@ function AccountDialog() {
 
   const handleDelete = () => {
     dispatch(deleteAccount(account.account_id));
+    handleClose();
   };
 
   const handleClose = () => {

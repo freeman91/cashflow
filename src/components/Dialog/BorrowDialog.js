@@ -88,6 +88,7 @@ function BorrowDialog() {
 
   const handleDelete = () => {
     dispatch(deleteBorrow(borrow.borrow_id));
+    handleClose();
   };
 
   const handleClose = () => {

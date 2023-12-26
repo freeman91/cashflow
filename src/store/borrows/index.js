@@ -87,7 +87,7 @@ const deleteBorrow = createAsyncThunk(
     try {
       const { data: borrows } = getState().borrows;
       const { user_id } = getState().user.item;
-      const result = await deleteResourceAPI(user_id, 'borrows', borrow_id);
+      const result = await deleteResourceAPI(user_id, 'borrow', borrow_id);
 
       if (result) {
         toastr.success('Borrow deleted');

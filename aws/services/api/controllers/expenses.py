@@ -32,10 +32,17 @@ def _expenses(user_id: str):
         return success_result(expense.as_dict())
 
     if request.method == "GET":
-        start = datetime.strptime(request.args.get("start"), '%Y-%m-%d')
-        end = datetime.strptime(request.args.get("end"), '%Y-%m-%d') + timedelta(hours=24)
+        start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
+        end = datetime.strptime(request.args.get("end"), "%Y-%m-%d") + timedelta(
+            hours=24
+        )
         return success_result(
-            [expense.as_dict() for expense in dynamo.expense.search(user_id=user_id, start=start, end=end)]
+            [
+                expense.as_dict()
+                for expense in dynamo.expense.search(
+                    user_id=user_id, start=start, end=end
+                )
+            ]
         )
 
     return failure_result()

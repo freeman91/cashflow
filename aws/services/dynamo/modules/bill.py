@@ -12,7 +12,7 @@ def create(
     vendor: str,
     day_of_month: str,
     months: list,
-    generates_type: str,
+    debt_id: str,
 ) -> Bill:
     bill = Bill(
         user_id=user_id,
@@ -23,7 +23,7 @@ def create(
         vendor=vendor,
         day_of_month=day_of_month,
         months=months,
-        generates_type=generates_type,
+        debt_id=debt_id,
         last_update=datetime.now(timezone.utc),
     )
     bill.save()

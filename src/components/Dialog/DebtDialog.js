@@ -78,6 +78,7 @@ function DebtDialog() {
 
   const handleDelete = () => {
     dispatch(deleteDebt(debt.debt_id));
+    handleClose();
   };
 
   const handleClose = () => {

@@ -87,6 +87,7 @@ function AssetDialog() {
 
   const handleDelete = () => {
     dispatch(deleteAsset(asset.asset_id));
+    handleClose();
   };
 
   const handleClose = () => {

@@ -91,7 +91,7 @@ const deleteRepayment = createAsyncThunk(
     try {
       const { data: repayments } = getState().repayments;
       const { user_id } = getState().user.item;
-      const result = await deleteResourceAPI(user_id, 'repayments', id);
+      const result = await deleteResourceAPI(user_id, 'repayment', id);
 
       if (result) {
         toastr.success('Repayment deleted');

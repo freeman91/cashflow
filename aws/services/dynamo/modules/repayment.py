@@ -12,6 +12,7 @@ def create(
     lender: str,
     debt_id: str,
     bill_id: str = None,
+    pending: bool = False,
 ) -> Repayment:
     repayment = Repayment(
         user_id=user_id,
@@ -22,6 +23,7 @@ def create(
         lender=lender,
         debt_id=debt_id,
         bill_id=bill_id,
+        pending=pending,
     )
     repayment.save()
     return repayment
@@ -35,6 +37,7 @@ def get(user_id: str = None, repayment_id: str = None) -> Repayment:
         return list(Repayment.query(user_id))
 
     return list(Repayment.scan())
+
 
 def search(user_id: str, start: datetime, end: datetime):
     return list(

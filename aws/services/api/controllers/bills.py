@@ -7,6 +7,7 @@ from services.api.controllers.__util__ import (
     success_result,
 )
 
+
 bills = Blueprint("bills", __name__)
 
 
@@ -23,7 +24,7 @@ def _bills(user_id: str):
             vendor=body.get("vendor"),
             day_of_month=body.get("day_of_month"),
             months=body.get("months"),
-            generates_type=body.get("generates_type"),
+            debt_id=body.get("debt_id"),
         )
         return success_result(bill.as_dict())
 
@@ -52,7 +53,7 @@ def _bill(user_id: str, bill_id: str):
             "vendor",
             "day_of_month",
             "months",
-            "generates_type",
+            "debt_id",
         ]:
             setattr(bill, attr, request.json.get(attr))
 
