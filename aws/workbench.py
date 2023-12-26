@@ -27,6 +27,65 @@ APP_ID = os.getenv("APP_ID")
 USER_ID = os.getenv("REACT_APP_USER_ID")
 
 
+# def insert_all_incomes(delete=False):
+#     if delete:
+#         # batch delete incomes
+#         with Income.batch_write() as batch:
+#             for income in dynamo.income.get():
+#                 batch.delete(income)
+
+#         # batch delete paychecks
+#         with Paycheck.batch_write() as batch:
+#             for paycheck in dynamo.paycheck.get():
+#                 batch.delete(paycheck)
+
+#     # convert/insert mongo incomes in dynamo
+#     insert_incomes = []
+#     insert_paychecks = []
+#     for income in mongo.income.get():
+#         if income.type == "paycheck":
+#             insert_paychecks.append(
+#                 Paycheck(
+#                     user_id=USER_ID,
+#                     paycheck_id=f"paycheck:{uuid4()}",
+#                     date=income.date,
+#                     employer=income.source,
+#                     take_home=income.amount,
+#                     taxes=income.deductions.get("tax", 0),
+#                     retirement=income.deductions.get("401k", 0),
+#                     benefits=income.deductions.get("benefits", 0),
+#                     other=income.deductions.get("other", 0),
+#                     description=description,
+#                 )
+#             )
+
+#         else:
+#             description = income.description
+
+#             if income.source == "The Ohio State University":
+#                 description = "Rachel's paycheck"
+
+#             insert_incomes.append(
+#                 Income(
+#                     user_id=USER_ID,
+#                     income_id=f"income:{uuid4()}",
+#                     date=income.date,
+#                     amount=income.amount,
+#                     source=income.source,
+#                     description=description,
+#                 )
+#             )
+
+#     # batch insert incomes
+#     with Income.batch_write() as batch:
+#         for income in insert_incomes:
+#             batch.save(income)
+
+#     # batch insert paychecks
+#     with Paycheck.batch_write() as batch:
+#         for paycheck in insert_paychecks:
+#             batch.save(paycheck)
+
 def batch_delete_all():
     for Model in [
         Account,
