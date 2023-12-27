@@ -22,22 +22,7 @@ import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { openDialog } from '../../store/dialogs';
-
-const CustomTableCell = ({ idx, column, record, children, ...restProps }) => {
-  return (
-    <TableCell
-      scope='row'
-      {...restProps}
-      sx={{
-        borderBottom: 0,
-        borderTop: idx === 0 ? '1px solid rgba(81, 81, 81, .5)' : 0,
-        fontWeight: column === 'date' ? 800 : 500,
-      }}
-    >
-      {children}
-    </TableCell>
-  );
-};
+import { CustomTableCell } from '../../components/Table/CustomTableCell';
 
 const start = dayjs().date(1).subtract(1, 'month');
 const end = start.add(3, 'month').date(0);
@@ -129,6 +114,7 @@ export default function IncomesTable() {
                 <TableCell align='right'>amount</TableCell>
                 <TableCell align='right'>type</TableCell>
                 <TableCell align='right'>source</TableCell>
+                <TableCell align='right'>category</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -155,6 +141,9 @@ export default function IncomesTable() {
                     <CustomTableCell idx={idx} align='right'>
                       {income.employer ? income.employer : income.source}
                     </CustomTableCell>
+                    <CustomTableCell idx={idx} align='right'>
+                      {income.category ? income.category : 'paycheck'}
+                    </CustomTableCell>
                   </TableRow>
                 );
               })}
@@ -165,5 +154,3 @@ export default function IncomesTable() {
     </Card>
   );
 }
-
-export { CustomTableCell };

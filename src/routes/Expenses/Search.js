@@ -23,7 +23,7 @@ import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { openDialog } from '../../store/dialogs';
-import { CustomTableCell } from '../Income/IncomesTable';
+import { CustomTableCell } from '../../components/Table/CustomTableCell';
 
 const start = dayjs().date(1).subtract(1, 'month');
 const end = start.add(3, 'month').date(0);

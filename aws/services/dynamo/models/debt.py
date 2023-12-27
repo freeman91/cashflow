@@ -23,7 +23,7 @@ class Debt(BaseModel):
     account_id = UnicodeAttribute()
     name = UnicodeAttribute()
     lender = UnicodeAttribute(null=True)
-    value = NumberAttribute()
+    amount = NumberAttribute()
     category = UnicodeAttribute(default="")
     interest_rate = NumberAttribute(null=True)
     last_update = UTCDateTimeAttribute()

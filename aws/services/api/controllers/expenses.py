@@ -19,6 +19,7 @@ def _expenses(user_id: str):
     if request.method == "POST":
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
+
         expense = dynamo.expense.create(
             user_id=user_id,
             _date=_date,
@@ -59,6 +60,7 @@ def _expense(user_id: str, expense_id: str):
     if request.method == "PUT":
         expense = dynamo.expense.get(user_id=user_id, expense_id=expense_id)
         expense.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
+
         expense.amount = float(request.json.get("amount"))
 
         for attr in [

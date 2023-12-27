@@ -35,6 +35,7 @@ const defaultRepayment = {
   date: dayjs().hour(12).minute(0).second(0),
   principal: '',
   interest: '',
+  escrow: '',
   lender: '',
   _type: 'repayment',
   pending: false,
@@ -52,12 +53,14 @@ function RepaymentDialog() {
   const { mode, id, attrs } = useSelector((state) => state.dialogs.repayment);
 
   const [repayment, setRepayment] = useState(defaultRepayment);
+  const [debt, setDebt] = useState({ name: '' });
 
   useEffect(() => {
     let _lender = '';
     if (repayment.debt_id) {
       const debt = find(debts, { debt_id: repayment.debt_id });
       const account = find(accounts, { account_id: debt?.account_id });
+      setDebt(debt);
       _lender = get(account, 'name', '');
     }
     setRepayment((e) => ({ ...e, lender: _lender }));
@@ -114,6 +117,7 @@ function RepaymentDialog() {
   const handleClose = () => {
     dispatch(closeDialog('repayment'));
     setRepayment(defaultRepayment);
+    setDebt({ name: '' });
   };
 
   return (
@@ -194,6 +198,22 @@ function RepaymentDialog() {
               ),
             }}
           />
+          {debt?.name === 'Mortgage' && (
+            <TextFieldListItem
+              id='escrow'
+              label='escrow'
+              placeholder='0.00'
+              value={repayment.escrow}
+              onChange={handleChangeNumber}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <AttachMoneyIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
           <TextFieldListItem
             id='lender'
             label='lender'

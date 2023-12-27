@@ -24,10 +24,10 @@ export default function NetWorth() {
   }, [allAssets]);
 
   useEffect(() => {
-    setDebtSum(reduce(allDebts, (sum, debt) => sum + debt.value, 0));
+    setDebtSum(reduce(allDebts, (sum, debt) => sum + debt.amount, 0));
   }, [allDebts]);
 
-  const upperBound = 250000;
+  const upperBound = 350000;
 
   return (
     <Card raised>

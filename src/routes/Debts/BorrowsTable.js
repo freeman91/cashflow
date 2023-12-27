@@ -7,7 +7,6 @@ import sortBy from 'lodash/sortBy';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,85 +18,68 @@ import { numberToCurrency } from '../../helpers/currency';
 import { openDialog } from '../../store/dialogs';
 import { CustomTableCell } from '../../components/Table/CustomTableCell';
 
-export default function Expenses() {
+export default function BorrowsTable(props) {
+  const { debtId } = props;
   const dispatch = useDispatch();
+  const borrows = useSelector((state) => state.borrows.data);
 
-  const allExpenses = useSelector((state) => state.expenses.data);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    const today = dayjs();
-    const start = today.subtract(7, 'day');
-    const end = today.add(7, 'day');
+    let _borrows = filter(borrows, { debt_id: debtId });
 
-    let expenses = filter(allExpenses, (expense) => {
-      const date = dayjs(expense.date);
-      return date >= start && date <= end;
-    });
+    setTableData(sortBy(_borrows, 'date'));
+  }, [borrows, debtId]);
 
-    expenses = sortBy(expenses, 'date');
-
-    setTableData(expenses);
-  }, [allExpenses]);
-
-  const handleClick = (expense) => {
+  const handleClick = (borrow) => {
     dispatch(
       openDialog({
-        type: expense._type,
+        type: borrow._type,
         mode: 'edit',
-        id: expense.expense_id,
-        attrs: expense,
+        id: borrow.borrow_id,
+        attrs: borrow,
       })
     );
   };
 
   return (
-    <Card raised>
-      <CardHeader
-        title='expenses'
-        sx={{ pt: 1, pb: 0 }}
-        titleTypographyProps={{
-          variant: 'h6',
-          align: 'left',
-          sx: { fontWeight: 800 },
-        }}
-      />
-      <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
+    <Card
+      raised
+      sx={{
+        width: '75%',
+      }}
+    >
+      <CardContent sx={{ p: 1, pt: 0, pb: '4px !important', width: '100%' }}>
         <TableContainer
           sx={{
-            mt: 2,
-            maxWidth: 1000,
+            width: '100%',
           }}
-          component={'div'}
+          component='div'
         >
           <Table size='small'>
             <TableHead>
               <TableRow>
                 <TableCell>date</TableCell>
                 <TableCell align='right'>amount</TableCell>
-                <TableCell align='right'>category</TableCell>
-                <TableCell align='right'>vendor</TableCell>
+                <TableCell align='right'>lender</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {map(tableData, (expense, idx) => {
+              {map(tableData, (borrow, idx) => {
                 return (
                   <TableRow
                     hover={true}
-                    key={expense.expense_id}
-                    onClick={() => handleClick(expense)}
+                    key={borrow.borrow_id}
+                    onClick={() => handleClick(borrow)}
                   >
                     <CustomTableCell idx={idx} component='th' column='date'>
-                      {dayjs(expense.date).format('MMM D')}
+                      {dayjs(borrow.date).format('YYYY MMMM D')}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(expense.amount)}
+                      {numberToCurrency.format(borrow.amount)}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {expense.category}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {expense.vendor}
+                      {borrow.lender}
                     </CustomTableCell>
                   </TableRow>
                 );

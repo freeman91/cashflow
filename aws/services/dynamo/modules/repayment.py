@@ -11,6 +11,7 @@ def create(
     interest: float,
     lender: str,
     debt_id: str,
+    escrow: float = None,
     bill_id: str = None,
     pending: bool = False,
 ) -> Repayment:
@@ -20,6 +21,7 @@ def create(
         date=_date,
         principal=principal,
         interest=interest,
+        escrow=escrow,
         lender=lender,
         debt_id=debt_id,
         bill_id=bill_id,

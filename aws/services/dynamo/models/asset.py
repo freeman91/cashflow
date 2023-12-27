@@ -27,7 +27,7 @@ class Asset(BaseModel):
     category = UnicodeAttribute(default="")
     shares = NumberAttribute(null=True)
     price = NumberAttribute(null=True)
-    vendor = UnicodeAttribute(null=True)
+    vendor = UnicodeAttribute(null=True)  # remove
     last_update = UTCDateTimeAttribute(default=datetime.now(timezone.utc))
 
     def __repr__(self):

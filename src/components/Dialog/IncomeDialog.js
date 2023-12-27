@@ -28,6 +28,7 @@ const defaultIncome = {
   amount: '',
   source: '',
   _type: 'income',
+  category: '',
   description: '',
 };
 
@@ -38,7 +39,10 @@ function IncomeDialog() {
   const { mode, id, attrs } = useSelector((state) => state.dialogs.income);
   const [income, setIncome] = useState(defaultIncome);
 
-  const incomeSource = find(optionLists, { option_type: 'income_source' });
+  const incomeSources = find(optionLists, { option_type: 'income_source' });
+  const incomeCategories = find(optionLists, {
+    option_type: 'income_category',
+  });
 
   useEffect(() => {
     if (id) {
@@ -135,7 +139,14 @@ function IncomeDialog() {
             id='source'
             label='source'
             value={income.source}
-            options={get(incomeSource, 'options', [])}
+            options={get(incomeSources, 'options', [])}
+            onChange={handleChange}
+          />
+          <AutocompleteListItem
+            id='category'
+            label='category'
+            value={income.category}
+            options={get(incomeCategories, 'options', [])}
             onChange={handleChange}
           />
           <TextFieldListItem

@@ -28,6 +28,7 @@ class Repayment(BaseModel):
     date = UTCDateTimeAttribute()
     principal = NumberAttribute()
     interest = NumberAttribute()
+    escrow = NumberAttribute(null=True)
     lender = UnicodeAttribute()
     pending = BooleanAttribute(default=False)
     debt_id = UnicodeAttribute()

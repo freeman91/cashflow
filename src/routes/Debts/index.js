@@ -17,8 +17,8 @@ import Typography from '@mui/material/Typography';
 
 import NewTransactionButton from '../../components/NewTransactionButton';
 import { openDialog } from '../../store/dialogs';
-import BorrowCard from './BorrowCard';
-import RepaymentCard from './RepaymentCard';
+import BorrowsTable from './BorrowsTable';
+import RepaymentsTable from './RepaymentsTable';
 
 export default function Debts() {
   const dispatch = useDispatch();
@@ -26,13 +26,13 @@ export default function Debts() {
   const location = useLocation();
 
   const debts = useSelector((state) => state.debts.data);
-  const allPurchases = useSelector((state) => state.borrows.data);
-  const allSales = useSelector((state) => state.repayments.data);
+  const allBorrows = useSelector((state) => state.borrows.data);
+  const allRepayments = useSelector((state) => state.repayments.data);
 
   const [id, setId] = useState('');
   const [debt, setDebt] = useState({});
-  const [borrows, setPurchases] = useState([]);
-  const [repayments, setSales] = useState([]);
+  const [borrows, setBorrows] = useState([]);
+  const [repayments, setRepayments] = useState([]);
 
   useEffect(() => {
     let _pathname = location.pathname;
@@ -43,17 +43,17 @@ export default function Debts() {
 
   useEffect(() => {
     if (id) {
-      let _borrows = filter(allPurchases, { debt_id: id });
-      setPurchases(_borrows);
+      let _borrows = filter(allBorrows, { debt_id: id });
+      setBorrows(_borrows);
 
-      let _repayments = filter(allSales, { debt_id: id });
-      setSales(_repayments);
+      let _repayments = filter(allRepayments, { debt_id: id });
+      setRepayments(_repayments);
 
       setDebt(find(debts, { debt_id: id }));
     } else {
       setDebt({});
     }
-  }, [id, allPurchases, allSales, debts]);
+  }, [id, allBorrows, allRepayments, debts]);
 
   if (!id) return null;
 
@@ -99,24 +99,22 @@ export default function Debts() {
             </IconButton>
           </Tooltip>
         </div>
+
         {borrows.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
         {borrows.length > 0 && (
           <Typography sx={{ width: '100%' }} align='left'>
             borrows
           </Typography>
         )}
-        {borrows.map((borrow) => (
-          <BorrowCard key={borrow.borrow_id} borrow={borrow} />
-        ))}
+        {borrows.length > 0 && <BorrowsTable debtId={id} />}
+
         {repayments.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
         {repayments.length > 0 && (
           <Typography sx={{ width: '100%' }} align='left'>
             repayments
           </Typography>
         )}
-        {repayments.map((repayment) => (
-          <RepaymentCard key={repayment.repayment_id} repayment={repayment} />
-        ))}
+        {repayments.length > 0 && <RepaymentsTable debtId={id} />}
       </Stack>
       <NewTransactionButton transactionTypes={['borrow', 'repayment']} />
     </Box>

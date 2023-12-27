@@ -23,6 +23,7 @@ class Income(BaseModel):
     date = UTCDateTimeAttribute()
     amount = NumberAttribute()
     source = UnicodeAttribute()
+    category = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
 
     def __repr__(self):

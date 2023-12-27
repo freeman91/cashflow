@@ -20,14 +20,14 @@ export default function Month() {
   const allIncomes = useSelector((state) => state.incomes.data);
 
   useEffect(() => {
-    let firstDayOfMonth = date.date(1);
-    let firstDayOfWeek = firstDayOfMonth.day(0);
+    let firstDayOfMonth = date.date(1).hour(12).minute(0).second(0);
+    let firstDayOfWeek = firstDayOfMonth.day(0).hour(12).minute(0).second(0);
 
     const filterRecords = (records) => {
       return filter(records, (record) => {
         const expDay = dayjs(record.date);
-        const BOM = firstDayOfWeek;
-        const EOM = date.endOf('month').day(6);
+        const BOM = firstDayOfWeek.hour(0);
+        const EOM = date.endOf('month').day(6).hour(23);
         return (
           (expDay.isAfter(BOM, 'day') || expDay.isSame(BOM, 'day')) &&
           (expDay.isBefore(EOM, 'day') || expDay.isSame(EOM, 'day'))

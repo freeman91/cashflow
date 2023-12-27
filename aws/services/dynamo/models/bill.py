@@ -27,12 +27,11 @@ class Bill(BaseModel):
 
     name = UnicodeAttribute()
     amount = NumberAttribute()
-    category = UnicodeAttribute(null=True)
-    vendor = UnicodeAttribute(null=True)
-    day_of_month = NumberAttribute(null=True)
-    months = ListAttribute(null=True)
+    category = UnicodeAttribute()
+    vendor = UnicodeAttribute()
+    day = NumberAttribute()
+    months = ListAttribute()
     debt_id = UnicodeAttribute(null=True)
-    generates_type = UnicodeAttribute(null=True)  # expense or repayment
     last_update = UTCDateTimeAttribute(default=datetime.now(timezone.utc))
 
     def __repr__(self):

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
+import sortBy from 'lodash/sortBy';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@mui/styles';
@@ -68,6 +69,7 @@ export default function Networth() {
         networth: assetSum - debtSum,
       };
     });
+    _data = sortBy(_data, 'timestamp');
     setChartData(_data);
   }, [allNetworths]);
 
@@ -86,25 +88,6 @@ export default function Networth() {
               width: '100%',
             }}
           >
-            {/* <CardHeader
-            title='over time'
-            action={
-              <Stack
-                direction='row'
-                justifyContent='center'
-                alignItems='center'
-                spacing={1}
-              >
-                <IconButton onClick={() => {}}>
-                  <CalendarMonthIcon />
-                </IconButton>
-                <IconButton onClick={() => {}}>
-                  <FilterListIcon />
-                </IconButton>
-              </Stack>
-            }
-            titleTypographyProps={{ align: 'left' }}
-          /> */}
             <CardContent>
               <ResponsiveContainer
                 width={'100%'}
@@ -138,8 +121,8 @@ export default function Networth() {
                     tickMargin={10}
                     dataKey='timestamp'
                     domain={[
-                      dayjs().year(2023).month(9).date(1).unix() * 1000,
-                      dayjs().year(2023).month(11).date(25).unix() * 1000,
+                      dayjs().year(2018).month(9).date(1).unix() * 1000,
+                      dayjs().year(2024).month(1).date(1).unix() * 1000,
                     ]}
                     tickFormatter={(unixTime) => {
                       return dayjs(unixTime).format('YYYY MMM');

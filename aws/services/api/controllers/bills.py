@@ -22,7 +22,7 @@ def _bills(user_id: str):
             amount=float(body.get("amount")),
             category=body.get("category"),
             vendor=body.get("vendor"),
-            day_of_month=body.get("day_of_month"),
+            day=body.get("day"),
             months=body.get("months"),
             debt_id=body.get("debt_id"),
         )
@@ -51,7 +51,7 @@ def _bill(user_id: str, bill_id: str):
             "name",
             "category",
             "vendor",
-            "day_of_month",
+            "day",
             "months",
             "debt_id",
         ]:

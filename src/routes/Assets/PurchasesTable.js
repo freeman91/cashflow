@@ -7,7 +7,6 @@ import sortBy from 'lodash/sortBy';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,85 +18,76 @@ import { numberToCurrency } from '../../helpers/currency';
 import { openDialog } from '../../store/dialogs';
 import { CustomTableCell } from '../../components/Table/CustomTableCell';
 
-export default function Expenses() {
+export default function PurchasesTable(props) {
+  const { assetId } = props;
   const dispatch = useDispatch();
+  const purchases = useSelector((state) => state.purchases.data);
 
-  const allExpenses = useSelector((state) => state.expenses.data);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    const today = dayjs();
-    const start = today.subtract(7, 'day');
-    const end = today.add(7, 'day');
+    let _purchases = filter(purchases, { asset_id: assetId });
+    setTableData(sortBy(_purchases, 'date'));
+  }, [purchases, assetId]);
 
-    let expenses = filter(allExpenses, (expense) => {
-      const date = dayjs(expense.date);
-      return date >= start && date <= end;
-    });
-
-    expenses = sortBy(expenses, 'date');
-
-    setTableData(expenses);
-  }, [allExpenses]);
-
-  const handleClick = (expense) => {
+  const handleClick = (purchase) => {
     dispatch(
       openDialog({
-        type: expense._type,
+        type: purchase._type,
         mode: 'edit',
-        id: expense.expense_id,
-        attrs: expense,
+        id: purchase.purchase_id,
+        attrs: purchase,
       })
     );
   };
 
   return (
-    <Card raised>
-      <CardHeader
-        title='expenses'
-        sx={{ pt: 1, pb: 0 }}
-        titleTypographyProps={{
-          variant: 'h6',
-          align: 'left',
-          sx: { fontWeight: 800 },
+    <Card
+      raised
+      sx={{
+        width: '75%',
+      }}
+    >
+      <CardContent
+        sx={{
+          p: 1,
+          pt: 0,
+          pb: '4px !important',
         }}
-      />
-      <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
-        <TableContainer
-          sx={{
-            mt: 2,
-            maxWidth: 1000,
-          }}
-          component={'div'}
-        >
+      >
+        <TableContainer component='div'>
           <Table size='small'>
             <TableHead>
               <TableRow>
                 <TableCell>date</TableCell>
+                <TableCell align='right'>total payment</TableCell>
                 <TableCell align='right'>amount</TableCell>
-                <TableCell align='right'>category</TableCell>
-                <TableCell align='right'>vendor</TableCell>
+                <TableCell align='right'>shares</TableCell>
+                <TableCell align='right'>price</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {map(tableData, (expense, idx) => {
+              {map(tableData, (purchase, idx) => {
                 return (
                   <TableRow
                     hover={true}
-                    key={expense.expense_id}
-                    onClick={() => handleClick(expense)}
+                    key={purchase.purchase_id}
+                    onClick={() => handleClick(purchase)}
                   >
                     <CustomTableCell idx={idx} component='th' column='date'>
-                      {dayjs(expense.date).format('MMM D')}
+                      {dayjs(purchase.date).format('YYYY MMMM D')}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(expense.amount)}
+                      {numberToCurrency.format(purchase.amount)}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {expense.category}
+                      {numberToCurrency.format(purchase.amount)}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {expense.vendor}
+                      {purchase.shares}
+                    </CustomTableCell>
+                    <CustomTableCell idx={idx} align='right'>
+                      {numberToCurrency.format(purchase.price)}
                     </CustomTableCell>
                   </TableRow>
                 );

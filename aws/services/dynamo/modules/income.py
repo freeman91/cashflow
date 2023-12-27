@@ -9,6 +9,7 @@ def create(
     _date: datetime,
     amount: float,
     source: str,
+    category: str,
     description: str = None,
 ) -> Income:
     income = Income(
@@ -17,6 +18,7 @@ def create(
         date=_date,
         amount=amount,
         source=source,
+        category=category,
         description=description,
     )
     income.save()

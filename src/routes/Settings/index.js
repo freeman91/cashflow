@@ -26,6 +26,7 @@ const OPTIONS = [
   'expense_vendor',
   'expense_category',
   'income_source',
+  'income_category',
   'asset_category',
   'debt_category',
 ];

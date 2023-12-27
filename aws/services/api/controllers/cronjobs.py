@@ -132,11 +132,11 @@ def networth_snapshot():
                 allDebts, lambda debt: debt.account_id == account.account_id
             )
             for debt in account_debts:
-                if debt.value > 0:
+                if debt.amount > 0:
                     debts.append(
                         {
                             "name": debt.name,
-                            "value": debt.value,
+                            "value": debt.amount,
                             "category": debt.category,
                             "lender": account.name,
                         }
@@ -186,7 +186,7 @@ def generate_bill_expenses():
         print(f"_date.day: {_date.day}")
 
         for bill in dynamo.bill.get():
-            if _date.day == bill.day_of_month and _date.month in bill.months:
+            if _date.day == bill.day and _date.month in bill.months:
                 pprint(bill.as_dict())
 
                 if not bill.debt_id:
@@ -208,7 +208,7 @@ def generate_bill_expenses():
                 else:
                     print("create pending repayment")
                     debt = dynamo.debt.get(user_id=USER_ID, debt_id=bill.debt_id)
-                    interest = estimate_interest(debt.value, debt.interest_rate)
+                    interest = estimate_interest(debt.amount, debt.interest_rate)
                     new_repayment = {
                         "user_id": USER_ID,
                         "_date": datetime(_date.year, _date.month, _date.day, 12, 0),

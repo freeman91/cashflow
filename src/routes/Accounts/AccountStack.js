@@ -35,7 +35,7 @@ function AccountCard({ account }) {
 
   useEffect(() => {
     const assetSum = assets.reduce((sum, asset) => sum + asset.value, 0);
-    const debtSum = debts.reduce((sum, debt) => sum + debt.value, 0);
+    const debtSum = debts.reduce((sum, debt) => sum + debt.amount, 0);
     setValue(assetSum - debtSum);
   }, [assets, debts]);
 

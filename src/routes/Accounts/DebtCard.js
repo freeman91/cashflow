@@ -46,7 +46,7 @@ export default function DebtCard({ debt }) {
             justifyContent='space-between'
           >
             <Typography align='center'>
-              {numberToCurrency.format(debt.value)}
+              {numberToCurrency.format(debt.amount)}
             </Typography>
             <IconButton
               color='primary'

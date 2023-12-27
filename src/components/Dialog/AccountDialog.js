@@ -17,7 +17,7 @@ import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import { FormControl, InputLabel, Select } from '@mui/material';
 
-export const ACCOUNT_TYPES = ['bank', 'brokerage', 'property'];
+export const ACCOUNT_TYPES = ['bank', 'brokerage', 'property', 'credit'];
 
 const defaultAccount = {
   account_id: '',

@@ -25,7 +25,7 @@ const defaultDebt = {
   account_id: '',
   _type: 'debt',
   name: '',
-  value: '',
+  amount: '',
   category: '',
   interest_rate: '',
 };
@@ -118,10 +118,10 @@ function DebtDialog() {
             onChange={handleChange}
           />
           <TextFieldListItem
-            id='value'
-            label='value'
+            id='amount'
+            label='amount'
             placeholder='0.00'
-            value={debt.value}
+            value={debt.amount}
             onChange={handleChangeNumber}
             InputProps={{
               startAdornment: (

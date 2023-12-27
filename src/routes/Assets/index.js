@@ -17,8 +17,8 @@ import Typography from '@mui/material/Typography';
 
 import NewTransactionButton from '../../components/NewTransactionButton';
 import { openDialog } from '../../store/dialogs';
-import PurchaseCard from './PurchaseCard';
-import SaleCard from './SaleCard';
+import PurchasesTable from './PurchasesTable';
+import SalesTable from './SalesTable';
 
 export default function Assets() {
   const dispatch = useDispatch();
@@ -105,18 +105,15 @@ export default function Assets() {
             purchases
           </Typography>
         )}
-        {purchases.map((purchase) => (
-          <PurchaseCard key={purchase.purchase_id} purchase={purchase} />
-        ))}
+        {purchases.length > 0 && <PurchasesTable assetId={id} />}
+
         {sales.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
         {sales.length > 0 && (
           <Typography sx={{ width: '100%' }} align='left'>
             sales
           </Typography>
         )}
-        {sales.map((sale) => (
-          <SaleCard key={sale.sale_id} sale={sale} />
-        ))}
+        {sales.length > 0 && <SalesTable assetId={id} />}
       </Stack>
       <NewTransactionButton transactionTypes={['purchase', 'sale']} />
     </Box>

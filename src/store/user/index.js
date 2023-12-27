@@ -37,14 +37,14 @@ const getUser = createAsyncThunk(
       dispatch(getAccounts(user_id));
       dispatch(getAssets(user_id));
       dispatch(getBills(user_id));
-      dispatch(getBorrows({ user_id, range: { start, end } }));
+      dispatch(getBorrows(user_id));
       dispatch(getDebts(user_id));
       dispatch(getExpenses({ user_id, range: { start, end } }));
       dispatch(getIncomes({ user_id, range: { start, end } }));
       dispatch(getNetworths(user_id));
       dispatch(getPaychecks({ user_id, range: { start, end } }));
       dispatch(getPurchases({ user_id, range: { start, end } }));
-      dispatch(getRepayments({ user_id, range: { start, end } }));
+      dispatch(getRepayments(user_id));
       dispatch(getSales({ user_id, range: { start, end } }));
       dispatch(getOptionLists(user_id));
 

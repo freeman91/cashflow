@@ -18,7 +18,6 @@ class OptionList(BaseModel):
 
     user_id = UnicodeAttribute(hash_key=True)
     option_type = UnicodeAttribute(range_key=True)
-    # vendor, income_source, lender, expense_type, asset_type, debt_type
     _type = UnicodeAttribute(default=TYPE)
 
     options = ListAttribute(default=[])

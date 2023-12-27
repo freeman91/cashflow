@@ -20,15 +20,15 @@ APP_ID: str = os.getenv("APP_ID")
 class AssetMap(MapAttribute):
     name = UnicodeAttribute()
     value = NumberAttribute()
-    category = UnicodeAttribute()
-    vendor = UnicodeAttribute()
+    category = UnicodeAttribute(null=True)
+    vendor = UnicodeAttribute(null=True)
 
 
 class DebtMap(MapAttribute):
     name = UnicodeAttribute()
     value = NumberAttribute()
-    category = UnicodeAttribute()
-    lender = UnicodeAttribute()
+    category = UnicodeAttribute(null=True)
+    lender = UnicodeAttribute(null=True)
 
 
 class Networth(BaseModel):

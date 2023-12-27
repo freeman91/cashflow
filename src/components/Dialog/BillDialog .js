@@ -34,9 +34,8 @@ const defaultBill = {
   category: '',
   vendor: '',
   _type: 'bill',
-  day_of_month: '15',
+  day: '15',
   months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-  generates_type: 'expense',
   debt_id: '',
 };
 
@@ -122,7 +121,7 @@ function BillDialog() {
               }}
             />
           )}
-          <ListItem key='generates_type' disablePadding sx={{ pt: 2, pb: 1 }}>
+          <ListItem key='debt-select' disablePadding sx={{ pt: 2, pb: 1 }}>
             <DebtSelect resource={bill} setResource={setBill} />
           </ListItem>
           <TextFieldListItem
@@ -166,16 +165,16 @@ function BillDialog() {
             options={get(expenseCategories, 'options', [])}
             onChange={handleChange}
           />
-          <ListItem key='day_of_month' disablePadding sx={{ pt: 2 }}>
+          <ListItem key='day' disablePadding sx={{ pt: 2 }}>
             <FormControl fullWidth>
               <InputLabel id='day-of-month-label'>day of month</InputLabel>
               <Select
                 labelId='day-of-month-label'
                 variant='standard'
                 fullWidth
-                value={bill?.day_of_month}
+                value={bill?.day}
                 onChange={(e) => {
-                  setBill({ ...bill, day_of_month: e.target.value });
+                  setBill({ ...bill, day: e.target.value });
                 }}
               >
                 {range(1, 29).map((day) => (
