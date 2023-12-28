@@ -60,11 +60,10 @@ def update_crypto_prices():
             asset.price = prices[f"{asset.name.upper()}"]["USD"]
             asset.value = asset.price * asset.shares
 
-            print(f'{asset.name}: {asset.price}')
+            print(f"{asset.name}: {asset.price}")
             asset.save()
 
         return success_result("assets updated")
-
 
     return failure_result()
 
@@ -87,7 +86,7 @@ def update_stock_prices():
             asset.price = float(get_stock_price(ticker.upper()))
             asset.value = asset.price * asset.shares
 
-            print(f'{asset.name}: {asset.price}')
+            print(f"{asset.name}: {asset.price}")
             asset.save()
 
         return success_result("assets updated")
@@ -157,7 +156,7 @@ def networth_snapshot():
                 "assets": assets,
                 "debts": debts,
             }
-            
+
             dynamo.networth.create(nw)
             print("Networth created")
 
@@ -189,8 +188,6 @@ def generate_bill_expenses():
 
         for bill in dynamo.bill.get():
             if _date.day == bill.day and _date.month in bill.months:
-                pprint(bill.as_dict())
-
                 if not bill.debt_id:
                     print("create pending expense")
                     new_expenses.append(

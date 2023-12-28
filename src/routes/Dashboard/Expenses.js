@@ -23,6 +23,8 @@ export default function Expenses() {
   const dispatch = useDispatch();
 
   const allExpenses = useSelector((state) => state.expenses.data);
+  const allRepayments = useSelector((state) => state.repayments.data);
+
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
@@ -35,10 +37,19 @@ export default function Expenses() {
       return date >= start && date <= end;
     });
 
-    expenses = sortBy(expenses, 'date');
+    let repayments = filter(allRepayments, (repayment) => {
+      const date = dayjs(repayment.date);
+      return date >= start && date <= end;
+    });
+    repayments = map(repayments, (repayment) => ({
+      ...repayment,
+      category: 'repayment',
+    }));
+
+    expenses = sortBy([...expenses, ...repayments], 'date');
 
     setTableData(expenses);
-  }, [allExpenses]);
+  }, [allExpenses, allRepayments]);
 
   const handleClick = (expense) => {
     dispatch(
@@ -81,23 +92,36 @@ export default function Expenses() {
             </TableHead>
             <TableBody>
               {map(tableData, (expense, idx) => {
+                let vendor = expense.vendor ? expense.vendor : expense.lender;
+                if (vendor?.length > 12) vendor = vendor.slice(0, 12) + '...';
+
+                const amount = expense.amount
+                  ? expense.amount
+                  : expense.principal +
+                    expense.interest +
+                    (expense.escrow ? expense.escrow : 0);
+
                 return (
                   <TableRow
                     hover={true}
-                    key={expense.expense_id}
+                    key={
+                      expense.expense_id
+                        ? expense.expense_id
+                        : expense.repayment_id
+                    }
                     onClick={() => handleClick(expense)}
                   >
                     <CustomTableCell idx={idx} component='th' column='date'>
                       {dayjs(expense.date).format('MMM D')}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(expense.amount)}
+                      {numberToCurrency.format(amount)}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
                       {expense.category}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {expense.vendor}
+                      {vendor}
                     </CustomTableCell>
                   </TableRow>
                 );

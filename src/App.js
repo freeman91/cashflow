@@ -43,13 +43,13 @@ const AppRoutes = () => {
       <Route path='/app' element={<Layout />}>
         <Route path='/app' element={<Dashboard />} />
         <Route path='/app/accounts' element={<Accounts />}>
-          <Route path=':id' />
+          <Route path=':id' element={<Accounts />} />
         </Route>
         <Route path='/app/assets' element={<Assets />}>
-          <Route path=':id' />
+          <Route path=':id' element={<Assets />} />
         </Route>
         <Route path='/app/debts' element={<Debts />}>
-          <Route path=':id' />
+          <Route path=':id' element={<Debts />} />
         </Route>
         <Route path='/app/expenses' element={<Expenses />} />
         <Route path='/app/income' element={<Income />} />
@@ -69,7 +69,7 @@ function App() {
       <ReduxProvider store={store}>
         <HistoryRouter history={history}>
           <ThemeProvider theme={muiTheme}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} openTo='month'>
               <ReduxLoader />
               <ReduxToastr
                 timeOut={10000}

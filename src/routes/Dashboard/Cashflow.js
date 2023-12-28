@@ -20,7 +20,9 @@ import { numberToCurrency } from '../../helpers/currency';
 export default function Cashflow({ month }) {
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
+
   const allExpenses = useSelector((state) => state.expenses.data);
+  const allRepayments = useSelector((state) => state.repayments.data);
 
   const [budget] = useState(3800);
   const [monthIncomeSum, setMonthIncomeSum] = useState(0);
@@ -48,11 +50,24 @@ export default function Cashflow({ month }) {
       const date = dayjs(expense.date);
       return date.year() === month.year() && date.month() === month.month();
     });
+    let repayments = filter(allRepayments, (repayment) => {
+      const date = dayjs(repayment.date);
+      return date.year() === month.year() && date.month() === month.month();
+    });
 
     total += reduce(expenses, (sum, expense) => sum + expense.amount, 0);
+    total += reduce(
+      repayments,
+      (sum, repayment) =>
+        sum +
+        repayment.principal +
+        repayment.interest +
+        (repayment.escrow ? repayment.escrow : 0),
+      0
+    );
 
     setMonthExpenseSum(total);
-  }, [month, allExpenses]);
+  }, [month, allExpenses, allRepayments]);
 
   return (
     <Card raised>

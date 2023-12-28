@@ -86,10 +86,22 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
       <Box sx={{ width: '100%', justifyContent: 'center' }}>
         <Stack sx={{ width: '100%' }}>
           {map(incomes, (income) => {
-            return <Record key={income.income_id} data={income} />;
+            return (
+              <Record
+                key={income.income_id ? income.income_id : income.paycheck_id}
+                data={income}
+              />
+            );
           })}
           {map(sortBy(expenses, 'pending'), (expense) => {
-            return <Record key={expense.expense_id} data={expense} />;
+            return (
+              <Record
+                key={
+                  expense.expense_id ? expense.expense_id : expense.repayemtn_id
+                }
+                data={expense}
+              />
+            );
           })}
         </Stack>
       </Box>

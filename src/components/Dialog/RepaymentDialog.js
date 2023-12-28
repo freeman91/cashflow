@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
+import includes from 'lodash/includes';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Button from '@mui/material/Button';
@@ -70,9 +71,11 @@ function RepaymentDialog() {
   useEffect(() => {
     if (mode !== 'create') {
       let _pathname = location.pathname;
-      let _id = _pathname.replace('/app/debts', '');
-      _id = _id.replace('/', '');
-      setRepayment((e) => ({ ...e, debt_id: _id }));
+      if (includes(location.pathname, '/app/debts')) {
+        let _id = _pathname.replace('/app/debts', '');
+        _id = _id.replace('/', '');
+        setRepayment((e) => ({ ...e, debt_id: _id }));
+      }
     }
   }, [location.pathname, mode]);
 
@@ -163,7 +166,7 @@ function RepaymentDialog() {
             value={_numberToCurrency.format(
               Number(repayment.principal) +
                 Number(repayment.interest) +
-                Number(repayment.escrow)
+                (Number(repayment.escrow) ? repayment.escrow : 0)
             )}
             InputProps={{
               readOnly: true,
@@ -240,7 +243,7 @@ function RepaymentDialog() {
                   tabIndex={-1}
                 />
               </ListItemIcon>
-              <ListItemText primary={repayment.pending ? 'Pending' : 'Paid'} />
+              <ListItemText primary={repayment.pending ? 'pending' : 'paid'} />
             </ListItemButton>
           </ListItem>
           <ListItem

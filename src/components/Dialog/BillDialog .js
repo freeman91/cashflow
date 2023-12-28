@@ -189,6 +189,7 @@ function BillDialog() {
             <FormControl fullWidth>
               <InputLabel id='months-label'>months</InputLabel>
               <Select
+                multiple
                 labelId='months-label'
                 variant='standard'
                 fullWidth

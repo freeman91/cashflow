@@ -8,6 +8,7 @@ import sortBy from 'lodash/sortBy';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import Checkbox from '@mui/material/Checkbox';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -78,6 +79,7 @@ export default function RepaymentsTable(props) {
                   <TableCell align='right'>escrow</TableCell>
                 )}
                 <TableCell align='right'>lender</TableCell>
+                <TableCell align='right'>paid</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -95,7 +97,7 @@ export default function RepaymentsTable(props) {
                       {numberToCurrency.format(
                         repayment.principal +
                           repayment.interest +
-                          repayment.escrow
+                          (repayment.escrow ? repayment.escrow : 0)
                       )}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
@@ -112,6 +114,25 @@ export default function RepaymentsTable(props) {
                     <CustomTableCell idx={idx} align='right'>
                       {repayment.lender}
                     </CustomTableCell>
+                    <TableCell
+                      scope='row'
+                      align='right'
+                      sx={{
+                        borderBottom: 0,
+                        borderTop:
+                          idx === 0 ? '1px solid rgba(81, 81, 81, .5)' : 0,
+                      }}
+                    >
+                      <Checkbox
+                        edge='start'
+                        checked={!repayment.pending}
+                        tabIndex={-1}
+                        size='small'
+                        sx={{
+                          '&.MuiButtonBase-root': { padding: 0 },
+                        }}
+                      />
+                    </TableCell>
                   </TableRow>
                 );
               })}

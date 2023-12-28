@@ -7,17 +7,20 @@ import { useTheme } from '@mui/styles';
 import { Stack } from '@mui/material';
 
 import Day from '../Day';
+import MonthYearSelector from '../../Selector/MonthYearSelector';
 
 export default function Month() {
   const theme = useTheme();
 
-  const [date] = useState(dayjs());
+  const [date, setDate] = useState(dayjs().date(15));
   const [days, setDays] = useState([]);
   const [monthExpenses, setMonthExpenses] = useState([]);
   const [monthIncomes, setMonthIncomes] = useState([]);
 
   const allExpenses = useSelector((state) => state.expenses.data);
+  const allRepayments = useSelector((state) => state.repayments.data);
   const allIncomes = useSelector((state) => state.incomes.data);
+  const allPaychecks = useSelector((state) => state.paychecks.data);
 
   useEffect(() => {
     let firstDayOfMonth = date.date(1).hour(12).minute(0).second(0);
@@ -35,8 +38,8 @@ export default function Month() {
       });
     };
 
-    setMonthExpenses(filterRecords(allExpenses));
-    setMonthIncomes(filterRecords(allIncomes));
+    setMonthExpenses(filterRecords([...allExpenses, ...allRepayments]));
+    setMonthIncomes(filterRecords([...allIncomes, ...allPaychecks]));
 
     let _days = [];
     let currentDay = firstDayOfWeek;
@@ -58,7 +61,7 @@ export default function Month() {
     }
 
     setDays(_days);
-  }, [date, allExpenses, allIncomes]);
+  }, [date, allExpenses, allIncomes, allRepayments, allPaychecks]);
 
   const renderWeeks = () => {
     let weeks = [];
@@ -102,5 +105,16 @@ export default function Month() {
     return weeks;
   };
 
-  return <div style={{ marginTop: theme.spacing(1) }}>{renderWeeks()}</div>;
+  return (
+    <div style={{ marginTop: theme.spacing(1) }}>
+      <MonthYearSelector
+        date={date}
+        handleDateChange={(newDate) => {
+          setDate(newDate);
+        }}
+        interval='month'
+      />
+      {renderWeeks()}
+    </div>
+  );
 }

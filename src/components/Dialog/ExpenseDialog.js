@@ -198,7 +198,7 @@ function ExpenseDialog() {
                   tabIndex={-1}
                 />
               </ListItemIcon>
-              <ListItemText primary={expense.pending ? 'Pending' : 'Paid'} />
+              <ListItemText primary={expense.pending ? 'pending' : 'paid'} />
             </ListItemButton>
           </ListItem>
           <ListItem

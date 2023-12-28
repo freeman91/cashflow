@@ -5,6 +5,7 @@ import filter from 'lodash/filter';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
+import remove from 'lodash/remove';
 
 import { Cell, PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
 
@@ -62,15 +63,30 @@ const renderActiveShape = (props) => {
 export default function Spending({ month }) {
   const theme = useTheme();
   const allExpenses = useSelector((state) => state.expenses.data);
+  const allRepayments = useSelector((state) => state.repayments.data);
 
   const [chartData, setChartData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     let expenses = filter(allExpenses, (expense) => {
+      if (expense.pending) return false;
+
       const date = dayjs(expense.date);
       return date.year() === month.year() && date.month() === month.month();
     });
+
+    let repayments = filter(allRepayments, (repayment) => {
+      if (repayment.pending) return false;
+
+      const date = dayjs(repayment.date);
+      return date.year() === month.year() && date.month() === month.month();
+    });
+
+    let mortgagePayments = remove(repayments, (repayment) => {
+      return repayment.escrow && repayment.escrow !== 0;
+    });
+
     let groupedExpenses = groupBy(expenses, 'category');
     let data = map(groupedExpenses, (expenses, group) => {
       return {
@@ -79,12 +95,31 @@ export default function Spending({ month }) {
       };
     });
 
+    data.push({
+      name: 'debt repayment',
+      value: reduce(
+        repayments,
+        (sum, repayment) => sum + repayment.principal + repayment.interest,
+        0
+      ),
+    });
+
+    data.push({
+      name: 'mortgage',
+      value: reduce(
+        mortgagePayments,
+        (sum, repayment) =>
+          sum + repayment.principal + repayment.interest + repayment.escrow,
+        0
+      ),
+    });
+
     if (data.length === 0) {
       data = [{ name: 'No expenses', value: 0.0000001 }];
     }
 
     setChartData(data);
-  }, [month, allExpenses]);
+  }, [month, allExpenses, allRepayments]);
 
   const onPieEnter = (data, index) => {
     setActiveIndex(index);

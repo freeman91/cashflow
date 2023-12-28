@@ -32,7 +32,7 @@ export default function IncomesTable() {
   const incomes = useSelector((state) => state.incomes.data);
   const paychecks = useSelector((state) => state.paychecks.data);
 
-  const [range, setRange] = useState({ start, end });
+  const [range] = useState({ start, end });
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
@@ -112,13 +112,15 @@ export default function IncomesTable() {
               <TableRow>
                 <TableCell>date</TableCell>
                 <TableCell align='right'>amount</TableCell>
-                <TableCell align='right'>type</TableCell>
                 <TableCell align='right'>source</TableCell>
                 <TableCell align='right'>category</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {map(tableData, (income, idx) => {
+                let source = income.employer ? income.employer : income.source;
+                if (source?.length > 12) source = source.slice(0, 12) + '...';
+
                 return (
                   <TableRow
                     hover={true}
@@ -136,10 +138,7 @@ export default function IncomesTable() {
                       )}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {income._type}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {income.employer ? income.employer : income.source}
+                      {source}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
                       {income.category ? income.category : 'paycheck'}

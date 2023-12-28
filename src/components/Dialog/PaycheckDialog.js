@@ -135,7 +135,7 @@ function PaycheckDialog() {
           />
           <TextFieldListItem
             id='take_home'
-            label='take_home'
+            label='take home'
             placeholder='0.00'
             value={paycheck.take_home}
             onChange={handleChangeNumber}
@@ -206,7 +206,7 @@ function PaycheckDialog() {
           <TextFieldListItem
             id='description'
             label='description'
-            value={paycheck.description}
+            value={paycheck.description ? paycheck.description : ''}
             onChange={handleChange}
             InputProps={{
               endAdornment: (

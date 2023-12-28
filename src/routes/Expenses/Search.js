@@ -33,7 +33,7 @@ export default function Search() {
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
-  const [range, setRange] = useState({ start, end });
+  const [range] = useState({ start, end });
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
@@ -111,7 +111,7 @@ export default function Search() {
         >
           <Table size='small'>
             <TableHead>
-              <TableRow>
+              <TableRow key='headers'>
                 <TableCell>date</TableCell>
                 <TableCell align='right'>type</TableCell>
                 <TableCell align='right'>amount</TableCell>
@@ -124,8 +124,8 @@ export default function Search() {
               {map(tableData, (expense, idx) => {
                 return (
                   <TableRow
+                    key={expense.expense_id || expense.repayment_id}
                     hover={true}
-                    key={expense.expense_id}
                     onClick={() => handleClick(expense)}
                   >
                     <CustomTableCell idx={idx} component='th' column='date'>

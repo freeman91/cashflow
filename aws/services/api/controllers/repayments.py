@@ -27,6 +27,7 @@ def _repayments(user_id: str):
             lender=body.get("lender"),
             debt_id=body.get("debt_id"),
             bill_id=body.get("bill_id"),
+            pending=body.get("pending", True),
         )
         return success_result(repayment.as_dict())
 
@@ -58,11 +59,7 @@ def _repayment(user_id: str, repayment_id: str):
         repayment.interest = float(request.json.get("interest"))
         repayment.escrow = float(escrow) if escrow else None
 
-        for attr in [
-            "lender",
-            "debt_id",
-            "bill_id",
-        ]:
+        for attr in ["lender", "debt_id", "bill_id", "pending"]:
             setattr(repayment, attr, request.json.get(attr))
 
         repayment.save()
