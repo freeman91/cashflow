@@ -60,7 +60,6 @@ export default function PurchasesTable(props) {
             <TableHead>
               <TableRow>
                 <TableCell>date</TableCell>
-                <TableCell align='right'>total payment</TableCell>
                 <TableCell align='right'>amount</TableCell>
                 <TableCell align='right'>shares</TableCell>
                 <TableCell align='right'>price</TableCell>
@@ -76,9 +75,6 @@ export default function PurchasesTable(props) {
                   >
                     <CustomTableCell idx={idx} component='th' column='date'>
                       {dayjs(purchase.date).format('YYYY MMMM D')}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(purchase.amount)}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
                       {numberToCurrency.format(purchase.amount)}

@@ -29,6 +29,7 @@ import {
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DebtSelect from '../Selector/DebtSelect';
+import { _numberToCurrency } from '../../helpers/currency';
 
 const defaultRepayment = {
   repayment_id: '',
@@ -159,7 +160,11 @@ function RepaymentDialog() {
           <TextFieldListItem
             id='amount'
             label='amount'
-            value={Number(repayment.principal) + Number(repayment.interest)}
+            value={_numberToCurrency.format(
+              Number(repayment.principal) +
+                Number(repayment.interest) +
+                Number(repayment.escrow)
+            )}
             InputProps={{
               readOnly: true,
               disableUnderline: true,

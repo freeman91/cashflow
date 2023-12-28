@@ -17,12 +17,13 @@ def _repayments(user_id: str):
     if request.method == "POST":
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
+        escrow = body.get("escrow")
         repayment = dynamo.repayment.create(
             user_id=user_id,
             _date=_date,
             principal=float(body.get("principal")),
             interest=float(body.get("interest")),
-            escrow=float(body.get("escrow")),
+            escrow=float(escrow) if escrow else None,
             lender=body.get("lender"),
             debt_id=body.get("debt_id"),
             bill_id=body.get("bill_id"),
@@ -55,7 +56,7 @@ def _repayment(user_id: str, repayment_id: str):
         escrow = request.json.get("escrow")
         repayment.principal = float(request.json.get("principal"))
         repayment.interest = float(request.json.get("interest"))
-        repayment.interest = float(escrow) if escrow else None
+        repayment.escrow = float(escrow) if escrow else None
 
         for attr in [
             "lender",

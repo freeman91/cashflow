@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import Blueprint, request
 
 from services import dynamo
@@ -29,10 +29,8 @@ def _sales(user_id: str):
         return success_result(sale.as_dict())
 
     if request.method == "GET":
-        start = datetime.strptime(request.args.get("start"), '%Y-%m-%d')
-        end = datetime.strptime(request.args.get("end"), '%Y-%m-%d') + timedelta(hours=24)
         return success_result(
-            [sale.as_dict() for sale in dynamo.sale.search(user_id=user_id, start=start, end=end)]
+            [sale.as_dict() for sale in dynamo.sale.get(user_id=user_id)]
         )
     return failure_result()
 

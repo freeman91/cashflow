@@ -38,7 +38,7 @@ function AssetDialog() {
   const { mode, id, attrs } = useSelector((state) => state.dialogs.asset);
   const [asset, setAsset] = useState(defaultAsset);
 
-  const hasShares = asset.category === 'stocks' || asset.category === 'crypto';
+  const hasShares = asset.category === 'stock' || asset.category === 'crypto';
   const assetCategories = find(optionLists, {
     option_type: 'asset_category',
   });

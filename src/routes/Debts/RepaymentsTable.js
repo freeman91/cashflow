@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import find from 'lodash/find';
 import filter from 'lodash/filter';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
@@ -22,8 +23,18 @@ export default function RepaymentsTable(props) {
   const { debtId } = props;
   const dispatch = useDispatch();
   const repayments = useSelector((state) => state.repayments.data);
+  const debts = useSelector((state) => state.debts.data);
 
   const [tableData, setTableData] = useState([]);
+  const [debt, setDebt] = useState({ name: '' });
+
+  useEffect(() => {
+    if (debtId) {
+      setDebt(find(debts, { debt_id: debtId }));
+    } else {
+      setDebt({ name: '' });
+    }
+  }, [debtId, debts]);
 
   useEffect(() => {
     let _repayments = filter(repayments, { debt_id: debtId });
@@ -63,6 +74,9 @@ export default function RepaymentsTable(props) {
                 <TableCell align='right'>total payment</TableCell>
                 <TableCell align='right'>principal</TableCell>
                 <TableCell align='right'>interest</TableCell>
+                {debt.name === 'Mortgage' && (
+                  <TableCell align='right'>escrow</TableCell>
+                )}
                 <TableCell align='right'>lender</TableCell>
               </TableRow>
             </TableHead>
@@ -79,7 +93,9 @@ export default function RepaymentsTable(props) {
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
                       {numberToCurrency.format(
-                        repayment.principal + repayment.interest
+                        repayment.principal +
+                          repayment.interest +
+                          repayment.escrow
                       )}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
@@ -88,6 +104,11 @@ export default function RepaymentsTable(props) {
                     <CustomTableCell idx={idx} align='right'>
                       {numberToCurrency.format(repayment.interest)}
                     </CustomTableCell>
+                    {debt.name === 'Mortgage' && (
+                      <CustomTableCell idx={idx} align='right'>
+                        {numberToCurrency.format(repayment.escrow)}
+                      </CustomTableCell>
+                    )}
                     <CustomTableCell idx={idx} align='right'>
                       {repayment.lender}
                     </CustomTableCell>

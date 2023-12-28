@@ -43,9 +43,9 @@ const getUser = createAsyncThunk(
       dispatch(getIncomes({ user_id, range: { start, end } }));
       dispatch(getNetworths(user_id));
       dispatch(getPaychecks({ user_id, range: { start, end } }));
-      dispatch(getPurchases({ user_id, range: { start, end } }));
+      dispatch(getPurchases(user_id));
       dispatch(getRepayments(user_id));
-      dispatch(getSales({ user_id, range: { start, end } }));
+      dispatch(getSales(user_id));
       dispatch(getOptionLists(user_id));
 
       return { item: user };

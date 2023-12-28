@@ -1,28 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { toastr } from 'react-redux-toastr';
-import { cloneDeep, concat, get, remove, sortBy } from 'lodash';
+import { concat, get, remove, sortBy } from 'lodash';
 
 import {
   deleteResourceAPI,
-  getResourcesInRangeAPI,
+  getResourcesAPI,
   postResourceAPI,
   putResourceAPI,
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { mergeResources } from '../../helpers';
 
 const getSales = createAsyncThunk(
   'sales/getSales',
-  async ({ user_id, range }, { dispatch, getState }) => {
-    let oldSales = cloneDeep(getState().sales.data);
-
+  async (user_id, { dispatch }) => {
     try {
       dispatch(showLoading());
-      const newSales = await getResourcesInRangeAPI(user_id, 'sales', range);
-
-      let sales = mergeResources('sale_id', oldSales, newSales);
+      const sales = await getResourcesAPI(user_id, 'sales');
 
       return {
         data: sortBy(sales, 'date'),

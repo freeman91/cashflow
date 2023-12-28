@@ -32,20 +32,10 @@ USER_ID = os.getenv("REACT_APP_USER_ID")
 
 
 def test():
-    pass
+    start = datetime(2021, 12, 16)
+    end = datetime(2021, 12, 19)
+    return dynamo.expense.search(user_id=USER_ID, start=start, end=end)
 
 
 def main():
     pass
-
-
-repayments = [
-    {
-        "principal": 9826.56,
-        "date": "2021-12-17",
-        "vendor": "Huntington",
-        "description": "Down Payment & Closing costs",
-    },
-    {"principal": 789, "interest": 0, "date": "2021-03-26", "lender": "Great Lakes"},
-    {"principal": 500, "interest": 0, "date": "2021-08-30", "lender": "Great Lakes"},
-]
