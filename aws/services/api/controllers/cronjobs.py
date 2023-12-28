@@ -3,6 +3,7 @@
 
 import os
 from datetime import datetime, date, timedelta
+
 from pydash import filter_, map_, find
 from flask import request, Blueprint
 from cryptocompare import cryptocompare
@@ -55,14 +56,15 @@ def update_crypto_prices():
         tickers = map_(crypto_assets, lambda asset: asset.name.upper())
         prices = get_crypto_prices(tickers)
 
-        print(f"{prices = }")
-
         for asset in crypto_assets:
             asset.price = prices[f"{asset.name.upper()}"]["USD"]
             asset.value = asset.price * asset.shares
+
+            print(f'{asset.name}: {asset.price}')
             asset.save()
 
         return success_result("assets updated")
+
 
     return failure_result()
 
@@ -83,8 +85,9 @@ def update_stock_prices():
         for ticker in tickers:
             asset = find(stock_assets, lambda asset: asset.name == ticker)
             asset.price = float(get_stock_price(ticker.upper()))
-
             asset.value = asset.price * asset.shares
+
+            print(f'{asset.name}: {asset.price}')
             asset.save()
 
         return success_result("assets updated")
@@ -132,11 +135,11 @@ def networth_snapshot():
                 allDebts, lambda debt: debt.account_id == account.account_id
             )
             for debt in account_debts:
-                if debt.amount > 0:
+                if debt.value > 0:
                     debts.append(
                         {
                             "name": debt.name,
-                            "value": debt.amount,
+                            "value": debt.value,
                             "category": debt.category,
                             "lender": account.name,
                         }
@@ -146,17 +149,16 @@ def networth_snapshot():
             year=_date.year, month=_date.month, user_id=USER_ID
         )
         if not networth:
-            dynamo.networth.create(
-                {
-                    "user_id": USER_ID,
-                    "date": _date,
-                    "year": _date.year,
-                    "month": _date.month,
-                    "assets": assets,
-                    "debts": debts,
-                }
-            )
-
+            nw = {
+                "user_id": USER_ID,
+                "date": _date,
+                "year": _date.year,
+                "month": _date.month,
+                "assets": assets,
+                "debts": debts,
+            }
+            
+            dynamo.networth.create(nw)
             print("Networth created")
 
         else:
