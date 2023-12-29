@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { push } from 'redux-first-history';
 import { useDispatch, useSelector } from 'react-redux';
-import groupBy from 'lodash/groupBy';
 import filter from 'lodash/filter';
-import map from 'lodash/map';
 
-import { useTheme } from '@mui/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -14,10 +11,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
-import { ACCOUNT_TYPES } from '../../components/Dialog/AccountDialog';
 import { openDialog } from '../../store/dialogs';
 
-function AccountCard({ account }) {
+export default function AccountCard({ account }) {
   const dispatch = useDispatch();
   const allAssets = useSelector((state) => state.assets.data);
   const allDebts = useSelector((state) => state.debts.data);
@@ -90,42 +86,5 @@ function AccountCard({ account }) {
         }
       />
     </Card>
-  );
-}
-
-export default function AccountStack() {
-  const theme = useTheme();
-  const allAccounts = useSelector((state) => state.accounts.data);
-
-  const [accounts, setAccounts] = useState([]);
-
-  useEffect(() => {
-    setAccounts(groupBy(allAccounts, 'account_type'));
-  }, [allAccounts]);
-
-  const renderAccountsOfType = (type) => {
-    return (
-      <React.Fragment key={type}>
-        <Typography key={type} align='left' sx={{ width: '100%' }}>
-          {type}
-        </Typography>
-        {map(accounts[type], (account) => (
-          <AccountCard key={account.account_id} account={account} />
-        ))}
-      </React.Fragment>
-    );
-  };
-
-  return (
-    <Stack
-      direction='column'
-      justifyContent='center'
-      alignItems='center'
-      spacing={1}
-      padding={2}
-      sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
-    >
-      {ACCOUNT_TYPES.map(renderAccountsOfType)}
-    </Stack>
   );
 }

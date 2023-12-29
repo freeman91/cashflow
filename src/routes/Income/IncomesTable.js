@@ -5,6 +5,7 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
+import { useTheme } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Card from '@mui/material/Card';
@@ -28,6 +29,7 @@ const start = dayjs().date(1).subtract(1, 'month');
 const end = start.add(3, 'month').date(0);
 
 export default function IncomesTable() {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const incomes = useSelector((state) => state.incomes.data);
   const paychecks = useSelector((state) => state.paychecks.data);
@@ -57,7 +59,7 @@ export default function IncomesTable() {
   };
 
   return (
-    <Card raised>
+    <Card raised sx={{ maxWidth: theme.breakpoints.maxWidth, mt: 2 }}>
       <CardHeader
         sx={{
           pt: 1,
@@ -119,7 +121,7 @@ export default function IncomesTable() {
             <TableBody>
               {map(tableData, (income, idx) => {
                 let source = income.employer ? income.employer : income.source;
-                if (source?.length > 12) source = source.slice(0, 12) + '...';
+                // if (source?.length > 12) source = source.slice(0, 12) + '...';
 
                 return (
                   <TableRow

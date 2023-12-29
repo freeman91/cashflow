@@ -1,27 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import groupBy from 'lodash/groupBy';
+import map from 'lodash/map';
 
-import Box from '@mui/material/Box';
+import { useTheme } from '@mui/styles';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
+import { ACCOUNT_TYPES } from '../../components/Dialog/AccountDialog';
 
 import NewTransactionButton from '../../components/NewTransactionButton';
-import AccountStack from './AccountStack';
-import AccountDashboard from './AccountDashboard';
+import AccountCard from './AccountCard';
 
 export default function Accounts() {
-  const location = useLocation();
-  const [id, setId] = useState('');
+  const theme = useTheme();
+  const allAccounts = useSelector((state) => state.accounts.data);
+
+  const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    let _pathname = location.pathname;
-    let _id = _pathname.replace('/app/accounts', '');
-    _id = _id.replace('/', '');
-    setId(_id);
-  }, [location.pathname]);
+    setAccounts(groupBy(allAccounts, 'account_type'));
+  }, [allAccounts]);
+
+  const renderAccountsOfType = (type) => {
+    return (
+      <React.Fragment key={type}>
+        <Typography key={type} align='left' sx={{ width: '100%' }}>
+          {type}
+        </Typography>
+        {map(accounts[type], (account) => (
+          <AccountCard key={account.account_id} account={account} />
+        ))}
+      </React.Fragment>
+    );
+  };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
-      {id ? <AccountDashboard account_id={id} /> : <AccountStack />}
+    <>
+      <Stack
+        direction='column'
+        justifyContent='center'
+        alignItems='center'
+        spacing={1}
+        padding={2}
+        sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
+      >
+        {ACCOUNT_TYPES.map(renderAccountsOfType)}
+      </Stack>
       <NewTransactionButton transactionTypes={['account', 'asset', 'debt']} />
-    </Box>
+    </>
   );
 }

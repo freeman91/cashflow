@@ -8,7 +8,6 @@ import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
@@ -105,7 +104,7 @@ export default function Settings() {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 7 }}>
+    <>
       {selectedList ? (
         <SettingsStack>
           <Card
@@ -212,6 +211,6 @@ export default function Settings() {
           ))}
         </SettingsStack>
       )}
-    </Box>
+    </>
   );
 }

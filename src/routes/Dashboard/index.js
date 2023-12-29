@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import NewTransactionButton from '../../components/NewTransactionButton';
@@ -38,7 +37,7 @@ export default function Dashboard() {
   const [month] = useState(dayjs());
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+    <>
       <Grid
         container
         spacing={1}
@@ -63,7 +62,7 @@ export default function Dashboard() {
         </DashboardGridItem>
       </Grid>
       <NewTransactionButton transactionTypes={['expense', 'income']} />
-    </Box>
+    </>
   );
 }
 

@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 
 import { useTheme } from '@mui/styles';
 import { blue } from '@mui/material/colors';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
@@ -74,7 +73,7 @@ export default function Networth() {
   }, [allNetworths]);
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+    <>
       <Grid
         container
         spacing={1}
@@ -143,6 +142,6 @@ export default function Networth() {
           </Card>
         </Grid>
       </Grid>
-    </Box>
+    </>
   );
 }

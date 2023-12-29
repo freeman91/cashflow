@@ -113,7 +113,7 @@ def networth_snapshot():
 
         accounts = dynamo.account.get(user_id=USER_ID)
         allAssets = dynamo.asset.get(user_id=USER_ID)
-        allDebts = dynamo.asset.get(user_id=USER_ID)
+        allDebts = dynamo.debt.get(user_id=USER_ID)
 
         for account in accounts:
             account_assets = filter_(

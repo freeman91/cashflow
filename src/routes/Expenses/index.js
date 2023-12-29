@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
@@ -28,7 +27,7 @@ export default function Expenses() {
   const [selectedView, setSelectedView] = useState(VIEWS[0]);
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+    <>
       <Grid
         container
         spacing={1}
@@ -62,6 +61,6 @@ export default function Expenses() {
         </Grid>
       </Grid>
       <NewTransactionButton transactionTypes={['expense', 'income', 'bill']} />
-    </Box>
+    </>
   );
 }

@@ -1,65 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'redux-first-history';
-
+import { useLocation } from 'react-router-dom';
+import { goBack } from 'redux-first-history';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
-import isEmpty from 'lodash/isEmpty';
 
-import { useTheme } from '@mui/styles';
+import { useTheme } from '@mui/material';
 import BackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-import { openDialog } from '../../store/dialogs';
-import AssetCard from './AssetCard';
-import DebtCard from './DebtCard';
 import NewTransactionButton from '../../components/NewTransactionButton';
+import { openDialog } from '../../store/dialogs';
+import BorrowsTable from './BorrowsTable';
+import RepaymentsTable from './RepaymentsTable';
 
-export default function AccountDashboard() {
+export default function DebtDashboard() {
   const dispatch = useDispatch();
   const theme = useTheme();
   const location = useLocation();
+
+  const debts = useSelector((state) => state.debts.data);
+  const allBorrows = useSelector((state) => state.borrows.data);
+  const allRepayments = useSelector((state) => state.repayments.data);
+
   const [id, setId] = useState('');
+  const [debt, setDebt] = useState({});
+  const [borrows, setBorrows] = useState([]);
+  const [repayments, setRepayments] = useState([]);
 
   useEffect(() => {
     let _pathname = location.pathname;
-    let _id = _pathname.replace('/app/accounts', '');
+    let _id = _pathname.replace('/app/debts', '');
     _id = _id.replace('/', '');
     setId(_id);
   }, [location.pathname]);
 
-  const accounts = useSelector((state) => state.accounts.data);
-  const allAssets = useSelector((state) => state.assets.data);
-  const allDebts = useSelector((state) => state.debts.data);
-
-  const [assets, setAssets] = useState([]);
-  const [debts, setDebts] = useState([]);
-  const [account, setAccount] = useState({});
-
-  useEffect(() => {
-    setAssets(filter(allAssets, { id }));
-  }, [allAssets, id]);
-
-  useEffect(() => {
-    setDebts(filter(allDebts, { id }));
-  }, [allDebts, id]);
-
   useEffect(() => {
     if (id) {
-      let _account = find(accounts, { account_id: id });
-      setAccount(_account);
-    } else {
-      setAccount({});
-    }
-  }, [accounts, id]);
+      let _borrows = filter(allBorrows, { debt_id: id });
+      setBorrows(_borrows);
 
-  if (id && isEmpty(account)) return null;
+      let _repayments = filter(allRepayments, { debt_id: id });
+      setRepayments(_repayments);
+
+      setDebt(find(debts, { debt_id: id }));
+    } else {
+      setDebt({});
+    }
+  }, [id, allBorrows, allRepayments, debts]);
+
+  if (!id) return null;
 
   return (
     <>
@@ -79,15 +74,12 @@ export default function AccountDashboard() {
           }}
         >
           <Tooltip title='back' placement='left'>
-            <IconButton
-              color='primary'
-              onClick={() => dispatch(push('/app/accounts'))}
-            >
+            <IconButton color='primary' onClick={() => dispatch(goBack())}>
               <BackIcon />
             </IconButton>
           </Tooltip>
           <Typography variant='h4' align='center' sx={{ width: '100%' }}>
-            {account.name}
+            {debt?.name}
           </Typography>
           <Tooltip title='edit' placement='right'>
             <IconButton
@@ -95,9 +87,9 @@ export default function AccountDashboard() {
               onClick={() =>
                 dispatch(
                   openDialog({
-                    type: 'account',
+                    type: debt?._type,
                     mode: 'edit',
-                    attrs: account,
+                    id: debt?.debt_id,
                   })
                 )
               }
@@ -107,27 +99,23 @@ export default function AccountDashboard() {
           </Tooltip>
         </div>
 
-        {assets.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
-        {assets.length > 0 && (
+        {borrows.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
+        {borrows.length > 0 && (
           <Typography sx={{ width: '100%' }} align='left'>
-            assets
+            borrows
           </Typography>
         )}
-        {assets.map((asset) => (
-          <AssetCard key={asset.asset_id} asset={asset} />
-        ))}
+        {borrows.length > 0 && <BorrowsTable debtId={id} />}
 
-        {debts.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
-        {debts.length > 0 && (
+        {repayments.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
+        {repayments.length > 0 && (
           <Typography sx={{ width: '100%' }} align='left'>
-            debts
+            repayments
           </Typography>
         )}
-        {debts.map((debt) => (
-          <DebtCard key={debt.debt_id} debt={debt} />
-        ))}
+        {repayments.length > 0 && <RepaymentsTable debtId={id} />}
       </Stack>
-      <NewTransactionButton transactionTypes={['account', 'asset', 'debt']} />
+      <NewTransactionButton transactionTypes={['borrow', 'repayment']} />
     </>
   );
 }

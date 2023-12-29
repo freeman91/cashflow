@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router';
 
 import styled from '@mui/material/styles/styled';
+import Box from '@mui/material/Box';
 
 const Main = styled('main')(({ theme }) => ({
   flexGrow: 1,
@@ -12,7 +13,9 @@ const Main = styled('main')(({ theme }) => ({
 function MainContent() {
   return (
     <Main>
-      <Outlet />
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+        <Outlet />
+      </Box>
     </Main>
   );
 }
