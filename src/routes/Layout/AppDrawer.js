@@ -5,6 +5,7 @@ import { push } from 'redux-first-history';
 import { useTheme } from '@mui/styles';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -72,6 +73,12 @@ function AppDrawer(props) {
         </ListItem>
 
         <Divider />
+
+        <DrawerListItem
+          page='calendar'
+          icon={<CalendarMonthIcon />}
+          handlePageClick={handlePageClick}
+        />
 
         <ListItemButton onClick={() => setOpenAccounts(!openAccounts)}>
           <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>

@@ -64,9 +64,6 @@ function AppToolbar(props) {
         <Typography variant='h6' sx={{ fontWeight: 800 }}>
           {pageName}
         </Typography>
-        <Typography align='right' sx={{ flexGrow: 1 }}>
-          addison@example.com
-        </Typography>
       </Toolbar>
     </AppBar>
   );

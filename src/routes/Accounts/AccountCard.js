@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { push } from 'redux-first-history';
-import { useDispatch, useSelector } from 'react-redux';
-import filter from 'lodash/filter';
+import { useDispatch } from 'react-redux';
 
 import EditIcon from '@mui/icons-material/Edit';
+import ListIcon from '@mui/icons-material/List';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
@@ -15,37 +15,13 @@ import { openDialog } from '../../store/dialogs';
 
 export default function AccountCard({ account }) {
   const dispatch = useDispatch();
-  const allAssets = useSelector((state) => state.assets.data);
-  const allDebts = useSelector((state) => state.debts.data);
-  const [assets, setAssets] = useState([]);
-  const [debts, setDebts] = useState([]);
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    setAssets(filter(allAssets, { account_id: account.account_id }));
-  }, [account.account_id, allAssets]);
-
-  useEffect(() => {
-    setDebts(filter(allDebts, { account_id: account.account_id }));
-  }, [account.account_id, allDebts]);
-
-  useEffect(() => {
-    const assetSum = assets.reduce((sum, asset) => sum + asset.value, 0);
-    const debtSum = debts.reduce((sum, debt) => sum + debt.amount, 0);
-    setValue(assetSum - debtSum);
-  }, [assets, debts]);
 
   const handleClick = (account) => {
     dispatch(push(`/app/accounts/${account.account_id}`));
   };
 
   return (
-    <Card
-      sx={{ width: '100%', cursor: 'pointer' }}
-      raised
-      onClick={() => handleClick(account)}
-      key={account.account_id}
-    >
+    <Card sx={{ width: '100%' }} raised key={account.account_id}>
       <CardHeader
         title={account.name}
         subheader={account.description}
@@ -66,7 +42,7 @@ export default function AccountCard({ account }) {
             sx={{ width: '100%' }}
           >
             <Typography align='center'>
-              {numberToCurrency.format(value)}
+              {numberToCurrency.format(account.net)}
             </Typography>
             <IconButton
               color='primary'
@@ -81,6 +57,9 @@ export default function AccountCard({ account }) {
               }
             >
               <EditIcon />
+            </IconButton>
+            <IconButton color='primary' onClick={() => handleClick(account)}>
+              <ListIcon />
             </IconButton>
           </Stack>
         }

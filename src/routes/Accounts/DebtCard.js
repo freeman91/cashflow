@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
 import EditIcon from '@mui/icons-material/Edit';
+import ListIcon from '@mui/icons-material/List';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
@@ -20,12 +21,7 @@ export default function DebtCard({ debt }) {
   };
 
   return (
-    <Card
-      sx={{ width: '100%', cursor: 'pointer' }}
-      raised
-      onClick={() => handleClick()}
-      key={debt.debt_id}
-    >
+    <Card sx={{ width: '100%' }} raised key={debt.debt_id}>
       <CardHeader
         title={debt.name}
         subheader={debt.description}
@@ -61,6 +57,9 @@ export default function DebtCard({ debt }) {
               }
             >
               <EditIcon />
+            </IconButton>
+            <IconButton color='primary' onClick={() => handleClick()}>
+              <ListIcon />
             </IconButton>
           </Stack>
         }

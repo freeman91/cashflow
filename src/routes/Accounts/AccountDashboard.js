@@ -43,11 +43,11 @@ export default function AccountDashboard() {
   const [account, setAccount] = useState({});
 
   useEffect(() => {
-    setAssets(filter(allAssets, { id }));
+    setAssets(filter(allAssets, { account_id: id }));
   }, [allAssets, id]);
 
   useEffect(() => {
-    setDebts(filter(allDebts, { id }));
+    setDebts(filter(allDebts, { account_id: id }));
   }, [allDebts, id]);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function AccountDashboard() {
         alignItems='center'
         spacing={1}
         padding={2}
-        sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
+        sx={{ minWidth: 550, maxWidth: theme.breakpoints.maxWidth }}
       >
         <div
           style={{
