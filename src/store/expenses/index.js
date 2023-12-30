@@ -12,24 +12,37 @@ import {
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
+import { updateRange } from '../../helpers/dates';
 
 const getExpenses = createAsyncThunk(
   'expenses/getExpenses',
   async ({ user_id, range }, { dispatch, getState }) => {
-    let oldExpenses = cloneDeep(getState().expenses.data);
+    let {
+      data: oldExpenses,
+      start: oldStart,
+      end: oldEnd,
+    } = cloneDeep(getState().expenses);
+
+    const [fetchRange, storeRange] = updateRange(range, oldStart, oldEnd);
+
+    if (!fetchRange) {
+      return;
+    }
 
     try {
       dispatch(showLoading());
       const newExpenses = await getResourcesInRangeAPI(
         user_id,
         'expenses',
-        range
+        fetchRange
       );
 
       let expenses = mergeResources('expense_id', oldExpenses, newExpenses);
 
       return {
         data: sortBy(expenses, 'date'),
+        start: storeRange.start,
+        end: storeRange.end,
       };
     } catch (err) {
       console.error(err);

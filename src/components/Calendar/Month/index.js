@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cloneDeep, filter, map, range } from 'lodash';
 import dayjs from 'dayjs';
 
-import { useTheme } from '@mui/styles';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import IconButton from '@mui/material/IconButton';
@@ -11,19 +10,25 @@ import Stack from '@mui/material/Stack';
 
 import Day from '../Day';
 import MonthYearSelector from '../../Selector/MonthYearSelector';
+import { getExpenses } from '../../../store/expenses';
+import { getIncomes } from '../../../store/incomes';
+import { getPaychecks } from '../../../store/paychecks';
 
 export default function Month() {
-  const theme = useTheme();
+  const dispatch = useDispatch();
 
-  const [date, setDate] = useState(dayjs().date(15));
-  const [days, setDays] = useState([]);
-  const [monthExpenses, setMonthExpenses] = useState([]);
-  const [monthIncomes, setMonthIncomes] = useState([]);
-
+  const user = useSelector((state) => state.user.item);
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
+
+  const [date, setDate] = useState(
+    dayjs().date(15).hour(12).minute(0).second(0)
+  );
+  const [days, setDays] = useState([]);
+  const [monthExpenses, setMonthExpenses] = useState([]);
+  const [monthIncomes, setMonthIncomes] = useState([]);
 
   useEffect(() => {
     let firstDayOfMonth = date.date(1).hour(12).minute(0).second(0);
@@ -65,6 +70,17 @@ export default function Month() {
 
     setDays(_days);
   }, [date, allExpenses, allIncomes, allRepayments, allPaychecks]);
+
+  const handleDateChange = (newDate) => {
+    const start = newDate.date(1).hour(0);
+    const end = newDate.add(1, 'month').date(1).hour(0);
+
+    dispatch(getExpenses({ user_id: user.user_id, range: { start, end } }));
+    dispatch(getIncomes({ user_id: user.user_id, range: { start, end } }));
+    dispatch(getPaychecks({ user_id: user.user_id, range: { start, end } }));
+
+    setDate(newDate);
+  };
 
   const renderWeeks = () => {
     let weeks = [];
@@ -109,7 +125,7 @@ export default function Month() {
   };
 
   return (
-    <div style={{ marginTop: theme.spacing(1) }}>
+    <div style={{ marginTop: 8 }}>
       <Stack
         direction='row'
         justifyContent='center'
@@ -118,17 +134,20 @@ export default function Month() {
         spacing={1}
         pb={1}
       >
-        <IconButton onClick={() => setDate(date.subtract(1, 'month'))}>
+        <IconButton onClick={() => handleDateChange(date.subtract(1, 'month'))}>
           <ArrowBackIosIcon />
         </IconButton>
         <MonthYearSelector
           date={date}
           handleDateChange={(newDate) => {
-            setDate(newDate);
+            handleDateChange(newDate);
           }}
           interval='month'
         />
-        <IconButton onClick={() => setDate(date.add(1, 'month'))}>
+        <IconButton
+          disabled={date.isSame(dayjs().add(1, 'month'), 'month')}
+          onClick={() => handleDateChange(date.add(1, 'month'))}
+        >
           <ArrowForwardIosIcon />
         </IconButton>
       </Stack>

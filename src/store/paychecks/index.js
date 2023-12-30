@@ -12,24 +12,37 @@ import {
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
+import { updateRange } from '../../helpers/dates';
 
 const getPaychecks = createAsyncThunk(
   'paychecks/getPaychecks',
   async ({ user_id, range }, { dispatch, getState }) => {
-    let oldPaychecks = cloneDeep(getState().paychecks.data);
+    let {
+      data: oldPaychecks,
+      start: oldStart,
+      end: oldEnd,
+    } = cloneDeep(getState().paychecks);
+
+    const [fetchRange, storeRange] = updateRange(range, oldStart, oldEnd);
+
+    if (!fetchRange) {
+      return;
+    }
 
     try {
       dispatch(showLoading());
       const newPaychecks = await getResourcesInRangeAPI(
         user_id,
         'paychecks',
-        range
+        fetchRange
       );
 
       let paychecks = mergeResources('paycheck_id', oldPaychecks, newPaychecks);
 
       return {
         data: sortBy(paychecks, 'date'),
+        start: storeRange.start,
+        end: storeRange.end,
       };
     } catch (err) {
       console.error(err);

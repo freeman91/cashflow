@@ -97,7 +97,7 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
             return (
               <Record
                 key={
-                  expense.expense_id ? expense.expense_id : expense.repayemtn_id
+                  expense.expense_id ? expense.expense_id : expense.repayment_id
                 }
                 data={expense}
               />

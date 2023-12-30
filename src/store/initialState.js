@@ -2,6 +2,8 @@ const details = {
   loading: false,
   currentRequestId: undefined,
   error: null,
+  start: null,
+  end: null,
 };
 
 export const dialogs = (() => {

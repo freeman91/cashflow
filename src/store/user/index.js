@@ -27,8 +27,13 @@ const getUser = createAsyncThunk(
 
     if (user?.user_id || requestId !== currentRequestId) return;
 
-    const start = dayjs().date(1).subtract(1, 'month');
-    const end = start.add(3, 'month').date(0);
+    const start = dayjs()
+      .date(1)
+      .subtract(1, 'month')
+      .hour(0)
+      .minute(0)
+      .second(0);
+    const end = start.add(3, 'month').date(0).hour(0).minute(0).second(0);
 
     try {
       dispatch(showLoading());

@@ -9,7 +9,6 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -60,53 +59,42 @@ export default function Expenses() {
   };
 
   return (
-    <>
-      <Card raised sx={{ mt: 2 }}>
-        <CardHeader
-          sx={{
-            pt: 1,
-            pl: 2,
-            pr: 2,
-            pb: 0,
-            '.MuiCardHeader-action': { width: '100%' },
+    <div style={{ marginTop: 8 }}>
+      <Stack direction='row' justifyContent='space-around'>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
           }}
-          action={
-            <Stack direction='row' justifyContent='space-around'>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '100%',
-                }}
-              >
-                <IconButton onClick={() => {}}>
-                  <CalendarMonthIcon />
-                </IconButton>
-                <Typography variant='body1'>
-                  {range.start.format('MMM D')} - {range.end.format('MMM D')}
-                </Typography>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '100%',
-                }}
-              >
-                <IconButton onClick={() => {}}>
-                  <FilterListIcon />
-                </IconButton>
-                <Typography variant='body1'>filter</Typography>
-              </div>
-            </Stack>
-          }
-        />
+        >
+          <IconButton onClick={() => {}}>
+            <CalendarMonthIcon />
+          </IconButton>
+          <Typography variant='body1'>
+            {range.start.format('MMM D')} - {range.end.format('MMM D')}
+          </Typography>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}
+        >
+          <IconButton onClick={() => {}}>
+            <FilterListIcon />
+          </IconButton>
+          <Typography variant='body1'>filter</Typography>
+        </div>
+      </Stack>
+      <Card raised>
         <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
           <TableContainer
             sx={{
-              mt: 2,
+              // mt: 2,
               maxWidth: 1000,
             }}
             component={'div'}
@@ -177,6 +165,6 @@ export default function Expenses() {
         </CardContent>
       </Card>
       <NewTransactionButton transactionTypes={['expense', 'income', 'bill']} />
-    </>
+    </div>
   );
 }

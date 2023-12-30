@@ -12,7 +12,7 @@ export default function MonthYearSelector({ date, handleDateChange }) {
   return (
     <DatePicker
       views={['year', 'month']}
-      maxDate={dayjs().add(1, 'year').toDate()}
+      maxDate={dayjs().add(1, 'month').toDate()}
       minDate={dayjs('2018-01-01').toDate()}
       value={date}
       onChange={handleDateSelect}

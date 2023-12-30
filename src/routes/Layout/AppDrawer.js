@@ -75,8 +75,16 @@ function AppDrawer(props) {
 
         <Divider />
 
-        <ListItem sx={{ display: 'flex', justifyContent: 'center' }}>
-          <ListItemButton disableGutters onClick={() => handlePageClick('')}>
+        <ListItem
+          disableGutters
+          disablePadding
+          sx={{ display: 'flex', justifyContent: 'center' }}
+        >
+          <ListItemButton
+            disableGutters
+            onClick={() => handlePageClick('')}
+            sx={{ justifyContent: 'center' }}
+          >
             <ListItemIcon
               sx={{ '&.MuiListItemIcon-root': { minWidth: 'auto' } }}
             >
@@ -86,6 +94,7 @@ function AppDrawer(props) {
           <ListItemButton
             disableGutters
             onClick={() => handlePageClick('/calendar')}
+            sx={{ justifyContent: 'center' }}
           >
             <ListItemIcon
               sx={{ '&.MuiListItemIcon-root': { minWidth: 'auto' } }}
@@ -96,6 +105,7 @@ function AppDrawer(props) {
           <ListItemButton
             disableGutters
             onClick={() => handlePageClick('/year')}
+            sx={{ justifyContent: 'center' }}
           >
             <ListItemIcon
               sx={{ '&.MuiListItemIcon-root': { minWidth: 'auto' } }}
