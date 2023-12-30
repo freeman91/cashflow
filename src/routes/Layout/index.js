@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useTheme } from '@mui/styles';
@@ -29,6 +29,8 @@ function Layout(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
 
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   /* onMount */
   useEffect(() => {
     dispatch(getUser(USER_ID));
@@ -38,8 +40,8 @@ function Layout(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppToolbar />
-      <AppDrawer />
+      <AppToolbar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+      <AppDrawer mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <MainContent drawerWidth={theme.drawerWidth} />
       <AccountDialog />
       <AssetDialog />

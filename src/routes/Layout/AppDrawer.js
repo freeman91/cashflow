@@ -6,7 +6,9 @@ import { useTheme } from '@mui/styles';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -41,9 +43,8 @@ function DrawerListItem({ page, icon, handlePageClick }) {
 function AppDrawer(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const { window } = props;
+  const { window, mobileOpen, setMobileOpen } = props;
 
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [openAccounts, setOpenAccounts] = useState(false);
   const [openExpenses, setOpenExpenses] = useState(false);
   const [openIncomes, setOpenIncomes] = useState(false);
@@ -74,11 +75,35 @@ function AppDrawer(props) {
 
         <Divider />
 
-        <DrawerListItem
-          page='calendar'
-          icon={<CalendarMonthIcon />}
-          handlePageClick={handlePageClick}
-        />
+        <ListItem sx={{ display: 'flex', justifyContent: 'center' }}>
+          <ListItemButton disableGutters onClick={() => handlePageClick('')}>
+            <ListItemIcon
+              sx={{ '&.MuiListItemIcon-root': { minWidth: 'auto' } }}
+            >
+              <DashboardIcon />
+            </ListItemIcon>
+          </ListItemButton>
+          <ListItemButton
+            disableGutters
+            onClick={() => handlePageClick('/calendar')}
+          >
+            <ListItemIcon
+              sx={{ '&.MuiListItemIcon-root': { minWidth: 'auto' } }}
+            >
+              <CalendarMonthIcon />
+            </ListItemIcon>
+          </ListItemButton>
+          <ListItemButton
+            disableGutters
+            onClick={() => handlePageClick('/year')}
+          >
+            <ListItemIcon
+              sx={{ '&.MuiListItemIcon-root': { minWidth: 'auto' } }}
+            >
+              <CalendarViewMonthIcon />
+            </ListItemIcon>
+          </ListItemButton>
+        </ListItem>
 
         <ListItemButton onClick={() => setOpenAccounts(!openAccounts)}>
           <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>

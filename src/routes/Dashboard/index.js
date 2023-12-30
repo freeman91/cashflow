@@ -57,9 +57,9 @@ export default function Dashboard() {
           </Grid>
         </Grid>
 
-        <DashboardGridItem>
+        <Grid item xs={12}>
           <Expenses />
-        </DashboardGridItem>
+        </Grid>
       </Grid>
       <NewTransactionButton transactionTypes={['expense', 'income']} />
     </>

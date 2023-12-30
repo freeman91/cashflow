@@ -4,7 +4,10 @@ import { cloneDeep, filter, map, range } from 'lodash';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@mui/styles';
-import { Stack } from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 
 import Day from '../Day';
 import MonthYearSelector from '../../Selector/MonthYearSelector';
@@ -107,13 +110,28 @@ export default function Month() {
 
   return (
     <div style={{ marginTop: theme.spacing(1) }}>
-      <MonthYearSelector
-        date={date}
-        handleDateChange={(newDate) => {
-          setDate(newDate);
-        }}
-        interval='month'
-      />
+      <Stack
+        direction='row'
+        justifyContent='center'
+        alignItems='center'
+        key={`month-year-picker-stack`}
+        spacing={1}
+        pb={1}
+      >
+        <IconButton onClick={() => setDate(date.subtract(1, 'month'))}>
+          <ArrowBackIosIcon />
+        </IconButton>
+        <MonthYearSelector
+          date={date}
+          handleDateChange={(newDate) => {
+            setDate(newDate);
+          }}
+          interval='month'
+        />
+        <IconButton onClick={() => setDate(date.add(1, 'month'))}>
+          <ArrowForwardIosIcon />
+        </IconButton>
+      </Stack>
       {renderWeeks()}
     </div>
   );

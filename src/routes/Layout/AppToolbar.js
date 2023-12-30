@@ -9,10 +9,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 
 function AppToolbar(props) {
+  const { mobileOpen, setMobileOpen } = props;
   const location = useLocation();
   const theme = useTheme();
 
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [pageName, setPageName] = useState('dashboard');
 
   useEffect(() => {

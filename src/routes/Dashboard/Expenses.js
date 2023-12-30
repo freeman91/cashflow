@@ -8,6 +8,7 @@ import sortBy from 'lodash/sortBy';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import Checkbox from '@mui/material/Checkbox';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -88,6 +89,7 @@ export default function Expenses() {
                 <TableCell align='right'>amount</TableCell>
                 <TableCell align='right'>category</TableCell>
                 <TableCell align='right'>vendor</TableCell>
+                <TableCell align='right'>paid</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -123,6 +125,25 @@ export default function Expenses() {
                     <CustomTableCell idx={idx} align='right'>
                       {vendor}
                     </CustomTableCell>
+                    <TableCell
+                      scope='row'
+                      align='right'
+                      sx={{
+                        borderBottom: 0,
+                        borderTop:
+                          idx === 0 ? '1px solid rgba(81, 81, 81, .5)' : 0,
+                      }}
+                    >
+                      <Checkbox
+                        edge='start'
+                        checked={!expense.pending}
+                        tabIndex={-1}
+                        size='small'
+                        sx={{
+                          '&.MuiButtonBase-root': { padding: 0 },
+                        }}
+                      />
+                    </TableCell>
                   </TableRow>
                 );
               })}
