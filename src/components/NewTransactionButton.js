@@ -49,6 +49,7 @@ function NewTransactionButton(props) {
           vertical: 'top',
           horizontal: 'right',
         }}
+        PaperProps={{ sx: { backgroundImage: 'none' } }}
       >
         <Stack
           direction='column'

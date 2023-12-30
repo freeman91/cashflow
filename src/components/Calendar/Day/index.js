@@ -113,6 +113,9 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
           vertical: 'top',
           horizontal: 'right',
         }}
+        PaperProps={{
+          sx: { backgroundImage: 'none', backgroundColor: 'transparent' },
+        }}
       >
         <Stack
           direction='column'

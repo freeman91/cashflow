@@ -5,7 +5,6 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -24,16 +23,16 @@ import { numberToCurrency } from '../../helpers/currency';
 import { openDialog } from '../../store/dialogs';
 import { CustomTableCell } from '../../components/Table/CustomTableCell';
 import NewTransactionButton from '../../components/NewTransactionButton';
-
-const start = dayjs().date(1).subtract(1, 'month');
-const end = start.add(3, 'month').date(0);
+import RangeSelect, {
+  RANGE_OPTIONS,
+} from '../../components/Selector/RangeSelect';
 
 export default function Expenses() {
   const dispatch = useDispatch();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
-  const [range] = useState({ start, end });
+  const [range, setRange] = useState(RANGE_OPTIONS[0]);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
@@ -61,21 +60,7 @@ export default function Expenses() {
   return (
     <div style={{ marginTop: 8 }}>
       <Stack direction='row' justifyContent='space-around'>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100%',
-          }}
-        >
-          <IconButton onClick={() => {}}>
-            <CalendarMonthIcon />
-          </IconButton>
-          <Typography variant='body1'>
-            {range.start.format('MMM D')} - {range.end.format('MMM D')}
-          </Typography>
-        </div>
+        <RangeSelect range={range} setRange={setRange} />
         <div
           style={{
             display: 'flex',
