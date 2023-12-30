@@ -61,7 +61,7 @@ export default function Bills() {
             <Table size='small'>
               <TableHead>
                 <TableRow>
-                  <TableCell>name</TableCell>
+                  <TableCell></TableCell>
                   <TableCell align='right'>vendor</TableCell>
                   <TableCell align='right'>amount</TableCell>
                   <TableCell align='right'>day</TableCell>

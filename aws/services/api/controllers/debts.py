@@ -15,13 +15,15 @@ debts = Blueprint("debts", __name__)
 def _debts(user_id: str):
     if request.method == "POST":
         body = request.json
+        interest_rate = body.get("interest_rate")
+
         debt = dynamo.debt.create(
             user_id=user_id,
             account_id=body.get("account_id"),
             name=body.get("name"),
             amount=float(body.get("amount")),
             category=body.get("category"),
-            interest_rate=float(body.get("interest_rate")),
+            interest_rate=float(interest_rate) if interest_rate else None,
         )
         return success_result(debt.as_dict())
 
@@ -43,7 +45,9 @@ def _debt(user_id: str, debt_id: str):
     if request.method == "PUT":
         debt = dynamo.debt.get(user_id=user_id, debt_id=debt_id)
         debt.amount = float(request.json.get("amount"))
-        debt.interest_rate = float(request.json.get("interest_rate"))
+
+        interest_rate = request.json.get("interest_rate")
+        debt.interest_rate = float(interest_rate) if interest_rate else None
 
         for attr in ["account_id", "name", "category"]:
             setattr(debt, attr, request.json.get(attr))
