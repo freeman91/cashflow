@@ -134,11 +134,11 @@ def networth_snapshot():
                 allDebts, lambda debt: debt.account_id == account.account_id
             )
             for debt in account_debts:
-                if debt.value > 0:
+                if debt.amount > 0:
                     debts.append(
                         {
                             "name": debt.name,
-                            "value": debt.value,
+                            "value": debt.amount,
                             "category": debt.category,
                             "lender": account.name,
                         }
