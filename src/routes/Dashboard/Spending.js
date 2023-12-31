@@ -137,7 +137,7 @@ export default function Spending({ month, setSelectedExpenses }) {
   useEffect(() => {
     const payload = chartData[activeIndex];
     setSelectedExpenses(get(payload, 'expenses', []));
-  }, [activeIndex]);
+  }, [activeIndex, chartData, setSelectedExpenses]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
