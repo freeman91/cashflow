@@ -12,12 +12,14 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { numberToCurrency } from '../../helpers/currency';
 
-export default function Cashflow({ month }) {
+export default function Cashflow({ month, setMonth }) {
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
@@ -69,6 +71,10 @@ export default function Cashflow({ month }) {
     setMonthExpenseSum(total);
   }, [month, allExpenses, allRepayments]);
 
+  const handleDateSelect = (e) => {
+    setMonth(e);
+  };
+
   return (
     <Card raised>
       <CardContent sx={{ pt: 1, pb: '4px !important' }}>
@@ -76,16 +82,35 @@ export default function Cashflow({ month }) {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          <Typography variant='h6' sx={{ fontWeight: 800 }}>{`${month
-            .format('MMMM')
-            .toLowerCase()} cashflow`}</Typography>
+          <DatePicker
+            views={['year', 'month']}
+            maxDate={dayjs().add(1, 'month').toDate()}
+            minDate={dayjs('2018-01-01').toDate()}
+            value={month}
+            onChange={handleDateSelect}
+            renderInput={(params) => {
+              return (
+                <TextField
+                  variant='standard'
+                  margin='dense'
+                  sx={{ m: '0 !important' }}
+                  {...params}
+                  InputProps={{
+                    ...params.InputProps,
+                    disableUnderline: true,
+                  }}
+                />
+              );
+            }}
+          />
           <Typography variant='h6'>
             {numberToCurrency.format(monthIncomeSum - monthExpenseSum)}
           </Typography>
         </div>
-        <Divider sx={{ mt: 2, mb: 1 }} />
+        <Divider sx={{ mt: 1, mb: 1 }} />
         <div
           style={{
             display: 'flex',

@@ -34,7 +34,9 @@ function DashboardGridItem(props) {
 
 export default function Dashboard() {
   const theme = useTheme();
-  const [month] = useState(dayjs());
+  const [month, setMonth] = useState(dayjs().date(15).hour(12).minute(0));
+
+  const [selectedExpenses, setSelectedExpenses] = useState([]);
 
   return (
     <>
@@ -44,21 +46,21 @@ export default function Dashboard() {
         padding={2}
         sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
       >
-        <DashboardGridItem>
-          <Spending month={month} />
-        </DashboardGridItem>
-
         <Grid container item xs={12} md={6} spacing={1}>
           <Grid item xs={12}>
-            <Cashflow month={month} />
+            <Cashflow month={month} setMonth={setMonth} />
           </Grid>
           <Grid item xs={12}>
             <NetWorth />
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
-          <Expenses />
+        <DashboardGridItem>
+          <Spending month={month} setSelectedExpenses={setSelectedExpenses} />
+        </DashboardGridItem>
+
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Expenses expenses={selectedExpenses} />
         </Grid>
       </Grid>
       <NewTransactionButton transactionTypes={['expense', 'income']} />

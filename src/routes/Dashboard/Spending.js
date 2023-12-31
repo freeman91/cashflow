@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
+import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
@@ -60,13 +61,14 @@ const renderActiveShape = (props) => {
   );
 };
 
-export default function Spending({ month }) {
+export default function Spending({ month, setSelectedExpenses }) {
   const theme = useTheme();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
   const [chartData, setChartData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hold, setHold] = useState(false);
 
   useEffect(() => {
     let expenses = filter(allExpenses, (expense) => {
@@ -92,19 +94,25 @@ export default function Spending({ month }) {
       return {
         name: group,
         value: reduce(expenses, (sum, expense) => sum + expense.amount, 0),
+        expenses,
       };
     });
 
-    data.push({
+    const debtPayment = {
       name: 'debt repayment',
       value: reduce(
         repayments,
         (sum, repayment) => sum + repayment.principal + repayment.interest,
         0
       ),
-    });
+      expenses: repayments,
+    };
 
-    data.push({
+    if (debtPayment.value > 0) {
+      data.push(debtPayment);
+    }
+
+    const mortgagePayment = {
       name: 'mortgage',
       value: reduce(
         mortgagePayments,
@@ -112,7 +120,12 @@ export default function Spending({ month }) {
           sum + repayment.principal + repayment.interest + repayment.escrow,
         0
       ),
-    });
+      expenses: mortgagePayments,
+    };
+
+    if (mortgagePayment.value > 0) {
+      data.push(mortgagePayment);
+    }
 
     if (data.length === 0) {
       data = [{ name: 'No expenses', value: 0.0000001 }];
@@ -121,8 +134,28 @@ export default function Spending({ month }) {
     setChartData(data);
   }, [month, allExpenses, allRepayments]);
 
+  useEffect(() => {
+    const payload = chartData[activeIndex];
+    setSelectedExpenses(get(payload, 'expenses', []));
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (!hold) {
+        setActiveIndex((prevIndex) => (prevIndex + 1) % chartData.length);
+      }
+    }, 15000);
+
+    // Clear the interval when the component is unmounted or the dependency changes
+    return () => clearInterval(intervalId);
+  }, [chartData, hold]);
+
   const onPieEnter = (data, index) => {
-    setActiveIndex(index);
+    if (!hold) setActiveIndex(index);
+  };
+
+  const onPieClick = (data, index) => {
+    setHold((prevHold) => !prevHold);
   };
 
   return (
@@ -155,6 +188,7 @@ export default function Spending({ month }) {
               fill='#8884d8'
               dataKey='value'
               onMouseEnter={onPieEnter}
+              onClick={onPieClick}
             >
               {chartData?.map((entry, index) => (
                 <Cell
