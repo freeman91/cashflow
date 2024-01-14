@@ -72,12 +72,12 @@ export default function Month() {
   }, [date, allExpenses, allIncomes, allRepayments, allPaychecks]);
 
   const handleDateChange = (newDate) => {
-    const start = newDate.date(1).hour(0);
-    const end = newDate.add(1, 'month').date(1).hour(0);
+    const start = newDate.startOf('month');
+    const end = newDate.endOf('month');
 
-    dispatch(getExpenses({ user_id: user.user_id, range: { start, end } }));
-    dispatch(getIncomes({ user_id: user.user_id, range: { start, end } }));
-    dispatch(getPaychecks({ user_id: user.user_id, range: { start, end } }));
+    dispatch(getExpenses({ range: { start, end } }));
+    dispatch(getIncomes({ range: { start, end } }));
+    dispatch(getPaychecks({ range: { start, end } }));
 
     setDate(newDate);
   };

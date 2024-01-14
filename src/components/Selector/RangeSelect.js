@@ -50,6 +50,7 @@ export default function RangeSelect(props) {
 
   const handleOptionClick = (option) => {
     setRange(option);
+    handleClose();
   };
 
   const handleClick = (e) => {
@@ -64,15 +65,21 @@ export default function RangeSelect(props) {
     <div
       style={{
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         height: '100%',
       }}
     >
-      <IconButton onClick={handleClick}>
+      <IconButton onClick={handleClick} sx={{ mr: 1 }}>
         <CalendarMonthIcon />
       </IconButton>
-      <Typography variant='body1'>{range.label}</Typography>
+      <Typography
+        variant='body1'
+        onClick={handleClick}
+        sx={{ cursor: 'pointer' }}
+      >
+        {range.label}
+      </Typography>
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -87,6 +94,7 @@ export default function RangeSelect(props) {
             <ListItemButton
               key={option.id}
               onClick={() => handleOptionClick(option)}
+              sx={{ pt: '4px', pb: 0 }}
             >
               <ListItemText primary={option.label} />
             </ListItemButton>

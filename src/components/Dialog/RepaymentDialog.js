@@ -124,6 +124,24 @@ function RepaymentDialog() {
     setDebt({ name: '' });
   };
 
+  const total = (() => {
+    let _total = 0;
+
+    if (!Number(repayment.principal).isNaN) {
+      _total += Number(repayment.principal);
+    }
+
+    if (!Number(repayment.interest).isNaN) {
+      _total += Number(repayment.interest);
+    }
+
+    if (!Number(repayment.escrow).isNaN) {
+      _total += Number(repayment.escrow);
+    }
+
+    return _total;
+  })();
+
   return (
     <BaseDialog
       type={defaultRepayment._type}
@@ -163,11 +181,7 @@ function RepaymentDialog() {
           <TextFieldListItem
             id='amount'
             label='amount'
-            value={_numberToCurrency.format(
-              Number(repayment.principal) +
-                Number(repayment.interest) +
-                (Number(repayment.escrow) ? repayment.escrow : 0)
-            )}
+            value={_numberToCurrency.format(total)}
             InputProps={{
               readOnly: true,
               disableUnderline: true,

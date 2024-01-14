@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
+import { numberToCurrency } from '../../helpers/currency';
 import NewTransactionButton from '../../components/NewTransactionButton';
 import { openDialog } from '../../store/dialogs';
 import PurchasesTable from './PurchasesTable';
@@ -32,6 +33,8 @@ export default function AssetDashboard() {
   const [asset, setAsset] = useState({});
   const [purchases, setPurchases] = useState([]);
   const [sales, setSales] = useState([]);
+  const [purchaseSum, setPurchaseSum] = useState(0);
+  const [saleSum, setSaleSum] = useState(0);
 
   useEffect(() => {
     let _pathname = location.pathname;
@@ -53,6 +56,14 @@ export default function AssetDashboard() {
       setAsset({});
     }
   }, [id, allPurchases, allSales, assets]);
+
+  useEffect(() => {
+    setPurchaseSum(purchases.reduce((acc, curr) => acc + curr.amount, 0));
+  }, [purchases]);
+
+  useEffect(() => {
+    setSaleSum(sales.reduce((acc, curr) => acc + curr.value, 0));
+  }, [sales]);
 
   if (!id) return null;
 
@@ -98,6 +109,37 @@ export default function AssetDashboard() {
             </IconButton>
           </Tooltip>
         </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '50%',
+          }}
+        >
+          <Typography variant='h6' align='left' sx={{ width: '100%' }}>
+            value
+          </Typography>
+          <Typography variant='h6' align='right' sx={{ width: '100%' }}>
+            {numberToCurrency.format(asset.value)}
+          </Typography>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '50%',
+          }}
+        >
+          <Typography variant='h6' align='left' sx={{ width: '100%' }}>
+            invested
+          </Typography>
+          <Typography variant='h6' align='right' sx={{ width: '100%' }}>
+            {numberToCurrency.format(purchaseSum - saleSum)}
+          </Typography>
+        </div>
+
         {purchases.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
         {purchases.length > 0 && (
           <Typography sx={{ width: '100%' }} align='left'>

@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
 
+import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
-import LinearProgress from '@mui/material/LinearProgress';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { numberToCurrency } from '../../helpers/currency';
+import { getExpenses } from '../../store/expenses';
+import { getIncomes } from '../../store/incomes';
+import { getPaychecks } from '../../store/paychecks';
 
 export default function Cashflow({ month, setMonth }) {
+  const dispatch = useDispatch();
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
-  const [budget] = useState(3800);
+  // const [budget] = useState(3800);
   const [monthIncomeSum, setMonthIncomeSum] = useState(0);
   const [monthExpenseSum, setMonthExpenseSum] = useState([]);
 
@@ -50,11 +52,20 @@ export default function Cashflow({ month, setMonth }) {
     let total = 0;
     let expenses = filter(allExpenses, (expense) => {
       const date = dayjs(expense.date);
-      return date.year() === month.year() && date.month() === month.month();
+      return (
+        date.year() === month.year() &&
+        date.month() === month.month() &&
+        !expense.pending
+      );
     });
+
     let repayments = filter(allRepayments, (repayment) => {
       const date = dayjs(repayment.date);
-      return date.year() === month.year() && date.month() === month.month();
+      return (
+        date.year() === month.year() &&
+        date.month() === month.month() &&
+        !repayment.pending
+      );
     });
 
     total += reduce(expenses, (sum, expense) => sum + expense.amount, 0);
@@ -73,18 +84,32 @@ export default function Cashflow({ month, setMonth }) {
 
   const handleDateSelect = (e) => {
     setMonth(e);
+
+    const start = e.startOf('month');
+    const end = e.endOf('month');
+    dispatch(getExpenses({ range: { start, end } }));
+    dispatch(getIncomes({ range: { start, end } }));
+    dispatch(getPaychecks({ range: { start, end } }));
   };
 
   return (
     <Card raised>
       <CardContent sx={{ pt: 1, pb: '4px !important' }}>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            justifyContent: 'space-around',
           }}
         >
+          <IconButton
+            sx={{ height: 30, width: 30 }}
+            onClick={() => {
+              let date = month.date(15).subtract(1, 'month');
+              handleDateSelect(date);
+            }}
+          >
+            <ArrowBackIos />
+          </IconButton>
           <DatePicker
             views={['year', 'month']}
             maxDate={dayjs().add(1, 'month').toDate()}
@@ -98,35 +123,68 @@ export default function Cashflow({ month, setMonth }) {
                   margin='dense'
                   sx={{ m: '0 !important' }}
                   {...params}
-                  InputProps={{
-                    ...params.InputProps,
-                    disableUnderline: true,
-                  }}
                 />
               );
             }}
           />
-          <Typography variant='h6'>
-            {numberToCurrency.format(monthIncomeSum - monthExpenseSum)}
-          </Typography>
-        </div>
+          <IconButton
+            sx={{ height: 30, width: 30 }}
+            onClick={() => {
+              let date = month.date(15).add(1, 'month');
+              handleDateSelect(date);
+            }}
+          >
+            <ArrowForwardIos />
+          </IconButton>
+        </Box>
+
         <Divider sx={{ mt: 1, mb: 1 }} />
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            marginLeft: 16,
-            marginRight: 16,
+            ml: 2,
+            mr: 2,
           }}
         >
           <Typography variant='h6'>income</Typography>
           <Typography variant='h6'>
             {numberToCurrency.format(monthIncomeSum)}
           </Typography>
-        </div>
-        <Divider sx={{ mt: 2, mb: 2 }} />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            ml: 2,
+            mr: 2,
+          }}
+        >
+          <Typography variant='h6'>expenses</Typography>
+          <Typography variant='h6'>
+            {numberToCurrency.format(monthExpenseSum)}
+          </Typography>
+        </Box>
+        <Divider sx={{ mt: 1, mb: 1 }} />
 
-        <Tooltip
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            ml: 2,
+            mr: 2,
+          }}
+        >
+          <Typography variant='h6' sx={{ fontWeight: 800 }}>
+            net
+          </Typography>
+          <Typography variant='h6' sx={{ fontWeight: 800 }}>
+            {numberToCurrency.format(monthIncomeSum - monthExpenseSum)}
+          </Typography>
+        </Box>
+
+        {/* <Divider sx={{ mt: 2, mb: 2 }} /> */}
+        {/* <Tooltip
           title={
             <List disablePadding sx={{ width: '10rem' }}>
               <ListItem
@@ -183,7 +241,7 @@ export default function Cashflow({ month, setMonth }) {
           <Typography variant='h6'>
             {numberToCurrency.format(budget)}
           </Typography>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );

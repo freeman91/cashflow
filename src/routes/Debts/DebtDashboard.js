@@ -18,6 +18,7 @@ import NewTransactionButton from '../../components/NewTransactionButton';
 import { openDialog } from '../../store/dialogs';
 import BorrowsTable from './BorrowsTable';
 import RepaymentsTable from './RepaymentsTable';
+import { numberToCurrency } from '../../helpers/currency';
 
 export default function DebtDashboard() {
   const dispatch = useDispatch();
@@ -32,6 +33,10 @@ export default function DebtDashboard() {
   const [debt, setDebt] = useState({});
   const [borrows, setBorrows] = useState([]);
   const [repayments, setRepayments] = useState([]);
+  const [borrowSum, setBorrowSum] = useState(0);
+  const [principalSum, setPrincipalSum] = useState(0);
+  const [interestSum, setIntrestSum] = useState(0);
+  const [escrowSum, setEscrowSum] = useState(0);
 
   useEffect(() => {
     let _pathname = location.pathname;
@@ -53,6 +58,18 @@ export default function DebtDashboard() {
       setDebt({});
     }
   }, [id, allBorrows, allRepayments, debts]);
+
+  useEffect(() => {
+    setBorrowSum(borrows.reduce((acc, curr) => acc + curr.amount, 0));
+  }, [borrows]);
+
+  useEffect(() => {
+    setPrincipalSum(repayments.reduce((acc, curr) => acc + curr.principal, 0));
+    setIntrestSum(repayments.reduce((acc, curr) => acc + curr.interest, 0));
+    setEscrowSum(
+      repayments.reduce((acc, curr) => acc + (curr.escrow ? curr.escrow : 0), 0)
+    );
+  }, [repayments]);
 
   if (!id) return null;
 
@@ -98,6 +115,68 @@ export default function DebtDashboard() {
             </IconButton>
           </Tooltip>
         </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '50%',
+          }}
+        >
+          <Typography variant='h6' align='left' sx={{ width: '100%' }}>
+            borrowed
+          </Typography>
+          <Typography variant='h6' align='right' sx={{ width: '100%' }}>
+            {numberToCurrency.format(borrowSum)}
+          </Typography>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '50%',
+          }}
+        >
+          <Typography variant='h6' align='left' sx={{ width: '100%' }}>
+            principal
+          </Typography>
+          <Typography variant='h6' align='right' sx={{ width: '100%' }}>
+            {numberToCurrency.format(principalSum)}
+          </Typography>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '50%',
+          }}
+        >
+          <Typography variant='h6' align='left' sx={{ width: '100%' }}>
+            interest
+          </Typography>
+          <Typography variant='h6' align='right' sx={{ width: '100%' }}>
+            {numberToCurrency.format(interestSum)}
+          </Typography>
+        </div>
+
+        {escrowSum > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '50%',
+            }}
+          >
+            <Typography variant='h6' align='left' sx={{ width: '100%' }}>
+              Escrow
+            </Typography>
+            <Typography variant='h6' align='right' sx={{ width: '100%' }}>
+              {numberToCurrency.format(escrowSum)}
+            </Typography>
+          </div>
+        )}
 
         {borrows.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
         {borrows.length > 0 && (

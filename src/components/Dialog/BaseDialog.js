@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useMediaQuery } from '@mui/material';
+import useTheme from '@mui/material/styles/useTheme';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -10,6 +12,8 @@ import DialogTitleOptions from './DialogTitleOptions';
 
 function BaseDialog(props) {
   const { type, title, titleOptions, children, handleClose = null } = props;
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
 
   const { open, mode } = useSelector((state) => state.dialogs[type]);
@@ -20,7 +24,7 @@ function BaseDialog(props) {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog fullScreen={fullScreen} open={open} onClose={handleClose}>
       <DialogTitle sx={{ pb: 0 }}>
         {title}
         <DialogTitleOptions mode={mode} handleClose={handleCloseBase}>

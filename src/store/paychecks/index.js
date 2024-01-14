@@ -22,10 +22,14 @@ const getPaychecks = createAsyncThunk(
       start: oldStart,
       end: oldEnd,
     } = cloneDeep(getState().paychecks);
+    let user = getState().user.item;
+    if (!user_id) {
+      user_id = user.user_id;
+    }
 
     const [fetchRange, storeRange] = updateRange(range, oldStart, oldEnd);
 
-    if (!fetchRange) {
+    if (!fetchRange || !user_id) {
       return;
     }
 
