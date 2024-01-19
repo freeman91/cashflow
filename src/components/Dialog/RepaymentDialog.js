@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import includes from 'lodash/includes';
+import map from 'lodash/map';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Button from '@mui/material/Button';
@@ -22,6 +23,7 @@ import TextFieldListItem from '../List/TextFieldListItem';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import { _numberToCurrency } from '../../helpers/currency';
 import {
   deleteRepayment,
   postRepayment,
@@ -30,7 +32,7 @@ import {
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DebtSelect from '../Selector/DebtSelect';
-import { _numberToCurrency } from '../../helpers/currency';
+import AutocompleteListItem from '../List/AutocompleteListItem';
 
 const defaultRepayment = {
   repayment_id: '',
@@ -39,6 +41,8 @@ const defaultRepayment = {
   interest: '',
   escrow: '',
   lender: '',
+  category: '',
+  subcategory: '',
   _type: 'repayment',
   pending: false,
   debt_id: '',
@@ -50,12 +54,41 @@ function RepaymentDialog() {
   const location = useLocation();
 
   const accounts = useSelector((state) => state.accounts.data);
+  const categoriesData = useSelector((state) => state.categories.data);
   const debts = useSelector((state) => state.debts.data);
   const repayments = useSelector((state) => state.repayments.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.repayment);
 
+  const [expenseCategories, setExpenseCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+
   const [repayment, setRepayment] = useState(defaultRepayment);
   const [debt, setDebt] = useState({ name: '' });
+
+  useEffect(() => {
+    setExpenseCategories(
+      find(categoriesData, {
+        category_type: 'expense',
+      })
+    );
+  }, [categoriesData]);
+
+  useEffect(() => {
+    setCategories(
+      map(expenseCategories?.categories, (category) => {
+        return category.name;
+      })
+    );
+  }, [expenseCategories]);
+
+  useEffect(() => {
+    let _category = find(expenseCategories.categories, {
+      name: repayment.category,
+    });
+
+    setSubcategories(get(_category, 'subcategories', []));
+  }, [repayment.category, expenseCategories]);
 
   useEffect(() => {
     let _lender = '';
@@ -240,6 +273,20 @@ function RepaymentDialog() {
             id='lender'
             label='lender'
             value={repayment.lender}
+            onChange={handleChange}
+          />
+          <AutocompleteListItem
+            id='category'
+            label='category'
+            value={repayment.category}
+            options={categories}
+            onChange={handleChange}
+          />
+          <AutocompleteListItem
+            id='subcategory'
+            label='subcategory'
+            value={repayment.subcategory}
+            options={subcategories}
             onChange={handleChange}
           />
           <ListItem key='pending' disablePadding sx={{ pl: 0, pr: 0 }}>

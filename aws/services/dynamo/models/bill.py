@@ -28,6 +28,7 @@ class Bill(BaseModel):
     name = UnicodeAttribute()
     amount = NumberAttribute()
     category = UnicodeAttribute()
+    subcategory = UnicodeAttribute()
     vendor = UnicodeAttribute()
     day = NumberAttribute()
     months = ListAttribute()

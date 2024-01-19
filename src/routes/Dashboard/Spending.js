@@ -67,7 +67,6 @@ export default function Spending({ month, setSelectedExpenses }) {
   const allRepayments = useSelector((state) => state.repayments.data);
 
   const [chartData, setChartData] = useState([]);
-  const [expenseSum, setExpenseSum] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hold, setHold] = useState(false);
 

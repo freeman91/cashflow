@@ -25,6 +25,7 @@ class Debt(BaseModel):
     lender = UnicodeAttribute(null=True)
     amount = NumberAttribute()
     category = UnicodeAttribute(default="")
+    subcategory = UnicodeAttribute(default="")
     interest_rate = NumberAttribute(null=True)
     last_update = UTCDateTimeAttribute()
 

@@ -16,8 +16,6 @@ import { getPaychecks } from '../../../store/paychecks';
 
 export default function Month() {
   const dispatch = useDispatch();
-
-  const user = useSelector((state) => state.user.item);
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
   const allIncomes = useSelector((state) => state.incomes.data);

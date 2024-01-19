@@ -10,6 +10,8 @@ def create(
     principal: float,
     interest: float,
     lender: str,
+    category: str,
+    subcategory: str,
     debt_id: str,
     escrow: float = None,
     bill_id: str = None,

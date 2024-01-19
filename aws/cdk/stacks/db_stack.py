@@ -61,6 +61,7 @@ class DyanmoDbStack(NestedStack):
         DynamoDBTable(self, "repayment", "user_id", "repayment_id")
         DynamoDBTable(self, "debt", "user_id", "debt_id")
         DynamoDBTable(self, "expense", "user_id", "expense_id")
+        DynamoDBTable(self, "categories", "user_id", "category_type")
         DynamoDBTable(self, "income", "user_id", "income_id")
         DynamoDBTable(self, "networth", "user_id", "networth_id")
         DynamoDBTable(self, "option_list", "user_id", "option_type")

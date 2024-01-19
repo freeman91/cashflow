@@ -21,6 +21,7 @@ def _bills(user_id: str):
             name=body.get("name"),
             amount=float(body.get("amount")),
             category=body.get("category"),
+            subcategory=body.get("subcategory"),
             vendor=body.get("vendor"),
             day=body.get("day"),
             months=body.get("months"),
@@ -50,6 +51,7 @@ def _bill(user_id: str, bill_id: str):
         for attr in [
             "name",
             "category",
+            "subcategory",
             "vendor",
             "day",
             "months",

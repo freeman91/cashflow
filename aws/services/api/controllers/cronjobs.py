@@ -176,7 +176,6 @@ def generate_bill_expenses():
     """
     0 0 * * * curl -X POST localhost:9000/cronjobs/generate_bill_expenses
     """
-    from pprint import pprint
 
     if request.method == "POST":
         new_expenses = []
@@ -198,6 +197,7 @@ def generate_bill_expenses():
                                 _date.year, _date.month, _date.day, 12, 0
                             ),
                             "category": bill.category,
+                            "subcategory": bill.subcategory,
                             "vendor": bill.vendor,
                             "pending": True,
                             "bill_id": bill.bill_id,
@@ -214,6 +214,8 @@ def generate_bill_expenses():
                         "principal": bill.amount - interest,
                         "interest": interest,
                         "lender": bill.vendor,
+                        "category": bill.category,
+                        "subcategory": bill.subcategory,
                         "pending": True,
                         "debt_id": bill.debt_id,
                         "bill_id": bill.bill_id,

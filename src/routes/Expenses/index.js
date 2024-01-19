@@ -2,32 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
-import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import FilterListIcon from '@mui/icons-material/FilterList';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-
 import { getExpenses } from '../../store/expenses';
-import { numberToCurrency } from '../../helpers/currency';
-import { openDialog } from '../../store/dialogs';
-import { CustomTableCell } from '../../components/Table/CustomTableCell';
 import NewTransactionButton from '../../components/NewTransactionButton';
-import RangeSelect, {
-  RANGE_OPTIONS,
-} from '../../components/Selector/RangeSelect';
+import { RANGE_OPTIONS } from '../../components/Selector/RangeSelect';
 import ExpenseTable from './ExpenseTable';
 import FilterOptions from './FilterOptions';
 
@@ -52,7 +31,7 @@ export default function Expenses() {
 
   useEffect(() => {
     dispatch(getExpenses({ range }));
-  }, [range]);
+  }, [range, dispatch]);
 
   return (
     <div style={{ marginTop: 8 }}>

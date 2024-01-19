@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
+import map from 'lodash/map';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutocompleteListItem from '../List/AutocompleteListItem';
@@ -32,6 +33,7 @@ const defaultBill = {
   name: '',
   amount: '',
   category: '',
+  subcategory: '',
   vendor: '',
   _type: 'bill',
   day: '15',
@@ -42,6 +44,7 @@ const defaultBill = {
 function BillDialog() {
   const dispatch = useDispatch();
   const optionLists = useSelector((state) => state.optionLists.data);
+  const categoriesData = useSelector((state) => state.categories.data);
   const accounts = useSelector((state) => state.accounts.data);
   const debts = useSelector((state) => state.debts.data);
   const bills = useSelector((state) => state.bills.data);
@@ -49,9 +52,33 @@ function BillDialog() {
   const [bill, setBill] = useState(defaultBill);
 
   const expenseVendors = find(optionLists, { option_type: 'expense_vendor' });
-  const expenseCategories = find(optionLists, {
-    option_type: 'expense_category',
-  });
+  const [expenseCategories, setExpenseCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+
+  useEffect(() => {
+    setExpenseCategories(
+      find(categoriesData, {
+        category_type: 'expense',
+      })
+    );
+  }, [categoriesData]);
+
+  useEffect(() => {
+    setCategories(
+      map(expenseCategories?.categories, (category) => {
+        return category.name;
+      })
+    );
+  }, [expenseCategories]);
+
+  useEffect(() => {
+    let _category = find(expenseCategories.categories, {
+      name: bill.category,
+    });
+
+    setSubcategories(get(_category, 'subcategories', []));
+  }, [bill.category, expenseCategories]);
 
   useEffect(() => {
     if (id) {
@@ -162,7 +189,14 @@ function BillDialog() {
             id='category'
             label='category'
             value={bill.category}
-            options={get(expenseCategories, 'options', [])}
+            options={categories}
+            onChange={handleChange}
+          />
+          <AutocompleteListItem
+            id='subcategory'
+            label='subcategory'
+            value={bill.subcategory}
+            options={subcategories}
             onChange={handleChange}
           />
           <ListItem key='day' disablePadding sx={{ pt: 2 }}>

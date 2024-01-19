@@ -4,10 +4,10 @@ import dayjs from 'dayjs';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
+import map from 'lodash/map';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DescriptionIcon from '@mui/icons-material/Description';
-import AutocompleteListItem from '../List/AutocompleteListItem';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -25,6 +25,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { deleteExpense, postExpense, putExpense } from '../../store/expenses';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
+import AutocompleteListItem from '../List/AutocompleteListItem';
 
 const defaultExpense = {
   expense_id: '',
@@ -33,6 +34,7 @@ const defaultExpense = {
   vendor: '',
   _type: 'expense',
   category: '',
+  subcategory: '',
   pending: false,
   bill_id: '',
   asset_id: '',
@@ -42,14 +44,40 @@ const defaultExpense = {
 function ExpenseDialog() {
   const dispatch = useDispatch();
   const optionLists = useSelector((state) => state.optionLists.data);
+  const categoriesData = useSelector((state) => state.categories.data);
   const expenses = useSelector((state) => state.expenses.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.expense);
   const [expense, setExpense] = useState(defaultExpense);
 
+  const [expenseCategories, setExpenseCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+
   const expenseVendors = find(optionLists, { option_type: 'expense_vendor' });
-  const expenseCategories = find(optionLists, {
-    option_type: 'expense_category',
-  });
+
+  useEffect(() => {
+    setExpenseCategories(
+      find(categoriesData, {
+        category_type: 'expense',
+      })
+    );
+  }, [categoriesData]);
+
+  useEffect(() => {
+    setCategories(
+      map(expenseCategories?.categories, (category) => {
+        return category.name;
+      })
+    );
+  }, [expenseCategories]);
+
+  useEffect(() => {
+    let _category = find(expenseCategories.categories, {
+      name: expense.category,
+    });
+
+    setSubcategories(get(_category, 'subcategories', []));
+  }, [expense.category, expenseCategories]);
 
   useEffect(() => {
     if (id) {
@@ -153,7 +181,14 @@ function ExpenseDialog() {
             id='category'
             label='category'
             value={expense.category}
-            options={get(expenseCategories, 'options', [])}
+            options={categories}
+            onChange={handleChange}
+          />
+          <AutocompleteListItem
+            id='subcategory'
+            label='subcategory'
+            value={expense.subcategory}
+            options={subcategories}
             onChange={handleChange}
           />
           {expense.bill_id && (

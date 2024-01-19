@@ -29,6 +29,7 @@ class Expense(BaseModel):
     amount = NumberAttribute()
     vendor = UnicodeAttribute(null=True)
     category = UnicodeAttribute(default="")
+    subcategory = UnicodeAttribute(default="")
     pending = BooleanAttribute(default=False)
     bill_id = UnicodeAttribute(null=True)
     asset_id = UnicodeAttribute(null=True)

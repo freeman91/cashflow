@@ -12,6 +12,7 @@ import { reducer as toastr } from 'react-redux-toastr';
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import accounts from './accounts';
 import borrows from './borrows';
+import categories from './categories';
 import dialogs from './dialogs';
 import user from './user';
 import expenses from './expenses';
@@ -33,6 +34,7 @@ export const store = configureStore({
   reducer: combineReducers({
     accounts,
     borrows,
+    categories,
     dialogs,
     expenses,
     incomes,

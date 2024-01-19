@@ -1,5 +1,6 @@
 from .account import Account
 from .asset import Asset
+from .categories import Categories
 from .purchase import Purchase
 from .sale import Sale
 from .bill import Bill

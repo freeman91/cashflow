@@ -3,6 +3,7 @@ from .modules import (
     asset,
     bill,
     borrow,
+    categories,
     debt,
     expense,
     income,

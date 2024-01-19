@@ -15,11 +15,11 @@ export default function FilterOptions(props) {
   const { range, setRange } = props;
   const [expanded, setExpanded] = useState(false);
   const [typeFilter, setTypeFilter] = useState('none');
-  const [amountFilter, setAmountFilter] = useState(null);
-  const [categoryFilter, setCategoryFilter] = useState('none');
+  // const [amountFilter, setAmountFilter] = useState(null);
+  // const [categoryFilter, setCategoryFilter] = useState('none');
   const [vendorFilter, setVendorFilter] = useState(null);
-  const [billFilter, setBillFilter] = useState(null);
-  const [pendingFilter, setPendingFilter] = useState(null);
+  // const [billFilter, setBillFilter] = useState(null);
+  // const [pendingFilter, setPendingFilter] = useState(null);
 
   return (
     <Grid container spacing={1}>
@@ -52,13 +52,13 @@ export default function FilterOptions(props) {
           <Grid item md={6} xs={12}>
             <Typography variant='body1'>amount</Typography>
           </Grid>
-          <Grid item md={6} xs={12}>
+          {/* <Grid item md={6} xs={12}>
             <OptionListFilter
               optionType={'expense_category'}
               filter={categoryFilter}
               setFilter={setCategoryFilter}
             />
-          </Grid>
+          </Grid> */}
           <Grid item md={6} xs={12}>
             <OptionListFilter
               optionType={'expense_vendor'}

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import find from 'lodash/find';
-import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 
 import { useTheme } from '@mui/styles';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
 import NewTransactionButton from '../../components/NewTransactionButton';
 import AssetsSummary from './AssetsSummary';
@@ -14,14 +12,12 @@ import AssetCard from '../Accounts/AssetCard';
 
 export default function Assets() {
   const theme = useTheme();
-  const accounts = useSelector((state) => state.accounts.data);
   const allAssets = useSelector((state) => state.assets.data);
-
-  const [groupedAssets, setGroupedAssets] = useState([]);
+  const [assets, setAssets] = useState([]);
 
   useEffect(() => {
-    setGroupedAssets(groupBy(allAssets, 'account_id'));
-  }, [accounts, allAssets]);
+    setAssets(sortBy(allAssets, 'value').reverse());
+  }, [allAssets]);
 
   return (
     <>
@@ -34,18 +30,8 @@ export default function Assets() {
         sx={{ minWidth: 550, maxWidth: theme.breakpoints.maxWidth }}
       >
         <AssetsSummary />
-        {map(groupedAssets, (assets, accountId) => {
-          const account = find(accounts, { account_id: accountId });
-          return (
-            <React.Fragment key={accountId}>
-              <Typography align='left' sx={{ width: '100%' }}>
-                {account.name}
-              </Typography>
-              {map(assets, (asset) => (
-                <AssetCard key={asset.asset_id} asset={asset} />
-              ))}
-            </React.Fragment>
-          );
+        {map(assets, (asset) => {
+          return <AssetCard key={asset.asset_id} asset={asset} />;
         })}
       </Stack>
       <NewTransactionButton transactionTypes={['asset', 'purchase', 'sale']} />

@@ -1,6 +1,7 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';
+import find from 'lodash/find';
 
 import EditIcon from '@mui/icons-material/Edit';
 import ListIcon from '@mui/icons-material/List';
@@ -15,6 +16,12 @@ import { openDialog } from '../../store/dialogs';
 
 export default function DebtCard({ debt }) {
   const dispatch = useDispatch();
+  const accounts = useSelector((state) => state.accounts.data);
+  const [account, setAccount] = useState({});
+
+  useEffect(() => {
+    setAccount(find(accounts, { account_id: debt.account_id }));
+  }, [accounts, debt.account_id]);
 
   const handleClick = () => {
     dispatch(push(`/app/debts/${debt.debt_id}`));
@@ -24,7 +31,7 @@ export default function DebtCard({ debt }) {
     <Card sx={{ width: '100%' }} raised key={debt.debt_id}>
       <CardHeader
         title={debt.name}
-        subheader={debt.description}
+        subheader={account.name}
         titleTypographyProps={{ align: 'left' }}
         subheaderTypographyProps={{ align: 'left' }}
         sx={{

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import find from 'lodash/find';
-import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
+import cloneDeep from 'lodash/cloneDeep';
+import remove from 'lodash/remove';
 
 import { useTheme } from '@mui/styles';
 import Stack from '@mui/material/Stack';
@@ -14,14 +15,18 @@ import DebtCard from '../Accounts/DebtCard';
 
 export default function Debts() {
   const theme = useTheme();
-  const accounts = useSelector((state) => state.accounts.data);
   const allDebts = useSelector((state) => state.debts.data);
 
-  const [groupedDebts, setGroupedDebts] = useState([]);
+  const [debts, setDebts] = useState([]);
+  const [creditCards, setCreditCards] = useState([]);
 
   useEffect(() => {
-    setGroupedDebts(groupBy(allDebts, 'account_id'));
-  }, [accounts, allDebts]);
+    let _debts = cloneDeep(allDebts);
+    let _creditCards = remove(_debts, (debt) => debt.category === 'credit');
+
+    setDebts(sortBy(_debts, 'amount').reverse());
+    setCreditCards(sortBy(_creditCards, 'amount').reverse());
+  }, [allDebts]);
 
   return (
     <>
@@ -34,21 +39,21 @@ export default function Debts() {
         sx={{ minWidth: 550, maxWidth: theme.breakpoints.maxWidth }}
       >
         <DebtsSummary />
-        {map(groupedDebts, (debts, accountId) => {
-          const account = find(accounts, { account_id: accountId });
-          return (
-            <React.Fragment key={accountId}>
-              <Typography align='left' sx={{ width: '100%' }}>
-                {account.name}
-              </Typography>
-              {map(debts, (debt) => (
-                <DebtCard key={debt.debt_id} debt={debt} />
-              ))}
-            </React.Fragment>
-          );
+        {map(debts, (debt) => {
+          return <DebtCard key={debt.debt_id} debt={debt} />;
         })}
+        <React.Fragment>
+          <Typography align='left' sx={{ width: '100%' }}>
+            credit cards
+          </Typography>
+          {map(creditCards, (debt) => (
+            <DebtCard key={debt.debt_id} debt={debt} />
+          ))}
+        </React.Fragment>
       </Stack>
-      <NewTransactionButton transactionTypes={['debt', 'purchase', 'sale']} />
+      <NewTransactionButton
+        transactionTypes={['debt', 'repayment', 'borrow']}
+      />
     </>
   );
 }

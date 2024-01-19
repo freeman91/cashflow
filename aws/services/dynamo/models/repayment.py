@@ -31,6 +31,8 @@ class Repayment(BaseModel):
     escrow = NumberAttribute(null=True)
     lender = UnicodeAttribute()
     pending = BooleanAttribute(default=False)
+    category = UnicodeAttribute(default="")
+    subcategory = UnicodeAttribute(default="")
     debt_id = UnicodeAttribute()
     bill_id = UnicodeAttribute(null=True)
 

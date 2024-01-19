@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
+import map from 'lodash/map';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutocompleteListItem from '../List/AutocompleteListItem';
@@ -27,19 +28,44 @@ const defaultDebt = {
   name: '',
   amount: '',
   category: '',
+  subcategory: '',
   interest_rate: '',
 };
 
 function DebtDialog() {
   const dispatch = useDispatch();
-  const optionLists = useSelector((state) => state.optionLists.data);
+  const categoriesData = useSelector((state) => state.categories.data);
   const debts = useSelector((state) => state.debts.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.debt);
   const [debt, setDebt] = useState(defaultDebt);
 
-  const debtCategories = find(optionLists, {
-    option_type: 'debt_category',
-  });
+  const [expenseCategories, setExpenseCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+
+  useEffect(() => {
+    setExpenseCategories(
+      find(categoriesData, {
+        category_type: 'expense',
+      })
+    );
+  }, [categoriesData]);
+
+  useEffect(() => {
+    setCategories(
+      map(expenseCategories?.categories, (category) => {
+        return category.name;
+      })
+    );
+  }, [expenseCategories]);
+
+  useEffect(() => {
+    let _category = find(expenseCategories.categories, {
+      name: debt.category,
+    });
+
+    setSubcategories(get(_category, 'subcategories', []));
+  }, [debt.category, expenseCategories]);
 
   useEffect(() => {
     if (id) {
@@ -136,7 +162,14 @@ function DebtDialog() {
             id='category'
             label='category'
             value={debt.category}
-            options={get(debtCategories, 'options', [])}
+            options={categories}
+            onChange={handleChange}
+          />
+          <AutocompleteListItem
+            id='subcategory'
+            label='subcategory'
+            value={debt.subcategory}
+            options={subcategories}
             onChange={handleChange}
           />
 

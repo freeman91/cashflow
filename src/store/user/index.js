@@ -19,6 +19,7 @@ import { getPurchases } from '../purchases';
 import { getRepayments } from '../repayments';
 import { getSales } from '../sales';
 import { getOptionLists } from '../optionLists';
+import { getCategories } from '../categories';
 
 const getUser = createAsyncThunk(
   'user/getUser',
@@ -52,6 +53,7 @@ const getUser = createAsyncThunk(
       dispatch(getRepayments(user_id));
       dispatch(getSales(user_id));
       dispatch(getOptionLists(user_id));
+      dispatch(getCategories(user_id));
 
       return { item: user };
     } catch (err) {

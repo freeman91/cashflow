@@ -10,6 +10,7 @@ def create(
     name: str,
     amount: float,
     category: str,
+    subcategory: str,
     interest_rate: float = None,
 ) -> Debt:
     debt = Debt(
@@ -19,6 +20,7 @@ def create(
         name=name,
         amount=amount,
         category=category,
+        subcategory=subcategory,
         interest_rate=interest_rate,
         last_update=datetime.now(timezone.utc),
     )
