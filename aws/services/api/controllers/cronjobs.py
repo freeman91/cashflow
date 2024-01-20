@@ -183,8 +183,6 @@ def generate_bill_expenses():
 
         _date = date.today() + timedelta(days=31)
 
-        print(f"_date.day: {_date.day}")
-
         for bill in dynamo.bill.get():
             if _date.day == bill.day and _date.month in bill.months:
                 if not bill.debt_id:

@@ -73,7 +73,7 @@ function BillDialog() {
   }, [expenseCategories]);
 
   useEffect(() => {
-    let _category = find(expenseCategories.categories, {
+    let _category = find(expenseCategories?.categories, {
       name: bill.category,
     });
 
@@ -101,7 +101,6 @@ function BillDialog() {
         ...bill,
         name: debt.name,
         vendor: account.name,
-        category: 'repayment',
       }));
     }
   }, [bill.debt_id, accounts, debts]);

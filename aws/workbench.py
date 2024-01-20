@@ -103,6 +103,15 @@ OPTIONS = [
 ]
 
 
+CATS = {
+    "NelNet": {"category": "other", "subcategory": "student loans"},
+    "Wells Fargo": {"category": "transportation", "subcategory": "auto payment"},
+    "Huntington": {"category": "housing", "subcategory": "mortgage"},
+    "MOHELA": {"category": "other", "subcategory": "student loans"},
+    "Great Lakes": {"category": "other", "subcategory": "student loans"},
+}
+
+
 def _test():
     start = datetime(2021, 12, 16)
     end = datetime(2021, 12, 19)
@@ -110,9 +119,24 @@ def _test():
 
 
 def test():
-    return dynamo.categories.create(
-        USER_ID, category_type="expense", categories=OPTIONS
-    )
+    def find_cats(lender: str):
+        cats = CATS[lender]
+        return cats["category"], cats["subcategory"]
+
+    _repayments = []
+
+    repayments = dynamo.repayment.get(user_id=USER_ID)
+    for repayment in repayments:
+        category, subcategory = find_cats(repayment.lender)
+        repayment.category = category
+        repayment.subcategory = subcategory
+        _repayments.append(repayment)
+
+        pprint(repayment.as_dict())
+
+    with Repayment.batch_write() as batch:
+        for repayment in _repayments:
+            batch.save(repayment)
 
 
 def main():
