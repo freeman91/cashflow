@@ -6,8 +6,9 @@ from datetime import date, datetime, timezone
 from pprint import pprint
 from time import sleep
 from uuid import uuid4
-from pydash import find, map_
 
+import inquirer
+from pydash import find, map_, uniq, sort_by
 
 import prompts
 from services import dynamo
@@ -29,11 +30,28 @@ ENV = os.getenv("ENV")
 REGION = os.getenv("REGION")
 APP_ID = os.getenv("APP_ID")
 USER_ID = os.getenv("REACT_APP_USER_ID")
+START = datetime(2018, 11, 1)
+END = datetime(2024, 2, 1)
+
+
+def test():
+    pass
+
+
+def main():
+    pass
+
 
 OPTIONS = [
     {
         "name": "housing",
-        "subcategories": ["mortgage", "maintenance", "renovations"],
+        "subcategories": [
+            "mortgage",
+            "rent",
+            "maintenance",
+            "renovations",
+            "administration",
+        ],
     },
     {
         "name": "utility",
@@ -54,7 +72,10 @@ OPTIONS = [
             "public",
             "ride-share",
             "gas",
+            "parking",
             "bicycle",
+            "administration",
+            "rental",
         ],
     },
     {
@@ -70,11 +91,18 @@ OPTIONS = [
     },
     {
         "name": "health",
-        "subcategories": ["medical", "dental", "vision", "fitness", "pet"],
+        "subcategories": [
+            "medical",
+            "dental",
+            "vision",
+            "fitness",
+            "pet",
+            "medication",
+        ],
     },
     {
         "name": "entertainment",
-        "subcategories": ["subscription", "event", "media", "theater"],
+        "subcategories": ["subscription", "activity", "event", "media", "theater"],
     },
     {
         "name": "project",
@@ -90,6 +118,7 @@ OPTIONS = [
             "electronics",
             "pet",
             "service",
+            "books",
         ],
     },
     {
@@ -98,46 +127,6 @@ OPTIONS = [
     },
     {
         "name": "other",
-        "subcategories": ["childcare", "student loans", "fun"],
+        "subcategories": ["childcare", "student loans", "fun", "administration"],
     },
 ]
-
-
-CATS = {
-    "NelNet": {"category": "other", "subcategory": "student loans"},
-    "Wells Fargo": {"category": "transportation", "subcategory": "auto payment"},
-    "Huntington": {"category": "housing", "subcategory": "mortgage"},
-    "MOHELA": {"category": "other", "subcategory": "student loans"},
-    "Great Lakes": {"category": "other", "subcategory": "student loans"},
-}
-
-
-def _test():
-    start = datetime(2021, 12, 16)
-    end = datetime(2021, 12, 19)
-    return dynamo.expense.search(user_id=USER_ID, start=start, end=end)
-
-
-def test():
-    def find_cats(lender: str):
-        cats = CATS[lender]
-        return cats["category"], cats["subcategory"]
-
-    _repayments = []
-
-    repayments = dynamo.repayment.get(user_id=USER_ID)
-    for repayment in repayments:
-        category, subcategory = find_cats(repayment.lender)
-        repayment.category = category
-        repayment.subcategory = subcategory
-        _repayments.append(repayment)
-
-        pprint(repayment.as_dict())
-
-    with Repayment.batch_write() as batch:
-        for repayment in _repayments:
-            batch.save(repayment)
-
-
-def main():
-    pass

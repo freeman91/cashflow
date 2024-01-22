@@ -6,7 +6,6 @@ import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
-import remove from 'lodash/remove';
 
 import { Cell, PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
 
@@ -84,12 +83,14 @@ export default function Spending({ month, setSelectedExpenses }) {
       const date = dayjs(repayment.date);
       return date.year() === month.year() && date.month() === month.month();
     });
-
-    let mortgagePayments = remove(repayments, (repayment) => {
-      return repayment.escrow && repayment.escrow !== 0;
+    repayments = map(repayments, (repayment) => {
+      const principal = get(repayment, 'principal', 0);
+      const interest = get(repayment, 'interest', 0);
+      const escrow = get(repayment, 'escrow', 0);
+      return { ...repayment, amount: principal + interest + escrow };
     });
 
-    let groupedExpenses = groupBy(expenses, 'category');
+    let groupedExpenses = groupBy([...expenses, ...repayments], 'category');
     let data = map(groupedExpenses, (expenses, group) => {
       return {
         name: group,
@@ -97,35 +98,6 @@ export default function Spending({ month, setSelectedExpenses }) {
         expenses,
       };
     });
-
-    const debtPayment = {
-      name: 'debt repayment',
-      value: reduce(
-        repayments,
-        (sum, repayment) => sum + repayment.principal + repayment.interest,
-        0
-      ),
-      expenses: repayments,
-    };
-
-    if (debtPayment.value > 0) {
-      data.push(debtPayment);
-    }
-
-    const mortgagePayment = {
-      name: 'mortgage',
-      value: reduce(
-        mortgagePayments,
-        (sum, repayment) =>
-          sum + repayment.principal + repayment.interest + repayment.escrow,
-        0
-      ),
-      expenses: mortgagePayments,
-    };
-
-    if (mortgagePayment.value > 0) {
-      data.push(mortgagePayment);
-    }
 
     if (data.length === 0) {
       data = [{ name: 'No expenses', value: 0.0000001 }];
