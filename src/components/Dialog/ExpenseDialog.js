@@ -72,7 +72,7 @@ function ExpenseDialog() {
   }, [expenseCategories]);
 
   useEffect(() => {
-    let _category = find(expenseCategories.categories, {
+    let _category = find(expenseCategories?.categories, {
       name: expense.category,
     });
 

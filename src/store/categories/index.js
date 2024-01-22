@@ -12,10 +12,8 @@ const getCategories = createAsyncThunk(
   async (user_id, { dispatch }) => {
     try {
       dispatch(showLoading());
-      const response = await getResourcesAPI(user_id, 'categories');
-      console.log('response: ', response);
       return {
-        data: response,
+        data: await getResourcesAPI(user_id, 'categories'),
       };
     } catch (err) {
       console.error(err);
