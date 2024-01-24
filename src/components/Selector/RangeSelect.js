@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import map from 'lodash/map';
 
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -62,12 +63,11 @@ export default function RangeSelect(props) {
   };
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: 'flex',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
-        height: '100%',
       }}
     >
       <IconButton onClick={handleClick} sx={{ mr: 1 }}>
@@ -101,7 +101,7 @@ export default function RangeSelect(props) {
           ))}
         </List>
       </Popover>
-    </div>
+    </Box>
   );
 }
 

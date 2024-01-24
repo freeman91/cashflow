@@ -30,12 +30,10 @@ ENV = os.getenv("ENV")
 REGION = os.getenv("REGION")
 APP_ID = os.getenv("APP_ID")
 USER_ID = os.getenv("REACT_APP_USER_ID")
-START = datetime(2018, 11, 1)
-END = datetime(2024, 2, 1)
 
 
-def test():
-    pass
+def update_expense_categories():
+    return dynamo.categories.get(user_id=USER_ID, category_type="expense")
 
 
 def main():

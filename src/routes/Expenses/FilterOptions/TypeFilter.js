@@ -1,39 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import includes from 'lodash/includes';
+import map from 'lodash/map';
 
-import Box from '@mui/material/Box';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 export default function TypeFilter(props) {
   const { typeFilter, setTypeFilter, options } = props;
 
+  const handleClick = (event) => {
+    if (includes(typeFilter, event.target.innerText)) {
+      setTypeFilter(
+        typeFilter.filter((item) => item !== event.target.innerText)
+      );
+    } else {
+      setTypeFilter([...typeFilter, event.target.innerText]);
+    }
+  };
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      <Typography variant='body1' sx={{ width: '50%' }} align='left'>
-        type
-      </Typography>
-      <Select
-        variant='standard'
-        sx={{ width: '50%' }}
-        value={typeFilter}
-        onChange={(e) => {
-          setTypeFilter(e.target.value);
-        }}
-      >
-        {options.map((option) => (
-          <MenuItem key={option} value={option}>
-            <ListItemText primary={option} />
-          </MenuItem>
-        ))}
-      </Select>
-    </Box>
+    <Stack direction='row' spacing={1}>
+      {map(options, (option) => {
+        const variant = includes(typeFilter, option) ? 'filled' : 'outlined';
+        return <Chip label={option} onClick={handleClick} variant={variant} />;
+      })}
+    </Stack>
   );
 }
