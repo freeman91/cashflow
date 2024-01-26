@@ -102,6 +102,7 @@ export default function Paycheck() {
                   (Number(formData.take_home) +
                     Number(formData.taxes) +
                     Number(formData.retirement) +
+                    Number(formData.benefits) +
                     Number(formData.other)) *
                     100
                 ) / 100
