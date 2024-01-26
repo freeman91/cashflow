@@ -168,7 +168,7 @@ function RepaymentDialog() {
       _total += Number(repayment.interest);
     }
 
-    if (!Number(repayment.escrow).isNaN) {
+    if (repayment.escrow && !Number(repayment.escrow).isNaN) {
       _total += Number(repayment.escrow);
     }
 
