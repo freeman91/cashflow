@@ -69,7 +69,7 @@ export default function Paycheck() {
       <Card
         raised
         sx={{
-          minWidth: 300,
+          width: '100%',
           maxWidth: theme.breakpoints.maxWidth,
           mt: 2,
         }}

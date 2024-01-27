@@ -17,13 +17,13 @@ import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import { FormControl, InputLabel, Select } from '@mui/material';
 
-export const ACCOUNT_TYPES = ['bank', 'brokerage', 'property', 'credit'];
+export const CATEGORIES = ['bank', 'brokerage', 'property', 'credit'];
 
 const defaultAccount = {
   account_id: '',
   name: '',
   url: '',
-  account_type: 'bank',
+  category: 'bank',
   _type: 'account',
   description: '',
 };
@@ -101,19 +101,19 @@ function AccountDialog() {
             value={account.url}
             onChange={handleChange}
           />
-          <ListItem key='account_type' disablePadding sx={{ pt: 2 }}>
+          <ListItem key='category' disablePadding sx={{ pt: 2 }}>
             <FormControl fullWidth>
-              <InputLabel id='account-type-label'>account type</InputLabel>
+              <InputLabel id='account-type-label'>category</InputLabel>
               <Select
                 labelId='account-type-label'
                 variant='standard'
                 fullWidth
-                value={account?.account_type}
+                value={account?.category}
                 onChange={(e) => {
-                  setAccount({ ...account, account_type: e.target.value });
+                  setAccount({ ...account, category: e.target.value });
                 }}
               >
-                {ACCOUNT_TYPES.map((type) => (
+                {CATEGORIES.map((type) => (
                   <MenuItem key={type} value={type}>
                     <ListItemText primary={type} />
                   </MenuItem>

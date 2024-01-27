@@ -8,7 +8,7 @@ from time import sleep
 from uuid import uuid4
 
 import inquirer
-from pydash import find, map_, uniq, sort_by
+from pydash import find, map_, uniq, sort_by, filter_
 
 import prompts
 from services import dynamo
@@ -34,6 +34,10 @@ USER_ID = os.getenv("REACT_APP_USER_ID")
 
 def update_expense_categories():
     return dynamo.categories.get(user_id=USER_ID, category_type="expense")
+
+
+def test():
+    pass
 
 
 def main():

@@ -7,11 +7,13 @@ import includes from 'lodash/includes';
 import sortBy from 'lodash/sortBy';
 import reduce from 'lodash/reduce';
 
-import { getExpenses } from '../../store/expenses';
-import NewTransactionButton from '../../components/NewTransactionButton';
-import { RANGE_OPTIONS } from '../../components/Selector/RangeSelect';
-import ExpenseTable from './ExpenseTable';
+import Box from '@mui/material/Box';
+
+import { getExpenses } from '../../../store/expenses';
+import NewTransactionButton from '../../../components/NewTransactionButton';
+import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
 import FilterOptions from './FilterOptions';
+import ExpensesTable from './ExpensesTable';
 
 export default function Expenses() {
   const dispatch = useDispatch();
@@ -160,7 +162,7 @@ export default function Expenses() {
   }, [filteredExpenses]);
 
   return (
-    <div style={{ marginTop: 8, width: '100%', maxWidth: 800 }}>
+    <Box sx={{ mt: 1 }}>
       <FilterOptions
         total={total}
         range={range}
@@ -180,8 +182,8 @@ export default function Expenses() {
         billFilter={billFilter}
         setBillFilter={setBillFilter}
       />
-      <ExpenseTable expenses={filteredExpenses} />
-      <NewTransactionButton transactionTypes={['expense', 'income', 'bill']} />
-    </div>
+      <ExpensesTable expenses={filteredExpenses} />
+      <NewTransactionButton transactionTypes={['expense', 'repayment']} />
+    </Box>
   );
 }

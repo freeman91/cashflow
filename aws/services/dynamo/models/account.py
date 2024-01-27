@@ -24,6 +24,7 @@ class Account(BaseModel):
 
     name = UnicodeAttribute()
     url = UnicodeAttribute(null=True)
+    category = UnicodeAttribute(null=True)
     account_type = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
 

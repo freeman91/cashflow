@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
+import get from 'lodash/get';
 import map from 'lodash/map';
 
 import Card from '@mui/material/Card';
@@ -13,11 +14,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { numberToCurrency } from '../../helpers/currency';
-import { openDialog } from '../../store/dialogs';
-import { CustomTableCell } from '../../components/Table/CustomTableCell';
+import { numberToCurrency } from '../../../helpers/currency';
+import { openDialog } from '../../../store/dialogs';
+import { CustomTableCell } from '../../../components/Table/CustomTableCell';
 
-export default function ExpenseTable(props) {
+export default function ExpensesTable(props) {
   const { expenses } = props;
   const dispatch = useDispatch();
 
@@ -33,7 +34,7 @@ export default function ExpenseTable(props) {
   };
 
   return (
-    <Card raised>
+    <Card raised sx={{ minWidth: 400 }}>
       <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
         <TableContainer
           sx={{
@@ -64,6 +65,19 @@ export default function ExpenseTable(props) {
             </TableHead>
             <TableBody>
               {map(expenses, (expense, idx) => {
+                const amount = (() => {
+                  if (expense._type === 'expense') {
+                    return expense.amount;
+                  } else if (expense._type === 'repayment') {
+                    return (
+                      get(expense, 'principal', 0) +
+                      get(expense, 'interest', 0) +
+                      get(expense, 'escrow', 0)
+                    );
+                  } else {
+                    return 0;
+                  }
+                })();
                 return (
                   <TableRow
                     key={expense.expense_id || expense.repayment_id}
@@ -77,11 +91,7 @@ export default function ExpenseTable(props) {
                       {expense._type}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(
-                        expense.amount
-                          ? expense.amount
-                          : expense.principal + expense.interest
-                      )}
+                      {numberToCurrency.format(amount)}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
                       {expense.category}

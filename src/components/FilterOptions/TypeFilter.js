@@ -22,7 +22,14 @@ export default function TypeFilter(props) {
     <Stack direction='row' spacing={1}>
       {map(options, (option) => {
         const variant = includes(typeFilter, option) ? 'filled' : 'outlined';
-        return <Chip label={option} onClick={handleClick} variant={variant} />;
+        return (
+          <Chip
+            key={option}
+            label={option}
+            onClick={handleClick}
+            variant={variant}
+          />
+        );
       })}
     </Stack>
   );

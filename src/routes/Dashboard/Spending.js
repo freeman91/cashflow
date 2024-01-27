@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
+import sortBy from 'lodash/sortBy';
 
 import { Cell, PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
 
@@ -103,7 +104,7 @@ export default function Spending({ month, setSelectedExpenses }) {
       data = [{ name: 'No expenses', value: 0.0000001 }];
     }
 
-    setChartData(data);
+    setChartData(sortBy(data, 'value').reverse());
   }, [month, allExpenses, allRepayments]);
 
   useEffect(() => {
@@ -165,12 +166,14 @@ export default function Spending({ month, setSelectedExpenses }) {
               onMouseEnter={onPieEnter}
               onClick={onPieClick}
             >
-              {chartData?.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={theme.chartColors[index % theme.chartColors.length]}
-                />
-              ))}
+              {chartData?.map((entry, index) => {
+                return (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={theme.chartColors[entry.name]}
+                  />
+                );
+              })}
             </Pie>
           </PieChart>
         </ResponsiveContainer>

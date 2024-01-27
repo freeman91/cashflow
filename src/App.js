@@ -15,24 +15,15 @@ import _package from '../package.json';
 import { history, store } from './store/createStore';
 
 import Layout from './routes/Layout';
-import Accounts from './routes/Accounts';
-import AccountDashboard from './routes/Accounts/AccountDashboard';
-import Assets from './routes/Assets';
-import AssetDashboard from './routes/Assets/AssetDashboard';
-import Calendar from './routes/Calendar/index.js';
 import Dashboard from './routes/Dashboard';
-import Debts from './routes/Debts';
-import DebtDashboard from './routes/Debts/DebtDashboard';
-import Expenses from './routes/Expenses';
-import Income from './routes/Income';
-import Networth from './routes/Networth';
+import Calendar from './routes/Calendar/index.js';
+import Year from './routes/Year/index.js';
+import Search from './routes/Search/index.js';
+
 import Settings from './routes/Settings';
 import './styles/index.css';
 import './styles/App.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
-import Year from './routes/Year/index.js';
-import Bills from './routes/Expenses/Bills.js';
-import Paycheck from './routes/Income/Paycheck.js';
 
 console.log('_package.version: ', _package.version);
 
@@ -49,19 +40,9 @@ const AppRoutes = () => {
     <Routes>
       <Route path='/app' element={<Layout />}>
         <Route path='/app' element={<Dashboard />} />
-        <Route path='/app/accounts' element={<Accounts />} />
-        <Route path='/app/accounts/:id' element={<AccountDashboard />} />
-        <Route path='/app/assets' element={<Assets />} />
-        <Route path='/app/assets/:id' element={<AssetDashboard />} />
-        <Route path='/app/debts' element={<Debts />} />
-        <Route path='/app/debts/:id' element={<DebtDashboard />} />
-        <Route path='/app/year' element={<Year />} />
         <Route path='/app/calendar' element={<Calendar />} />
-        <Route path='/app/expenses' element={<Expenses />} />
-        <Route path='/app/expenses/bills' element={<Bills />} />
-        <Route path='/app/incomes' element={<Income />} />
-        <Route path='/app/incomes/paycheck' element={<Paycheck />} />
-        <Route path='/app/networth' element={<Networth />} />
+        <Route path='/app/year' element={<Year />} />
+        <Route path='/app/search' element={<Search />} />
         <Route path='/app/settings' element={<Settings />} />
       </Route>
       <Route path='*'>

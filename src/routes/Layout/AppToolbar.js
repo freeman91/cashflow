@@ -18,20 +18,9 @@ function AppToolbar(props) {
   useEffect(() => {
     let _pageName = '';
     if (location.pathname.startsWith('/app')) _pageName = 'dashboard';
-    if (location.pathname.startsWith('/app/accounts')) _pageName = 'accounts';
-    if (location.pathname.startsWith('/app/assets')) _pageName = 'assets';
-    if (location.pathname.startsWith('/app/debts')) _pageName = 'debts';
     if (location.pathname.startsWith('/app/year')) _pageName = 'year';
     if (location.pathname.startsWith('/app/calendar')) _pageName = 'calendar';
-    if (location.pathname.startsWith('/app/expenses/bills'))
-      _pageName = 'bills';
-    else if (location.pathname.startsWith('/app/expenses'))
-      _pageName = 'expenses';
-    if (location.pathname.startsWith('/app/incomes/paycheck'))
-      _pageName = 'paycheck';
-    else if (location.pathname.startsWith('/app/incomes'))
-      _pageName = 'incomes';
-    if (location.pathname.startsWith('/app/networth')) _pageName = 'networth';
+    if (location.pathname.startsWith('/app/search')) _pageName = 'search';
     if (location.pathname.startsWith('/app/settings')) _pageName = 'settings';
     setPageName(_pageName);
   }, [location]);
