@@ -36,6 +36,7 @@ function DialogTitleOptions(props) {
             anchorEl={menuAnchor}
             open={Boolean(menuAnchor)}
             onClose={handleCloseMenu}
+            MenuListProps={{ disablePadding: true }}
           >
             {children}
           </Menu>

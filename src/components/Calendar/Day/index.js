@@ -93,7 +93,7 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
               />
             );
           })}
-          {map(sortBy(expenses, 'pending'), (expense) => {
+          {map(sortBy(expenses, ['pending', 'category']), (expense) => {
             return (
               <Record
                 key={
