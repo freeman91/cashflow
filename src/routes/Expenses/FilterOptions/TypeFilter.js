@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import includes from 'lodash/includes';
 import map from 'lodash/map';
 
