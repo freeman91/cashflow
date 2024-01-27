@@ -26,6 +26,7 @@ def _expenses(user_id: str):
             amount=float(body.get("amount")),
             vendor=body.get("vendor"),
             category=body.get("category"),
+            subcategory=body.get("subcategory"),
             pending=body.get("pending"),
             bill_id=body.get("bill_id"),
             description=body.get("description"),
@@ -66,6 +67,7 @@ def _expense(user_id: str, expense_id: str):
         for attr in [
             "vendor",
             "category",
+            "subcategory",
             "pending",
             "bill_id",
             "description",

@@ -24,10 +24,6 @@ CRYPTO_KEY = os.getenv("CRYPTO_COMPARE_KEY")
 cronjobs = Blueprint("cronjobs", __name__)
 
 
-def estimate_interest(debt_value: float, interest_rate: float):
-    return debt_value * (interest_rate / 12)
-
-
 def get_crypto_prices(tickers: list):
     """get current crypto prices"""
 
@@ -178,56 +174,13 @@ def generate_bill_expenses():
     """
 
     if request.method == "POST":
-        new_expenses = []
-        new_repayments = []
-
         _date = date.today() + timedelta(days=31)
+
+        print(_date)
 
         for bill in dynamo.bill.get():
             if _date.day == bill.day and _date.month in bill.months:
-                if not bill.debt_id:
-                    print("create pending expense")
-                    new_expenses.append(
-                        {
-                            "user_id": USER_ID,
-                            "amount": bill.amount,
-                            "_date": datetime(
-                                _date.year, _date.month, _date.day, 12, 0
-                            ),
-                            "category": bill.category,
-                            "subcategory": bill.subcategory,
-                            "vendor": bill.vendor,
-                            "pending": True,
-                            "bill_id": bill.bill_id,
-                        }
-                    )
-
-                else:
-                    print("create pending repayment")
-                    debt = dynamo.debt.get(user_id=USER_ID, debt_id=bill.debt_id)
-                    interest = estimate_interest(debt.amount, debt.interest_rate)
-                    new_repayment = {
-                        "user_id": USER_ID,
-                        "_date": datetime(_date.year, _date.month, _date.day, 12, 0),
-                        "principal": bill.amount - interest,
-                        "interest": interest,
-                        "lender": bill.vendor,
-                        "category": bill.category,
-                        "subcategory": bill.subcategory,
-                        "pending": True,
-                        "debt_id": bill.debt_id,
-                        "bill_id": bill.bill_id,
-                    }
-                    new_repayments.append(new_repayment)
-
-        for expense in new_expenses:
-            dynamo.expense.create(**expense)
-
-        for repayment in new_repayments:
-            dynamo.repayment.create(**repayment)
-
-        return success_result(
-            f"{len(new_expenses + new_repayments)} expenses generated for {_date}"
-        )
+                expense = bill.generate(year=_date.year, month=_date.month)
+                print(f"{expense.vendor} - {expense.category} - {expense.amount}")
 
     return failure_result()

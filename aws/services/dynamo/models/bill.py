@@ -8,12 +8,15 @@ from pynamodb.attributes import (
     UnicodeAttribute,
     UTCDateTimeAttribute,
 )
+
+from services import dynamo
 from .base import BaseModel
 
 TYPE = "bill"
 ENV: str = os.getenv("ENV")
 REGION: str = os.getenv("REGION")
 APP_ID: str = os.getenv("APP_ID")
+USER_ID = os.getenv("REACT_APP_USER_ID")
 
 
 class Bill(BaseModel):
@@ -37,3 +40,39 @@ class Bill(BaseModel):
 
     def __repr__(self):
         return f"Bill<{self.user_id}, {self.name}, {self.amount}>"
+
+    def generate(self, year: int, month: int):
+        if self.debt_id:
+            debt = dynamo.debt.get(user_id=USER_ID, debt_id=self.debt_id)
+            interest = debt.amount * (debt.interest_rate / 12)
+            principal = self.amount - interest
+            escrow = None
+
+            if self.subcategory == "mortgage":
+                escrow = 320.81
+                principal -= escrow
+
+            return dynamo.repayment.create(
+                user_id=debt.user_id,
+                _date=datetime(year, month, self.day, 12, 0),
+                principal=principal,
+                interest=interest,
+                escrow=escrow,
+                lender=self.vendor,
+                category=self.category,
+                subcategory=self.subcategory,
+                pending=True,
+                debt_id=self.debt_id,
+                bill_id=self.bill_id,
+            )
+
+        return dynamo.expense.create(
+            user_id=USER_ID,
+            amount=self.amount,
+            _date=datetime(year, month, self.day, 12, 0),
+            category=self.category,
+            subcategory=self.subcategory,
+            vendor=self.vendor,
+            pending=True,
+            bill_id=self.bill_id,
+        )

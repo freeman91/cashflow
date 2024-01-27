@@ -25,6 +25,8 @@ def create(
         interest=interest,
         escrow=escrow,
         lender=lender,
+        category=category,
+        subcategory=subcategory,
         debt_id=debt_id,
         bill_id=bill_id,
         pending=pending,
