@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
 import { useTheme } from '@mui/styles';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import PaidIcon from '@mui/icons-material/Paid';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
+// import MovingIcon from '@mui/icons-material/Moving';
 
 import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -30,9 +40,10 @@ function DrawerListItem({ page, icon, handlePageClick }) {
 }
 
 function AppDrawer(props) {
+  const { window, mobileOpen, setMobileOpen } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
-  const { window, mobileOpen, setMobileOpen } = props;
+  const [openSearch, setOpenSearch] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -100,11 +111,71 @@ function AppDrawer(props) {
           </ListItemButton>
         </ListItem>
 
-        <DrawerListItem
-          page='search'
-          icon={<SearchIcon />}
-          handlePageClick={() => handlePageClick('/search')}
-        />
+        <ListItemButton onClick={() => setOpenSearch(!openSearch)}>
+          <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>
+            <SearchIcon />
+          </ListItemIcon>
+          <ListItemText primary='search' />
+          {openSearch ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={openSearch} timeout='auto' unmountOnExit>
+          <List component='div' disablePadding>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              onClick={() => handlePageClick('/search/expenses')}
+            >
+              <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>
+                <ReceiptLongIcon />
+              </ListItemIcon>
+              <ListItemText primary='expenses' />
+            </ListItemButton>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              onClick={() => handlePageClick('/search/incomes')}
+            >
+              <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>
+                <AccountBalanceWalletIcon />
+              </ListItemIcon>
+              <ListItemText primary='incomes' />
+            </ListItemButton>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              onClick={() => handlePageClick('/search/bills')}
+            >
+              <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>
+                <ReceiptIcon />
+              </ListItemIcon>
+              <ListItemText primary='bills' />
+            </ListItemButton>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              onClick={() => handlePageClick('/search/accounts')}
+            >
+              <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>
+                <AccountBalanceIcon />
+              </ListItemIcon>
+              <ListItemText primary='accounts' />
+            </ListItemButton>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              onClick={() => handlePageClick('/search/assets')}
+            >
+              <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>
+                <PaidIcon />
+              </ListItemIcon>
+              <ListItemText primary='assets' />
+            </ListItemButton>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              onClick={() => handlePageClick('/search/debts')}
+            >
+              <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>
+                <CreditCardIcon />
+              </ListItemIcon>
+              <ListItemText primary='debts' />
+            </ListItemButton>
+          </List>
+        </Collapse>
 
         <DrawerListItem
           page='settings'

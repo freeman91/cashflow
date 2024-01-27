@@ -140,7 +140,7 @@ export default function Settings() {
               }
             />
           </Card>
-          <List sx={{ width: 200 }}>
+          <List sx={{ width: 300 }}>
             {options.map((option, idx) => {
               if (selectedOptionIdx === idx) {
                 return (

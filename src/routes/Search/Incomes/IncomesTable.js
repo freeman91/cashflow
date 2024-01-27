@@ -33,7 +33,7 @@ export default function IncomesTable(props) {
   };
 
   return (
-    <Card raised sx={{ minWidth: 400 }}>
+    <Card raised>
       <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
         <TableContainer
           sx={{

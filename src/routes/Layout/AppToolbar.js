@@ -21,6 +21,9 @@ function AppToolbar(props) {
     if (location.pathname.startsWith('/app/year')) _pageName = 'year';
     if (location.pathname.startsWith('/app/calendar')) _pageName = 'calendar';
     if (location.pathname.startsWith('/app/search')) _pageName = 'search';
+    if (location.pathname.startsWith('/app/accounts')) _pageName = 'accounts';
+    if (location.pathname.startsWith('/app/assets')) _pageName = 'assets';
+    if (location.pathname.startsWith('/app/debts')) _pageName = 'debts';
     if (location.pathname.startsWith('/app/settings')) _pageName = 'settings';
     setPageName(_pageName);
   }, [location]);

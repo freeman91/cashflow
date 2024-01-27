@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { push } from 'redux-first-history';
 import map from 'lodash/map';
 
 import Card from '@mui/material/Card';
@@ -11,7 +12,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { openDialog } from '../../../store/dialogs';
 import { CustomTableCell } from '../../../components/Table/CustomTableCell';
 
 export default function AccountsTable(props) {
@@ -19,18 +19,11 @@ export default function AccountsTable(props) {
   const dispatch = useDispatch();
 
   const handleClick = (account) => {
-    dispatch(
-      openDialog({
-        type: account._type,
-        mode: 'edit',
-        id: account.account_id,
-        attrs: account,
-      })
-    );
+    dispatch(push('/app/accounts/' + account.account_id));
   };
 
   return (
-    <Card raised sx={{ minWidth: 400 }}>
+    <Card raised>
       <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
         <TableContainer
           sx={{
@@ -41,7 +34,7 @@ export default function AccountsTable(props) {
           <Table size='small'>
             <TableHead>
               <TableRow key='headers'>
-                <TableCell>name</TableCell>
+                <TableCell sx={{ fontWeight: 800 }}>name</TableCell>
                 <TableCell sx={{ fontWeight: 800 }} align='right'>
                   category
                 </TableCell>

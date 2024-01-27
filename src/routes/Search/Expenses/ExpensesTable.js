@@ -34,7 +34,7 @@ export default function ExpensesTable(props) {
   };
 
   return (
-    <Card raised sx={{ minWidth: 400 }}>
+    <Card raised>
       <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
         <TableContainer
           sx={{
@@ -45,7 +45,7 @@ export default function ExpensesTable(props) {
           <Table size='small'>
             <TableHead>
               <TableRow key='headers'>
-                <TableCell>date</TableCell>
+                <TableCell sx={{ fontWeight: 800 }}>date</TableCell>
                 <TableCell sx={{ fontWeight: 800 }} align='right'>
                   type
                 </TableCell>

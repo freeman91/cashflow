@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'redux-first-history';
 import map from 'lodash/map';
 import find from 'lodash/find';
 
@@ -12,7 +13,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { openDialog } from '../../../store/dialogs';
 import { CustomTableCell } from '../../../components/Table/CustomTableCell';
 import { numberToCurrency } from '../../../helpers/currency';
 
@@ -22,18 +22,11 @@ export default function DebtsTable(props) {
   const dispatch = useDispatch();
 
   const handleClick = (debt) => {
-    dispatch(
-      openDialog({
-        type: debt._type,
-        mode: 'edit',
-        id: debt.debt_id,
-        attrs: debt,
-      })
-    );
+    dispatch(push('/app/debts/' + debt.debt_id));
   };
 
   return (
-    <Card raised sx={{ minWidth: 400 }}>
+    <Card raised>
       <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
         <TableContainer
           sx={{

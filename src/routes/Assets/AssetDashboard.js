@@ -5,7 +5,6 @@ import { goBack } from 'redux-first-history';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 
-import { useTheme } from '@mui/material';
 import BackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
@@ -22,7 +21,6 @@ import SalesTable from './SalesTable';
 
 export default function AssetDashboard() {
   const dispatch = useDispatch();
-  const theme = useTheme();
   const location = useLocation();
 
   const assets = useSelector((state) => state.assets.data);
@@ -75,7 +73,7 @@ export default function AssetDashboard() {
         alignItems='center'
         spacing={1}
         padding={2}
-        sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
+        sx={{ width: '100%', maxWidth: 700 }}
       >
         <div
           style={{

@@ -19,7 +19,9 @@ import Dashboard from './routes/Dashboard';
 import Calendar from './routes/Calendar/index.js';
 import Year from './routes/Year/index.js';
 import Search from './routes/Search/index.js';
-
+import AccountDashboard from './routes/Accounts/AccountDashboard.js';
+import AssetDashboard from './routes/Assets/AssetDashboard.js';
+import DebtDashboard from './routes/Debts/DebtDashboard.js';
 import Settings from './routes/Settings';
 import './styles/index.css';
 import './styles/App.css';
@@ -42,7 +44,10 @@ const AppRoutes = () => {
         <Route path='/app' element={<Dashboard />} />
         <Route path='/app/calendar' element={<Calendar />} />
         <Route path='/app/year' element={<Year />} />
-        <Route path='/app/search' element={<Search />} />
+        <Route path='/app/search/:type' element={<Search />} />
+        <Route path='/app/accounts/:id' element={<AccountDashboard />} />
+        <Route path='/app/assets/:id' element={<AssetDashboard />} />
+        <Route path='/app/debts/:id' element={<DebtDashboard />} />
         <Route path='/app/settings' element={<Settings />} />
       </Route>
       <Route path='*'>

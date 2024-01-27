@@ -29,7 +29,7 @@ export default function Accounts() {
   }, [allAccounts, categoryFilter]);
 
   return (
-    <Box sx={{ mt: 1 }}>
+    <Box sx={{ mt: 1, width: '100%', maxWidth: 700 }}>
       <FilterOptions
         categoryFilter={categoryFilter}
         setCategoryFilter={setCategoryFilter}

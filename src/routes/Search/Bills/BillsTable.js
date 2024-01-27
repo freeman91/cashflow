@@ -31,7 +31,7 @@ export default function BillsTable(props) {
   };
 
   return (
-    <Card raised sx={{ minWidth: 400 }}>
+    <Card raised>
       <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
         <TableContainer
           sx={{
@@ -42,7 +42,7 @@ export default function BillsTable(props) {
           <Table size='small'>
             <TableHead>
               <TableRow key='headers'>
-                <TableCell>day</TableCell>
+                <TableCell sx={{ fontWeight: 800 }}>day</TableCell>
                 <TableCell sx={{ fontWeight: 800 }} align='right'>
                   amount
                 </TableCell>

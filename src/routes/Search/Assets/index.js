@@ -54,7 +54,7 @@ export default function Assets() {
   }, [assets]);
 
   return (
-    <Box sx={{ mt: 1 }}>
+    <Box sx={{ mt: 1, width: '100%', maxWidth: 700 }}>
       <FilterOptions
         total={total}
         accountFilter={accountFilter}

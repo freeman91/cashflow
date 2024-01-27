@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'redux-first-history';
+import { goBack } from 'redux-first-history';
 
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
 
-import { useTheme } from '@mui/styles';
 import BackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
@@ -23,7 +22,6 @@ import NewTransactionButton from '../../components/NewTransactionButton';
 
 export default function AccountDashboard() {
   const dispatch = useDispatch();
-  const theme = useTheme();
   const location = useLocation();
   const [id, setId] = useState('');
 
@@ -69,7 +67,7 @@ export default function AccountDashboard() {
         alignItems='center'
         spacing={1}
         padding={2}
-        sx={{ minWidth: 550, maxWidth: theme.breakpoints.maxWidth }}
+        sx={{ width: '100%', maxWidth: 700 }}
       >
         <div
           style={{
@@ -79,10 +77,7 @@ export default function AccountDashboard() {
           }}
         >
           <Tooltip title='back' placement='left'>
-            <IconButton
-              color='primary'
-              onClick={() => dispatch(push('/app/accounts'))}
-            >
+            <IconButton color='primary' onClick={() => dispatch(goBack())}>
               <BackIcon />
             </IconButton>
           </Tooltip>

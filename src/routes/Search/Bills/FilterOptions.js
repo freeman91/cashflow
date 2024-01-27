@@ -107,7 +107,7 @@ export default function FilterOptions(props) {
                     disabled={false}
                     stringFilter={vendorFilter}
                     setStringFilter={setVendorFilter}
-                    options={expenseVendors}
+                    options={expenseVendors.options}
                   />
                 </ListItem>
               </List>
