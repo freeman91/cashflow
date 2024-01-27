@@ -44,16 +44,16 @@ export default function Expenses() {
     });
 
     // filter by pending
-    if (pendingFilter.length == 1) {
+    if (pendingFilter.length === 1) {
       _expenses = filter(_expenses, (expense) => {
         const filterString = pendingFilter[0];
-        if (filterString == 'paid') {
+        if (filterString === 'paid') {
           return !expense.pending;
-        } else if (filterString == 'pending') {
+        } else if (filterString === 'pending') {
           return expense.pending;
         }
       });
-    } else if (pendingFilter.length == 0) {
+    } else if (pendingFilter.length === 0) {
       _expenses = [];
     }
 
@@ -62,28 +62,28 @@ export default function Expenses() {
     // filter by category
     if (categoryFilter) {
       _expenses = filter(_expenses, (expense) => {
-        return expense.category == categoryFilter;
+        return expense.category === categoryFilter;
       });
     }
 
     // filter by subcategory
     if (subcategoryFilter) {
       _expenses = filter(_expenses, (expense) => {
-        return expense.subcategory == subcategoryFilter;
+        return expense.subcategory === subcategoryFilter;
       });
     }
 
     // filter by vendor
     if (vendorFilter) {
       _expenses = filter(_expenses, (expense) => {
-        return expense.vendor == vendorFilter;
+        return expense.vendor === vendorFilter;
       });
     }
 
     // filter by bill
     if (billFilter) {
       _expenses = filter(_expenses, (expense) => {
-        return expense.bill_id == billFilter.bill_id;
+        return expense.bill_id === billFilter.bill_id;
       });
     }
 
