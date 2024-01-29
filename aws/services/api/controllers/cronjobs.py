@@ -144,16 +144,14 @@ def networth_snapshot():
             year=_date.year, month=_date.month, user_id=USER_ID
         )
         if not networth:
-            nw = {
-                "user_id": USER_ID,
-                "date": _date,
-                "year": _date.year,
-                "month": _date.month,
-                "assets": assets,
-                "debts": debts,
-            }
-
-            dynamo.networth.create(nw)
+            dynamo.networth.create(
+                user_id=USER_ID,
+                _date=_date,
+                year=_date.year,
+                month=_date.month,
+                assets=assets,
+                debts=debts
+            )
             print("Networth created")
 
         else:
@@ -181,6 +179,6 @@ def generate_bill_expenses():
         for bill in dynamo.bill.get():
             if _date.day == bill.day and _date.month in bill.months:
                 expense = bill.generate(year=_date.year, month=_date.month)
-                print(f"{expense.vendor} - {expense.category} - {expense.amount}")
+                print(f"{bill.name} - {expense.category} - {expense.amount}")
 
     return failure_result()
