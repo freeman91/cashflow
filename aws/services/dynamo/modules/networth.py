@@ -1,3 +1,4 @@
+
 from datetime import datetime
 from uuid import uuid4
 
@@ -27,13 +28,17 @@ def create(
 
 def get(year: int = None, month: int = None, user_id: str = None) -> Networth:
     if year and month and user_id:
-        return next(
-            Networth.query(
-                user_id,
-                Networth.networth_id.startswith("networth"),
-                (Networth.year == year) & (Networth.month == month),
+
+        try:
+            return next(
+                Networth.query(
+                    user_id,
+                    Networth.networth_id.startswith("networth"),
+                    (Networth.year == year) & (Networth.month == month),
+                )
             )
-        )
+        except (StopIteration):
+            return None
 
     if user_id:
         return list(Networth.query(user_id))
