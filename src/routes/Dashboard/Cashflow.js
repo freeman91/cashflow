@@ -11,7 +11,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
@@ -112,19 +111,17 @@ export default function Cashflow({ month, setMonth }) {
           </IconButton>
           <DatePicker
             views={['year', 'month']}
-            maxDate={dayjs().add(1, 'month').toDate()}
-            minDate={dayjs('2018-01-01').toDate()}
+            maxDate={dayjs().add(1, 'month')}
+            minDate={dayjs('2018-01-01')}
             value={month}
             onChange={handleDateSelect}
-            renderInput={(params) => {
-              return (
-                <TextField
-                  variant='standard'
-                  margin='dense'
-                  sx={{ m: '0 !important' }}
-                  {...params}
-                />
-              );
+            slotProps={{
+              textField: {
+                variant: 'standard',
+                inputProps: {
+                  readOnly: true,
+                },
+              },
             }}
           />
           <IconButton

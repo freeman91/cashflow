@@ -1,7 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
 
-import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 
 export default function MonthYearSelector({ date, handleDateChange }) {
@@ -12,18 +11,17 @@ export default function MonthYearSelector({ date, handleDateChange }) {
   return (
     <DatePicker
       views={['year', 'month']}
-      maxDate={dayjs().add(1, 'month').toDate()}
-      minDate={dayjs('2018-01-01').toDate()}
+      maxDate={dayjs().add(1, 'month')}
+      minDate={dayjs('2018-01-01')}
       value={date}
       onChange={handleDateSelect}
-      renderInput={(params) => (
-        <TextField
-          variant='standard'
-          margin='normal'
-          {...params}
-          helperText={null}
-        />
-      )}
+      slotProps={{
+        textField: {
+          variant: 'standard',
+          // fullWidth: true,
+          margin: 'normal',
+        },
+      }}
     />
   );
 }

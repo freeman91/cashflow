@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
+import cloneDeep from 'lodash/cloneDeep';
 import map from 'lodash/map';
 
+import { useMediaQuery } from '@mui/material';
+import useTheme from '@mui/material/styles/useTheme';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Popover from '@mui/material/Popover';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const RANGE_OPTIONS = [
   {
@@ -46,12 +56,33 @@ const RANGE_OPTIONS = [
 
 export default function RangeSelect(props) {
   const { range, setRange } = props;
-
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [customRange, setCustomRange] = useState({});
 
   const handleOptionClick = (option) => {
-    setRange(option);
+    if (option.id === 5) {
+      setOpen(true);
+    } else {
+      setRange(option);
+    }
     handleClose();
+  };
+
+  const handleSelectDay = (day, attr) => {
+    if (attr === 'start') {
+      day = day?.startOf('day');
+    } else {
+      day = day?.endOf('day');
+    }
+
+    const _customRange = cloneDeep(customRange);
+    setCustomRange({
+      ..._customRange,
+      [attr]: day,
+    });
   };
 
   const handleClick = (e) => {
@@ -60,6 +91,18 @@ export default function RangeSelect(props) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSubmit = () => {
+    setRange({
+      id: 5,
+      label: `${dayjs(customRange.start).format('MMM D')} - ${dayjs(
+        customRange.end
+      ).format('MMM D')}`,
+      start: customRange.start,
+      end: customRange.end,
+    });
+    setOpen(false);
   };
 
   return (
@@ -101,6 +144,62 @@ export default function RangeSelect(props) {
           ))}
         </List>
       </Popover>
+      <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
+        <DialogTitle>Select Date Range</DialogTitle>
+        <DialogContent>
+          <Stack direction='row' spacing={2}>
+            <DatePicker
+              disableFuture
+              openTo='month'
+              views={['year', 'month', 'day']}
+              label='Start'
+              value={dayjs(customRange.start)}
+              onChange={(newValue) => {
+                handleSelectDay(newValue, 'start');
+              }}
+              slotProps={{
+                textField: {
+                  variant: 'standard',
+                  inputProps: {
+                    readOnly: true,
+                  },
+                },
+              }}
+            />
+            <DatePicker
+              disableFuture
+              openTo='month'
+              views={['year', 'month', 'day']}
+              label='End'
+              value={dayjs(customRange.end)}
+              minDate={dayjs(customRange.start)}
+              onChange={(newValue) => {
+                handleSelectDay(newValue, 'end');
+              }}
+              slotProps={{
+                textField: {
+                  variant: 'standard',
+                  inputProps: {
+                    readOnly: true,
+                  },
+                },
+              }}
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button
+            variant='contained'
+            onClick={handleSubmit}
+            disabled={
+              customRange.start === undefined || customRange.end === undefined
+            }
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

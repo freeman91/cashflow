@@ -12,7 +12,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
-import TextField from '@mui/material/TextField';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -64,13 +63,16 @@ function BorrowDialog() {
   useEffect(() => {
     if (id) {
       let _borrow = find(borrows, { borrow_id: id });
-      setBorrow(_borrow);
+      setBorrow({
+        ..._borrow,
+        date: dayjs(_borrow.date),
+      });
     }
   }, [id, borrows]);
 
   useEffect(() => {
     if (!isEmpty(attrs)) {
-      setBorrow((e) => ({ ...e, ...attrs }));
+      setBorrow((e) => ({ ...e, ...attrs, date: dayjs(attrs.date) }));
     }
   }, [attrs]);
 
@@ -127,8 +129,11 @@ function BorrowDialog() {
                   date: value.hour(12).minute(0).second(0),
                 });
               }}
-              renderInput={(params) => {
-                return <TextField {...params} fullWidth variant='standard' />;
+              slotProps={{
+                textField: {
+                  variant: 'standard',
+                  fullWidth: true,
+                },
               }}
             />
           </ListItem>

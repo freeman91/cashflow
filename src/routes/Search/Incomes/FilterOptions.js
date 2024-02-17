@@ -37,9 +37,13 @@ export default function FilterOptions(props) {
 
   const [expanded, setExpanded] = useState(false);
 
-  const incomeCategories = find(optionLists, {
-    option_type: 'income_category',
-  });
+  const incomeCategories = find(
+    optionLists,
+    {
+      option_type: 'income_category',
+    },
+    []
+  );
   const incomeSources = find(optionLists, { option_type: 'income_source' });
 
   return (

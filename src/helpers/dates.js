@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import { cloneDeep } from 'lodash';
 
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
@@ -11,7 +12,8 @@ const dateStringToDayJS = (dateString) => {
   return dayjs(dateString?.substring(0, 19) + dateString?.slice(-6));
 };
 
-const updateRange = (range, oldStart, oldEnd) => {
+const updateRange = (_range, oldStart, oldEnd) => {
+  let range = cloneDeep(_range);
   let newStart = range.start;
   let newEnd = range.end;
 

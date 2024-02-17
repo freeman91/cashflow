@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 import filter from 'lodash/filter';
@@ -10,14 +10,14 @@ import toLower from 'lodash/toLower';
 
 import Box from '@mui/material/Box';
 
-// import { getIncomes } from '../../../store/incomes';
+import { getIncomes } from '../../../store/incomes';
 import NewTransactionButton from '../../../components/NewTransactionButton';
 import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
 import IncomesTable from './IncomesTable';
 import FilterOptions from './FilterOptions';
 
 export default function Incomes() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
@@ -102,9 +102,9 @@ export default function Incomes() {
     sourceFilter,
   ]);
 
-  // useEffect(() => {
-  // dispatch(getIncomes({ range }));
-  // }, [range, dispatch]);
+  useEffect(() => {
+    dispatch(getIncomes({ range }));
+  }, [range, dispatch]);
 
   useEffect(() => {
     const _total = reduce(

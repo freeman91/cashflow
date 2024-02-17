@@ -167,12 +167,8 @@ export default function Spending({ month, setSelectedExpenses }) {
               onClick={onPieClick}
             >
               {chartData?.map((entry, index) => {
-                return (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={theme.chartColors[entry.name]}
-                  />
-                );
+                const color = theme.chartColors[entry.name] || '#0099FF';
+                return <Cell key={`cell-${index}`} fill={color} />;
               })}
             </Pie>
           </PieChart>

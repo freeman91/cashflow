@@ -12,7 +12,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
-import TextField from '@mui/material/TextField';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -66,13 +65,16 @@ function SaleDialog() {
   useEffect(() => {
     if (id) {
       let _sale = find(sales, { sale_id: id });
-      setSale(_sale);
+      setSale({
+        ..._sale,
+        date: dayjs(_sale.date),
+      });
     }
   }, [id, sales]);
 
   useEffect(() => {
     if (!isEmpty(attrs)) {
-      setSale((e) => ({ ...e, ...attrs }));
+      setSale((e) => ({ ...e, ...attrs, date: dayjs(attrs.date) }));
     }
   }, [attrs]);
 
@@ -137,8 +139,11 @@ function SaleDialog() {
                   date: value.hour(12).minute(0).second(0),
                 });
               }}
-              renderInput={(params) => {
-                return <TextField {...params} fullWidth variant='standard' />;
+              slotProps={{
+                textField: {
+                  variant: 'standard',
+                  fullWidth: true,
+                },
               }}
             />
           </ListItem>

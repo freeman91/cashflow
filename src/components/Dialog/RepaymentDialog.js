@@ -18,7 +18,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
-import TextField from '@mui/material/TextField';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -115,13 +114,16 @@ function RepaymentDialog() {
   useEffect(() => {
     if (id) {
       let _repayment = find(repayments, { repayment_id: id });
-      setRepayment(_repayment);
+      setRepayment({
+        ..._repayment,
+        date: dayjs(_repayment.date),
+      });
     }
   }, [id, repayments]);
 
   useEffect(() => {
     if (!isEmpty(attrs)) {
-      setRepayment((e) => ({ ...e, ...attrs }));
+      setRepayment((e) => ({ ...e, ...attrs, date: dayjs(attrs.date) }));
     }
   }, [attrs]);
 
@@ -199,15 +201,18 @@ function RepaymentDialog() {
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
               label='date'
-              value={repayment.date}
+              value={repayment?.date}
               onChange={(value) => {
                 setRepayment({
                   ...repayment,
                   date: value.hour(12).minute(0).second(0),
                 });
               }}
-              renderInput={(params) => {
-                return <TextField {...params} fullWidth variant='standard' />;
+              slotProps={{
+                textField: {
+                  variant: 'standard',
+                  fullWidth: true,
+                },
               }}
             />
           </ListItem>

@@ -17,7 +17,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
-import TextField from '@mui/material/TextField';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -82,13 +81,16 @@ function ExpenseDialog() {
   useEffect(() => {
     if (id) {
       let _expense = find(expenses, { expense_id: id });
-      setExpense(_expense);
+      setExpense({
+        ..._expense,
+        date: dayjs(_expense.date),
+      });
     }
   }, [id, expenses]);
 
   useEffect(() => {
     if (!isEmpty(attrs)) {
-      setExpense((e) => ({ ...e, ...attrs }));
+      setExpense((e) => ({ ...e, ...attrs, date: dayjs(attrs.date) }));
     }
   }, [attrs]);
 
@@ -144,8 +146,11 @@ function ExpenseDialog() {
                   date: value.hour(12).minute(0).second(0),
                 });
               }}
-              renderInput={(params) => {
-                return <TextField {...params} fullWidth variant='standard' />;
+              slotProps={{
+                textField: {
+                  variant: 'standard',
+                  fullWidth: true,
+                },
               }}
             />
           </ListItem>

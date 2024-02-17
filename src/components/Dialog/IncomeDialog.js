@@ -13,7 +13,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
-import TextField from '@mui/material/TextField';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -40,20 +39,27 @@ function IncomeDialog() {
   const [income, setIncome] = useState(defaultIncome);
 
   const incomeSources = find(optionLists, { option_type: 'income_source' });
-  const incomeCategories = find(optionLists, {
-    option_type: 'income_category',
-  });
+  const incomeCategories = find(
+    optionLists,
+    {
+      option_type: 'income_category',
+    },
+    []
+  );
 
   useEffect(() => {
     if (id) {
       let _income = find(incomes, { income_id: id });
-      setIncome(_income);
+      setIncome({
+        ..._income,
+        date: dayjs(_income.date),
+      });
     }
   }, [id, incomes]);
 
   useEffect(() => {
     if (!isEmpty(attrs)) {
-      setIncome((e) => ({ ...e, ...attrs }));
+      setIncome((e) => ({ ...e, ...attrs, date: dayjs(attrs.date) }));
     }
   }, [attrs]);
 
@@ -109,8 +115,11 @@ function IncomeDialog() {
                   date: value.hour(12).minute(0).second(0),
                 });
               }}
-              renderInput={(params) => {
-                return <TextField {...params} fullWidth variant='standard' />;
+              slotProps={{
+                textField: {
+                  variant: 'standard',
+                  fullWidth: true,
+                },
               }}
             />
           </ListItem>

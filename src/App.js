@@ -63,7 +63,7 @@ function App() {
       <ReduxProvider store={store}>
         <HistoryRouter history={history}>
           <ThemeProvider theme={muiTheme}>
-            <LocalizationProvider dateAdapter={AdapterDayjs} openTo='month'>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ReduxLoader />
               <ReduxToastr
                 timeOut={10000}
