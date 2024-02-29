@@ -49,7 +49,11 @@ function NewTransactionButton(props) {
           vertical: 'top',
           horizontal: 'right',
         }}
-        PaperProps={{ sx: { backgroundImage: 'none' } }}
+        slotProps={{
+          paper: {
+            sx: { backgroundImage: 'none', backgroundColor: 'transparent' },
+          },
+        }}
       >
         <Stack
           direction='column'

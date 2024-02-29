@@ -16,7 +16,7 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import PaidIcon from '@mui/icons-material/Paid';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
-// import MovingIcon from '@mui/icons-material/Moving';
+import MovingIcon from '@mui/icons-material/Moving';
 
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -110,6 +110,13 @@ function AppDrawer(props) {
             </ListItemIcon>
           </ListItemButton>
         </ListItem>
+
+        <ListItemButton onClick={() => handlePageClick('/networth')}>
+          <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>
+            <MovingIcon />
+          </ListItemIcon>
+          <ListItemText primary='net worth' />
+        </ListItemButton>
 
         <ListItemButton onClick={() => setOpenSearch(!openSearch)}>
           <ListItemIcon sx={{ '&.MuiListItemIcon-root': { minWidth: 40 } }}>

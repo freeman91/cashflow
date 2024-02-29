@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 
-export default function NetWorth() {
+export default function NetworthCard() {
   const theme = useTheme();
   const allAssets = useSelector((state) => state.assets.data);
   const allDebts = useSelector((state) => state.debts.data);

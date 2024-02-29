@@ -8,7 +8,7 @@ import NewTransactionButton from '../../components/NewTransactionButton';
 import Cashflow from './Cashflow';
 import Spending from './Spending';
 import Expenses from './Expenses';
-import NetWorth from './NetWorth';
+import NetworthCard from './NetworthCard';
 
 function DashboardCardHeader({ title }) {
   return (
@@ -51,7 +51,7 @@ export default function Dashboard() {
             <Cashflow month={month} setMonth={setMonth} />
           </Grid>
           <Grid item xs={12}>
-            <NetWorth />
+            <NetworthCard />
           </Grid>
         </Grid>
 

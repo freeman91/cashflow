@@ -18,6 +18,7 @@ import Layout from './routes/Layout';
 import Dashboard from './routes/Dashboard';
 import Calendar from './routes/Calendar/index.js';
 import Year from './routes/Year/index.js';
+import Networth from './routes/Networth/index.js';
 import Search from './routes/Search/index.js';
 import AccountDashboard from './routes/Accounts/AccountDashboard.js';
 import AssetDashboard from './routes/Assets/AssetDashboard.js';
@@ -44,6 +45,7 @@ const AppRoutes = () => {
         <Route path='/app' element={<Dashboard />} />
         <Route path='/app/calendar' element={<Calendar />} />
         <Route path='/app/year' element={<Year />} />
+        <Route path='/app/networth' element={<Networth />} />
         <Route path='/app/search/:type' element={<Search />} />
         <Route path='/app/accounts/:id' element={<AccountDashboard />} />
         <Route path='/app/assets/:id' element={<AssetDashboard />} />

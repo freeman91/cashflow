@@ -113,8 +113,10 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
           vertical: 'top',
           horizontal: 'right',
         }}
-        PaperProps={{
-          sx: { backgroundImage: 'none', backgroundColor: 'transparent' },
+        slotProps={{
+          paper: {
+            sx: { backgroundImage: 'none', backgroundColor: 'transparent' },
+          },
         }}
       >
         <Stack
@@ -123,7 +125,7 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
           alignItems='center'
           spacing={1}
         >
-          {['expense', 'income'].map((type) => (
+          {['expense', 'income', 'paycheck'].map((type) => (
             <Button
               key={type}
               variant='contained'
