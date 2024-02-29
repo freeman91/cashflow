@@ -149,7 +149,6 @@ export default function RangeSelect(props) {
         <DialogContent>
           <Stack direction='row' spacing={2}>
             <DatePicker
-              disableFuture
               openTo='month'
               views={['year', 'month', 'day']}
               label='Start'
@@ -167,7 +166,6 @@ export default function RangeSelect(props) {
               }}
             />
             <DatePicker
-              disableFuture
               openTo='month'
               views={['year', 'month', 'day']}
               label='End'

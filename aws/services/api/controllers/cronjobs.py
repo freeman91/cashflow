@@ -179,6 +179,6 @@ def generate_bill_expenses():
         for bill in dynamo.bill.get():
             if _date.day == bill.day and _date.month in bill.months:
                 expense = bill.generate(year=_date.year, month=_date.month)
-                print(f"{bill.name} - {expense.category} - {expense.amount}")
+                print(f"{bill.name} - {expense}")
 
     return failure_result()
