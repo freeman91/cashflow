@@ -34,7 +34,7 @@ export default function ExpensesTable(props) {
   };
 
   return (
-    <Card raised>
+    <Card raised sx={{ mb: 1 }}>
       <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
         <TableContainer
           sx={{

@@ -177,3 +177,5 @@ export default function Spending({ month, setSelectedExpenses }) {
     </Card>
   );
 }
+
+export { renderActiveShape };

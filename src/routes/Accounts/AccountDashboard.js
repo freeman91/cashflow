@@ -6,6 +6,8 @@ import { goBack } from 'redux-first-history';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';
+import reduce from 'lodash/reduce';
+import sortBy from 'lodash/sortBy';
 
 import BackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,6 +21,7 @@ import { openDialog } from '../../store/dialogs';
 import AssetCard from './AssetCard';
 import DebtCard from './DebtCard';
 import NewTransactionButton from '../../components/NewTransactionButton';
+import { numberToCurrency } from '../../helpers/currency';
 
 export default function AccountDashboard() {
   const dispatch = useDispatch();
@@ -37,15 +40,21 @@ export default function AccountDashboard() {
   const allDebts = useSelector((state) => state.debts.data);
 
   const [assets, setAssets] = useState([]);
+  const [assetSum, setAssetSum] = useState(0);
   const [debts, setDebts] = useState([]);
+  const [debtSum, setDebtSum] = useState(0);
   const [account, setAccount] = useState({});
 
   useEffect(() => {
-    setAssets(filter(allAssets, { account_id: id }));
+    const accountAssets = filter(allAssets, { account_id: id });
+    setAssetSum(reduce(accountAssets, (acc, asset) => acc + asset.value, 0));
+    setAssets(sortBy(accountAssets, 'value').reverse());
   }, [allAssets, id]);
 
   useEffect(() => {
-    setDebts(filter(allDebts, { account_id: id }));
+    const accountDebts = filter(allDebts, { account_id: id });
+    setDebtSum(reduce(accountDebts, (acc, debt) => acc + debt.amount, 0));
+    setDebts(sortBy(accountDebts, 'amount'));
   }, [allDebts, id]);
 
   useEffect(() => {
@@ -102,25 +111,76 @@ export default function AccountDashboard() {
           </Tooltip>
         </div>
 
-        {assets.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
-        {assets.length > 0 && (
-          <Typography sx={{ width: '100%' }} align='left'>
-            assets
-          </Typography>
-        )}
-        {assets.map((asset) => (
-          <AssetCard key={asset.asset_id} asset={asset} />
-        ))}
+        <Typography
+          sx={{ width: '100%', mt: '0 !important', fontWeight: 800 }}
+          align='center'
+        >
+          {numberToCurrency.format(assetSum - debtSum)}
+        </Typography>
 
-        {debts.length > 0 && <Divider flexItem sx={{ pt: 1, pb: 1 }} />}
-        {debts.length > 0 && (
-          <Typography sx={{ width: '100%' }} align='left'>
-            debts
-          </Typography>
+        {assets.length > 0 && (
+          <>
+            <Divider flexItem sx={{ pt: 1, pb: 1, mt: '0 !important' }} />
+            {debts.length > 0 ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}
+              >
+                <Typography sx={{ width: '100%' }} align='left'>
+                  assets
+                </Typography>
+                <Typography
+                  sx={{ width: '100%', fontWeight: 800 }}
+                  align='center'
+                >
+                  {numberToCurrency.format(assetSum)}
+                </Typography>
+              </div>
+            ) : (
+              <Typography sx={{ width: '100%' }} align='left'>
+                assets
+              </Typography>
+            )}
+            {assets.map((asset) => (
+              <AssetCard key={asset.asset_id} asset={asset} />
+            ))}
+          </>
         )}
-        {debts.map((debt) => (
-          <DebtCard key={debt.debt_id} debt={debt} />
-        ))}
+
+        {debts.length > 0 && (
+          <>
+            <Divider flexItem sx={{ pt: 1, pb: 1, mt: '0 !important' }} />
+            {assets.length > 0 ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}
+              >
+                <Typography sx={{ width: '100%' }} align='left'>
+                  debts
+                </Typography>
+                <Typography
+                  sx={{ width: '100%', fontWeight: 800 }}
+                  align='center'
+                >
+                  {numberToCurrency.format(debtSum)}
+                </Typography>
+              </div>
+            ) : (
+              <Typography sx={{ width: '100%' }} align='left'>
+                debts
+              </Typography>
+            )}
+            {debts.map((debt) => (
+              <DebtCard key={debt.debt_id} debt={debt} />
+            ))}
+          </>
+        )}
       </Stack>
       <NewTransactionButton transactionTypes={['account', 'asset', 'debt']} />
     </>

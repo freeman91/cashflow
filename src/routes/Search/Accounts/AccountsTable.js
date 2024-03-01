@@ -7,6 +7,7 @@ import sortBy from 'lodash/sortBy';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,6 +17,21 @@ import TableRow from '@mui/material/TableRow';
 
 import { CustomTableCell } from '../../../components/Table/CustomTableCell';
 import { numberToCurrency } from '../../../helpers/currency';
+
+function parseUrl(url) {
+  // Regular expression to match domain and subdomain
+  let domainRegex =
+    /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?]+)(?:[^/\n?]*)(?:\/([^?\n]*))?/;
+  // Extract domain and subdomain
+  let matches = url.match(domainRegex);
+  if (matches) {
+    let domain = matches[1];
+
+    return domain;
+  } else {
+    return '';
+  }
+}
 
 export default function AccountsTable(props) {
   const { accounts } = props;
@@ -44,8 +60,10 @@ export default function AccountsTable(props) {
     setTableData(sortBy(_accounts, 'value').reverse());
   }, [accounts, allAssets, allDebts]);
 
-  const handleClick = (account) => {
-    dispatch(push('/app/accounts/' + account.account_id));
+  const handleClick = (e, account) => {
+    if (e.target.localName !== 'button') {
+      dispatch(push('/app/accounts/' + account.account_id));
+    }
   };
 
   return (
@@ -76,7 +94,7 @@ export default function AccountsTable(props) {
                   <TableRow
                     key={account.account_id}
                     hover={true}
-                    onClick={() => handleClick(account)}
+                    onClick={(e) => handleClick(e, account)}
                   >
                     <CustomTableCell idx={idx} column='day'>
                       {account.name}
@@ -88,7 +106,13 @@ export default function AccountsTable(props) {
                       {account.category}
                     </CustomTableCell>
                     <CustomTableCell idx={idx} align='right'>
-                      {/* {account.url} */}
+                      <Link
+                        component='button'
+                        variant='body2'
+                        onClick={() => window.open(account.url, '_blank')}
+                      >
+                        {parseUrl(account.url)}
+                      </Link>
                     </CustomTableCell>
                   </TableRow>
                 );
