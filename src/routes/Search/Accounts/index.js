@@ -12,13 +12,12 @@ import AccountsTable from './AccountsTable';
 export default function Accounts() {
   const allAccounts = useSelector((state) => state.accounts.data);
   const [accounts, setAccounts] = useState([]);
-  const [categoryFilter, setCategoryFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
 
   useEffect(() => {
     let _accounts = [...allAccounts];
 
-    // filter by category
-    if (categoryFilter) {
+    if (categoryFilter !== 'all') {
       _accounts = filter(_accounts, (account) => {
         return account.category === categoryFilter;
       });

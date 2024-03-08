@@ -142,13 +142,13 @@ export default function ExpensesAnalysis(props) {
         {expanded && (
           <>
             <Typography align='left'>
-              Principal: {numberToCurrency.format(principalSum)}
+              principal: {numberToCurrency.format(principalSum)}
             </Typography>
             <Typography align='left'>
-              Interest: {numberToCurrency.format(interestSum)}
+              interest: {numberToCurrency.format(interestSum)}
             </Typography>
             <Typography align='left'>
-              Escrow: {numberToCurrency.format(escrowSum)}
+              escrow: {numberToCurrency.format(escrowSum)}
             </Typography>
             <ResponsiveContainer width='100%' height='100%'>
               <PieChart width={300} height={300}>

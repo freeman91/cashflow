@@ -8,7 +8,7 @@ import StringFilter from '../../../components/FilterOptions/StringFilter';
 
 export default function FilterOptions(props) {
   const { categoryFilter, setCategoryFilter } = props;
-  const accountCategories = ['bank', 'property', 'credit', 'brokerage'];
+  const accountCategories = ['all', 'bank', 'property', 'credit', 'brokerage'];
 
   return (
     <Card raised sx={{ mb: 1 }}>

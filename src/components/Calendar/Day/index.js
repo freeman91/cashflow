@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { map, sortBy } from 'lodash';
+import { cloneDeep, map, sortBy } from 'lodash';
 import dayjs from 'dayjs';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -24,6 +24,14 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
   let isToday = dayjs().isSame(date, 'day');
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [dayExpenses, setDayExpenses] = useState([]);
+
+  useEffect(() => {
+    let _dayExpenses = cloneDeep(expenses);
+    _dayExpenses = sortBy(_dayExpenses, 'pending');
+    _dayExpenses = sortBy(_dayExpenses, 'amount').reverse();
+    setDayExpenses(_dayExpenses);
+  }, [expenses]);
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -93,7 +101,7 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
               />
             );
           })}
-          {map(sortBy(expenses, ['pending', 'category']), (expense) => {
+          {map(dayExpenses, (expense) => {
             return (
               <Record
                 key={

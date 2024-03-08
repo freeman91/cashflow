@@ -114,6 +114,8 @@ function ExpenseDialog() {
   const handleClose = () => {
     dispatch(closeDialog('expense'));
     setExpense(defaultExpense);
+    setCategories([]);
+    setSubcategories([]);
   };
 
   return (
