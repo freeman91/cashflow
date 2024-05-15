@@ -5,9 +5,6 @@ import sortBy from 'lodash/sortBy';
 import reduce from 'lodash/reduce';
 import dayjs from 'dayjs';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -57,64 +54,24 @@ export default function SelectedMonth(props) {
   if (!selected.id) return null;
 
   return (
-    <Card raised sx={{ width: '100%' }}>
-      <CardHeader
-        title={
-          <Stack direction='row' sx={{ justifyContent: 'space-around' }}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-                width: '25%',
-              }}
-            >
-              <Typography>assets</Typography>
-              <Typography sx={{ fontWeight: 800 }}>
-                {numberToCurrency.format(assetSum)}
-              </Typography>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-                width: '25%',
-              }}
-            >
-              <Typography>
-                {dayjs(selected.timestamp).format('MMMM YYYY')}
-              </Typography>
-              <Typography sx={{ fontWeight: 800 }}>
-                {numberToCurrency.format(assetSum - debtSum)}
-              </Typography>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-                width: '25%',
-              }}
-            >
-              <Typography>debts</Typography>
-              <Typography sx={{ fontWeight: 800 }}>
-                {numberToCurrency.format(debtSum)}
-              </Typography>
-            </div>
-          </Stack>
-        }
-        disableTypography
-        sx={{ pb: 0 }}
-      />
-      <CardContent sx={{ pt: 1, pb: '8px !important' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <MonthTable title='assets' items={assets} />
-          <MonthTable title='debts' items={debts} />
-        </div>
-      </CardContent>
-    </Card>
+    <>
+      <Stack
+        width='100%'
+        direction='row'
+        justifyContent='center'
+        alignItems='center'
+      >
+        <Typography variant='h5'>
+          {dayjs(selected.timestamp).format('MMMM YYYY')}
+        </Typography>
+        <Typography variant='h5' sx={{ fontWeight: 800, ml: 4 }}>
+          {numberToCurrency.format(assetSum - debtSum)}
+        </Typography>
+      </Stack>
+      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <MonthTable title='assets' items={assets} total={assetSum} />
+        <MonthTable title='debts' items={debts} total={debtSum} />
+      </div>
+    </>
   );
 }

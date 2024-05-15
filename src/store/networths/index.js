@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import sortBy from 'lodash/sortBy';
 
 import { getResourcesAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
@@ -10,8 +11,9 @@ const getNetworths = createAsyncThunk(
   async (user_id, { dispatch }) => {
     try {
       dispatch(showLoading());
+      let networths = await getResourcesAPI(user_id, 'networths');
       return {
-        data: await getResourcesAPI(user_id, 'networths'),
+        data: sortBy(networths, 'date'),
       };
     } catch (err) {
       console.error(err);
