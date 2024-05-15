@@ -109,7 +109,8 @@ export default function Spending({ month, setSelectedExpenses }) {
 
   useEffect(() => {
     const payload = chartData[activeIndex];
-    setSelectedExpenses(get(payload, 'expenses', []));
+    let categoryExpenses = get(payload, 'expenses', []);
+    setSelectedExpenses(sortBy(categoryExpenses, 'date'));
   }, [activeIndex, chartData, setSelectedExpenses]);
 
   useEffect(() => {

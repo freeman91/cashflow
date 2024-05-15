@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import map from 'lodash/map';
@@ -26,6 +26,10 @@ export default function Expenses(props) {
   const { expenses } = props;
   const dispatch = useDispatch();
   const [page, setPage] = React.useState(0);
+
+  useEffect(() => {
+    setPage(0);
+  }, [expenses]);
 
   const handleChangePage = (e, newPage) => {
     setPage(newPage);

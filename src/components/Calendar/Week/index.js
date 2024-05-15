@@ -61,7 +61,6 @@ export default function ThisWeek() {
         justifyContent='space-between'
         alignItems='center'
         spacing={1}
-        pb={1}
         width='100%'
       >
         {map(days, (day) => {
