@@ -113,13 +113,13 @@ export default function RangeSelect(props) {
         alignItems: 'center',
       }}
     >
-      <IconButton onClick={handleClick} sx={{ mr: 1 }}>
+      <IconButton onClick={handleClick} sx={{ mr: 2 }}>
         <CalendarMonthIcon />
       </IconButton>
       <Typography
         variant='body1'
         onClick={handleClick}
-        sx={{ cursor: 'pointer' }}
+        sx={{ cursor: 'pointer', pt: '4px' }}
       >
         {range.label}
       </Typography>
@@ -153,9 +153,7 @@ export default function RangeSelect(props) {
               views={['year', 'month', 'day']}
               label='Start'
               value={dayjs(customRange.start)}
-              onChange={(newValue) => {
-                handleSelectDay(newValue, 'start');
-              }}
+              onChange={(newValue) => handleSelectDay(newValue, 'start')}
               slotProps={{
                 textField: {
                   variant: 'standard',

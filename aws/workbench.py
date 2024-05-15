@@ -32,7 +32,7 @@ APP_ID = os.getenv("APP_ID")
 USER_ID = os.getenv("REACT_APP_USER_ID")
 
 
-def update_expense_categories():
+def get_expense_categories():
     return dynamo.categories.get(user_id=USER_ID, category_type="expense")
 
 
@@ -121,6 +121,7 @@ OPTIONS = [
             "pet",
             "service",
             "books",
+            "garden",
         ],
     },
     {

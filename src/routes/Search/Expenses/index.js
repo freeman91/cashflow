@@ -14,7 +14,6 @@ import NewTransactionButton from '../../../components/NewTransactionButton';
 import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
 import FilterOptions from './FilterOptions';
 import ExpensesTable from './ExpensesTable';
-import ExpensesAnalysis from './Analysis';
 
 export default function Expenses() {
   const dispatch = useDispatch();
@@ -166,6 +165,7 @@ export default function Expenses() {
     <Box sx={{ mt: 1, width: '100%', maxWidth: 700 }}>
       <FilterOptions
         total={total}
+        expenses={filteredExpenses}
         range={range}
         setRange={setRange}
         typeFilter={typeFilter}
@@ -183,7 +183,6 @@ export default function Expenses() {
         billFilter={billFilter}
         setBillFilter={setBillFilter}
       />
-      <ExpensesAnalysis expenses={filteredExpenses} />
       <ExpensesTable expenses={filteredExpenses} />
       <NewTransactionButton transactionTypes={['expense', 'repayment']} />
     </Box>
