@@ -49,13 +49,11 @@ export default function Record({ data }) {
   useEffect(() => {
     let color = theme.palette.red[600];
     if (data._type === 'expense' || data._type === 'repayment') {
-      if (!get(data, 'pending', false)) {
-        color = [numberToCurrency.format(data.amount), theme.palette.red[600]];
-      } else {
-        color = [numberToCurrency.format(data.amount), theme.palette.red[300]];
+      if (get(data, 'pending', false)) {
+        color = theme.palette.red[300];
       }
     } else {
-      color = [numberToCurrency.format(data.amount), theme.palette.green[500]];
+      color = theme.palette.green[500];
     }
     setColor(color);
   }, [data, theme.palette]);
