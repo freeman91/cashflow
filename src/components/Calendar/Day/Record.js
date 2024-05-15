@@ -128,7 +128,7 @@ export default function Record({ data }) {
         mr='.25rem'
         ml='.25rem'
       >
-        <Typography variant='body2' sx={{ lineHeight: '1rem' }}>
+        <Typography align='center' variant='body2' sx={{ lineHeight: '1rem' }}>
           {numberToCurrency.format(value)}
         </Typography>
       </Box>

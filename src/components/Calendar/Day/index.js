@@ -56,11 +56,11 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
 
   return (
     <Paper
-      variant='outlined'
       sx={{
         width: '8rem',
         height: '10rem',
-        backgroundColor: theme.palette.grey[900],
+        backgroundColor: theme.palette.background.raised,
+        backgroundImage: 'unset',
         opacity: sameMonth ? 1 : 0.5,
       }}
     >
@@ -77,11 +77,11 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
         <AddIcon />
       </IconButton>
       <Typography
+        align='center'
         sx={{
           float: 'right',
           width: '1.5rem',
           mt: '.2rem',
-
           mr: '.5rem',
           bgcolor: isToday
             ? theme.palette.red[800]

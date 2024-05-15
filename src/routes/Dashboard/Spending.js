@@ -143,7 +143,7 @@ export default function Spending({ month, setSelectedExpenses }) {
           align: 'left',
           sx: { fontWeight: 800 },
         }}
-        sx={{ pb: 0, pt: 1 }}
+        sx={{ pb: 0, pt: '4px' }}
         action={
           <IconButton>
             <MoreVertIcon />

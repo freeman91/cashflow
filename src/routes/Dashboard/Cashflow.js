@@ -92,14 +92,9 @@ export default function Cashflow({ month, setMonth }) {
   };
 
   return (
-    <Card raised>
+    <Card raised sx={{ height: '100%' }}>
       <CardContent sx={{ pt: 1, pb: '4px !important' }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-around',
-          }}
-        >
+        <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
           <IconButton
             sx={{ height: 30, width: 30 }}
             onClick={() => {
@@ -179,66 +174,6 @@ export default function Cashflow({ month, setMonth }) {
             {numberToCurrency.format(monthIncomeSum - monthExpenseSum)}
           </Typography>
         </Box>
-
-        {/* <Divider sx={{ mt: 2, mb: 2 }} /> */}
-        {/* <Tooltip
-          title={
-            <List disablePadding sx={{ width: '10rem' }}>
-              <ListItem
-                disablePadding
-                sx={{ display: 'flex', justifyContent: 'space-between' }}
-              >
-                <ListItemText
-                  primary='spent'
-                  secondary={numberToCurrency.format(monthExpenseSum)}
-                />
-                <ListItemText
-                  primary='budget'
-                  secondary={numberToCurrency.format(budget)}
-                />
-              </ListItem>
-            </List>
-          }
-          placement='top'
-        >
-          <Stack>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginBottom: 8,
-                marginLeft: 16,
-                marginRight: 16,
-              }}
-            >
-              <Typography variant='h6'>spent</Typography>
-              <Typography variant='h6'>vs</Typography>
-              <Typography variant='h6'>budget</Typography>
-            </div>
-
-            <LinearProgress
-              variant='determinate'
-              value={(monthExpenseSum / budget) * 100}
-            />
-          </Stack>
-        </Tooltip>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: 8,
-            marginBottom: 8,
-            marginLeft: 16,
-            marginRight: 16,
-          }}
-        >
-          <Typography variant='h6'>
-            {numberToCurrency.format(monthExpenseSum)}
-          </Typography>
-          <Typography variant='h6'>
-            {numberToCurrency.format(budget)}
-          </Typography>
-        </div> */}
       </CardContent>
     </Card>
   );

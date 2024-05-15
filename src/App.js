@@ -16,7 +16,7 @@ import { history, store } from './store/createStore';
 
 import Layout from './routes/Layout';
 import Dashboard from './routes/Dashboard';
-import Calendar from './routes/Calendar/index.js';
+import Month from './components/Calendar/Month/index.js';
 import Year from './routes/Year/index.js';
 import Networth from './routes/Networth/index.js';
 import Search from './routes/Search/index.js';
@@ -25,7 +25,6 @@ import AssetDashboard from './routes/Assets/AssetDashboard.js';
 import DebtDashboard from './routes/Debts/DebtDashboard.js';
 import Settings from './routes/Settings';
 import './styles/index.css';
-import './styles/App.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 
 console.log('_package.version: ', _package.version);
@@ -43,7 +42,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path='/app' element={<Layout />}>
         <Route path='/app' element={<Dashboard />} />
-        <Route path='/app/calendar' element={<Calendar />} />
+        <Route path='/app/calendar' element={<Month />} />
         <Route path='/app/year' element={<Year />} />
         <Route path='/app/networth' element={<Networth />} />
         <Route path='/app/search/:type' element={<Search />} />

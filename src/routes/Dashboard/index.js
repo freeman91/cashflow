@@ -2,35 +2,13 @@ import React, { useState } from 'react';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@mui/material/styles';
-import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import NewTransactionButton from '../../components/NewTransactionButton';
 import Cashflow from './Cashflow';
 import Spending from './Spending';
 import Expenses from './Expenses';
 import NetworthCard from './NetworthCard';
-
-function DashboardCardHeader({ title }) {
-  return (
-    <CardHeader
-      title={title}
-      titleTypographyProps={{
-        variant: 'h6',
-        align: 'left',
-        sx: { fontWeight: 800 },
-      }}
-    />
-  );
-}
-
-function DashboardGridItem(props) {
-  const { children } = props;
-  return (
-    <Grid item xs={12} md={6}>
-      {children}
-    </Grid>
-  );
-}
+import Week from '../../components/Calendar/Week';
 
 export default function Dashboard() {
   const theme = useTheme();
@@ -46,20 +24,23 @@ export default function Dashboard() {
         padding={2}
         sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
       >
-        <Grid container item xs={12} md={6} spacing={1}>
-          <Grid item xs={12}>
-            <Cashflow month={month} setMonth={setMonth} />
-          </Grid>
-          <Grid item xs={12}>
-            <NetworthCard />
-          </Grid>
+        <Grid item xs={12} sm={6}>
+          <Cashflow month={month} setMonth={setMonth} />
         </Grid>
 
-        <DashboardGridItem>
-          <Spending month={month} setSelectedExpenses={setSelectedExpenses} />
-        </DashboardGridItem>
+        <Grid item xs={12} sm={6}>
+          <NetworthCard />
+        </Grid>
 
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid container item xs={12}>
+          <Week />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Spending month={month} setSelectedExpenses={setSelectedExpenses} />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
           <Expenses expenses={selectedExpenses} />
         </Grid>
       </Grid>
@@ -67,5 +48,3 @@ export default function Dashboard() {
     </>
   );
 }
-
-export { DashboardCardHeader };

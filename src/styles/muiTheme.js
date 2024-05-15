@@ -20,6 +20,9 @@ export const breakpoints = {
 export const muiTheme = createTheme({
   palette: {
     mode: 'dark',
+    background: {
+      raised: 'rgba(255, 255, 255, 0.12)',
+    },
     grey,
     blue,
     green,
