@@ -51,7 +51,11 @@ function NewTransactionButton(props) {
         }}
         slotProps={{
           paper: {
-            sx: { backgroundImage: 'none', backgroundColor: 'transparent' },
+            sx: {
+              backgroundImage: 'unset',
+              backgroundColor: 'unset',
+              boxShadow: 'unset',
+            },
           },
         }}
       >
@@ -66,6 +70,7 @@ function NewTransactionButton(props) {
               key={type}
               variant='contained'
               onClick={() => handleTypeClick(type)}
+              sx={{ width: '100%' }}
             >
               {type}
             </Button>

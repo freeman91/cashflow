@@ -3,17 +3,17 @@ import { useDispatch } from 'react-redux';
 import { cloneDeep, map, sortBy } from 'lodash';
 import dayjs from 'dayjs';
 
+import { useTheme } from '@emotion/react';
 import AddIcon from '@mui/icons-material/Add';
-import { useTheme } from '@mui/styles';
-import {
-  Box,
-  Button,
-  IconButton,
-  Paper,
-  Popover,
-  Stack,
-  Typography,
-} from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import Popover from '@mui/material/Popover';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 import Record from './Record';
 import { openDialog } from '../../../store/dialogs';
@@ -55,7 +55,8 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
   };
 
   return (
-    <Paper
+    <Card
+      raised
       sx={{
         width: '8rem',
         height: '10rem',
@@ -64,34 +65,30 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
         opacity: sameMonth ? 1 : 0.5,
       }}
     >
-      <IconButton
-        onClick={handleClick}
-        sx={{
-          float: 'left',
-          height: '1rem',
-          width: '1rem',
-          mt: '.3rem',
-          ml: '.5rem',
-        }}
-      >
-        <AddIcon />
-      </IconButton>
-      <Typography
-        align='center'
-        sx={{
-          float: 'right',
-          width: '1.5rem',
-          mt: '.2rem',
-          mr: '.5rem',
-          bgcolor: isToday
-            ? theme.palette.red[800]
-            : theme.palette.background.paper,
-          borderRadius: '10px',
-        }}
-      >
-        {date.date()}
-      </Typography>
-      <Box sx={{ width: '100%', justifyContent: 'center' }}>
+      <CardHeader
+        disableTypography
+        sx={{ p: 0, pt: '2px', pl: '4px', pr: '4px' }}
+        title={
+          <Stack
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+          >
+            <IconButton onClick={handleClick} sx={{ p: 0 }}>
+              <AddIcon />
+            </IconButton>
+            <Typography align='center' variant='body2' sx={{ lineHeight: 1 }}>
+              {date.format('ddd')}
+            </Typography>
+            <Chip
+              label={date.date()}
+              variant={isToday ? 'filled' : 'outlined'}
+              size='small'
+            />
+          </Stack>
+        }
+      />
+      <CardContent sx={{ p: 0, pb: '4px !important' }}>
         <Stack sx={{ width: '100%' }}>
           {map(incomes, (income) => {
             return (
@@ -112,18 +109,19 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
             );
           })}
         </Stack>
-      </Box>
+      </CardContent>
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         slotProps={{
           paper: {
-            sx: { backgroundImage: 'none', backgroundColor: 'transparent' },
+            sx: {
+              backgroundImage: 'unset',
+              backgroundColor: 'unset',
+              boxShadow: 'unset',
+            },
           },
         }}
       >
@@ -138,12 +136,13 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
               key={type}
               variant='contained'
               onClick={() => handleTypeClick(type)}
+              sx={{ width: '100%' }}
             >
               {type}
             </Button>
           ))}
         </Stack>
       </Popover>
-    </Paper>
+    </Card>
   );
 }

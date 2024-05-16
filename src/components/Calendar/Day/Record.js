@@ -1,11 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { get } from 'lodash';
-import { Box, Tooltip, Typography } from '@mui/material';
+
 import { useTheme } from '@mui/styles';
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../../helpers/currency';
 import { openDialog } from '../../../store/dialogs';
+
+function RecordListItem(props) {
+  const { label, value } = props;
+
+  return (
+    <ListItem disablePadding disableGutters>
+      <ListItemText
+        primary={label}
+        primaryTypographyProps={{ variant: 'body2' }}
+        sx={{ m: 0, mr: 1, p: 0 }}
+      />
+      <ListItemText
+        sx={{ p: 0, m: 0 }}
+        primary={value}
+        primaryTypographyProps={{
+          variant: 'body2',
+          align: 'right',
+          fontWeight: 800,
+        }}
+      />
+    </ListItem>
+  );
+}
 
 export default function Record({ data }) {
   const theme = useTheme();
@@ -62,61 +91,36 @@ export default function Record({ data }) {
     dispatch(openDialog({ type: data._type, mode: 'edit', id }));
   };
 
-  const renderTooltip = () => {
-    let tooltipContent = [
-      <Typography key={`tooltip-amount-${data.id}`}>
-        amount: {numberToCurrency.format(value)}
-      </Typography>,
-    ];
-
-    if (data._type === 'expense' && data.vendor !== '') {
-      tooltipContent.push(
-        <Typography key={`tooltip-vendor-${data.id}`}>
-          vendor: {data.vendor}
-        </Typography>
-      );
-    }
-
-    if (data._type === 'repayment') {
-      tooltipContent.push(
-        <Typography key={`tooltip-lender-${data.id}`}>
-          lender: {data.lender}
-        </Typography>
-      );
-    }
-
-    if (data._type === 'income') {
-      tooltipContent.push(
-        <Typography key={`tooltip-source-${data.id}`}>
-          source: {data.source}
-        </Typography>
-      );
-    }
-
-    if (data._type === 'paycheck') {
-      tooltipContent.push(
-        <Typography key={`tooltip-employer-${data.id}`}>
-          employer: {data.employer}
-        </Typography>
-      );
-    }
-
-    if (data.description && data.description !== '') {
-      tooltipContent.push(
-        <Typography key={`tooltip-description-${data.id}`}>
-          description: {data.description}
-        </Typography>
-      );
-    }
-
-    return tooltipContent;
-  };
-
   return (
     <Tooltip
-      title={renderTooltip()}
+      title={
+        <List sx={{ p: 0 }}>
+          <RecordListItem
+            label='amount'
+            value={numberToCurrency.format(value)}
+          />
+          {data?.vendor && (
+            <RecordListItem label='vendor' value={data.vendor} />
+          )}
+          {data?.lender && (
+            <RecordListItem label='lender' value={data.lender} />
+          )}
+          {data?.source && (
+            <RecordListItem label='source' value={data.source} />
+          )}
+          {data?.employer && (
+            <RecordListItem label='employer' value={data.employer} />
+          )}
+          {data?.category && (
+            <RecordListItem label='category' value={data.category} />
+          )}
+          {data?.description && (
+            <RecordListItem label='description' value={data.description} />
+          )}
+        </List>
+      }
       onClick={handleClick}
-      placement='right-start'
+      placement='right'
     >
       <Box
         bgcolor={color}

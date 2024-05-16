@@ -24,16 +24,16 @@ export default function Dashboard() {
         padding={2}
         sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
       >
+        <Grid container item xs={12}>
+          <Week />
+        </Grid>
+
         <Grid item xs={12} sm={6}>
           <Cashflow month={month} setMonth={setMonth} />
         </Grid>
 
         <Grid item xs={12} sm={6}>
           <NetworthCard />
-        </Grid>
-
-        <Grid container item xs={12}>
-          <Week />
         </Grid>
 
         <Grid item xs={12} sm={6}>
