@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
+import find from 'lodash/find';
 import reduce from 'lodash/reduce';
 
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
@@ -11,7 +12,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Stack from '@mui/material/Stack';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { numberToCurrency } from '../../helpers/currency';
@@ -23,13 +27,17 @@ export default function Cashflow({ month, setMonth }) {
   const dispatch = useDispatch();
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
-
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
-  // const [budget] = useState(3800);
-  const [monthIncomeSum, setMonthIncomeSum] = useState(0);
-  const [monthExpenseSum, setMonthExpenseSum] = useState([]);
+  const allAssets = useSelector((state) => state.assets.data);
+  const allDebts = useSelector((state) => state.debts.data);
+  const allNetworths = useSelector((state) => state.networths.data);
+
+  const [incomeSum, setIncomeSum] = useState(0);
+  const [expenseSum, setExpenseSum] = useState(0);
+  const [assetSum, setAssetSum] = useState(0);
+  const [debtSum, setDebtSum] = useState(0);
 
   useEffect(() => {
     let total = 0;
@@ -44,7 +52,7 @@ export default function Cashflow({ month, setMonth }) {
 
     total += reduce(incomes, (sum, income) => sum + income.amount, 0);
     total += reduce(paychecks, (sum, paycheck) => sum + paycheck.take_home, 0);
-    setMonthIncomeSum(total);
+    setIncomeSum(total);
   }, [month, allIncomes, allPaychecks]);
 
   useEffect(() => {
@@ -78,8 +86,25 @@ export default function Cashflow({ month, setMonth }) {
       0
     );
 
-    setMonthExpenseSum(total);
+    setExpenseSum(total);
   }, [month, allExpenses, allRepayments]);
+
+  useEffect(() => {
+    const today = dayjs();
+    if (today.isSame(month, 'month')) {
+      setAssetSum(reduce(allAssets, (sum, asset) => sum + asset.value, 0));
+      setDebtSum(reduce(allDebts, (sum, debt) => sum + debt.amount, 0));
+    } else {
+      const networth = find(allNetworths, (networth) => {
+        const date = dayjs(networth.date);
+        return date.isSame(month, 'month');
+      });
+      setAssetSum(
+        reduce(networth.assets, (sum, asset) => sum + asset.value, 0)
+      );
+      setDebtSum(reduce(networth.debts, (sum, debt) => sum + debt.value, 0));
+    }
+  }, [month, allAssets, allDebts, allNetworths]);
 
   const handleDateSelect = (e) => {
     setMonth(e);
@@ -131,49 +156,60 @@ export default function Cashflow({ month, setMonth }) {
         </Box>
 
         <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            ml: 2,
-            mr: 2,
-          }}
-        >
-          <Typography variant='h6'>income</Typography>
-          <Typography variant='h6'>
-            {numberToCurrency.format(monthIncomeSum)}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            ml: 2,
-            mr: 2,
-          }}
-        >
-          <Typography variant='h6'>expenses</Typography>
-          <Typography variant='h6'>
-            {numberToCurrency.format(monthExpenseSum)}
-          </Typography>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
 
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            ml: 2,
-            mr: 2,
-          }}
-        >
-          <Typography variant='h6' sx={{ fontWeight: 800 }}>
-            net
-          </Typography>
-          <Typography variant='h6' sx={{ fontWeight: 800 }}>
-            {numberToCurrency.format(monthIncomeSum - monthExpenseSum)}
-          </Typography>
-        </Box>
+        <Stack direction='row' justifyContent='space-between' spacing={2}>
+          <List disablePadding sx={{ width: '100%' }}>
+            <ListItem disableGutters disablePadding>
+              <ListItemText primary='income' />
+              <ListItemText
+                primary={numberToCurrency.format(incomeSum)}
+                primaryTypographyProps={{ align: 'right', fontWeight: 800 }}
+              />
+            </ListItem>
+            <ListItem disableGutters disablePadding>
+              <ListItemText primary='expenses' />
+              <ListItemText
+                primary={numberToCurrency.format(expenseSum)}
+                primaryTypographyProps={{ align: 'right', fontWeight: 800 }}
+              />
+            </ListItem>
+            <Divider />
+            <ListItem disableGutters disablePadding>
+              <ListItemText primary='net' />
+              <ListItemText
+                primary={numberToCurrency.format(incomeSum - expenseSum)}
+                primaryTypographyProps={{ align: 'right', fontWeight: 800 }}
+              />
+            </ListItem>
+          </List>
+
+          <Divider orientation='vertical' flexItem />
+
+          <List disablePadding sx={{ width: '100%' }}>
+            <ListItem disableGutters disablePadding>
+              <ListItemText primary='assets' />
+              <ListItemText
+                primary={numberToCurrency.format(assetSum)}
+                primaryTypographyProps={{ align: 'right', fontWeight: 800 }}
+              />
+            </ListItem>
+            <ListItem disableGutters disablePadding>
+              <ListItemText primary='debts' />
+              <ListItemText
+                primary={numberToCurrency.format(debtSum)}
+                primaryTypographyProps={{ align: 'right', fontWeight: 800 }}
+              />
+            </ListItem>
+            <Divider />
+            <ListItem disableGutters disablePadding>
+              <ListItemText primary='net worth' />
+              <ListItemText
+                primary={numberToCurrency.format(assetSum - debtSum)}
+                primaryTypographyProps={{ align: 'right', fontWeight: 800 }}
+              />
+            </ListItem>
+          </List>
+        </Stack>
       </CardContent>
     </Card>
   );

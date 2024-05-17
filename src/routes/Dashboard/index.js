@@ -7,7 +7,6 @@ import NewTransactionButton from '../../components/NewTransactionButton';
 import Cashflow from './Cashflow';
 import Spending from './Spending';
 import Expenses from './Expenses';
-import NetworthCard from './NetworthCard';
 import Week from '../../components/Calendar/Week';
 
 export default function Dashboard() {
@@ -28,12 +27,8 @@ export default function Dashboard() {
           <Week />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <Cashflow month={month} setMonth={setMonth} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <NetworthCard />
         </Grid>
 
         <Grid item xs={12} sm={6}>

@@ -31,6 +31,9 @@ REGION = os.getenv("REGION")
 APP_ID = os.getenv("APP_ID")
 USER_ID = os.getenv("REACT_APP_USER_ID")
 
+PLAID_CLIENT_ID = os.getenv("PLAID_CLIENT_ID")
+PLAID_DEV_KEY = os.getenv("PLAID_DEV_KEY")
+
 
 def get_expense_categories():
     return dynamo.categories.get(user_id=USER_ID, category_type="expense")
