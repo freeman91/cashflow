@@ -130,6 +130,7 @@ export default function Incomes() {
     <Box sx={{ mt: 1, width: '100%', maxWidth: 700 }}>
       <FilterOptions
         total={total}
+        incomes={filteredIncomes}
         range={range}
         setRange={setRange}
         typeFilter={typeFilter}

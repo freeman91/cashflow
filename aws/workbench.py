@@ -10,11 +10,11 @@ from uuid import uuid4
 import inquirer
 from pydash import find, map_, uniq, sort_by, filter_
 
-import plaid
-from plaid.api import plaid_api
-from plaid.model.liabilities_get_request import LiabilitiesGetRequest
-from plaid.model.transactions_get_request import TransactionsGetRequest
-from plaid.model.accounts_balance_get_request import AccountsBalanceGetRequest
+# import plaid
+# from plaid.api import plaid_api
+# from plaid.model.liabilities_get_request import LiabilitiesGetRequest
+# from plaid.model.transactions_get_request import TransactionsGetRequest
+# from plaid.model.accounts_balance_get_request import AccountsBalanceGetRequest
 
 import prompts
 from services import dynamo
@@ -43,25 +43,27 @@ HNB_ACCESS_TOKEN = os.getenv("HNB_ACCESS_TOKEN")
 ALLY_ACCESS_TOKEN = os.getenv("ALLY_ACCESS_TOKEN")
 
 
-def get_expense_categories():
-    return dynamo.categories.get(user_id=USER_ID, category_type="expense")
+def update_categories():
+    cats = dynamo.categories.get(user_id=USER_ID, category_type="expense")
+    cats.categories = OPTIONS
+    cats.save()
 
 
-def test():
-    configuration = plaid.Configuration(
-        host=plaid.Environment.Development,
-        api_key={
-            "clientId": PLAID_CLIENT_ID,
-            "secret": PLAID_SECRET,
-        },
-    )
-    api_client = plaid.ApiClient(configuration)
-    client = plaid_api.PlaidApi(api_client)
+# def plaid_get_account_balances():
+#     configuration = plaid.Configuration(
+#         host=plaid.Environment.Development,
+#         api_key={
+#             "clientId": PLAID_CLIENT_ID,
+#             "secret": PLAID_SECRET,
+#         },
+#     )
+#     api_client = plaid.ApiClient(configuration)
+#     client = plaid_api.PlaidApi(api_client)
 
-    request = AccountsBalanceGetRequest(access_token=HNB_ACCESS_TOKEN)
-    response = client.accounts_balance_get(request)
-    accounts = response["accounts"]
-    pprint(accounts)
+#     request = AccountsBalanceGetRequest(access_token=HNB_ACCESS_TOKEN)
+#     response = client.accounts_balance_get(request)
+#     accounts = response["accounts"]
+#     pprint(accounts)
 
 
 def main():
@@ -153,7 +155,11 @@ OPTIONS = [
         "subcategories": ["flight", "accomodation", "activity"],
     },
     {
+        "name": "education",
+        "subcategories": ["student loans", "professional development"],
+    },
+    {
         "name": "other",
-        "subcategories": ["childcare", "student loans", "fun", "administration"],
+        "subcategories": ["childcare", "fun", "administration"],
     },
 ]

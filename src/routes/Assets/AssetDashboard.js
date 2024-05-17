@@ -73,7 +73,7 @@ export default function AssetDashboard() {
         alignItems='center'
         spacing={1}
         padding={2}
-        sx={{ width: '100%', maxWidth: 700 }}
+        sx={{ width: '100%', maxWidth: 1000 }}
       >
         <div
           style={{

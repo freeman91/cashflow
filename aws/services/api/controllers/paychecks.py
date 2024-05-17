@@ -24,16 +24,24 @@ def _paychecks(user_id: str):
             take_home=float(body.get("take_home")),
             taxes=float(body.get("taxes")),
             retirement=float(body.get("retirement")),
+            benefits=float(body.get("benefits")),
             other=float(body.get("other")),
             description=body.get("description"),
         )
         return success_result(paycheck.as_dict())
 
     if request.method == "GET":
-        start = datetime.strptime(request.args.get("start"), '%Y-%m-%d')
-        end = datetime.strptime(request.args.get("end"), '%Y-%m-%d') + timedelta(hours=24)
+        start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
+        end = datetime.strptime(request.args.get("end"), "%Y-%m-%d") + timedelta(
+            hours=24
+        )
         return success_result(
-            [paycheck.as_dict() for paycheck in dynamo.paycheck.search(user_id=user_id, start=start, end=end)]
+            [
+                paycheck.as_dict()
+                for paycheck in dynamo.paycheck.search(
+                    user_id=user_id, start=start, end=end
+                )
+            ]
         )
     return failure_result()
 

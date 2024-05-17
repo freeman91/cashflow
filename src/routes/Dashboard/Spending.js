@@ -151,9 +151,16 @@ export default function Spending({ month, setSelectedExpenses }) {
           </IconButton>
         }
       />
-      <CardContent sx={{ height: 400, p: 1, pt: 0, pb: '4px !important' }}>
+      <CardContent
+        sx={{
+          height: 250,
+          p: 1,
+          pt: 0,
+          pb: '4px !important',
+        }}
+      >
         <ResponsiveContainer width='100%' height='100%'>
-          <PieChart width={300} height={300}>
+          <PieChart width={250} height={250}>
             <Pie
               activeIndex={activeIndex}
               activeShape={renderActiveShape}
