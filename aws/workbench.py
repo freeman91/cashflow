@@ -10,6 +10,12 @@ from uuid import uuid4
 import inquirer
 from pydash import find, map_, uniq, sort_by, filter_
 
+import plaid
+from plaid.api import plaid_api
+from plaid.model.liabilities_get_request import LiabilitiesGetRequest
+from plaid.model.transactions_get_request import TransactionsGetRequest
+from plaid.model.accounts_balance_get_request import AccountsBalanceGetRequest
+
 import prompts
 from services import dynamo
 from services.dynamo.models.account import Account
@@ -32,7 +38,9 @@ APP_ID = os.getenv("APP_ID")
 USER_ID = os.getenv("REACT_APP_USER_ID")
 
 PLAID_CLIENT_ID = os.getenv("PLAID_CLIENT_ID")
-PLAID_DEV_KEY = os.getenv("PLAID_DEV_KEY")
+PLAID_SECRET = os.getenv("PLAID_SECRET")
+HNB_ACCESS_TOKEN = os.getenv("HNB_ACCESS_TOKEN")
+ALLY_ACCESS_TOKEN = os.getenv("ALLY_ACCESS_TOKEN")
 
 
 def get_expense_categories():
@@ -40,7 +48,20 @@ def get_expense_categories():
 
 
 def test():
-    pass
+    configuration = plaid.Configuration(
+        host=plaid.Environment.Development,
+        api_key={
+            "clientId": PLAID_CLIENT_ID,
+            "secret": PLAID_SECRET,
+        },
+    )
+    api_client = plaid.ApiClient(configuration)
+    client = plaid_api.PlaidApi(api_client)
+
+    request = AccountsBalanceGetRequest(access_token=HNB_ACCESS_TOKEN)
+    response = client.accounts_balance_get(request)
+    accounts = response["accounts"]
+    pprint(accounts)
 
 
 def main():

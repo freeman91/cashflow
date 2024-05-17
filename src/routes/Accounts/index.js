@@ -23,7 +23,7 @@ import DebtCard from './DebtCard';
 import NewTransactionButton from '../../components/NewTransactionButton';
 import { numberToCurrency } from '../../helpers/currency';
 
-export default function AccountDashboard() {
+export default function Accounts() {
   const dispatch = useDispatch();
   const location = useLocation();
   const [id, setId] = useState('');

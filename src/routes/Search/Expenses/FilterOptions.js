@@ -127,29 +127,14 @@ export default function FilterOptions(props) {
   return (
     <Card raised sx={{ mb: 1 }}>
       <CardHeader
-        disableTypography
         sx={{
-          pt: 0,
-          pb: 0,
+          pt: 1,
+          pb: 1,
           pl: 2,
           pr: 3,
           '& .MuiCardHeader-action': { alignSelf: 'center' },
         }}
-        title={
-          <ListItem disableGutters disablePadding sx={{ width: '60%' }}>
-            <ListItemText
-              primary='expenses'
-              primaryTypographyProps={{ variant: 'h5' }}
-            />
-            <ListItemText
-              primary={numberToCurrency.format(total)}
-              primaryTypographyProps={{
-                sx: { fontWeight: 800 },
-                align: 'right',
-              }}
-            />
-          </ListItem>
-        }
+        title={numberToCurrency.format(total)}
         action={
           <Stack direction='row' spacing={2}>
             <RangeSelect range={range} setRange={setRange} />

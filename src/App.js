@@ -16,11 +16,11 @@ import { history, store } from './store/createStore';
 
 import Layout from './routes/Layout';
 import Dashboard from './routes/Dashboard';
-import Month from './components/Calendar/Month/index.js';
-import Year from './routes/Year/index.js';
-import Networth from './routes/Networth/index.js';
-import Search from './routes/Search/index.js';
-import AccountDashboard from './routes/Accounts/AccountDashboard.js';
+import Month from './components/Calendar/Month';
+import Year from './routes/Year';
+import Networth from './routes/Networth';
+import Search from './routes/Search';
+import Accounts from './routes/Accounts';
 import AssetDashboard from './routes/Assets/AssetDashboard.js';
 import DebtDashboard from './routes/Debts/DebtDashboard.js';
 import Settings from './routes/Settings';
@@ -46,7 +46,7 @@ const AppRoutes = () => {
         <Route path='/app/year' element={<Year />} />
         <Route path='/app/networth' element={<Networth />} />
         <Route path='/app/search/:type' element={<Search />} />
-        <Route path='/app/accounts/:id' element={<AccountDashboard />} />
+        <Route path='/app/accounts/:id' element={<Accounts />} />
         <Route path='/app/assets/:id' element={<AssetDashboard />} />
         <Route path='/app/debts/:id' element={<DebtDashboard />} />
         <Route path='/app/settings' element={<Settings />} />

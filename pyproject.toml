@@ -13,6 +13,7 @@ cryptocompare = "^0.7.5"
 yahoo-fin = "^0.8.9"
 pydash = "^5.1.0"
 bcrypt = "^4.0.1"
+plaid-python = "^21.1.0"
 
 [tool.poetry.group.dev.dependencies]
 inquirer = "^2.10.0"
