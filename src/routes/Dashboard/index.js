@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+
 import NewTransactionButton from '../../components/NewTransactionButton';
 import Cashflow from './Cashflow';
 import Spending from './Spending';
@@ -23,8 +25,12 @@ export default function Dashboard() {
         padding={2}
         sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
       >
-        <Grid container item xs={12}>
+        <Grid item xs={12} sx={{ pt: '0 !important' }}>
           <Week />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Divider />
         </Grid>
 
         <Grid item xs={12}>

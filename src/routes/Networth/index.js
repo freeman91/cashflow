@@ -19,7 +19,6 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis,
 } from 'recharts';
 
 import { numberToCurrency } from '../../helpers/currency';
@@ -135,11 +134,6 @@ export default function Networth() {
                 bottom: 0,
               }}
             >
-              <YAxis
-                tickFormatter={(val, _axis) =>
-                  numberToCurrency.format(val).replace(',000.00', ' k')
-                }
-              />
               <XAxis
                 type='number'
                 tickMargin={10}

@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 import get from 'lodash/get';
 import map from 'lodash/map';
 
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@emotion/react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Checkbox from '@mui/material/Checkbox';
@@ -25,7 +27,9 @@ import TablePaginationActions, {
 
 export default function ExpensesTable(props) {
   const { expenses } = props;
+  const theme = useTheme();
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [page, setPage] = React.useState(0);
 
   const handleChangePage = (e, newPage) => {
@@ -51,9 +55,12 @@ export default function ExpensesTable(props) {
             <TableHead>
               <TableRow key='headers'>
                 <TableCell sx={{ fontWeight: 800 }}>date</TableCell>
-                <TableCell sx={{ fontWeight: 800 }} align='right'>
-                  type
-                </TableCell>
+                {!isMobile && (
+                  <TableCell sx={{ fontWeight: 800 }} align='right'>
+                    type
+                  </TableCell>
+                )}
+
                 <TableCell sx={{ fontWeight: 800 }} align='right'>
                   amount
                 </TableCell>
@@ -97,9 +104,11 @@ export default function ExpensesTable(props) {
                       <CustomTableCell idx={idx} column='date'>
                         {dayjs(expense.date).format('MMM D')}
                       </CustomTableCell>
-                      <CustomTableCell idx={idx} align='right'>
-                        {expense._type}
-                      </CustomTableCell>
+                      {!isMobile && (
+                        <CustomTableCell idx={idx} align='right'>
+                          {expense._type}
+                        </CustomTableCell>
+                      )}
                       <CustomTableCell idx={idx} align='right'>
                         {numberToCurrency.format(amount)}
                       </CustomTableCell>
