@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import get from 'lodash/get';
+
+import Box from '@mui/material/Box';
 
 import Expenses from './Expenses';
 import Incomes from './Incomes';
@@ -13,24 +16,33 @@ export default function Search() {
   const [selected, setSelected] = useState('expenses');
 
   useEffect(() => {
-    const type = location.pathname.split('/')[3];
+    const type = get(location.pathname.split('/'), '3', 'expenses');
     setSelected(type);
   }, [location]);
 
-  switch (selected) {
-    case 'expenses':
-      return <Expenses />;
-    case 'incomes':
-      return <Incomes />;
-    case 'bills':
-      return <Bills />;
-    case 'accounts':
-      return <Accounts />;
-    case 'assets':
-      return <Assets />;
-    case 'debts':
-      return <Debts />;
-    default:
-      return null;
-  }
+  const renderTypeTable = () => {
+    switch (selected) {
+      case 'expenses':
+        return <Expenses />;
+      case 'incomes':
+        return <Incomes />;
+      case 'bills':
+        return <Bills />;
+      case 'accounts':
+        return <Accounts />;
+      case 'assets':
+        return <Assets />;
+      case 'debts':
+        return <Debts />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Box sx={{ width: '100%', maxWidth: 1000 }}>
+      <>select type</>
+      {renderTypeTable()}
+    </Box>
+  );
 }

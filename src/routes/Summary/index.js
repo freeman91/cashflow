@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 
-export default function Year() {
+export default function Summary() {
   const [date] = useState(dayjs());
   return (
     <>

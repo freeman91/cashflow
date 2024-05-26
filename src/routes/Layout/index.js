@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Outlet } from 'react-router';
 import { useDispatch } from 'react-redux';
 
-import { useTheme } from '@mui/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import MainContent from './MainContent';
 import AccountDialog from '../../components/Dialog/AccountDialog';
 import AssetDialog from '../../components/Dialog/AssetDialog';
 import BillDialog from '../../components/Dialog/BillDialog ';
@@ -20,16 +19,12 @@ import RepaymentDialog from '../../components/Dialog/RepaymentDialog';
 import SaleDialog from '../../components/Dialog/SaleDialog';
 
 import { getUser } from '../../store/user';
-import AppToolbar from './AppToolbar';
-import AppDrawer from './AppDrawer';
+import CustomBottomNavigation from './CustomBottomNavigation';
 
 const USER_ID = process.env.REACT_APP_USER_ID;
 
-function Layout(props) {
+function Layout() {
   const dispatch = useDispatch();
-  const theme = useTheme();
-
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   /* onMount */
   useEffect(() => {
@@ -38,11 +33,11 @@ function Layout(props) {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <CssBaseline />
-      <AppToolbar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
-      <AppDrawer mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
-      <MainContent drawerWidth={theme.drawerWidth} />
+      {/* <h3>breadcrumbs</h3> */}
+      <Outlet />
+      <CustomBottomNavigation />
       <AccountDialog />
       <AssetDialog />
       <BillDialog />

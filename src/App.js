@@ -17,12 +17,9 @@ import { history, store } from './store/createStore';
 import Layout from './routes/Layout';
 import Dashboard from './routes/Dashboard';
 import Month from './components/Calendar/Month';
-import Year from './routes/Year';
+import Summary from './routes/Summary';
 import Networth from './routes/Networth';
 import Search from './routes/Search';
-import Accounts from './routes/Accounts';
-import AssetDashboard from './routes/Assets/AssetDashboard.js';
-import DebtDashboard from './routes/Debts/DebtDashboard.js';
 import Settings from './routes/Settings';
 import './styles/index.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
@@ -40,16 +37,14 @@ const ReduxLoader = styled(LoadingBar)(({ theme }) => ({
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path='/app' element={<Layout />}>
-        <Route path='/app' element={<Dashboard />} />
-        <Route path='/app/calendar' element={<Month />} />
-        <Route path='/app/year' element={<Year />} />
-        <Route path='/app/networth' element={<Networth />} />
-        <Route path='/app/search/:type' element={<Search />} />
-        <Route path='/app/accounts/:id' element={<Accounts />} />
-        <Route path='/app/assets/:id' element={<AssetDashboard />} />
-        <Route path='/app/debts/:id' element={<DebtDashboard />} />
-        <Route path='/app/settings' element={<Settings />} />
+      <Route path='/' element={<Layout />}>
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/calendar' element={<Month />} />
+        <Route path='/summary' element={<Summary />} />
+        <Route path='/networth' element={<Networth />} />
+        <Route path='/search' element={<Search />} />
+        <Route path='/search/:type' element={<Search />} />
+        <Route path='/settings' element={<Settings />} />
       </Route>
       <Route path='*'>
         <Route index element={<Navigate to='/app' />} />
