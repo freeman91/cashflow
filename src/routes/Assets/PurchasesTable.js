@@ -5,8 +5,6 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -42,56 +40,47 @@ export default function PurchasesTable(props) {
   };
 
   return (
-    <Card
-      raised
-      sx={{
-        width: '75%',
-      }}
-    >
-      <CardContent
-        sx={{
-          p: 1,
-          pt: 0,
-          pb: '4px !important',
-        }}
-      >
-        <TableContainer component='div'>
-          <Table size='small'>
-            <TableHead>
-              <TableRow>
-                <TableCell>date</TableCell>
-                <TableCell align='right'>amount</TableCell>
-                <TableCell align='right'>shares</TableCell>
-                <TableCell align='right'>price</TableCell>
+    <TableContainer component='div'>
+      <Table size='medium'>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ fontWeight: 800 }}>date</TableCell>
+            <TableCell sx={{ fontWeight: 800 }} align='right'>
+              amount
+            </TableCell>
+            <TableCell sx={{ fontWeight: 800 }} align='right'>
+              shares
+            </TableCell>
+            <TableCell sx={{ fontWeight: 800 }} align='right'>
+              price
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {map(tableData, (purchase, idx) => {
+            return (
+              <TableRow
+                hover={true}
+                key={purchase.purchase_id}
+                onClick={() => handleClick(purchase)}
+              >
+                <CustomTableCell idx={idx} component='th' column='date'>
+                  {dayjs(purchase.date).format('YYYY MMM D')}
+                </CustomTableCell>
+                <CustomTableCell idx={idx} align='right'>
+                  {numberToCurrency.format(purchase.amount)}
+                </CustomTableCell>
+                <CustomTableCell idx={idx} align='right'>
+                  {purchase.shares}
+                </CustomTableCell>
+                <CustomTableCell idx={idx} align='right'>
+                  {numberToCurrency.format(purchase.price)}
+                </CustomTableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {map(tableData, (purchase, idx) => {
-                return (
-                  <TableRow
-                    hover={true}
-                    key={purchase.purchase_id}
-                    onClick={() => handleClick(purchase)}
-                  >
-                    <CustomTableCell idx={idx} component='th' column='date'>
-                      {dayjs(purchase.date).format('YYYY MMMM D')}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(purchase.amount)}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {purchase.shares}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(purchase.price)}
-                    </CustomTableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </CardContent>
-    </Card>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

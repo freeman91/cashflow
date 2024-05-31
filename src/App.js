@@ -15,6 +15,7 @@ import _package from '../package.json';
 import { history, store } from './store/createStore';
 
 import Layout from './routes/Layout';
+import Accounts from './routes/Accounts';
 import Dashboard from './routes/Dashboard';
 import Month from './components/Calendar/Month';
 import Summary from './routes/Summary';
@@ -23,6 +24,8 @@ import Search from './routes/Search';
 import Settings from './routes/Settings';
 import './styles/index.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
+import Assets from './routes/Assets';
+import Debts from './routes/Debts';
 
 console.log('_package.version: ', _package.version);
 
@@ -41,13 +44,22 @@ const AppRoutes = () => {
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/calendar' element={<Month />} />
         <Route path='/summary' element={<Summary />} />
+        <Route path='/summary/:year' element={<Summary />} />
+        <Route path='/summary/:year/:month' element={<Summary />} />
         <Route path='/networth' element={<Networth />} />
         <Route path='/search' element={<Search />} />
         <Route path='/search/:type' element={<Search />} />
         <Route path='/settings' element={<Settings />} />
+        <Route path='/settings/:option' element={<Settings />} />
+        <Route path='/accounts' element={<Accounts />} />
+        <Route path='/accounts/:accountId' element={<Accounts />} />
+        <Route path='/assets' element={<Assets />} />
+        <Route path='/assets/:assetId' element={<Assets />} />
+        <Route path='/debts' element={<Debts />} />
+        <Route path='/debts/:debtId' element={<Debts />} />
       </Route>
       <Route path='*'>
-        <Route index element={<Navigate to='/app' />} />
+        <Route index element={<Navigate to='/dashboard' />} />
       </Route>
     </Routes>
   );

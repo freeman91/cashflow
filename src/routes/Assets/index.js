@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { goBack } from 'redux-first-history';
 
 import find from 'lodash/find';
+import reduce from 'lodash/reduce';
 
 import BackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
 import AppBar from '@mui/material/AppBar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -16,46 +16,44 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+import { numberToCurrency } from '../../helpers/currency';
 import { openDialog } from '../../store/dialogs';
-import { saveNetworth } from '../../store/networths';
-import AccountsTable from './AccountsTable';
-import AccountPage from './AccountPage';
-import CurrentNetworth from '../Dashboard/Networth/CurrentNetworth';
+import AssetsTable from './AssetsTable';
+import AssetPage from './AssetPage';
 import PageSelect from '../../components/Selector/PageSelect';
 
-export default function Accounts() {
+export default function Assets() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const accounts = useSelector((state) => state.accounts.data);
+  const assets = useSelector((state) => state.assets.data);
 
-  const [account, setAccount] = useState(null);
+  const [asset, setAsset] = useState(null);
+  const [assetSum, setAssetSum] = useState(0);
   const [id, setId] = useState('');
 
   useEffect(() => {
     let _pathname = location.pathname;
-    let _id = _pathname.replace('/accounts', '');
+    let _id = _pathname.replace('/assets', '');
     _id = _id.replace('/', '');
     setId(_id);
   }, [location.pathname]);
 
   useEffect(() => {
     if (id) {
-      let _account = find(accounts, { account_id: id });
-      setAccount(_account);
+      let _asset = find(assets, { asset_id: id });
+      setAsset(_asset);
+      setAssetSum(0);
     } else {
-      setAccount(null);
+      setAsset(null);
+      setAssetSum(reduce(assets, (sum, asset) => sum + asset.value, 0));
     }
-  }, [accounts, id]);
-
-  const handleSaveNetworth = () => {
-    dispatch(saveNetworth());
-  };
+  }, [assets, id]);
 
   const renderComponent = () => {
-    if (account) {
-      return <AccountPage account={account} />;
+    if (asset) {
+      return <AssetPage asset={asset} />;
     }
-    return <AccountsTable />;
+    return <AssetsTable />;
   };
 
   return (
@@ -68,22 +66,18 @@ export default function Accounts() {
           <Typography
             align='center'
             variant='h6'
-            sx={{
-              flexGrow: 1,
-              fontWeight: 800,
-              ml: account ? 'unset' : '40px',
-            }}
+            sx={{ flexGrow: 1, fontWeight: 800 }}
           >
-            accounts
+            assets
           </Typography>
-          {account ? (
+          {asset ? (
             <IconButton
               onClick={() =>
                 dispatch(
                   openDialog({
-                    type: 'account',
+                    type: 'asset',
                     mode: 'edit',
-                    id: account.account_id,
+                    id: asset.asset_id,
                   })
                 )
               }
@@ -91,11 +85,8 @@ export default function Accounts() {
               <EditIcon />
             </IconButton>
           ) : (
-            <IconButton onClick={handleSaveNetworth} sx={{ mr: 1 }}>
-              <SaveIcon />
-            </IconButton>
+            <PageSelect />
           )}
-          {!account && <PageSelect />}
         </Toolbar>
       </AppBar>
       <Grid
@@ -108,16 +99,21 @@ export default function Accounts() {
           mb: 8,
         }}
       >
-        {!account && (
+        {!asset && (
           <Grid item xs={12}>
             <Card raised>
               <CardContent sx={{ p: 1, pt: '4px', pb: '0 !important' }}>
-                <CurrentNetworth />
+                <Typography
+                  align='center'
+                  variant='h4'
+                  color={(theme) => theme.palette.green[600]}
+                >
+                  {numberToCurrency.format(assetSum)}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
         )}
-
         {renderComponent()}
       </Grid>
     </>

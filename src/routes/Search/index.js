@@ -7,41 +7,38 @@ import Box from '@mui/material/Box';
 import Expenses from './Expenses';
 import Incomes from './Incomes';
 import Bills from './Bills';
-import Accounts from './Accounts';
-import Assets from './Assets';
-import Debts from './Debts';
+import SearchAppBar from './SearchAppBar';
+
+export const OPTIONS = {
+  expenses: Expenses,
+  incomes: Incomes,
+  bills: Bills,
+};
 
 export default function Search() {
   const location = useLocation();
-  const [selected, setSelected] = useState('expenses');
+
+  const defaultOption = Object.keys(OPTIONS)[0];
+  const [trigger, setTrigger] = useState(false);
+  const [selected, setSelected] = useState(defaultOption);
 
   useEffect(() => {
-    const type = get(location.pathname.split('/'), '3', 'expenses');
+    const type = get(location.pathname.split('/'), '2', defaultOption);
     setSelected(type);
-  }, [location]);
+  }, [location, defaultOption]);
+
+  const toggleTrigger = () => {
+    setTrigger(!trigger);
+  };
 
   const renderTypeTable = () => {
-    switch (selected) {
-      case 'expenses':
-        return <Expenses />;
-      case 'incomes':
-        return <Incomes />;
-      case 'bills':
-        return <Bills />;
-      case 'accounts':
-        return <Accounts />;
-      case 'assets':
-        return <Assets />;
-      case 'debts':
-        return <Debts />;
-      default:
-        return null;
-    }
+    const Component = OPTIONS[selected];
+    return <Component trigger={trigger} toggleTrigger={toggleTrigger} />;
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 1000 }}>
-      <>select type</>
+    <Box sx={{ mb: 8 }}>
+      <SearchAppBar title={selected} toggleTrigger={toggleTrigger} />
       {renderTypeTable()}
     </Box>
   );

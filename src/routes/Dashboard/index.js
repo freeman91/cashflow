@@ -1,51 +1,64 @@
-import React, { useState } from 'react';
-import dayjs from 'dayjs';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { push } from 'redux-first-history';
 
-import { useTheme } from '@mui/material/styles';
-import Divider from '@mui/material/Divider';
+import SettingsIcon from '@mui/icons-material/Settings';
+import AppBar from '@mui/material/AppBar';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
-import NewTransactionButton from '../../components/NewTransactionButton';
 import Cashflow from './Cashflow';
-import Spending from './Spending';
-import Expenses from './Expenses';
-import Week from '../../components/Calendar/Week';
+import UpcomingExpenses from './UpcomingExpenses';
+import RecentTransactions from './RecentTransactions';
+import Networth from './Networth';
 
 export default function Dashboard() {
-  const theme = useTheme();
-  const [month, setMonth] = useState(dayjs().date(15).hour(12).minute(0));
-
-  const [selectedExpenses, setSelectedExpenses] = useState([]);
+  const dispatch = useDispatch();
 
   return (
     <>
+      <AppBar position='static'>
+        <Toolbar sx={{ minHeight: '40px' }}>
+          <Typography
+            align='center'
+            variant='h6'
+            sx={{ flexGrow: 1, fontWeight: 800, ml: '40px' }}
+          >
+            dashboard
+          </Typography>
+          <IconButton size='small' onClick={() => dispatch(push('/settings'))}>
+            <SettingsIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
       <Grid
         container
-        spacing={1}
-        padding={2}
-        sx={{ width: '100%', maxWidth: theme.breakpoints.maxWidth }}
+        spacing={0}
+        sx={{
+          pl: 1,
+          pr: 1,
+          pt: 1,
+          mb: 8,
+        }}
       >
-        <Grid item xs={12} sx={{ pt: '0 !important' }}>
-          <Week />
+        <Grid item xs={12}>
+          <Cashflow />
         </Grid>
 
         <Grid item xs={12}>
-          <Divider />
+          <Networth />
         </Grid>
 
-        <Grid item xs={12}>
-          <Cashflow month={month} setMonth={setMonth} />
+        <Grid item xs={12} sx={{ mt: 1 }}>
+          <UpcomingExpenses />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <Spending month={month} setSelectedExpenses={setSelectedExpenses} />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <Expenses expenses={selectedExpenses} />
+        <Grid item xs={12} sx={{ mt: 1 }}>
+          <RecentTransactions />
         </Grid>
       </Grid>
-      <NewTransactionButton transactionTypes={['expense', 'income']} />
     </>
   );
 }

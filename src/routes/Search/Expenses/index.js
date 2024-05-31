@@ -5,35 +5,33 @@ import get from 'lodash/get';
 import filter from 'lodash/filter';
 import includes from 'lodash/includes';
 import sortBy from 'lodash/sortBy';
-import reduce from 'lodash/reduce';
 
 import Box from '@mui/material/Box';
 
 import { getExpenses } from '../../../store/expenses';
-import NewTransactionButton from '../../../components/NewTransactionButton';
 import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
-import FilterOptions from './FilterOptions';
 import ExpensesTable from './ExpensesTable';
+// import FilterOptions from './FilterOptions';
 
-export default function Expenses() {
+export default function Expenses(props) {
+  const { trigger, toggleTrigger } = props;
   const dispatch = useDispatch();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
-  const [total, setTotal] = useState(0);
-  const [range, setRange] = useState(RANGE_OPTIONS[0]);
+  const [range] = useState(RANGE_OPTIONS[0]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
 
-  const [typeFilter, setTypeFilter] = useState(['expense', 'repayment']);
-  const [amountFilter, setAmountFilter] = useState({
+  const [typeFilter] = useState(['expense', 'repayment']);
+  const [amountFilter] = useState({
     comparator: '',
     amount: '',
   });
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [subcategoryFilter, setSubcategoryFilter] = useState('');
-  const [vendorFilter, setVendorFilter] = useState('');
-  const [billFilter, setBillFilter] = useState('');
-  const [pendingFilter, setPendingFilter] = useState(['pending', 'paid']);
+  const [categoryFilter] = useState('');
+  const [subcategoryFilter] = useState('');
+  const [vendorFilter] = useState('');
+  const [billFilter] = useState('');
+  const [pendingFilter] = useState(['pending', 'paid']);
 
   useEffect(() => {
     let _expenses = [...allExpenses, ...allRepayments];
@@ -137,33 +135,17 @@ export default function Expenses() {
     dispatch(getExpenses({ range }));
   }, [range, dispatch]);
 
+  // handleFilterClick
   useEffect(() => {
-    const _total = reduce(
-      filteredExpenses,
-      (sum, expense) => {
-        const amount = (() => {
-          if (expense._type === 'expense') {
-            return expense.amount;
-          } else if (expense._type === 'repayment') {
-            return (
-              get(expense, 'principal', 0) +
-              get(expense, 'interest', 0) +
-              get(expense, 'escrow', 0)
-            );
-          } else {
-            return 0;
-          }
-        })();
-        return sum + amount;
-      },
-      0
-    );
-    setTotal(_total);
-  }, [filteredExpenses]);
+    if (trigger) {
+      console.log('Filter');
+      toggleTrigger();
+    }
+  }, [trigger, toggleTrigger]);
 
   return (
-    <Box sx={{ mt: 1, width: '100%', maxWidth: 700 }}>
-      <FilterOptions
+    <Box>
+      {/* <FilterOptions
         total={total}
         expenses={filteredExpenses}
         range={range}
@@ -182,9 +164,8 @@ export default function Expenses() {
         setVendorFilter={setVendorFilter}
         billFilter={billFilter}
         setBillFilter={setBillFilter}
-      />
+      /> */}
       <ExpensesTable expenses={filteredExpenses} />
-      <NewTransactionButton transactionTypes={['expense', 'repayment']} />
     </Box>
   );
 }

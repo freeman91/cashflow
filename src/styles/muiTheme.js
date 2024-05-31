@@ -21,8 +21,11 @@ export const muiTheme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      raised: 'rgba(255, 255, 255, 0.12)',
+      dark: '#272727',
+      light: '#2e2e2e',
     },
+    primary: { main: blue[500] },
+    secondary: { main: green[500] },
     grey,
     blue,
     green,

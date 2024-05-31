@@ -2,15 +2,22 @@ import React from 'react';
 
 import TableCell from '@mui/material/TableCell';
 
-const CustomTableCell = ({ idx, column, record, children, ...restProps }) => {
+const CustomTableCell = ({
+  idx,
+  column,
+  record,
+  children,
+  sx,
+  ...restProps
+}) => {
   return (
     <TableCell
       scope='row'
       {...restProps}
       sx={{
-        borderBottom: 0,
-        borderTop: idx === 0 ? '1px solid rgba(81, 81, 81, .5)' : 0,
+        lineHeight: 1,
         fontWeight: column === 'date' ? 800 : 500,
+        ...sx,
       }}
     >
       {children}

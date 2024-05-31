@@ -5,33 +5,31 @@ import get from 'lodash/get';
 import filter from 'lodash/filter';
 import includes from 'lodash/includes';
 import sortBy from 'lodash/sortBy';
-import reduce from 'lodash/reduce';
 import toLower from 'lodash/toLower';
 
 import Box from '@mui/material/Box';
 
 import { getIncomes } from '../../../store/incomes';
-import NewTransactionButton from '../../../components/NewTransactionButton';
 import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
 import IncomesTable from './IncomesTable';
-import FilterOptions from './FilterOptions';
+// import FilterOptions from './FilterOptions';
 
-export default function Incomes() {
+export default function Incomes(props) {
+  const { trigger, toggleTrigger } = props;
   const dispatch = useDispatch();
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
-  const [total, setTotal] = useState(0);
-  const [range, setRange] = useState(RANGE_OPTIONS[0]);
+  const [range] = useState(RANGE_OPTIONS[0]);
   const [filteredIncomes, setFilteredIncomes] = useState([]);
 
-  const [typeFilter, setTypeFilter] = useState(['income', 'paycheck']);
-  const [amountFilter, setAmountFilter] = useState({
+  const [typeFilter] = useState(['income', 'paycheck']);
+  const [amountFilter] = useState({
     comparator: '',
     amount: '',
   });
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [sourceFilter, setSourceFilter] = useState('');
+  const [categoryFilter] = useState('');
+  const [sourceFilter] = useState('');
 
   useEffect(() => {
     let _incomes = [...allIncomes, ...allPaychecks];
@@ -106,29 +104,17 @@ export default function Incomes() {
     dispatch(getIncomes({ range }));
   }, [range, dispatch]);
 
+  // handleFilterClick
   useEffect(() => {
-    const _total = reduce(
-      filteredIncomes,
-      (sum, income) => {
-        const amount = (() => {
-          if (income._type === 'income') {
-            return income.amount;
-          } else if (income._type === 'paycheck') {
-            return get(income, 'take_home', 0);
-          } else {
-            return 0;
-          }
-        })();
-        return sum + amount;
-      },
-      0
-    );
-    setTotal(_total);
-  }, [filteredIncomes]);
+    if (trigger) {
+      console.log('Filter');
+      toggleTrigger();
+    }
+  }, [trigger, toggleTrigger]);
 
   return (
-    <Box sx={{ mt: 1, width: '100%', maxWidth: 700 }}>
-      <FilterOptions
+    <Box>
+      {/* <FilterOptions
         total={total}
         incomes={filteredIncomes}
         range={range}
@@ -141,9 +127,8 @@ export default function Incomes() {
         setCategoryFilter={setCategoryFilter}
         sourceFilter={sourceFilter}
         setSourceFilter={setSourceFilter}
-      />
+      /> */}
       <IncomesTable incomes={filteredIncomes} />
-      <NewTransactionButton transactionTypes={['income', 'paycheck']} />
     </Box>
   );
 }

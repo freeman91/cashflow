@@ -4,7 +4,7 @@ import { filter, map } from 'lodash';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@emotion/react';
-import { Typography, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import Stack from '@mui/material/Stack';
 
 import Day from '../Day';
@@ -56,9 +56,6 @@ export default function ThisWeek() {
 
   return (
     <div style={{ width: '100%' }}>
-      <Typography variant='body1' align='center' fontWeight='bold'>
-        {date.format('MMMM YYYY')}
-      </Typography>
       <Stack
         direction='row'
         justifyContent='space-between'

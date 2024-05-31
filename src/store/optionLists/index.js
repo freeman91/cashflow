@@ -55,7 +55,7 @@ const putOptionList = createAsyncThunk(
     try {
       const result = await putOptionListAPI(updatedOptionList);
       if (result) {
-        toastr.success('OptionList updated');
+        toastr.success(`${result.option_type.replace('_', ' ')}s updated`);
       }
 
       let _optionLists = [...optionLists];

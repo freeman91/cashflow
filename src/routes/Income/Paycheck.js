@@ -11,7 +11,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { putUser } from '../../store/user';
 import TextFieldListItem from '../../components/List/TextFieldListItem';
-import NewTransactionButton from '../../components/NewTransactionButton';
 
 const formDataDefault = {
   employer: '',
@@ -200,7 +199,6 @@ export default function Paycheck() {
           </form>
         </CardContent>
       </Card>
-      <NewTransactionButton transactionTypes={['income', 'paycheck']} />
     </>
   );
 }

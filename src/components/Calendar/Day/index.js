@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { cloneDeep, map, sortBy } from 'lodash';
 import dayjs from 'dayjs';
 
-import { useTheme } from '@emotion/react';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -19,7 +18,6 @@ import Record from './Record';
 import { openDialog } from '../../../store/dialogs';
 
 export default function Day({ date, sameMonth, expenses, incomes }) {
-  const theme = useTheme();
   const dispatch = useDispatch();
   let isToday = dayjs().isSame(date, 'day');
 
@@ -60,8 +58,6 @@ export default function Day({ date, sameMonth, expenses, incomes }) {
       sx={{
         width: '8rem',
         height: '10rem',
-        backgroundColor: theme.palette.background.raised,
-        backgroundImage: 'unset',
         opacity: sameMonth ? 1 : 0.5,
       }}
     >

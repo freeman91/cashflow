@@ -5,13 +5,9 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import { numberToCurrency } from '../../helpers/currency';
@@ -43,51 +39,27 @@ export default function BorrowsTable(props) {
   };
 
   return (
-    <Card
-      raised
-      sx={{
-        width: '75%',
-      }}
-    >
-      <CardContent sx={{ p: 1, pt: 0, pb: '4px !important', width: '100%' }}>
-        <TableContainer
-          sx={{
-            width: '100%',
-          }}
-          component='div'
-        >
-          <Table size='small'>
-            <TableHead>
-              <TableRow>
-                <TableCell>date</TableCell>
-                <TableCell align='right'>amount</TableCell>
-                <TableCell align='right'>lender</TableCell>
+    <TableContainer component='div'>
+      <Table size='medium'>
+        <TableBody>
+          {map(tableData, (borrow, idx) => {
+            return (
+              <TableRow
+                hover={true}
+                key={borrow.borrow_id}
+                onClick={() => handleClick(borrow)}
+              >
+                <CustomTableCell idx={idx} component='th' column='date'>
+                  {dayjs(borrow.date).format('YYYY MMM D')}
+                </CustomTableCell>
+                <CustomTableCell idx={idx} align='right'>
+                  {numberToCurrency.format(borrow.amount)}
+                </CustomTableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {map(tableData, (borrow, idx) => {
-                return (
-                  <TableRow
-                    hover={true}
-                    key={borrow.borrow_id}
-                    onClick={() => handleClick(borrow)}
-                  >
-                    <CustomTableCell idx={idx} component='th' column='date'>
-                      {dayjs(borrow.date).format('YYYY MMMM D')}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(borrow.amount)}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {borrow.lender}
-                    </CustomTableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </CardContent>
-    </Card>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

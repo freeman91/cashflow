@@ -5,8 +5,6 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -42,60 +40,53 @@ export default function SalesTable(props) {
   };
 
   return (
-    <Card
-      raised
-      sx={{
-        width: '75%',
-      }}
-    >
-      <CardContent
-        sx={{
-          p: 1,
-          pt: 0,
-          pb: '4px !important',
-        }}
-      >
-        <TableContainer component='div'>
-          <Table size='small'>
-            <TableHead>
-              <TableRow>
-                <TableCell>date</TableCell>
-                <TableCell align='right'>total payment</TableCell>
-                <TableCell align='right'>amount</TableCell>
-                <TableCell align='right'>shares</TableCell>
-                <TableCell align='right'>price</TableCell>
+    <TableContainer component='div'>
+      <Table size='medium'>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ fontWeight: 800 }}>date</TableCell>
+            <TableCell sx={{ fontWeight: 800 }} align='right'>
+              total payment
+            </TableCell>
+            <TableCell sx={{ fontWeight: 800 }} align='right'>
+              amount
+            </TableCell>
+            <TableCell sx={{ fontWeight: 800 }} align='right'>
+              shares
+            </TableCell>
+            <TableCell sx={{ fontWeight: 800 }} align='right'>
+              price
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {map(tableData, (sale, idx) => {
+            return (
+              <TableRow
+                hover={true}
+                key={sale.sale_id}
+                onClick={() => handleClick(sale)}
+              >
+                <CustomTableCell idx={idx} component='th' column='date'>
+                  {dayjs(sale.date).format('YYYY MMMM D')}
+                </CustomTableCell>
+                <CustomTableCell idx={idx} align='right'>
+                  {numberToCurrency.format(sale.amount)}
+                </CustomTableCell>
+                <CustomTableCell idx={idx} align='right'>
+                  {numberToCurrency.format(sale.amount)}
+                </CustomTableCell>
+                <CustomTableCell idx={idx} align='right'>
+                  {sale.shares}
+                </CustomTableCell>
+                <CustomTableCell idx={idx} align='right'>
+                  {numberToCurrency.format(sale.price)}
+                </CustomTableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {map(tableData, (sale, idx) => {
-                return (
-                  <TableRow
-                    hover={true}
-                    key={sale.sale_id}
-                    onClick={() => handleClick(sale)}
-                  >
-                    <CustomTableCell idx={idx} component='th' column='date'>
-                      {dayjs(sale.date).format('YYYY MMMM D')}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(sale.amount)}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(sale.amount)}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {sale.shares}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(sale.price)}
-                    </CustomTableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </CardContent>
-    </Card>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

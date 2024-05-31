@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { goBack } from 'redux-first-history';
 
 import find from 'lodash/find';
+import reduce from 'lodash/reduce';
 
 import BackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
 import AppBar from '@mui/material/AppBar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -16,46 +16,44 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+import { numberToCurrency } from '../../helpers/currency';
 import { openDialog } from '../../store/dialogs';
-import { saveNetworth } from '../../store/networths';
-import AccountsTable from './AccountsTable';
-import AccountPage from './AccountPage';
-import CurrentNetworth from '../Dashboard/Networth/CurrentNetworth';
+import DebtsTable from './DebtsTable';
+import DebtPage from './DebtPage';
 import PageSelect from '../../components/Selector/PageSelect';
 
-export default function Accounts() {
+export default function Debts() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const accounts = useSelector((state) => state.accounts.data);
+  const debts = useSelector((state) => state.debts.data);
 
-  const [account, setAccount] = useState(null);
+  const [debt, setDebt] = useState(null);
+  const [debtSum, setDebtSum] = useState(0);
   const [id, setId] = useState('');
 
   useEffect(() => {
     let _pathname = location.pathname;
-    let _id = _pathname.replace('/accounts', '');
+    let _id = _pathname.replace('/debts', '');
     _id = _id.replace('/', '');
     setId(_id);
   }, [location.pathname]);
 
   useEffect(() => {
     if (id) {
-      let _account = find(accounts, { account_id: id });
-      setAccount(_account);
+      let _debt = find(debts, { debt_id: id });
+      setDebt(_debt);
+      setDebtSum(0);
     } else {
-      setAccount(null);
+      setDebt(null);
+      setDebtSum(reduce(debts, (sum, debt) => sum + debt.amount, 0));
     }
-  }, [accounts, id]);
-
-  const handleSaveNetworth = () => {
-    dispatch(saveNetworth());
-  };
+  }, [debts, id]);
 
   const renderComponent = () => {
-    if (account) {
-      return <AccountPage account={account} />;
+    if (debt) {
+      return <DebtPage debt={debt} />;
     }
-    return <AccountsTable />;
+    return <DebtsTable />;
   };
 
   return (
@@ -68,22 +66,18 @@ export default function Accounts() {
           <Typography
             align='center'
             variant='h6'
-            sx={{
-              flexGrow: 1,
-              fontWeight: 800,
-              ml: account ? 'unset' : '40px',
-            }}
+            sx={{ flexGrow: 1, fontWeight: 800 }}
           >
-            accounts
+            debts
           </Typography>
-          {account ? (
+          {debt ? (
             <IconButton
               onClick={() =>
                 dispatch(
                   openDialog({
-                    type: 'account',
+                    type: 'debt',
                     mode: 'edit',
-                    id: account.account_id,
+                    id: debt.debt_id,
                   })
                 )
               }
@@ -91,11 +85,8 @@ export default function Accounts() {
               <EditIcon />
             </IconButton>
           ) : (
-            <IconButton onClick={handleSaveNetworth} sx={{ mr: 1 }}>
-              <SaveIcon />
-            </IconButton>
+            <PageSelect />
           )}
-          {!account && <PageSelect />}
         </Toolbar>
       </AppBar>
       <Grid
@@ -108,16 +99,21 @@ export default function Accounts() {
           mb: 8,
         }}
       >
-        {!account && (
+        {!debt && (
           <Grid item xs={12}>
             <Card raised>
               <CardContent sx={{ p: 1, pt: '4px', pb: '0 !important' }}>
-                <CurrentNetworth />
+                <Typography
+                  align='center'
+                  variant='h4'
+                  color={(theme) => theme.palette.green[600]}
+                >
+                  {numberToCurrency.format(debtSum)}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
         )}
-
         {renderComponent()}
       </Grid>
     </>

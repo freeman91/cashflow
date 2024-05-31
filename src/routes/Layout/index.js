@@ -33,9 +33,14 @@ function Layout() {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: 700,
+      }}
+    >
       <CssBaseline />
-      {/* <h3>breadcrumbs</h3> */}
       <Outlet />
       <CustomBottomNavigation />
       <AccountDialog />

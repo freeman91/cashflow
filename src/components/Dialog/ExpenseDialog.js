@@ -125,7 +125,7 @@ function ExpenseDialog() {
       titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
       <form>
-        <List sx={{ width: 375 }}>
+        <List disablePadding sx={{ width: 375 }}>
           {mode !== 'create' && (
             <TextFieldListItem
               id='expense_id'
