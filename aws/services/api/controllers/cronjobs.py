@@ -174,11 +174,11 @@ def generate_bill_expenses():
     if request.method == "POST":
         _date = date.today() + timedelta(days=31)
 
-        print(_date)
-
         for bill in dynamo.bill.get():
             if _date.day == bill.day and _date.month in bill.months:
                 expense = bill.generate(year=_date.year, month=_date.month)
                 print(f"{bill.name} - {expense}")
+
+        return success_result()
 
     return failure_result()
