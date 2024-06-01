@@ -106,7 +106,7 @@ export default function Debts() {
                 <Typography
                   align='center'
                   variant='h4'
-                  color={(theme) => theme.palette.green[600]}
+                  color={(theme) => theme.palette.red[600]}
                 >
                   {numberToCurrency.format(debtSum)}
                 </Typography>

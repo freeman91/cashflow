@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { openDialog } from '../../../store/dialogs';
 import sortBy from 'lodash/sortBy';
 
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -34,49 +36,53 @@ export default function Bills(props) {
   };
 
   return (
-    <TableContainer component={'div'}>
-      <Table>
-        <TableHead>
-          <TableRow key='headers'>
-            <TableCell sx={{ p: 1, pl: 2, pb: 0 }}>day</TableCell>
-            <TableCell sx={{ p: 1, pb: 0 }} align='right'>
-              amount
-            </TableCell>
-            <TableCell sx={{ p: 1, pb: 0 }} align='right'>
-              category
-            </TableCell>
-            <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
-              vendor
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {bills.map((bill, idx, array) => {
-            const sameDateAsPrevious =
-              idx === 0 ? false : bill.day === array[idx - 1].day;
-            return (
-              <TableRow
-                key={bill.bill_id || bill.repayment_id}
-                hover={true}
-                onClick={() => handleClick(bill)}
-              >
-                <CustomTableCell idx={idx} column='day'>
-                  {sameDateAsPrevious ? '' : bill.day}
-                </CustomTableCell>
-                <CustomTableCell idx={idx} align='right'>
-                  {numberToCurrency.format(bill.amount)}
-                </CustomTableCell>
-                <CustomTableCell idx={idx} align='right'>
-                  {bill.category}
-                </CustomTableCell>
-                <CustomTableCell idx={idx} align='right'>
-                  {bill.vendor}
-                </CustomTableCell>
+    <Card raised sx={{ m: 1 }}>
+      <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
+        <TableContainer component={'div'}>
+          <Table>
+            <TableHead>
+              <TableRow key='headers'>
+                <TableCell sx={{ p: 1, pl: 2, pb: 0 }}>day</TableCell>
+                <TableCell sx={{ p: 1, pb: 0 }} align='right'>
+                  amount
+                </TableCell>
+                <TableCell sx={{ p: 1, pb: 0 }} align='right'>
+                  category
+                </TableCell>
+                <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
+                  vendor
+                </TableCell>
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </TableHead>
+            <TableBody>
+              {bills.map((bill, idx, array) => {
+                const sameDateAsPrevious =
+                  idx === 0 ? false : bill.day === array[idx - 1].day;
+                return (
+                  <TableRow
+                    key={bill.bill_id || bill.repayment_id}
+                    hover={true}
+                    onClick={() => handleClick(bill)}
+                  >
+                    <CustomTableCell idx={idx} column='day'>
+                      {sameDateAsPrevious ? '' : bill.day}
+                    </CustomTableCell>
+                    <CustomTableCell idx={idx} align='right'>
+                      {numberToCurrency.format(bill.amount)}
+                    </CustomTableCell>
+                    <CustomTableCell idx={idx} align='right'>
+                      {bill.category}
+                    </CustomTableCell>
+                    <CustomTableCell idx={idx} align='right'>
+                      {bill.vendor}
+                    </CustomTableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </CardContent>
+    </Card>
   );
 }

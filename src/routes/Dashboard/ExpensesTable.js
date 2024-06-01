@@ -34,8 +34,8 @@ export default function ExpensesTable(props) {
   };
 
   return (
-    <TableContainer component={'div'}>
-      <Table size='small'>
+    <TableContainer component='div'>
+      <Table size='medium'>
         <TableBody>
           {expenses.map((expense, idx, array) => {
             const sameDateAsPrevious =

@@ -105,6 +105,8 @@ function CustomBottomNavigation(props) {
         bottom: 0,
         left: 0,
         right: 0,
+        pb: 2,
+        backgroundColor: 'background.dark',
       }}
     >
       <BottomNavigation

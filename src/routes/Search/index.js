@@ -37,7 +37,7 @@ export default function Search() {
   };
 
   return (
-    <Box sx={{ mb: 8 }}>
+    <Box sx={{ mb: 9 }}>
       <SearchAppBar title={selected} toggleTrigger={toggleTrigger} />
       {renderTypeTable()}
     </Box>

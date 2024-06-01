@@ -60,8 +60,8 @@ export default function TransactionsTable(props) {
   };
 
   return (
-    <TableContainer component={'div'}>
-      <Table size='small'>
+    <TableContainer component='div'>
+      <Table size='medium'>
         <TableBody>
           {transactions.map((transaction, idx, array) => {
             const amount = findAmount(transaction);
