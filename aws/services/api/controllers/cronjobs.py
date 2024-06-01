@@ -150,7 +150,7 @@ def networth_snapshot():
                 year=_date.year,
                 month=_date.month,
                 assets=assets,
-                debts=debts
+                debts=debts,
             )
             print("Networth created")
 
@@ -172,13 +172,15 @@ def generate_bill_expenses():
     """
 
     if request.method == "POST":
+        count = 0
         _date = date.today() + timedelta(days=31)
 
         for bill in dynamo.bill.get():
             if _date.day == bill.day and _date.month in bill.months:
                 expense = bill.generate(year=_date.year, month=_date.month)
                 print(f"{bill.name} - {expense}")
+                count += 1
 
-        return success_result()
+        return success_result(f"{_date} :: {count} expenses generated")
 
     return failure_result()
