@@ -4,9 +4,10 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
+import YearSummary from './YearSummary';
+import MonthSummary from './MonthSummary';
 import { setAppBar } from '../../store/appSettings';
 
 export default function Summary() {
@@ -34,7 +35,15 @@ export default function Summary() {
     );
   }, [dispatch]);
 
-  console.log('month: ', month);
+  const renderComponent = () => {
+    if (year) {
+      if (month) {
+        return <MonthSummary year={year} month={month} />;
+      }
+      return <YearSummary year={year} />;
+    }
+    return null;
+  };
 
   return (
     <Grid
@@ -47,23 +56,7 @@ export default function Summary() {
         mb: 8,
       }}
     >
-      <Grid item xs={12}>
-        <Typography variant='body1' align='center' fontWeight='bold'>
-          {year}
-        </Typography>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Typography variant='body1' align='center'>
-          Totals
-        </Typography>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Typography variant='body1' align='center'>
-          List of Months
-        </Typography>
-      </Grid>
+      {renderComponent()}
     </Grid>
   );
 }
