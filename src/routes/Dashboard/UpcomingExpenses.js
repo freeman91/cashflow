@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { push } from 'redux-first-history';
 import dayjs from 'dayjs';
 import sortBy from 'lodash/sortBy';
 
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
 
 import ExpensesTable from './ExpensesTable';
 
 export default function UpcomingExpenses() {
+  const dispatch = useDispatch();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
   const [expenses, setExpenses] = useState([]);
@@ -27,13 +31,23 @@ export default function UpcomingExpenses() {
   }, [allExpenses, allRepayments]);
 
   return (
-    <>
-      <Typography variant='body1'>upcoming expenses</Typography>
-      <Card raised>
-        <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
-          <ExpensesTable expenses={expenses} />
-        </CardContent>
-      </Card>
-    </>
+    <Card raised>
+      <CardHeader
+        title='upcoming expenses'
+        sx={{ p: 1, pt: '4px', pb: 0 }}
+        titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
+        action={
+          <IconButton
+            size='small'
+            onClick={() => dispatch(push(`/search/expenses`))}
+          >
+            <ArrowForwardIosIcon />
+          </IconButton>
+        }
+      />
+      <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
+        <ExpensesTable expenses={expenses} />
+      </CardContent>
+    </Card>
   );
 }

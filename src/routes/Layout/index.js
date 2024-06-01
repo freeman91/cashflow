@@ -20,6 +20,7 @@ import SaleDialog from '../../components/Dialog/SaleDialog';
 
 import { getUser } from '../../store/user';
 import CustomBottomNavigation from './CustomBottomNavigation';
+import CustomAppBar from './CustomAppBar';
 
 const USER_ID = process.env.REACT_APP_USER_ID;
 
@@ -41,6 +42,7 @@ function Layout() {
       }}
     >
       <CssBaseline />
+      <CustomAppBar />
       <Outlet />
       <CustomBottomNavigation />
       <AccountDialog />

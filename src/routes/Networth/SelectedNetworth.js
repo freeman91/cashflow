@@ -85,7 +85,7 @@ export default function SelectedNetworth(props) {
       <Grid item xs={12}>
         <Card raised>
           <CardHeader
-            title={dayjs(networth?.date).format('MMMM, YYYY')}
+            title={dayjs(networth?.date).format('YYYY  MMMM')}
             sx={{ p: 1, pt: '4px', pb: 0 }}
             titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
           />

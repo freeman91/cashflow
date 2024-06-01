@@ -40,3 +40,15 @@ export const items = {
   data: [],
   ...details,
 };
+
+export const appSettings = {
+  appBar: {
+    title: 'cashflow',
+    leftAction: null,
+    rightAction: null,
+    menu: null,
+  },
+  bottomNavigation: {
+    handleCreateClick: null,
+  },
+};

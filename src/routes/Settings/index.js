@@ -46,6 +46,9 @@ export default function Settings() {
 
   const toggleTrigger = () => {
     setTrigger(!trigger);
+    if (!trigger) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const renderOptionComponent = () => {

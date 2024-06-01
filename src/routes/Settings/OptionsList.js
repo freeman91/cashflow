@@ -5,6 +5,8 @@ import find from 'lodash/find';
 import get from 'lodash/get';
 
 import SaveIcon from '@mui/icons-material/Save';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
@@ -65,49 +67,53 @@ export default function OptionsList(props) {
   };
 
   return (
-    <List>
-      {options.map((option, idx) => {
-        if (selectedIdx === idx) {
-          return (
-            <form key={option} onSubmit={handleSave}>
-              <TextFieldListItem
-                sx={{ px: 2 }}
-                placeholder={placeholder}
-                key={option}
-                id={option}
-                value={selectedOption || ''}
-                onChange={(e) => handleChange(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        onClick={handleSave}
-                        disabled={selectedOption === option}
-                      >
-                        <SaveIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </form>
-          );
-        }
+    <Card raised>
+      <CardContent sx={{ mb: 7 }}>
+        <List disablePadding>
+          {options.map((option, idx) => {
+            if (selectedIdx === idx) {
+              return (
+                <form key={option} onSubmit={handleSave}>
+                  <TextFieldListItem
+                    sx={{ px: 2 }}
+                    placeholder={placeholder}
+                    key={option}
+                    id={option}
+                    value={selectedOption || ''}
+                    onChange={(e) => handleChange(e.target.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            onClick={handleSave}
+                            disabled={selectedOption === option}
+                          >
+                            <SaveIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </form>
+              );
+            }
 
-        return (
-          <ListItem key={option} dense>
-            <ListItemButton
-              onClick={() => {
-                setSelectedIdx(idx);
-                setSelectedOption(option);
-              }}
-              sx={{ justifyContent: 'left' }}
-            >
-              {option}
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
-    </List>
+            return (
+              <ListItem key={option} dense>
+                <ListItemButton
+                  onClick={() => {
+                    setSelectedIdx(idx);
+                    setSelectedOption(option);
+                  }}
+                  sx={{ justifyContent: 'left' }}
+                >
+                  {option}
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
+      </CardContent>
+    </Card>
   );
 }

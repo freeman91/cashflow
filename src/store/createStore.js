@@ -11,6 +11,7 @@ import { loadingBarMiddleware } from 'react-redux-loading-bar';
 import { reducer as toastr } from 'react-redux-toastr';
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import accounts from './accounts';
+import appSettings from './appSettings';
 import borrows from './borrows';
 import categories from './categories';
 import dialogs from './dialogs';
@@ -33,6 +34,7 @@ const { createReduxHistory, routerMiddleware, routerReducer } =
 export const store = configureStore({
   reducer: combineReducers({
     accounts,
+    appSettings,
     borrows,
     categories,
     dialogs,

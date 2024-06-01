@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
 import filter from 'lodash/filter';
 
 import reduce from 'lodash/reduce';
@@ -21,6 +22,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
+dayjs.extend(advancedFormat);
 const BORDER_RADIUS = '2px';
 
 export default function Cashflow() {
@@ -103,7 +105,7 @@ export default function Cashflow() {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
         <Typography variant='body1' align='center' fontWeight='bold'>
-          {date.format('MMMM YYYY')}
+          {date.format('YYYY MMMM Do')}
         </Typography>
 
         <Typography variant='body1' align='center'>

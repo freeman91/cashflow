@@ -26,7 +26,7 @@ export default function ItemsTable(props) {
 
   return (
     <TableContainer component='div'>
-      <Table size='small'>
+      <Table size='medium'>
         <TableBody>
           {items.map((item, idx) => {
             const value = item?.value ? item.value : item.amount;
