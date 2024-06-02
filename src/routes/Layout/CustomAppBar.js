@@ -13,10 +13,20 @@ import { goBack } from 'redux-first-history';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-export const BackButton = () => {
+export const BackButton = (props) => {
+  const { onClick } = props;
   const dispatch = useDispatch();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      dispatch(goBack());
+    }
+  };
+
   return (
-    <IconButton onClick={() => dispatch(goBack())}>
+    <IconButton onClick={handleClick}>
       <BackIcon sx={{ hieght: 25, width: 25 }} />
     </IconButton>
   );

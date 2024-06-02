@@ -40,12 +40,12 @@ export default function Dashboard() {
   return (
     <Grid
       container
-      spacing={0}
+      spacing={1}
       sx={{
         pl: 1,
         pr: 1,
         pt: 1,
-        mb: 8,
+        mb: 10,
       }}
     >
       <Grid item xs={12}>
@@ -56,11 +56,11 @@ export default function Dashboard() {
         <Networth />
       </Grid>
 
-      <Grid item xs={12} sx={{ mt: 1 }}>
+      <Grid item xs={12}>
         <UpcomingExpenses />
       </Grid>
 
-      <Grid item xs={12} sx={{ mt: 1 }}>
+      <Grid item xs={12}>
         <RecentTransactions />
       </Grid>
     </Grid>

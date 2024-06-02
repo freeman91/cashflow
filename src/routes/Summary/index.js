@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { push } from 'redux-first-history';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 
 import Grid from '@mui/material/Grid';
 
-import YearSummary from './YearSummary';
-import MonthSummary from './MonthSummary';
+import YearPage from './Year';
+import MonthPage from './Month';
 import { setAppBar } from '../../store/appSettings';
+import { BackButton } from '../Layout/CustomAppBar';
 
 export default function Summary() {
   const dispatch = useDispatch();
@@ -21,15 +23,15 @@ export default function Summary() {
     const today = dayjs();
     const _year = get(location.pathname.split('/'), '2', today.year());
     const _month = get(location.pathname.split('/'), '3', null);
-    setYear(_year);
-    setMonth(_month);
+    setYear(Number(_year));
+    setMonth(Number(_month));
   }, [location]);
 
   useEffect(() => {
     dispatch(
       setAppBar({
         title: 'summary',
-        // leftAction: null,
+        leftAction: <BackButton onClick={() => dispatch(push('/dashboard'))} />,
         // rightAction: null,
       })
     );
@@ -38,9 +40,9 @@ export default function Summary() {
   const renderComponent = () => {
     if (year) {
       if (month) {
-        return <MonthSummary year={year} month={month} />;
+        return <MonthPage year={year} month={month} />;
       }
-      return <YearSummary year={year} />;
+      return <YearPage year={year} />;
     }
     return null;
   };
