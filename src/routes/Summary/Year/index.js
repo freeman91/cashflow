@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import CashflowContainer from '../../../components/CashflowContainer';
+import CashflowExpandedContainer from '../CashflowExpandedContainer';
 import MonthlyBreakdownTable from './MonthlyBreakdownTable';
 
 export default function YearSummary(props) {
@@ -69,7 +69,7 @@ export default function YearSummary(props) {
       </Grid>
       <Grid item xs={12}>
         <Card raised>
-          <CashflowContainer year={year} />
+          <CashflowExpandedContainer year={year} />
         </Card>
       </Grid>
       <MonthlyBreakdownTable

@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import CashflowContainer from '../../../components/CashflowContainer';
+import CashflowExpandedContainer from '../CashflowExpandedContainer';
 
 export default function MonthSummary(props) {
   const { year, month } = props;
@@ -86,7 +86,7 @@ export default function MonthSummary(props) {
       </Grid>
       <Grid item xs={12}>
         <Card raised>
-          <CashflowContainer month={month} year={year} />
+          <CashflowExpandedContainer month={month} year={year} />
         </Card>
       </Grid>
     </>
