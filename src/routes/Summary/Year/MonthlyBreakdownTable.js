@@ -9,7 +9,6 @@ import map from 'lodash/map';
 import { useTheme } from '@emotion/react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Grid from '@mui/material/Grid';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -107,68 +106,66 @@ export default function MonthlyBreakdownTable(props) {
   };
 
   return (
-    <Grid item xs={12}>
-      <Card raised>
-        <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
-          <TableContainer component='div'>
-            <Table size='medium'>
-              <TableHead>
-                <TableRow key='headers'>
-                  <TableCell sx={{ p: 1, pl: 2, pb: 0 }}>month</TableCell>
-                  <TableCell sx={{ p: 1, pb: 0 }} align='right'>
-                    earned
-                  </TableCell>
-                  <TableCell sx={{ p: 1, pb: 0 }} align='right'>
-                    spent
-                  </TableCell>
-                  <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
-                    net
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {MONTHS.map((month) => {
-                  const incomeSum = incomeSumByMonth[month];
-                  const expenseSum = expenseSumByMonth[month];
-                  const net = incomeSum - expenseSum;
+    <Card raised>
+      <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
+        <TableContainer component='div'>
+          <Table size='medium'>
+            <TableHead>
+              <TableRow key='headers'>
+                <TableCell sx={{ p: 1, pl: 2, pb: 0 }}>month</TableCell>
+                <TableCell sx={{ p: 1, pb: 0 }} align='right'>
+                  earned
+                </TableCell>
+                <TableCell sx={{ p: 1, pb: 0 }} align='right'>
+                  spent
+                </TableCell>
+                <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
+                  net
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {MONTHS.map((month) => {
+                const incomeSum = incomeSumByMonth[month];
+                const expenseSum = expenseSumByMonth[month];
+                const net = incomeSum - expenseSum;
 
-                  if (incomeSum === 0 && expenseSum === 0) return null;
+                if (incomeSum === 0 && expenseSum === 0) return null;
 
-                  return (
-                    <TableRow
-                      hover={true}
-                      key={month}
-                      onClick={() => handleMonthClick(month)}
+                return (
+                  <TableRow
+                    hover={true}
+                    key={month}
+                    onClick={() => handleMonthClick(month)}
+                  >
+                    <CustomTableCell idx={month} component='th' column='date'>
+                      {dayjs().month(month).format('MMM')}
+                    </CustomTableCell>
+                    <CustomTableCell idx={month} align='right'>
+                      {numberToCurrency.format(incomeSum)}
+                    </CustomTableCell>
+                    <CustomTableCell idx={month} align='right'>
+                      {numberToCurrency.format(expenseSum)}
+                    </CustomTableCell>
+                    <CustomTableCell
+                      idx={month}
+                      align='right'
+                      sx={{
+                        color:
+                          net < 0
+                            ? theme.palette.red[600]
+                            : theme.palette.green[600],
+                      }}
                     >
-                      <CustomTableCell idx={month} component='th' column='date'>
-                        {dayjs().month(month).format('MMM')}
-                      </CustomTableCell>
-                      <CustomTableCell idx={month} align='right'>
-                        {numberToCurrency.format(incomeSum)}
-                      </CustomTableCell>
-                      <CustomTableCell idx={month} align='right'>
-                        {numberToCurrency.format(expenseSum)}
-                      </CustomTableCell>
-                      <CustomTableCell
-                        idx={month}
-                        align='right'
-                        sx={{
-                          color:
-                            net < 0
-                              ? theme.palette.red[600]
-                              : theme.palette.green[600],
-                        }}
-                      >
-                        {numberToCurrency.format(net)}
-                      </CustomTableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-      </Card>
-    </Grid>
+                      {numberToCurrency.format(net)}
+                    </CustomTableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </CardContent>
+    </Card>
   );
 }

@@ -20,7 +20,7 @@ export default function PageSelect(props) {
   const [currentPage, setCurrentPage] = useState(OPTIONS[0]);
 
   useEffect(() => {
-    const type = get(location.pathname.split('/'), '2', OPTIONS[0]);
+    const type = get(location.pathname.split('/'), '1', OPTIONS[0]);
     setCurrentPage(type);
   }, [location]);
 

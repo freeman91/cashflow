@@ -14,6 +14,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import CashflowExpandedContainer from '../CashflowExpandedContainer';
+import LargestExpenses from './LargestExpenses';
+import ExpensesByCategory from './ExpensesByCategory';
 
 export default function MonthSummary(props) {
   const { year, month } = props;
@@ -86,8 +88,14 @@ export default function MonthSummary(props) {
       </Grid>
       <Grid item xs={12}>
         <Card raised>
-          <CashflowExpandedContainer month={month} year={year} />
+          <CashflowExpandedContainer year={year} month={month} />
         </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <LargestExpenses year={year} month={month} />
+      </Grid>
+      <Grid item xs={12}>
+        <ExpensesByCategory year={year} month={month} />
       </Grid>
     </>
   );

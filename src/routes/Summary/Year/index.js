@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 
 import CashflowExpandedContainer from '../CashflowExpandedContainer';
 import MonthlyBreakdownTable from './MonthlyBreakdownTable';
+import MonthlyLineChart from './MonthlyLineChart';
 
 export default function YearSummary(props) {
   const { year } = props;
@@ -67,18 +68,27 @@ export default function YearSummary(props) {
           />
         </Card>
       </Grid>
+
       <Grid item xs={12}>
         <Card raised>
           <CashflowExpandedContainer year={year} />
         </Card>
       </Grid>
-      <MonthlyBreakdownTable
-        year={year}
-        incomeSumByMonth={incomeSumByMonth}
-        setIncomeSumByMonth={setIncomeSumByMonth}
-        expenseSumByMonth={expenseSumByMonth}
-        setExpenseSumByMonth={setExpenseSumByMonth}
-      />
+      <Grid item xs={12}>
+        <MonthlyLineChart
+          incomeSumByMonth={incomeSumByMonth}
+          expenseSumByMonth={expenseSumByMonth}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <MonthlyBreakdownTable
+          year={year}
+          incomeSumByMonth={incomeSumByMonth}
+          setIncomeSumByMonth={setIncomeSumByMonth}
+          expenseSumByMonth={expenseSumByMonth}
+          setExpenseSumByMonth={setExpenseSumByMonth}
+        />
+      </Grid>
     </>
   );
 }

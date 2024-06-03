@@ -36,7 +36,6 @@ export default function CashflowExpandedContainer(props) {
   const [expenseSum, setExpenseSum] = useState(0);
   const [principalSum, setPrincipalSum] = useState(0);
   const [interestSum, setInterestSum] = useState(0);
-  const [escrowSum, setEscrowSum] = useState(0);
 
   useEffect(() => {
     let start = dayjs().year(year).startOf('year');
@@ -81,18 +80,6 @@ export default function CashflowExpandedContainer(props) {
   }, [year, month, allPaychecks]);
 
   useEffect(() => {
-    let expenses = filter(allExpenses, (expense) => {
-      const tDate = dayjs(expense.date);
-      return (
-        tDate.year() === Number(year) &&
-        (month ? tDate.month() === month - 1 : true) &&
-        !expense.pending
-      );
-    });
-    setExpenseSum(reduce(expenses, (sum, expense) => sum + expense.amount, 0));
-  }, [year, month, allExpenses]);
-
-  useEffect(() => {
     let repayments = filter(allRepayments, (repayment) => {
       const tDate = dayjs(repayment.date);
       return (
@@ -102,20 +89,30 @@ export default function CashflowExpandedContainer(props) {
       );
     });
 
+    let expenses = filter(allExpenses, (expense) => {
+      const tDate = dayjs(expense.date);
+      return (
+        tDate.year() === Number(year) &&
+        (month ? tDate.month() === month - 1 : true) &&
+        !expense.pending
+      );
+    });
+
+    let _expenseSum = 0;
+    _expenseSum += reduce(expenses, (sum, expense) => sum + expense.amount, 0);
+    _expenseSum += reduce(
+      repayments,
+      (sum, repayment) => sum + (repayment.escrow ? repayment.escrow : 0),
+      0
+    );
+    setExpenseSum(_expenseSum);
     setPrincipalSum(
       reduce(repayments, (sum, repayment) => sum + repayment.principal, 0)
     );
     setInterestSum(
       reduce(repayments, (sum, repayment) => sum + repayment.interest, 0)
     );
-    setEscrowSum(
-      reduce(
-        repayments,
-        (sum, repayment) => sum + (repayment.escrow ? repayment.escrow : 0),
-        0
-      )
-    );
-  }, [year, month, allRepayments]);
+  }, [year, month, allExpenses, allRepayments]);
 
   return (
     <CardContent sx={{ p: 1, pt: 1, pb: '0px !important' }}>
@@ -123,19 +120,13 @@ export default function CashflowExpandedContainer(props) {
         align='center'
         variant='h4'
         color={
-          incomeSum + paycheckSum >
-          expenseSum + principalSum + interestSum + escrowSum
+          incomeSum + paycheckSum > expenseSum + principalSum + interestSum
             ? theme.palette.green[600]
             : theme.palette.red[600]
         }
       >
         {numberToCurrency.format(
-          incomeSum +
-            paycheckSum -
-            expenseSum -
-            principalSum -
-            interestSum -
-            escrowSum
+          incomeSum + paycheckSum - expenseSum - principalSum - interestSum
         )}
       </Typography>
       <Stack
@@ -174,14 +165,14 @@ export default function CashflowExpandedContainer(props) {
             />
             <ListItemText
               primary={numberToCurrency.format(
-                expenseSum + principalSum + interestSum + escrowSum
+                expenseSum + principalSum + interestSum
               )}
               primaryTypographyProps={{ fontWeight: 'bold' }}
             />
           </ListItem>
           <Divider />
           <ListItem disableGutters disablePadding>
-            <ListItemText sx={{ width: '30%' }} secondary='expense' />
+            <ListItemText sx={{ width: '30%' }} secondary='expenses' />
             <ListItemText primary={numberToCurrency.format(expenseSum)} />
           </ListItem>
           <ListItem disableGutters disablePadding>
@@ -191,10 +182,6 @@ export default function CashflowExpandedContainer(props) {
           <ListItem disableGutters disablePadding>
             <ListItemText sx={{ width: '30%' }} secondary='interest' />
             <ListItemText primary={numberToCurrency.format(interestSum)} />
-          </ListItem>
-          <ListItem disableGutters disablePadding>
-            <ListItemText sx={{ width: '30%' }} secondary='escrow' />
-            <ListItemText primary={numberToCurrency.format(escrowSum)} />
           </ListItem>
         </List>
       </Stack>
