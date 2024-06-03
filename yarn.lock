@@ -1042,7 +1042,7 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@babel/runtime@^7.24.5":
+"@babel/runtime@^7.24.6":
   version "7.24.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.6.tgz#5b76eb89ad45e2e4a0a8db54c456251469a3358e"
   integrity sha512-Ja18XcETdEl5mzzACGd+DKgaGJzPTCow7EglgwTmHdwokzDFYh/MHua6lU6DV/hjF2IaOJ4oX2nqnjG7RElKOw==
@@ -1813,7 +1813,7 @@
     jss-plugin-vendor-prefixer "^10.10.0"
     prop-types "^15.8.1"
 
-"@mui/system@^5.15.14":
+"@mui/system@^5.15.15":
   version "5.15.15"
   resolved "https://registry.yarnpkg.com/@mui/system/-/system-5.15.15.tgz#658771b200ce3c4a0f28e58169f02e5e718d1c53"
   integrity sha512-aulox6N1dnu5PABsfxVGOZffDVmlxPOVgj56HrUnJE8MCSh8lOvvkd47cebIVQQYAjpwieXQXiDPj5pwM40jTQ==
@@ -1871,14 +1871,14 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/x-charts@^7.5.1":
-  version "7.5.1"
-  resolved "https://registry.yarnpkg.com/@mui/x-charts/-/x-charts-7.5.1.tgz#e5f5266dcdf47b8c65ace3a9165db52462f2aefd"
-  integrity sha512-8vMQyJL13cGXMbp+gm2QdABzFuOpP4hxEa/o6nL3ZpVNp7hja6h9F5bc0FNGR8h/eRN+4+swDnrEebnR0w4cbA==
+"@mui/x-charts@^7.6.1":
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/@mui/x-charts/-/x-charts-7.6.1.tgz#0c18f36d72ad585dc82e122ac81712b69ed5de3d"
+  integrity sha512-LuAVQX4lzhmsqk2NRdWCP+aQZ8kRwG7KOy8ulf8hR5NI5J1VsiOtH41J+qgV3uAC6hDMWL7fTgffrRDFTMci/g==
   dependencies:
-    "@babel/runtime" "^7.24.5"
+    "@babel/runtime" "^7.24.6"
     "@mui/base" "^5.0.0-beta.40"
-    "@mui/system" "^5.15.14"
+    "@mui/system" "^5.15.15"
     "@mui/utils" "^5.15.14"
     "@react-spring/rafz" "^9.7.3"
     "@react-spring/web" "^9.7.3"
