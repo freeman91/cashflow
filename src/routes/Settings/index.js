@@ -7,13 +7,17 @@ import Box from '@mui/material/Box';
 
 import SettingsAppBar from './SettingsAppBar';
 import OptionsList from './OptionsList';
+import CategoryList from './CategoryList';
 
 export const OPTIONS = {
   vendors: {
     type: 'expense_vendor',
     placeholder: 'vendor',
   },
-  expense_categories: {},
+  expense_categories: {
+    type: 'expense',
+    placeholder: 'category',
+  },
   sources: {
     type: 'income_source',
     placeholder: 'source',
@@ -54,27 +58,36 @@ export default function Settings() {
   const renderOptionComponent = () => {
     const option = get(OPTIONS, selected);
     if (
-      includes([
-        'expense_vendor',
-        'income_source',
-        'income_category',
-        'asset_category',
-      ])
+      includes(
+        ['vendors', 'sources', 'income_categories', 'asset_categories'],
+        selected
+      )
     )
-      return null;
+      return (
+        <OptionsList
+          optionType={option.type}
+          placeholder={option.placeholder}
+          trigger={trigger}
+          toggleTrigger={toggleTrigger}
+        />
+      );
 
-    return (
-      <OptionsList
-        optionType={option.type}
-        placeholder={option.placeholder}
-        trigger={trigger}
-        toggleTrigger={toggleTrigger}
-      />
-    );
+    if (selected === 'expense_categories') {
+      return (
+        <CategoryList
+          categoryType={option.type}
+          placeholder={option.placeholder}
+          trigger={trigger}
+          toggleTrigger={toggleTrigger}
+        />
+      );
+    }
+
+    return null;
   };
 
   return (
-    <Box>
+    <Box sx={{ mb: 7 }}>
       <SettingsAppBar title={selected} toggleTrigger={toggleTrigger} />
       {renderOptionComponent()}
     </Box>
