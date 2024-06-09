@@ -124,9 +124,9 @@ function ExpenseDialog() {
       handleClose={handleClose}
       titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
-      <form>
-        <List disablePadding sx={{ width: 375 }}>
-          {mode !== 'create' && (
+      <form style={{ width: '100%' }}>
+        <List>
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='expense_id'
               label='expense_id'
@@ -136,7 +136,7 @@ function ExpenseDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
               label='date'

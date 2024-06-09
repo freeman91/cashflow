@@ -123,9 +123,9 @@ function DebtDialog() {
         </MenuItem>
       }
     >
-      <form>
-        <List sx={{ width: 375 }}>
-          {mode !== 'create' && (
+      <form style={{ width: '100%' }}>
+        <List>
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='debt_id'
               label='debt_id'
@@ -135,7 +135,7 @@ function DebtDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <AccountSelect resource={debt} setResource={setDebt} />
           <TextFieldListItem
             id='name'

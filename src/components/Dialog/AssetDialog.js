@@ -112,9 +112,9 @@ function AssetDialog() {
         </MenuItem>,
       ]}
     >
-      <form>
-        <List sx={{ width: 375 }}>
-          {mode !== 'create' && (
+      <form style={{ width: '100%' }}>
+        <List>
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='asset_id'
               label='asset_id'
@@ -124,7 +124,7 @@ function AssetDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <AccountSelect resource={asset} setResource={setAsset} />
           <TextFieldListItem
             id='name'

@@ -115,8 +115,8 @@ function SaleDialog() {
       handleClose={handleClose}
       titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
-      <form>
-        <List sx={{ width: 375 }}>
+      <form style={{ width: '100%' }}>
+        <List>
           {mode !== 'create' && (
             <TextFieldListItem
               id='sale_id'

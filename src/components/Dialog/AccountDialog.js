@@ -76,9 +76,9 @@ function AccountDialog() {
       handleClose={handleClose}
       titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
-      <form>
-        <List sx={{ width: 375 }}>
-          {mode !== 'create' && (
+      <form style={{ width: '100%' }}>
+        <List>
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='account_id'
               label='account_id'
@@ -88,7 +88,7 @@ function AccountDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <TextFieldListItem
             id='name'
             label='name'

@@ -134,9 +134,9 @@ function BillDialog() {
       handleClose={handleClose}
       titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
-      <form>
-        <List sx={{ width: 375 }}>
-          {mode !== 'create' && (
+      <form style={{ width: '100%' }}>
+        <List>
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='bill_id'
               label='bill_id'
@@ -146,7 +146,7 @@ function BillDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <ListItem key='debt-select' disablePadding sx={{ pt: 2, pb: 1 }}>
             <DebtSelect resource={bill} setResource={setBill} />
           </ListItem>

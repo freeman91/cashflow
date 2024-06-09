@@ -92,9 +92,9 @@ function IncomeDialog() {
       handleClose={handleClose}
       titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
-      <form>
-        <List sx={{ width: 375 }}>
-          {mode !== 'create' && (
+      <form style={{ width: '100%' }}>
+        <List>
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='income_id'
               label='income_id'
@@ -104,7 +104,7 @@ function IncomeDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
               label='date'

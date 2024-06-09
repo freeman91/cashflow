@@ -30,6 +30,8 @@ const defaultPurchase = {
   date: dayjs().hour(12).minute(0).second(0),
   amount: '',
   vendor: '',
+  shares: '',
+  price: '',
   _type: 'purchase',
   asset_id: '',
 };
@@ -117,8 +119,8 @@ function PurchaseDialog() {
       handleClose={handleClose}
       titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
-      <form>
-        <List sx={{ width: 375 }}>
+      <form style={{ width: '100%' }}>
+        <List>
           {mode !== 'create' && (
             <TextFieldListItem
               id='purchase_id'

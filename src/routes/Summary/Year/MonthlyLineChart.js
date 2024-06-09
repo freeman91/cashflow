@@ -36,7 +36,7 @@ export default function MonthlyLineChart(props) {
       <Card raised>
         <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
           <LineChart
-            width={400}
+            width={375}
             height={175}
             series={[
               {

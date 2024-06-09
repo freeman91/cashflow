@@ -101,9 +101,9 @@ function PaycheckDialog() {
       handleClose={handleClose}
       titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
-      <form>
-        <List sx={{ width: 375 }}>
-          {mode !== 'create' && (
+      <form style={{ width: '100%' }}>
+        <List>
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='paycheck_id'
               label='paycheck_id'
@@ -113,7 +113,7 @@ function PaycheckDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
               label='date'

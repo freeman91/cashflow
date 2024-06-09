@@ -38,7 +38,7 @@ export default function Networth() {
         pl: 1,
         pr: 1,
         pt: 1,
-        mb: 8,
+        mb: 10,
       }}
     >
       <Grid item xs={12}>

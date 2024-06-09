@@ -105,9 +105,9 @@ function BorrowDialog() {
       handleClose={handleClose}
       titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
     >
-      <form>
-        <List sx={{ width: 375 }}>
-          {mode !== 'create' && (
+      <form style={{ width: '100%' }}>
+        <List>
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='borrow_id'
               label='borrow_id'
@@ -117,7 +117,7 @@ function BorrowDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <DebtSelect resource={borrow} setResource={setBorrow} />
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker

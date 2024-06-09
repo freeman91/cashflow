@@ -66,5 +66,22 @@ def update_categories():
 #     pprint(accounts)
 
 
+def print_paychecks():
+    start = datetime(2020, 1, 1, tzinfo=timezone.utc)
+    end = datetime(2024, 6, 30, tzinfo=timezone.utc)
+
+    paychecks = dynamo.paycheck.search(user_id=USER_ID, start=start, end=end)
+    paychecks = sort_by(paychecks, ["date"])
+    for paycheck in paychecks:
+        if not paycheck.benefits:
+            pprint(
+                {
+                    "date": paycheck.date,
+                    "take_home": paycheck.take_home,
+                    "benefits": paycheck.benefits,
+                }
+            )
+
+
 def main():
     pass
