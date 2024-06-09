@@ -87,7 +87,7 @@ export default function Settings() {
   };
 
   return (
-    <Box sx={{ mb: 7 }}>
+    <Box sx={{ mb: 7, mt: 1 }}>
       <SettingsAppBar title={selected} toggleTrigger={toggleTrigger} />
       {renderOptionComponent()}
     </Box>

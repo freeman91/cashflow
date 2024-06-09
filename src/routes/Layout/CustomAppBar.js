@@ -40,8 +40,8 @@ export default function CustomAppBar() {
   return (
     <Box>
       <AppBar position='fixed'>
-        <Toolbar>
-          <Grid container justifyContent='center'>
+        <Toolbar sx={{ justifyContent: 'center' }}>
+          <Grid container justifyContent='center' sx={{ maxWidth: 700 }}>
             <Grid item xs={3} display='flex' justifyContent='flex-start'>
               {leftAction}
             </Grid>

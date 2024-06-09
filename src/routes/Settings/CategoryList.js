@@ -28,17 +28,19 @@ export default function CategoryList(props) {
   const { categoryType, placeholder, trigger, toggleTrigger } = props;
   const dispatch = useDispatch();
   const categoriesData = useSelector((state) => state.categories.data);
-  const [categories, setCategories] = useState([]);
-  const [open, setOpen] = useState([]);
-  const [selectedIdx, setSelectedIdx] = useState(null);
+  const [editCategory, setEditCategory] = useState(null);
+  const [openedCategory, setOpenedCategory] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [selectedIdx, setSelectedIdx] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState('');
 
   useEffect(() => {
     if (trigger) {
-      if (!categories.includes('')) {
-        setCategories(['', ...categories]);
-      }
-      setSelectedIdx(0);
+      // if (!categories.includes('')) {
+      //   setCategories(['', ...categories]);
+      // }
+      // setSelectedIdx(0);
       setSelectedCategory('');
       toggleTrigger();
     }
@@ -49,18 +51,6 @@ export default function CategoryList(props) {
       category_type: categoryType,
     });
     setCategories(item);
-
-    let _open = reduce(
-      item.categories,
-      (obj, category) => {
-        return {
-          ...obj,
-          [category.name]: false,
-        };
-      },
-      {}
-    );
-    setOpen(_open);
   }, [categoriesData, categoryType]);
 
   const handleSave = (e) => {
@@ -82,43 +72,82 @@ export default function CategoryList(props) {
     setSelectedCategory('');
   };
 
-  const handleChange = (option) => {
-    setSelectedCategory(option);
+  const handleChange = (category) => {
+    console.log('category: ', category);
   };
 
   return (
     <Card raised>
-      <CardContent>
+      <CardContent sx={{ p: 0, pt: 0, pb: '4px !important' }}>
         <List disablePadding>
           {sortBy(categories?.categories, 'name')?.map((category, idx) => {
             return (
-              <>
-                <ListItem>
-                  <ListItemButton
-                    onClick={null}
-                    sx={{ justifyContent: 'left' }}
+              <React.Fragment key={category.name + '-edit'}>
+                {editCategory === category.name ? (
+                  <form key={category.name + '-form'} onSubmit={handleSave}>
+                    <TextFieldListItem
+                      sx={{ px: 2 }}
+                      placeholder={placeholder}
+                      key={category.name}
+                      id={category.name}
+                      value={editCategory}
+                      onChange={(e) => handleChange(e.target.value)}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position='end'>
+                            <IconButton onClick={handleSave}>
+                              <SaveIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </form>
+                ) : (
+                  <ListItem
+                    disableGutters
+                    sx={{ minWidth: 300 }}
+                    key={category.name + '-item-' + idx}
                   >
-                    {<EditIcon />}
-                  </ListItemButton>
-                  <ListItemText
-                    primary={category.name}
-                    primaryTypographyProps={{ align: 'center' }}
-                  />
-                  <ListItemButton
-                    onClick={() =>
-                      setOpen({
-                        ...open,
-                        [category.name]: !open[category.name],
-                      })
-                    }
-                    sx={{ justifyContent: 'right' }}
-                  >
-                    {open[category.name] ? <ExpandLess /> : <ExpandMore />}
-                  </ListItemButton>
-                </ListItem>
+                    <ListItemButton
+                      onClick={() => setEditCategory(category.name)}
+                      sx={{ justifyContent: 'left' }}
+                      key={category.name + '-edit-button'}
+                    >
+                      {<EditIcon />}
+                    </ListItemButton>
+                    <ListItemText
+                      primary={category.name}
+                      primaryTypographyProps={{
+                        align: 'center',
+                        fontWeight: 'bold',
+                      }}
+                      sx={{ width: '75%' }}
+                      key={category.name + '-text'}
+                    />
+                    <ListItemButton
+                      onClick={() => {
+                        if (openedCategory === category.name) {
+                          setOpenedCategory(null);
+                        } else {
+                          setOpenedCategory(category.name);
+                        }
+                      }}
+                      sx={{ justifyContent: 'right' }}
+                      key={category.name + '-expand-button'}
+                    >
+                      {openedCategory === category.name ? (
+                        <ExpandLess />
+                      ) : (
+                        <ExpandMore />
+                      )}
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
                 <Collapse
-                  key={category.name}
-                  in={open[category.name]}
+                  key={category.name + '-collapse'}
+                  in={openedCategory === category.name}
                   timeout='auto'
                   unmountOnExit
                 >
@@ -134,34 +163,13 @@ export default function CategoryList(props) {
                   ))}
                   <Divider />
                 </Collapse>
-              </>
+              </React.Fragment>
             );
           })}
           {/* {categories.map((option, idx) => {
             if (selectedIdx === idx) {
               return (
-                <form key={option} onSubmit={handleSave}>
-                  <TextFieldListItem
-                    sx={{ px: 2 }}
-                    placeholder={placeholder}
-                    key={option}
-                    id={option}
-                    value={selectedCategory || ''}
-                    onChange={(e) => handleChange(e.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='end'>
-                          <IconButton
-                            onClick={handleSave}
-                            disabled={selectedCategory === option}
-                          >
-                            <SaveIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </form>
+                
               );
             }
 

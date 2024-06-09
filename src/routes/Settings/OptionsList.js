@@ -68,7 +68,7 @@ export default function OptionsList(props) {
 
   return (
     <Card raised>
-      <CardContent>
+      <CardContent sx={{ p: 0, pt: 1, pb: '4px !important' }}>
         <List disablePadding>
           {options.map((option, idx) => {
             if (selectedIdx === idx) {
