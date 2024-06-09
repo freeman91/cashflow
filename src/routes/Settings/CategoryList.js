@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import cloneDeep from 'lodash/cloneDeep';
+import { useSelector } from 'react-redux';
 import find from 'lodash/find';
-import get from 'lodash/get';
-import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
 import EditIcon from '@mui/icons-material/Edit';
@@ -22,18 +19,17 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 import TextFieldListItem from '../../components/List/TextFieldListItem';
-import { putOptionList } from '../../store/optionLists';
 
 export default function CategoryList(props) {
   const { categoryType, placeholder, trigger, toggleTrigger } = props;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const categoriesData = useSelector((state) => state.categories.data);
   const [editCategory, setEditCategory] = useState(null);
   const [openedCategory, setOpenedCategory] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  // const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState([]);
-  const [selectedIdx, setSelectedIdx] = useState(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState('');
+  // const [selectedIdx, setSelectedIdx] = useState(null);
+  // const [selectedSubcategory, setSelectedSubcategory] = useState('');
 
   useEffect(() => {
     if (trigger) {
@@ -41,7 +37,7 @@ export default function CategoryList(props) {
       //   setCategories(['', ...categories]);
       // }
       // setSelectedIdx(0);
-      setSelectedCategory('');
+      // setSelectedCategory('');
       toggleTrigger();
     }
   }, [trigger, categories, toggleTrigger]);
@@ -68,8 +64,8 @@ export default function CategoryList(props) {
 
     // optionList.categories = _categories;
     // dispatch(putOptionList(optionList));
-    setSelectedIdx(null);
-    setSelectedCategory('');
+    // setSelectedIdx(null);
+    // setSelectedCategory('');
   };
 
   const handleChange = (category) => {
