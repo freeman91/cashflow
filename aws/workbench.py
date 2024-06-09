@@ -45,7 +45,7 @@ ALLY_ACCESS_TOKEN = os.getenv("ALLY_ACCESS_TOKEN")
 
 def update_categories():
     cats = dynamo.categories.get(user_id=USER_ID, category_type="expense")
-    cats.categories = OPTIONS
+    # cats.categories = OPTIONS
     cats.save()
 
 
@@ -68,98 +68,3 @@ def update_categories():
 
 def main():
     pass
-
-
-OPTIONS = [
-    {
-        "name": "housing",
-        "subcategories": [
-            "mortgage",
-            "rent",
-            "maintenance",
-            "renovations",
-            "administration",
-        ],
-    },
-    {
-        "name": "utility",
-        "subcategories": [
-            "electric",
-            "water",
-            "gas",
-            "internet",
-            "phone",
-            "insurance",
-        ],
-    },
-    {
-        "name": "transportation",
-        "subcategories": [
-            "auto loan",
-            "maintenance",
-            "public",
-            "ride-share",
-            "gas",
-            "parking",
-            "bicycle",
-            "administration",
-            "rental",
-        ],
-    },
-    {
-        "name": "food",
-        "subcategories": [
-            "grocery",
-            "fast food",
-            "dining",
-            "beverage",
-            "take out",
-            "pet",
-        ],
-    },
-    {
-        "name": "health",
-        "subcategories": [
-            "medical",
-            "dental",
-            "vision",
-            "fitness",
-            "pet",
-            "medication",
-        ],
-    },
-    {
-        "name": "entertainment",
-        "subcategories": ["subscription", "activity", "event", "media", "theater"],
-    },
-    {
-        "name": "project",
-        "subcategories": ["materials", "tools"],
-    },
-    {
-        "name": "shopping",
-        "subcategories": [
-            "web purchase",
-            "gift",
-            "clothing",
-            "household",
-            "electronics",
-            "pet",
-            "service",
-            "books",
-            "garden",
-        ],
-    },
-    {
-        "name": "travel",
-        "subcategories": ["flight", "accomodation", "activity"],
-    },
-    {
-        "name": "education",
-        "subcategories": ["student loans", "professional development"],
-    },
-    {
-        "name": "other",
-        "subcategories": ["childcare", "fun", "administration"],
-    },
-]

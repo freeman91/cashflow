@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
 import sortBy from 'lodash/sortBy';
+import reduce from 'lodash/reduce';
 
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -9,6 +12,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import SaveIcon from '@mui/icons-material/Save';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -17,98 +21,154 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import TextField from '@mui/material/TextField';
 
-import TextFieldListItem from '../../components/List/TextFieldListItem';
+import { putCategories } from '../../store/categories';
+
+const defaultEditingObj = {
+  type: null,
+  name: null,
+  value: null,
+};
 
 export default function CategoryList(props) {
   const { categoryType, placeholder, trigger, toggleTrigger } = props;
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const categoriesData = useSelector((state) => state.categories.data);
-  const [editCategory, setEditCategory] = useState(null);
-  const [openedCategory, setOpenedCategory] = useState(null);
-  // const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState([]);
-  // const [selectedIdx, setSelectedIdx] = useState(null);
-  // const [selectedSubcategory, setSelectedSubcategory] = useState('');
+  const [openedCategory, setOpenedCategory] = useState(null);
+  const [editing, setEditing] = useState(defaultEditingObj);
 
   useEffect(() => {
     if (trigger) {
-      // if (!categories.includes('')) {
-      //   setCategories(['', ...categories]);
-      // }
-      // setSelectedIdx(0);
-      // setSelectedCategory('');
+      if (openedCategory === null) {
+        if (!find(categories, { name: '' })) {
+          setCategories([{ name: '', subcategories: [] }, ...categories]);
+          setEditing({
+            type: 'category',
+            name: '',
+            value: '',
+          });
+        }
+      } else {
+        let _categories = cloneDeep(categories);
+        _categories = _categories.map((category) => {
+          if (category.name === openedCategory) {
+            if (!category.subcategories.includes('')) {
+              category.subcategories = ['', ...category.subcategories];
+            }
+          }
+          return category;
+        });
+        setCategories(_categories);
+        setEditing({
+          type: 'subcategory',
+          name: '',
+          value: '',
+        });
+      }
       toggleTrigger();
     }
-  }, [trigger, categories, toggleTrigger]);
+  }, [trigger, categories, editing, toggleTrigger, openedCategory]);
 
   useEffect(() => {
     const item = find(categoriesData, {
       category_type: categoryType,
     });
-    setCategories(item);
+    setCategories(item?.categories || []);
   }, [categoriesData, categoryType]);
 
   const handleSave = (e) => {
     e.preventDefault();
-    // let _categories = [...categories];
+    let _categories = cloneDeep(categories);
 
-    // if (!selectedCategory) {
-    //   _categories.splice(selectedIdx, 1);
-    // } else {
-    //   _categories[selectedIdx] = selectedCategory;
-    //   _categories.sort();
-    // }
+    // add editing value to item
+    if (editing.type === 'category') {
+      let categoryIdx = findIndex(_categories, { name: editing.name });
+      _categories[categoryIdx].name = editing.value;
+    } else if (editing.type === 'subcategory') {
+      let categoryIdx = findIndex(_categories, { name: openedCategory });
+      let subcategoryIdx = findIndex(
+        _categories[categoryIdx].subcategories,
+        (subcategory) => subcategory === editing.name
+      );
+      _categories[categoryIdx].subcategories[subcategoryIdx] = editing.value;
+    }
 
-    // let optionList = cloneDeep(find(optionLists, { option_type: optionType }));
+    // remove all empty string categories and subcategories
+    _categories = reduce(
+      _categories,
+      (arr, category) => {
+        if (category.name !== '') {
+          arr.push({
+            ...category,
+            subcategories: category.subcategories.filter(
+              (subcategory) => subcategory !== ''
+            ),
+          });
+        }
+        return arr;
+      },
+      []
+    );
 
-    // optionList.categories = _categories;
-    // dispatch(putOptionList(optionList));
-    // setSelectedIdx(null);
-    // setSelectedCategory('');
+    let item = cloneDeep(find(categoriesData, { category_type: categoryType }));
+    item.categories = _categories;
+    dispatch(putCategories(item));
+    setEditing(defaultEditingObj);
   };
 
-  const handleChange = (category) => {
-    console.log('category: ', category);
+  const handleChange = (value) => {
+    setEditing((e) => ({ ...e, value }));
   };
 
   return (
     <Card raised>
       <CardContent sx={{ p: 0, pt: 0, pb: '4px !important' }}>
         <List disablePadding>
-          {sortBy(categories?.categories, 'name')?.map((category, idx) => {
+          {sortBy(categories, 'name')?.map((category) => {
             return (
               <React.Fragment key={category.name + '-edit'}>
-                {editCategory === category.name ? (
-                  <form key={category.name + '-form'} onSubmit={handleSave}>
-                    <TextFieldListItem
-                      sx={{ px: 2 }}
-                      placeholder={placeholder}
-                      key={category.name}
-                      id={category.name}
-                      value={editCategory}
-                      onChange={(e) => handleChange(e.target.value)}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position='end'>
-                            <IconButton onClick={handleSave}>
-                              <SaveIcon />
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
+                {editing.type === 'category' &&
+                editing.name === category.name ? (
+                  <form onSubmit={handleSave}>
+                    <ClickAwayListener
+                      onClickAway={() => setEditing(defaultEditingObj)}
+                    >
+                      <ListItem sx={{ pl: 0, pr: 0 }}>
+                        <TextField
+                          fullWidth
+                          variant='standard'
+                          sx={{ px: 2 }}
+                          placeholder={placeholder}
+                          key={category.name}
+                          id={category.name}
+                          value={editing.value || ''}
+                          onChange={(e) => handleChange(e.target.value)}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position='end'>
+                                <IconButton onClick={handleSave}>
+                                  <SaveIcon />
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </ListItem>
+                    </ClickAwayListener>
                   </form>
                 ) : (
-                  <ListItem
-                    disableGutters
-                    sx={{ minWidth: 300 }}
-                    key={category.name + '-item-' + idx}
-                  >
+                  <ListItem disableGutters sx={{ minWidth: 350 }}>
                     <ListItemButton
-                      onClick={() => setEditCategory(category.name)}
+                      onClick={() =>
+                        setEditing({
+                          type: 'category',
+                          name: category.name,
+                          value: category.name,
+                        })
+                      }
                       sx={{ justifyContent: 'left' }}
-                      key={category.name + '-edit-button'}
                     >
                       {<EditIcon />}
                     </ListItemButton>
@@ -119,7 +179,6 @@ export default function CategoryList(props) {
                         fontWeight: 'bold',
                       }}
                       sx={{ width: '75%' }}
-                      key={category.name + '-text'}
                     />
                     <ListItemButton
                       onClick={() => {
@@ -130,7 +189,6 @@ export default function CategoryList(props) {
                         }
                       }}
                       sx={{ justifyContent: 'right' }}
-                      key={category.name + '-expand-button'}
                     >
                       {openedCategory === category.name ? (
                         <ExpandLess />
@@ -140,49 +198,64 @@ export default function CategoryList(props) {
                     </ListItemButton>
                   </ListItem>
                 )}
-
+                <Divider sx={{ mx: 1 }} />
                 <Collapse
-                  key={category.name + '-collapse'}
                   in={openedCategory === category.name}
                   timeout='auto'
                   unmountOnExit
                 >
-                  <Divider />
-                  {sortBy(category.subcategories).map((subcategory) => (
-                    <>
+                  {sortBy(category.subcategories).map((subcategory) => {
+                    return editing.type === 'subcategory' &&
+                      editing.name === subcategory ? (
+                      <form key={subcategory} onSubmit={handleSave}>
+                        <ClickAwayListener
+                          onClickAway={() => setEditing(defaultEditingObj)}
+                        >
+                          <ListItem sx={{ pl: 4, pr: 0 }}>
+                            <TextField
+                              fullWidth
+                              variant='standard'
+                              sx={{ px: 2 }}
+                              placeholder={placeholder}
+                              key={subcategory}
+                              id={subcategory}
+                              value={editing.value || ''}
+                              onChange={(e) => handleChange(e.target.value)}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position='end'>
+                                    <IconButton onClick={handleSave}>
+                                      <SaveIcon />
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          </ListItem>
+                        </ClickAwayListener>
+                      </form>
+                    ) : (
                       <ListItem key={subcategory} dense>
-                        <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemButton
+                          sx={{ pl: 4 }}
+                          onClick={() =>
+                            setEditing({
+                              type: 'subcategory',
+                              name: subcategory,
+                              value: subcategory,
+                            })
+                          }
+                        >
                           {subcategory}
                         </ListItemButton>
                       </ListItem>
-                    </>
-                  ))}
-                  <Divider />
+                    );
+                  })}
+                  <Divider sx={{ mx: 1 }} />
                 </Collapse>
               </React.Fragment>
             );
           })}
-          {/* {categories.map((option, idx) => {
-            if (selectedIdx === idx) {
-              return (
-                
-              );
-            }
-
-            return (
-              <ListItem key={option} dense>
-                <ListItemButton
-                  onClick={() => {
-                    setSelectedIdx(idx);
-                    setSelectedCategory(option);
-                  }}
-                  sx={{ justifyContent: 'left' }}
-                >
-                  {option}
-                </ListItemButton>
-              </ListItem>
-            );
-          })} */}
         </List>
       </CardContent>
     </Card>

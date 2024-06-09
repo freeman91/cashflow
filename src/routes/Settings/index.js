@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import SettingsAppBar from './SettingsAppBar';
 import OptionsList from './OptionsList';
 import CategoryList from './CategoryList';
+import PaycheckSettings from './PaycheckSettings';
 
 export const OPTIONS = {
   vendors: {
@@ -83,11 +84,15 @@ export default function Settings() {
       );
     }
 
+    if (selected === 'paycheck') {
+      return <PaycheckSettings />;
+    }
+
     return null;
   };
 
   return (
-    <Box sx={{ mb: 7, mt: 1 }}>
+    <Box sx={{ mb: 10, mt: 1 }}>
       <SettingsAppBar title={selected} toggleTrigger={toggleTrigger} />
       {renderOptionComponent()}
     </Box>
