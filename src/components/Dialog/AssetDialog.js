@@ -138,6 +138,7 @@ function AssetDialog() {
             placeholder='0.00'
             value={asset.value}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -160,6 +161,7 @@ function AssetDialog() {
               placeholder='0.00'
               value={asset.shares}
               onChange={handleChangeNumber}
+              inputProps={{ inputMode: 'decimal' }}
             />
           )}
           {hasShares && (
@@ -169,6 +171,7 @@ function AssetDialog() {
               placeholder='0.00'
               value={asset.price}
               onChange={handleChangeNumber}
+              inputProps={{ inputMode: 'decimal' }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>

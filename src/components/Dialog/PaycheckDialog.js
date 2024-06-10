@@ -144,6 +144,7 @@ function PaycheckDialog() {
             placeholder='0.00'
             value={paycheck.take_home}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -158,6 +159,7 @@ function PaycheckDialog() {
             placeholder='0.00'
             value={paycheck.taxes}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -172,6 +174,7 @@ function PaycheckDialog() {
             placeholder='0.00'
             value={paycheck.retirement}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -186,6 +189,7 @@ function PaycheckDialog() {
             placeholder='0.00'
             value={paycheck.benefits}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -200,6 +204,7 @@ function PaycheckDialog() {
             placeholder='0.00'
             value={paycheck.other}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>

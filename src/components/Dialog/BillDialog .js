@@ -169,6 +169,7 @@ function BillDialog() {
                 setBill({ ...bill, amount: e.target.value });
               }
             }}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>

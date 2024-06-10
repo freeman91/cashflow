@@ -186,7 +186,7 @@ function RepaymentDialog() {
     >
       <form style={{ width: '100%' }}>
         <List>
-          {mode !== 'create' && (
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='repayment_id'
               label='repayment_id'
@@ -196,7 +196,7 @@ function RepaymentDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <DebtSelect resource={repayment} setResource={setRepayment} />
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
@@ -220,6 +220,7 @@ function RepaymentDialog() {
             id='amount'
             label='amount'
             value={_numberToCurrency.format(total)}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               readOnly: true,
               disableUnderline: true,
@@ -236,6 +237,7 @@ function RepaymentDialog() {
             placeholder='0.00'
             value={repayment.principal}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -250,6 +252,7 @@ function RepaymentDialog() {
             placeholder='0.00'
             value={repayment.interest}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -265,6 +268,7 @@ function RepaymentDialog() {
               placeholder='0.00'
               value={repayment.escrow}
               onChange={handleChangeNumber}
+              inputProps={{ inputMode: 'decimal' }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>

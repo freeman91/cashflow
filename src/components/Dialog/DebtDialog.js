@@ -149,6 +149,7 @@ function DebtDialog() {
             placeholder='0.00'
             value={debt.amount}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -179,6 +180,7 @@ function DebtDialog() {
             placeholder='0.00'
             value={debt.interest_rate}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
           />
 
           <ListItem

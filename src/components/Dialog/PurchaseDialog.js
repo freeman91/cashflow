@@ -121,7 +121,7 @@ function PurchaseDialog() {
     >
       <form style={{ width: '100%' }}>
         <List>
-          {mode !== 'create' && (
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='purchase_id'
               label='purchase_id'
@@ -131,7 +131,7 @@ function PurchaseDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <AssetSelect resource={purchase} setResource={setPurchase} />
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
@@ -157,6 +157,7 @@ function PurchaseDialog() {
             placeholder='0.00'
             value={purchase.amount}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -172,6 +173,7 @@ function PurchaseDialog() {
             placeholder='0.00'
             value={purchase.shares}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
           />
           <TextFieldListItem
             id='price'
@@ -179,6 +181,7 @@ function PurchaseDialog() {
             placeholder='0.00'
             value={purchase.price}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>

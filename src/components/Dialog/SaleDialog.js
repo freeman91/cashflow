@@ -117,7 +117,7 @@ function SaleDialog() {
     >
       <form style={{ width: '100%' }}>
         <List>
-          {mode !== 'create' && (
+          {/* {mode !== 'create' && (
             <TextFieldListItem
               id='sale_id'
               label='sale_id'
@@ -127,7 +127,7 @@ function SaleDialog() {
                 disableUnderline: true,
               }}
             />
-          )}
+          )} */}
           <AssetSelect resource={sale} setResource={setSale} />
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
@@ -153,6 +153,7 @@ function SaleDialog() {
             placeholder='0.00'
             value={sale.amount}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -168,6 +169,7 @@ function SaleDialog() {
             placeholder='0.00'
             value={sale.shares}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
           />
           <TextFieldListItem
             id='price'
@@ -175,6 +177,7 @@ function SaleDialog() {
             placeholder='0.00'
             value={sale.price}
             onChange={handleChangeNumber}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>

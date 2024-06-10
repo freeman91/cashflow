@@ -150,6 +150,7 @@ function BorrowDialog() {
                 setBorrow({ ...borrow, amount: e.target.value });
               }
             }}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
