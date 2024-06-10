@@ -168,7 +168,7 @@ function ExpenseDialog() {
                 setExpense({ ...expense, amount: e.target.value });
               }
             }}
-            inputProps={{ inputMode: 'numeric' }}
+            inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
