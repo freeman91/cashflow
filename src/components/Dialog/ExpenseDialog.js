@@ -169,6 +169,7 @@ function ExpenseDialog() {
               }
             }}
             InputProps={{
+              type: 'number',
               startAdornment: (
                 <InputAdornment position='start'>
                   <AttachMoneyIcon />
