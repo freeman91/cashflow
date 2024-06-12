@@ -25,7 +25,7 @@ export default function PurchasesTable(props) {
 
   useEffect(() => {
     let _purchases = filter(purchases, { asset_id: assetId });
-    setTableData(sortBy(_purchases, 'date'));
+    setTableData(sortBy(_purchases, 'date').reverse());
   }, [purchases, assetId]);
 
   const handleClick = (purchase) => {

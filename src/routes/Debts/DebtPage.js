@@ -41,7 +41,7 @@ export default function DebtPage(props) {
   }, [allBorrows, debt.debt_id]);
 
   useEffect(() => {
-    const debtRepayments = filter(allRepayments, { debt_id: debt.debt_id });
+    let debtRepayments = filter(allRepayments, { debt_id: debt.debt_id });
     const sums = reduce(
       debtRepayments,
       (acc, repayment) => {
@@ -57,7 +57,7 @@ export default function DebtPage(props) {
     setPrincipalSum(sums.principal);
     setInterestSum(sums.interest);
     setEscrowSum(sums.escrow);
-    setRepayments(sortBy(debtRepayments, 'date'));
+    setRepayments(debtRepayments);
   }, [allRepayments, debt.debt_id]);
 
   return (
@@ -170,16 +170,18 @@ export default function DebtPage(props) {
                     }}
                   />
                 </ListItem>
-                <ListItem>
-                  <ListItemText primary='escrow' />
-                  <ListItemText
-                    primary={numberToCurrency.format(escrowSum)}
-                    primaryTypographyProps={{
-                      align: 'right',
-                      fontWeight: 'bold',
-                    }}
-                  />
-                </ListItem>
+                {escrowSum > 0 && (
+                  <ListItem>
+                    <ListItemText primary='escrow' />
+                    <ListItemText
+                      primary={numberToCurrency.format(escrowSum)}
+                      primaryTypographyProps={{
+                        align: 'right',
+                        fontWeight: 'bold',
+                      }}
+                    />
+                  </ListItem>
+                )}
               </List>
               <Divider />
               <RepaymentsTable debtId={debt.debt_id} />

@@ -25,7 +25,7 @@ export default function RepaymentsTable(props) {
 
   useEffect(() => {
     let _repayments = filter(repayments, { debt_id: debtId });
-    setTableData(sortBy(_repayments, 'date'));
+    setTableData(sortBy(_repayments, 'date').reverse());
   }, [repayments, debtId]);
 
   const handleClick = (repayment) => {

@@ -24,7 +24,7 @@ export default function BorrowsTable(props) {
   useEffect(() => {
     let _borrows = filter(borrows, { debt_id: debtId });
 
-    setTableData(sortBy(_borrows, 'date'));
+    setTableData(sortBy(_borrows, 'date').reverse());
   }, [borrows, debtId]);
 
   const handleClick = (borrow) => {

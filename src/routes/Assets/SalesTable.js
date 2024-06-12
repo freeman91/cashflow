@@ -25,7 +25,7 @@ export default function SalesTable(props) {
 
   useEffect(() => {
     let _sales = filter(sales, { asset_id: assetId });
-    setTableData(sortBy(_sales, 'date'));
+    setTableData(sortBy(_sales, 'date').reverse());
   }, [sales, assetId]);
 
   const handleClick = (sale) => {

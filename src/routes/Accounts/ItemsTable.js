@@ -1,12 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { push } from 'redux-first-history';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 
-import { openDialog } from '../../store/dialogs';
 import { numberToCurrency } from '../../helpers/currency';
 import { CustomTableCell } from '../../components/Table/CustomTableCell';
 
@@ -15,13 +15,9 @@ export default function ItemsTable(props) {
   const dispatch = useDispatch();
 
   const handleRowClick = (item) => {
-    dispatch(
-      openDialog({
-        type: item._type,
-        mode: 'edit',
-        id: item[item._type + '_id'],
-      })
-    );
+    const page = item._type + 's';
+    const id = item[item._type + '_id'];
+    dispatch(push(`/${page}/${id}`));
   };
 
   return (
