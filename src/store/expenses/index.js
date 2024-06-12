@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { cloneDeep, concat, get, remove, sortBy } from 'lodash';
 
 import {
@@ -13,6 +12,7 @@ import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
 import { updateRange } from '../../helpers/dates';
+import { setSnackbar } from '../appSettings';
 
 const getExpenses = createAsyncThunk(
   'expenses/getExpenses',
@@ -50,7 +50,7 @@ const getExpenses = createAsyncThunk(
         end: storeRange.end,
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -59,32 +59,32 @@ const getExpenses = createAsyncThunk(
 
 const postExpense = createAsyncThunk(
   'expenses/postExpense',
-  async (newExpense, { getState }) => {
+  async (newExpense, { dispatch, getState }) => {
     try {
       const { data: expenses } = getState().expenses;
       const { user_id } = getState().user.item;
       const result = await postResourceAPI(user_id, newExpense);
 
       if (result) {
-        toastr.success('Expense created');
+        dispatch(setSnackbar({ message: 'expense created' }));
       }
       return {
         data: [result].concat(expenses),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
 
 const putExpense = createAsyncThunk(
   'expenses/putExpense',
-  async (updatedExpense, { getState }) => {
+  async (updatedExpense, { dispatch, getState }) => {
     try {
       const result = await putResourceAPI(updatedExpense);
       const { data: expenses } = getState().expenses;
       if (result) {
-        toastr.success('Expense updated');
+        dispatch(setSnackbar({ message: 'expense updated' }));
       }
       let _expenses = [...expenses];
       remove(_expenses, {
@@ -94,20 +94,20 @@ const putExpense = createAsyncThunk(
         data: concat(_expenses, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
 
 const deleteExpense = createAsyncThunk(
   'expenses/deleteExpense',
-  async (id, { getState }) => {
+  async (id, { dispatch, getState }) => {
     try {
       const expenses = getState().expenses.data;
       const { user_id } = getState().user.item;
       const result = await deleteResourceAPI(user_id, 'expense', id);
       if (result) {
-        toastr.success('Expense deleted');
+        dispatch(setSnackbar({ message: 'expense deleted' }));
       }
       let _expenses = [...expenses];
       remove(_expenses, { expense_id: id });
@@ -115,7 +115,7 @@ const deleteExpense = createAsyncThunk(
         data: _expenses,
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { concat, get, remove } from 'lodash';
 
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
+import { setSnackbar } from '../appSettings';
 
 const getBills = createAsyncThunk(
   'bills/getBills',
@@ -21,7 +21,7 @@ const getBills = createAsyncThunk(
         data: await getResourcesAPI(user_id, 'bills'),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -37,13 +37,13 @@ const postBill = createAsyncThunk(
       const result = await postResourceAPI(user_id, newBill);
 
       if (result) {
-        toastr.success('Bill created');
+        dispatch(setSnackbar({ message: 'bill created' }));
       }
       return {
         data: [result].concat(bills),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -55,7 +55,7 @@ const putBill = createAsyncThunk(
       const result = await putResourceAPI(updatedBill);
       const { data: bills } = getState().bills;
       if (result) {
-        toastr.success('Bill updated');
+        dispatch(setSnackbar({ message: 'bill updated' }));
       }
       let _bills = [...bills];
       remove(_bills, {
@@ -65,7 +65,7 @@ const putBill = createAsyncThunk(
         data: concat(_bills, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -79,7 +79,7 @@ const deleteBill = createAsyncThunk(
       const result = await deleteResourceAPI(user_id, 'bill', id);
 
       if (result) {
-        toastr.success('Bill deleted');
+        dispatch(setSnackbar({ message: 'bill deleted' }));
       }
       let _bills = [...bills];
       remove(_bills, { bill_id: id });
@@ -87,7 +87,7 @@ const deleteBill = createAsyncThunk(
         data: _bills,
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

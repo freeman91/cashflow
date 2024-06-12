@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { cloneDeep, concat, get, remove, sortBy } from 'lodash';
 
 import {
@@ -13,6 +12,7 @@ import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
 import { updateRange } from '../../helpers/dates';
+import { setSnackbar } from '../appSettings';
 
 const getIncomes = createAsyncThunk(
   'incomes/getIncomes',
@@ -50,7 +50,7 @@ const getIncomes = createAsyncThunk(
         end: storeRange.end,
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -66,13 +66,13 @@ const postIncome = createAsyncThunk(
       const result = await postResourceAPI(user_id, newIncome);
 
       if (result) {
-        toastr.success('Income created');
+        dispatch(setSnackbar({ message: 'income created' }));
       }
       return {
         data: [result].concat(incomes),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -84,7 +84,7 @@ const putIncome = createAsyncThunk(
       const result = await putResourceAPI(updatedIncome);
       const { data: incomes } = getState().incomes;
       if (result) {
-        toastr.success('Income updated');
+        dispatch(setSnackbar({ message: 'income updated' }));
       }
       let _incomes = [...incomes];
       remove(_incomes, {
@@ -94,7 +94,7 @@ const putIncome = createAsyncThunk(
         data: concat(_incomes, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -108,7 +108,7 @@ const deleteIncome = createAsyncThunk(
       const result = await deleteResourceAPI(user_id, 'income', id);
 
       if (result) {
-        toastr.success('Income deleted');
+        dispatch(setSnackbar({ message: 'income deleted' }));
       }
       let _incomes = [...incomes];
       remove(_incomes, { income_id: id });
@@ -116,7 +116,7 @@ const deleteIncome = createAsyncThunk(
         data: _incomes,
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { concat, get, remove, sortBy } from 'lodash';
 
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
+import { setSnackbar } from '../appSettings';
 
 const getRepayments = createAsyncThunk(
   'repayments/getRepayments',
@@ -23,7 +23,7 @@ const getRepayments = createAsyncThunk(
         data: sortBy(repayments, 'date'),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -39,13 +39,13 @@ const postRepayment = createAsyncThunk(
       const result = await postResourceAPI(user_id, newRepayment);
 
       if (result) {
-        toastr.success('Repayment created');
+        dispatch(setSnackbar({ message: 'repayment created' }));
       }
       return {
         data: [result].concat(repayments),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -57,7 +57,7 @@ const putRepayment = createAsyncThunk(
       const result = await putResourceAPI(updatedRepayment);
       const { data: repayments } = getState().repayments;
       if (result) {
-        toastr.success('Repayment updated');
+        dispatch(setSnackbar({ message: 'repayment updated' }));
       }
       let _repayments = [...repayments];
       remove(_repayments, {
@@ -67,7 +67,7 @@ const putRepayment = createAsyncThunk(
         data: concat(_repayments, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -81,7 +81,7 @@ const deleteRepayment = createAsyncThunk(
       const result = await deleteResourceAPI(user_id, 'repayment', id);
 
       if (result) {
-        toastr.success('Repayment deleted');
+        dispatch(setSnackbar({ message: 'repayment deleted' }));
       }
       let _repayments = [...repayments];
       remove(_repayments, { repayment_id: id });
@@ -89,7 +89,7 @@ const deleteRepayment = createAsyncThunk(
         data: _repayments,
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

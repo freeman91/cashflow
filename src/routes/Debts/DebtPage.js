@@ -9,7 +9,11 @@ import sortBy from 'lodash/sortBy';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -26,7 +30,9 @@ export default function DebtPage(props) {
   const [borrows, setBorrows] = useState([]);
   const [borrowSum, setBorrowSum] = useState(0);
   const [repayments, setRepayments] = useState([]);
-  const [repaymentSum, setRepaymentSum] = useState(0);
+  const [principalSum, setPrincipalSum] = useState(0);
+  const [interestSum, setInterestSum] = useState(0);
+  const [escrowSum, setEscrowSum] = useState(0);
 
   useEffect(() => {
     const debtBorrows = filter(allBorrows, { debt_id: debt.debt_id });
@@ -36,19 +42,21 @@ export default function DebtPage(props) {
 
   useEffect(() => {
     const debtRepayments = filter(allRepayments, { debt_id: debt.debt_id });
-    setRepaymentSum(
-      reduce(
-        debtRepayments,
-        (acc, repayment) => {
-          const amount =
-            get(repayment, 'principal', 0) +
-            get(repayment, 'interest', 0) +
-            get(repayment, 'escrow', 0);
-          return acc + amount;
-        },
-        0
-      )
+    const sums = reduce(
+      debtRepayments,
+      (acc, repayment) => {
+        if (repayment.pending) return acc;
+        return {
+          principal: acc.principal + get(repayment, 'principal', 0),
+          interest: acc.interest + get(repayment, 'interest', 0),
+          escrow: acc.escrow + get(repayment, 'escrow', 0),
+        };
+      },
+      { principal: 0, interest: 0, escrow: 0 }
     );
+    setPrincipalSum(sums.principal);
+    setInterestSum(sums.interest);
+    setEscrowSum(sums.escrow);
     setRepayments(sortBy(debtRepayments, 'date'));
   }, [allRepayments, debt.debt_id]);
 
@@ -88,9 +96,9 @@ export default function DebtPage(props) {
                   sx={{ alignItems: 'center' }}
                 >
                   <Typography variant='body1' align='left' fontWeight='bold'>
-                    borrows
+                    borrowed
                   </Typography>
-                  {repaymentSum > 0 && (
+                  {principalSum + interestSum + escrowSum > 0 && (
                     <Typography variant='h6' align='right' fontWeight='bold'>
                       {numberToCurrency.format(borrowSum)}
                     </Typography>
@@ -125,11 +133,11 @@ export default function DebtPage(props) {
                   <Typography variant='body1' align='left' fontWeight='bold'>
                     repayments
                   </Typography>
-                  {borrowSum > 0 && (
-                    <Typography variant='h6' align='right' fontWeight='bold'>
-                      {numberToCurrency.format(repaymentSum)}
-                    </Typography>
-                  )}
+                  <Typography variant='h6' align='right' fontWeight='bold'>
+                    {numberToCurrency.format(
+                      principalSum + interestSum + escrowSum
+                    )}
+                  </Typography>
                 </Stack>
               }
               sx={{ p: 1, pt: '4px', pb: 0 }}
@@ -141,6 +149,39 @@ export default function DebtPage(props) {
                 pb: `${repayments.length ? 0 : '4px'} !important`,
               }}
             >
+              <List dense disablePadding>
+                <ListItem>
+                  <ListItemText primary='principal' />
+                  <ListItemText
+                    primary={numberToCurrency.format(principalSum)}
+                    primaryTypographyProps={{
+                      align: 'right',
+                      fontWeight: 'bold',
+                    }}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary='interest' />
+                  <ListItemText
+                    primary={numberToCurrency.format(interestSum)}
+                    primaryTypographyProps={{
+                      align: 'right',
+                      fontWeight: 'bold',
+                    }}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary='escrow' />
+                  <ListItemText
+                    primary={numberToCurrency.format(escrowSum)}
+                    primaryTypographyProps={{
+                      align: 'right',
+                      fontWeight: 'bold',
+                    }}
+                  />
+                </ListItem>
+              </List>
+              <Divider />
               <RepaymentsTable debtId={debt.debt_id} />
             </CardContent>
           </Card>

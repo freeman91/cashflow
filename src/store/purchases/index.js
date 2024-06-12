@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { concat, get, remove, sortBy } from 'lodash';
 
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
+import { setSnackbar } from '../appSettings';
 
 const getPurchases = createAsyncThunk(
   'purchases/getPurchases',
@@ -23,7 +23,7 @@ const getPurchases = createAsyncThunk(
         data: sortBy(purchases, 'date'),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -39,13 +39,13 @@ const postPurchase = createAsyncThunk(
       const result = await postResourceAPI(user_id, newPurchase);
 
       if (result) {
-        toastr.success('Purchase created');
+        dispatch(setSnackbar({ message: 'purchase created' }));
       }
       return {
         data: [result].concat(purchases),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -57,7 +57,7 @@ const putPurchase = createAsyncThunk(
       const result = await putResourceAPI(updatedPurchase);
       const { data: purchases } = getState().purchases;
       if (result) {
-        toastr.success('Purchase updated');
+        dispatch(setSnackbar({ message: 'purchase updated' }));
       }
       let _purchases = [...purchases];
       remove(_purchases, {
@@ -67,7 +67,7 @@ const putPurchase = createAsyncThunk(
         data: concat(_purchases, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -81,15 +81,13 @@ const deletePurchase = createAsyncThunk(
       const result = await deleteResourceAPI(user_id, 'purchase', id);
 
       if (result) {
-        toastr.success('Purchase deleted');
+        dispatch(setSnackbar({ message: 'purchase deleted' }));
       }
       let _purchases = [...purchases];
       remove(_purchases, { purchase_id: id });
-      return {
-        data: _purchases,
-      };
+      return { data: _purchases };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

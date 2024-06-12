@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import dayjs from 'dayjs';
 
 import { getUserAPI, putUserAPI } from '../../api';
@@ -20,6 +19,7 @@ import { getRepayments } from '../repayments';
 import { getSales } from '../sales';
 import { getOptionLists } from '../optionLists';
 import { getCategories } from '../categories';
+import { setSnackbar } from '../appSettings';
 
 const getUser = createAsyncThunk(
   'user/getUser',
@@ -66,17 +66,15 @@ const getUser = createAsyncThunk(
 
 const putUser = createAsyncThunk(
   'users/putUser',
-  async (updatedUser, { getState }) => {
+  async (updatedUser, { dispatch }) => {
     try {
       const user = await putUserAPI(updatedUser);
       if (user) {
-        toastr.success('User updated');
+        dispatch(setSnackbar({ message: 'user updated' }));
       }
-      return {
-        item: user,
-      };
+      return { item: user };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

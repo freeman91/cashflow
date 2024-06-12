@@ -15,6 +15,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 
 import { openDialog } from '../../store/dialogs';
 
@@ -108,7 +109,6 @@ function CustomBottomNavigation(props) {
   return (
     <Box
       sx={{
-        // display: includes(['settings'], pageName) ? 'none' : 'unset',
         position: 'fixed',
         bottom: 0,
         left: 0,
@@ -159,8 +159,12 @@ function CustomBottomNavigation(props) {
         anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
       >
         {transactionTypes.map((type) => (
-          <MenuItem key={type} onClick={() => handleTypeClick(type)}>
-            {type}
+          <MenuItem
+            key={type}
+            onClick={() => handleTypeClick(type)}
+            sx={{ p: 2 }}
+          >
+            <Typography variant='h6'>{type}</Typography>
           </MenuItem>
         ))}
       </Menu>

@@ -9,12 +9,15 @@ const { reducer, actions } = createSlice({
     setAppBar: (state, action) => {
       state.appBar = action.payload;
     },
+    setSnackbar: (state, action) => {
+      state.snackbar = action.payload;
+    },
     setHandleCreateClick: (state, action) => {
       state.bottomNavigation.handleCreateClick = action.payload;
     },
   },
 });
 
-const { setAppBar, setHandleCreateClick } = actions;
-export { setAppBar, setHandleCreateClick };
+const { setAppBar, setSnackbar, setHandleCreateClick } = actions;
+export { setAppBar, setSnackbar, setHandleCreateClick };
 export default reducer;

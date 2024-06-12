@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { get, remove, concat } from 'lodash';
 
 import {
@@ -10,6 +9,7 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
+import { setSnackbar } from '../appSettings';
 
 const getOptionLists = createAsyncThunk(
   'option_lists/getOptionLists',
@@ -20,7 +20,7 @@ const getOptionLists = createAsyncThunk(
         data: await getResourcesAPI(user_id, 'option_lists'),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -35,27 +35,30 @@ const postOptionList = createAsyncThunk(
     try {
       const result = await postOptionListAPI(user_id, newOptionList);
       if (result) {
-        toastr.success('OptionList created');
+        dispatch(setSnackbar({ message: 'option_list created' }));
       }
       return {
         data: [result].concat(optionLists),
       };
     } catch (err) {
-      // toastr.error(err);
-      console.log('err: ', err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
 
 const putOptionList = createAsyncThunk(
   'optionLists/putOptionList',
-  async (updatedOptionList, { getState }) => {
+  async (updatedOptionList, { dispatch, getState }) => {
     const optionLists = getState().optionLists.data;
 
     try {
       const result = await putOptionListAPI(updatedOptionList);
       if (result) {
-        toastr.success(`${result.option_type.replace('_', ' ')}s updated`);
+        dispatch(
+          setSnackbar({
+            message: `${result.option_type.replace('_', ' ')}s updated`,
+          })
+        );
       }
 
       let _optionLists = [...optionLists];
@@ -67,7 +70,7 @@ const putOptionList = createAsyncThunk(
         data: concat(_optionLists, result),
       };
     } catch (err) {
-      // toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -79,7 +82,6 @@ const deleteOptionList = createAsyncThunk(
       // const result = await deleteOptionListAPI(option_list_id);
       // const { data: optionLists } = getState().optionLists;
       // if (result) {
-      //   toastr.success('OptionList deleted');
       // }
       // let _optionLists = [...optionLists];
       // remove(_optionLists, { option_list_id });
@@ -87,7 +89,7 @@ const deleteOptionList = createAsyncThunk(
       //   data: _optionLists,
       // };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

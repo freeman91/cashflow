@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { concat, get, remove, sortBy } from 'lodash';
 
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
+import { setSnackbar } from '../appSettings';
 
 const getSales = createAsyncThunk(
   'sales/getSales',
@@ -19,9 +19,7 @@ const getSales = createAsyncThunk(
       dispatch(showLoading());
       const sales = await getResourcesAPI(user_id, 'sales');
 
-      return {
-        data: sortBy(sales, 'date'),
-      };
+      return { data: sortBy(sales, 'date') };
     } catch (err) {
       console.error(err);
     } finally {
@@ -39,13 +37,13 @@ const postSale = createAsyncThunk(
       const result = await postResourceAPI(user_id, newSale);
 
       if (result) {
-        toastr.success('Sale created');
+        dispatch(setSnackbar({ message: 'sale created' }));
       }
       return {
         data: [result].concat(sales),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -57,7 +55,7 @@ const putSale = createAsyncThunk(
       const result = await putResourceAPI(updatedSale);
       const { data: sales } = getState().sales;
       if (result) {
-        toastr.success('Sale updated');
+        dispatch(setSnackbar({ message: 'sale updated' }));
       }
       let _sales = [...sales];
       remove(_sales, {
@@ -67,7 +65,7 @@ const putSale = createAsyncThunk(
         data: concat(_sales, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -81,7 +79,7 @@ const deleteSale = createAsyncThunk(
       const result = await deleteResourceAPI(user_id, 'sale', id);
 
       if (result) {
-        toastr.success('Sale deleted');
+        dispatch(setSnackbar({ message: 'sale deleted' }));
       }
       let _sales = [...sales];
       remove(_sales, { sale_id: id });
@@ -89,7 +87,7 @@ const deleteSale = createAsyncThunk(
         data: _sales,
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

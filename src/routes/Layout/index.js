@@ -21,6 +21,7 @@ import SaleDialog from '../../components/Dialog/SaleDialog';
 import { getUser } from '../../store/user';
 import CustomBottomNavigation from './CustomBottomNavigation';
 import CustomAppBar from './CustomAppBar';
+import CustomSnackbar from './CustomSnackbar';
 
 const USER_ID = process.env.REACT_APP_USER_ID;
 
@@ -39,6 +40,7 @@ function Layout() {
         display: 'flex',
         flexDirection: 'column',
         maxWidth: 700,
+        width: '100%',
       }}
     >
       <CssBaseline />
@@ -57,6 +59,7 @@ function Layout() {
       <PurchaseDialog />
       <RepaymentDialog />
       <SaleDialog />
+      <CustomSnackbar />
     </Box>
   );
 }

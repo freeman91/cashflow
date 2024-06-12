@@ -66,7 +66,7 @@ export default function ExpensesTable(props) {
                 <CustomTableCell idx={idx} align='right' sx={{ color }}>
                   {numberToCurrency.format(amount)}
                 </CustomTableCell>
-                <CustomTableCell idx={idx} align='right'>
+                <CustomTableCell idx={idx} align='right' sx={{ width: '33%' }}>
                   {vendor}
                 </CustomTableCell>
               </TableRow>

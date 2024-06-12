@@ -108,6 +108,7 @@ export default function SelectedNetworth(props) {
         {groupedItems.map((group) => {
           return (
             <Accordian
+              key={group.group}
               sx={{
                 backgroundColor: (theme) => theme.palette.background.dark,
               }}
@@ -129,7 +130,7 @@ export default function SelectedNetworth(props) {
                   <List disablePadding>
                     {group.items.map((item) => {
                       return (
-                        <ListItem disablePadding disableGutters ket={item.name}>
+                        <ListItem disablePadding disableGutters key={item.name}>
                           <ListItemText
                             primary={item.name}
                             primaryTypographyProps={{ variant: 'body2' }}

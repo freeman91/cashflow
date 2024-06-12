@@ -51,4 +51,5 @@ export const appSettings = {
   bottomNavigation: {
     handleCreateClick: null,
   },
+  snackbar: { message: '' },
 };

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { concat, get, remove } from 'lodash';
 
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
+import { setSnackbar } from '../appSettings';
 
 const getAccounts = createAsyncThunk(
   'accounts/getAccounts',
@@ -21,7 +21,7 @@ const getAccounts = createAsyncThunk(
         data: await getResourcesAPI(user_id, 'accounts'),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -37,13 +37,13 @@ const postAccount = createAsyncThunk(
       const result = await postResourceAPI(user_id, newAccount);
 
       if (result) {
-        toastr.success('Account created');
+        dispatch(setSnackbar({ message: 'account created' }));
       }
       return {
         data: [result].concat(accounts),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -55,7 +55,7 @@ const putAccount = createAsyncThunk(
       const result = await putResourceAPI(updatedAccount);
       const { data: accounts } = getState().accounts;
       if (result) {
-        toastr.success('Account updated');
+        dispatch(setSnackbar({ message: 'account updated' }));
       }
       let _accounts = [...accounts];
       remove(_accounts, {
@@ -65,21 +65,21 @@ const putAccount = createAsyncThunk(
         data: concat(_accounts, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
 
 const deleteAccount = createAsyncThunk(
   'accounts/deleteAccount',
-  async (id, { getState }) => {
+  async (id, { dispatch, getState }) => {
     try {
       const { data: accounts } = getState().accounts;
       const { user_id } = getState().user.item;
       const result = await deleteResourceAPI(user_id, 'account', id);
 
       if (result) {
-        toastr.success('Account deleted');
+        dispatch(setSnackbar({ message: 'account deleted' }));
       }
       let _accounts = [...accounts];
       remove(_accounts, { account_id: id });
@@ -87,7 +87,7 @@ const deleteAccount = createAsyncThunk(
         data: _accounts,
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

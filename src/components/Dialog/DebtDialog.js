@@ -169,7 +169,7 @@ function DebtDialog() {
           <AutocompleteListItem
             id='subcategory'
             label='subcategory'
-            value={debt.subcategory}
+            value={debt.subcategory || ''}
             options={subcategories}
             onChange={handleChange}
           />

@@ -8,7 +8,6 @@ import thunkMiddleware from 'redux-thunk';
 import { loadingBarMiddleware } from 'react-redux-loading-bar';
 
 /** REDUCERS **/
-import { reducer as toastr } from 'react-redux-toastr';
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import accounts from './accounts';
 import appSettings from './appSettings';
@@ -51,7 +50,6 @@ export const store = configureStore({
     sales,
     loadingBar: loadingBarReducer,
     router: routerReducer,
-    toastr,
     user,
   }),
   middleware: (getDefaultMiddleware) =>

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { concat, get, remove, sortBy } from 'lodash';
 
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
+import { setSnackbar } from '../appSettings';
 
 const getBorrows = createAsyncThunk(
   'borrows/getBorrows',
@@ -23,7 +23,7 @@ const getBorrows = createAsyncThunk(
         data: sortBy(borrows, 'date'),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -39,13 +39,13 @@ const postBorrow = createAsyncThunk(
       const result = await postResourceAPI(user_id, newBorrow);
 
       if (result) {
-        toastr.success('Borrow created');
+        dispatch(setSnackbar({ message: 'borrow created' }));
       }
       return {
         data: [result].concat(borrows),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -57,7 +57,7 @@ const putBorrow = createAsyncThunk(
       const result = await putResourceAPI(updatedBorrow);
       const { data: borrows } = getState().borrows;
       if (result) {
-        toastr.success('Borrow updated');
+        dispatch(setSnackbar({ message: 'borrow updated' }));
       }
       let _borrows = [...borrows];
       remove(_borrows, {
@@ -67,7 +67,7 @@ const putBorrow = createAsyncThunk(
         data: concat(_borrows, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -81,7 +81,7 @@ const deleteBorrow = createAsyncThunk(
       const result = await deleteResourceAPI(user_id, 'borrow', borrow_id);
 
       if (result) {
-        toastr.success('Borrow deleted');
+        dispatch(setSnackbar({ message: 'borrow deleted' }));
       }
       let _borrows = [...borrows];
       remove(_borrows, { borrow_id });
@@ -89,7 +89,7 @@ const deleteBorrow = createAsyncThunk(
         data: _borrows,
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

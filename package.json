@@ -26,7 +26,6 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.4",
     "react-redux-loading-bar": "^5.0.4",
-    "react-redux-toastr": "^7.6.10",
     "react-router-dom": "^6.4.2",
     "react-scripts": "^5.0.1",
     "recharts": "^2.1.15",

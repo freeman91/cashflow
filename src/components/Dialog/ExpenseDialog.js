@@ -215,7 +215,7 @@ function ExpenseDialog() {
           <TextFieldListItem
             id='description'
             label='description'
-            value={expense.description}
+            value={expense.description || ''}
             onChange={handleChange}
             InputProps={{
               endAdornment: (

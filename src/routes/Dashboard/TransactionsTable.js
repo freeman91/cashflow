@@ -94,7 +94,7 @@ export default function TransactionsTable(props) {
                 >
                   {numberToCurrency.format(amount)}
                 </CustomTableCell>
-                <CustomTableCell idx={idx} align='right'>
+                <CustomTableCell idx={idx} align='right' sx={{ width: '33%' }}>
                   {source}
                 </CustomTableCell>
               </TableRow>

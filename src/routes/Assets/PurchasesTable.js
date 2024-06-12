@@ -44,14 +44,14 @@ export default function PurchasesTable(props) {
       <Table size='medium'>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 800 }}>date</TableCell>
-            <TableCell sx={{ fontWeight: 800 }} align='right'>
+            <TableCell sx={{ p: 1, pl: 2, pb: 0 }}>date</TableCell>
+            <TableCell sx={{ p: 1, pb: 0 }} align='right'>
               amount
             </TableCell>
-            <TableCell sx={{ fontWeight: 800 }} align='right'>
+            <TableCell sx={{ p: 1, pb: 0 }} align='right'>
               shares
             </TableCell>
-            <TableCell sx={{ fontWeight: 800 }} align='right'>
+            <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
               price
             </TableCell>
           </TableRow>

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { concat, get, remove } from 'lodash';
 
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
+import { setSnackbar } from '../appSettings';
 
 const getDebts = createAsyncThunk(
   'debts/getDebts',
@@ -21,7 +21,7 @@ const getDebts = createAsyncThunk(
         data: await getResourcesAPI(user_id, 'debts'),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -37,13 +37,13 @@ const postDebt = createAsyncThunk(
       const result = await postResourceAPI(user_id, newDebt);
 
       if (result) {
-        toastr.success('Debt created');
+        dispatch(setSnackbar({ message: 'debt created' }));
       }
       return {
         data: [result].concat(debts),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
@@ -55,7 +55,7 @@ const putDebt = createAsyncThunk(
       const result = await putResourceAPI(updatedDebt);
       const { data: debts } = getState().debts;
       if (result) {
-        toastr.success('Debt updated');
+        dispatch(setSnackbar({ message: 'debt updated' }));
       }
       let _debts = [...debts];
       remove(_debts, {
@@ -65,21 +65,21 @@ const putDebt = createAsyncThunk(
         data: concat(_debts, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
 
 const deleteDebt = createAsyncThunk(
   'debts/deleteDebt',
-  async (id, { getState }) => {
+  async (id, { dispatch, getState }) => {
     try {
       const { data: debts } = getState().debts;
       const { user_id } = getState().user.item;
       const result = await deleteResourceAPI(user_id, 'debt', id);
 
       if (result) {
-        toastr.success('Debt deleted');
+        dispatch(setSnackbar({ message: 'debt deleted' }));
       }
       let _debts = [...debts];
       remove(_debts, { debt_id: id });
@@ -87,7 +87,7 @@ const deleteDebt = createAsyncThunk(
         data: _debts,
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );

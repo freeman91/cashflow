@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import sortBy from 'lodash/sortBy';
 
 import { getResourcesAPI, saveNetworthAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
+import { setSnackbar } from '../appSettings';
 
 const getNetworths = createAsyncThunk(
   'networths/getNetworths',
@@ -17,7 +17,7 @@ const getNetworths = createAsyncThunk(
         data: sortBy(networths, 'date'),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -32,9 +32,9 @@ const saveNetworth = createAsyncThunk(
       dispatch(showLoading());
 
       await saveNetworthAPI();
-      toastr.success('Networth saved successfully');
+      dispatch(setSnackbar({ message: 'networth saved' }));
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
       dispatch(getNetworths(item.user_id));

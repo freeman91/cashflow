@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { HistoryRouter } from 'redux-first-history/rr6';
-import ReduxToastr from 'react-redux-toastr';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { styled } from '@mui/material';
@@ -23,7 +22,6 @@ import Networth from './routes/Networth';
 import Search from './routes/Search';
 import Settings from './routes/Settings';
 import './styles/index.css';
-import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import Assets from './routes/Assets';
 import Debts from './routes/Debts';
 
@@ -73,15 +71,6 @@ function App() {
           <ThemeProvider theme={muiTheme}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ReduxLoader />
-              <ReduxToastr
-                timeOut={10000}
-                position='bottom-right'
-                transitionIn='fadeIn'
-                transitionOut='fadeOut'
-                progressBar
-                preventDuplicates
-                closeOnToastrClick
-              />
               <div className='App'>{<AppRoutes />}</div>
             </LocalizationProvider>
           </ThemeProvider>

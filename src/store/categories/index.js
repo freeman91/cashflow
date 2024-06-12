@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import { toastr } from 'react-redux-toastr';
 import { get, remove, concat } from 'lodash';
 
 import { getResourcesAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { putCategoryAPI } from '../../api/categories';
+import { setSnackbar } from '../appSettings';
 
 const getCategories = createAsyncThunk(
   'categories/getCategories',
@@ -17,7 +17,7 @@ const getCategories = createAsyncThunk(
         data: await getResourcesAPI(user_id, 'categories'),
       };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }
@@ -26,13 +26,13 @@ const getCategories = createAsyncThunk(
 
 const putCategories = createAsyncThunk(
   'categories/putCategories',
-  async (updatedItem, { getState }) => {
+  async (updatedItem, { dispatch, getState }) => {
     const categories = getState().categories.data;
 
     try {
       const result = await putCategoryAPI(updatedItem);
       if (result) {
-        toastr.success('Categories updated');
+        dispatch(setSnackbar({ message: 'categories updated' }));
       }
 
       let _categories = [...categories];
@@ -44,7 +44,7 @@ const putCategories = createAsyncThunk(
         data: concat(_categories, result),
       };
     } catch (err) {
-      toastr.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     }
   }
 );
