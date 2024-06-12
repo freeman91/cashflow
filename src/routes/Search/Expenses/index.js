@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import { getExpenses } from '../../../store/expenses';
 import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
 import ExpensesTable from './ExpensesTable';
-// import FilterOptions from './FilterOptions';
+import FilterDialog from './FilterDialog';
 
 export default function Expenses(props) {
   const { trigger, toggleTrigger } = props;
@@ -19,19 +19,20 @@ export default function Expenses(props) {
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
-  const [range] = useState(RANGE_OPTIONS[0]);
+  const [open, setOpen] = useState(false);
+  const [range, setRange] = useState(RANGE_OPTIONS[0]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
 
-  const [typeFilter] = useState(['expense', 'repayment']);
-  const [amountFilter] = useState({
+  const [typeFilter, setTypeFilter] = useState(['expense', 'repayment']);
+  const [amountFilter, setAmountFilter] = useState({
     comparator: '',
     amount: '',
   });
-  const [categoryFilter] = useState('');
-  const [subcategoryFilter] = useState('');
-  const [vendorFilter] = useState('');
-  const [billFilter] = useState('');
-  const [pendingFilter] = useState(['pending', 'paid']);
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [subcategoryFilter, setSubcategoryFilter] = useState('');
+  const [vendorFilter, setVendorFilter] = useState('');
+  const [billFilter, setBillFilter] = useState('');
+  const [pendingFilter, setPendingFilter] = useState(['pending', 'paid']);
 
   useEffect(() => {
     let _expenses = [...allExpenses, ...allRepayments];
@@ -138,16 +139,18 @@ export default function Expenses(props) {
   // handleFilterClick
   useEffect(() => {
     if (trigger) {
-      console.log('Filter');
       toggleTrigger();
+      setOpen(true);
     }
   }, [trigger, toggleTrigger]);
 
   return (
     <Box>
-      {/* <FilterOptions
-        total={total}
-        expenses={filteredExpenses}
+      <ExpensesTable expenses={filteredExpenses} />
+      <FilterDialog
+        title='Filter Options'
+        open={open}
+        setOpen={setOpen}
         range={range}
         setRange={setRange}
         typeFilter={typeFilter}
@@ -164,8 +167,7 @@ export default function Expenses(props) {
         setVendorFilter={setVendorFilter}
         billFilter={billFilter}
         setBillFilter={setBillFilter}
-      /> */}
-      <ExpensesTable expenses={filteredExpenses} />
+      />
     </Box>
   );
 }

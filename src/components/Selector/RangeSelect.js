@@ -147,7 +147,7 @@ export default function RangeSelect(props) {
       <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
         <DialogTitle>Select Date Range</DialogTitle>
         <DialogContent>
-          <Stack direction='row' spacing={2}>
+          <Stack direction='column' spacing={2}>
             <DatePicker
               openTo='month'
               views={['year', 'month', 'day']}
