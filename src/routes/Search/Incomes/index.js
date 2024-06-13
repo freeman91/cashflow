@@ -8,10 +8,14 @@ import sortBy from 'lodash/sortBy';
 import toLower from 'lodash/toLower';
 
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
 import { getIncomes } from '../../../store/incomes';
 import { getPaychecks } from '../../../store/paychecks';
-import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
+import RangeSelect, {
+  RANGE_OPTIONS,
+} from '../../../components/Selector/RangeSelect';
 import IncomesTable from './IncomesTable';
 import IncomesSummary from './IncomesSummary';
 import FilterDialog from './FilterDialog';
@@ -115,10 +119,15 @@ export default function Incomes(props) {
 
   return (
     <Box>
+      <Card raised sx={{ m: 1 }}>
+        <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
+          <RangeSelect range={range} setRange={setRange} />
+        </CardContent>
+      </Card>
       <IncomesSummary incomes={filteredIncomes} />
       <IncomesTable incomes={filteredIncomes} />
       <FilterDialog
-        title='Filter Options'
+        title='filter options'
         open={open}
         setOpen={setOpen}
         range={range}

@@ -4,8 +4,6 @@ import get from 'lodash/get';
 import find from 'lodash/find';
 import map from 'lodash/map';
 
-import { useTheme } from '@emotion/react';
-import { useMediaQuery } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -13,7 +11,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-import RangeSelect from '../../../components/Selector/RangeSelect';
 import TypeFilter from '../../../components/FilterOptions/TypeFilter';
 import AmountFilter from '../../../components/FilterOptions/AmountFilter';
 import StringFilter from '../../../components/FilterOptions/StringFilter';
@@ -25,8 +22,6 @@ export default function FilterDialog(props) {
     open,
     setOpen,
     title,
-    range,
-    setRange,
     typeFilter,
     setTypeFilter,
     amountFilter,
@@ -42,9 +37,6 @@ export default function FilterDialog(props) {
     pendingFilter,
     setPendingFilter,
   } = props;
-
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const optionLists = useSelector((state) => state.optionLists.data);
   const categoriesData = useSelector((state) => state.categories.data);
 
@@ -82,7 +74,7 @@ export default function FilterDialog(props) {
   };
 
   return (
-    <Dialog fullScreen={fullScreen} open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose}>
       <DialogTitle sx={{ pb: 0 }}>
         {title}
         <DialogTitleOptions mode={null} handleClose={handleClose} />
@@ -98,9 +90,6 @@ export default function FilterDialog(props) {
       >
         <form style={{ width: '100%' }}>
           <List>
-            <ListItem>
-              <RangeSelect range={range} setRange={setRange} />
-            </ListItem>
             <ListItem>
               <TypeFilter
                 typeFilter={typeFilter}

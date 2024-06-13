@@ -7,9 +7,13 @@ import includes from 'lodash/includes';
 import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
 import { getExpenses } from '../../../store/expenses';
-import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
+import RangeSelect, {
+  RANGE_OPTIONS,
+} from '../../../components/Selector/RangeSelect';
 import ExpensesTable from './ExpensesTable';
 import FilterDialog from './FilterDialog';
 import ExpensesSummary from './ExpensesSummary';
@@ -147,14 +151,17 @@ export default function Expenses(props) {
 
   return (
     <Box>
+      <Card raised sx={{ m: 1 }}>
+        <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
+          <RangeSelect range={range} setRange={setRange} />
+        </CardContent>
+      </Card>
       <ExpensesSummary expenses={filteredExpenses} />
       <ExpensesTable expenses={filteredExpenses} />
       <FilterDialog
-        title='Filter Options'
+        title='filter options'
         open={open}
         setOpen={setOpen}
-        range={range}
-        setRange={setRange}
         typeFilter={typeFilter}
         setTypeFilter={setTypeFilter}
         pendingFilter={pendingFilter}
