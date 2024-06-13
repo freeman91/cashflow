@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import get from 'lodash/get';
 import find from 'lodash/find';
-import map from 'lodash/map';
 
 import { useTheme } from '@emotion/react';
 import { useMediaQuery } from '@mui/material';
@@ -17,7 +15,6 @@ import RangeSelect from '../../../components/Selector/RangeSelect';
 import TypeFilter from '../../../components/FilterOptions/TypeFilter';
 import AmountFilter from '../../../components/FilterOptions/AmountFilter';
 import StringFilter from '../../../components/FilterOptions/StringFilter';
-import BillSelect from '../../../components/Selector/BillSelect';
 import DialogTitleOptions from '../../../components/Dialog/DialogTitleOptions';
 
 export default function FilterDialog(props) {
@@ -33,49 +30,18 @@ export default function FilterDialog(props) {
     setAmountFilter,
     categoryFilter,
     setCategoryFilter,
-    subcategoryFilter,
-    setSubcategoryFilter,
-    vendorFilter,
-    setVendorFilter,
-    billFilter,
-    setBillFilter,
-    pendingFilter,
-    setPendingFilter,
+    sourceFilter,
+    setSourceFilter,
   } = props;
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const optionLists = useSelector((state) => state.optionLists.data);
-  const categoriesData = useSelector((state) => state.categories.data);
 
-  const [expenseCategories, setExpenseCategories] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
-  const expenseVendors = find(optionLists, { option_type: 'expense_vendor' });
-
-  useEffect(() => {
-    setExpenseCategories(
-      find(categoriesData, {
-        category_type: 'expense',
-      })
-    );
-  }, [categoriesData]);
-
-  useEffect(() => {
-    setCategories(
-      map(expenseCategories?.categories, (category) => {
-        return category.name;
-      })
-    );
-  }, [expenseCategories]);
-
-  useEffect(() => {
-    let _category = find(expenseCategories?.categories, {
-      name: categoryFilter,
-    });
-
-    setSubcategories(get(_category, 'subcategories', []));
-  }, [categoryFilter, expenseCategories]);
+  const incomeCategories = find(optionLists, {
+    option_type: 'income_category',
+  });
+  const sources = find(optionLists, { option_type: 'income_source' });
 
   const handleClose = () => {
     setOpen(false);
@@ -105,14 +71,7 @@ export default function FilterDialog(props) {
               <TypeFilter
                 typeFilter={typeFilter}
                 setTypeFilter={setTypeFilter}
-                options={['expense', 'repayment']}
-              />
-            </ListItem>
-            <ListItem>
-              <TypeFilter
-                typeFilter={pendingFilter}
-                setTypeFilter={setPendingFilter}
-                options={['pending', 'paid']}
+                options={['income', 'paycheck']}
               />
             </ListItem>
             <ListItem>
@@ -127,29 +86,17 @@ export default function FilterDialog(props) {
                 disabled={false}
                 stringFilter={categoryFilter}
                 setStringFilter={setCategoryFilter}
-                options={categories}
+                options={incomeCategories?.options || []}
               />
             </ListItem>
             <ListItem>
               <StringFilter
-                label='subcategory'
-                disabled={!subcategories.length}
-                stringFilter={subcategoryFilter}
-                setStringFilter={setSubcategoryFilter}
-                options={subcategories}
-              />
-            </ListItem>
-            <ListItem>
-              <StringFilter
-                label='vendor'
+                label='source'
                 disabled={false}
-                stringFilter={vendorFilter}
-                setStringFilter={setVendorFilter}
-                options={expenseVendors?.options || []}
+                stringFilter={sourceFilter}
+                setStringFilter={setSourceFilter}
+                options={sources?.options || []}
               />
-            </ListItem>
-            <ListItem>
-              <BillSelect resource={billFilter} setResource={setBillFilter} />
             </ListItem>
           </List>
         </form>

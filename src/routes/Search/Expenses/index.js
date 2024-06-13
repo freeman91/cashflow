@@ -12,6 +12,7 @@ import { getExpenses } from '../../../store/expenses';
 import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
 import ExpensesTable from './ExpensesTable';
 import FilterDialog from './FilterDialog';
+import ExpensesSummary from './ExpensesSummary';
 
 export default function Expenses(props) {
   const { trigger, toggleTrigger } = props;
@@ -146,6 +147,7 @@ export default function Expenses(props) {
 
   return (
     <Box>
+      <ExpensesSummary expenses={filteredExpenses} />
       <ExpensesTable expenses={filteredExpenses} />
       <FilterDialog
         title='Filter Options'

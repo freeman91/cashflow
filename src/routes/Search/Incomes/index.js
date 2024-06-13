@@ -10,9 +10,11 @@ import toLower from 'lodash/toLower';
 import Box from '@mui/material/Box';
 
 import { getIncomes } from '../../../store/incomes';
+import { getPaychecks } from '../../../store/paychecks';
 import { RANGE_OPTIONS } from '../../../components/Selector/RangeSelect';
 import IncomesTable from './IncomesTable';
-// import FilterOptions from './FilterOptions';
+import IncomesSummary from './IncomesSummary';
+import FilterDialog from './FilterDialog';
 
 export default function Incomes(props) {
   const { trigger, toggleTrigger } = props;
@@ -20,16 +22,17 @@ export default function Incomes(props) {
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
-  const [range] = useState(RANGE_OPTIONS[0]);
+  const [open, setOpen] = useState(false);
+  const [range, setRange] = useState(RANGE_OPTIONS[0]);
   const [filteredIncomes, setFilteredIncomes] = useState([]);
 
-  const [typeFilter] = useState(['income', 'paycheck']);
-  const [amountFilter] = useState({
+  const [typeFilter, setTypeFilter] = useState(['income', 'paycheck']);
+  const [amountFilter, setAmountFilter] = useState({
     comparator: '',
     amount: '',
   });
-  const [categoryFilter] = useState('');
-  const [sourceFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [sourceFilter, setSourceFilter] = useState('');
 
   useEffect(() => {
     let _incomes = [...allIncomes, ...allPaychecks];
@@ -71,10 +74,7 @@ export default function Incomes(props) {
     // filter by category
     if (categoryFilter) {
       _incomes = filter(_incomes, (income) => {
-        if (categoryFilter === 'paycheck') {
-          return income._type === 'paycheck';
-        }
-        return income.category === categoryFilter;
+        return income?.category === categoryFilter;
       });
     }
 
@@ -102,21 +102,25 @@ export default function Incomes(props) {
 
   useEffect(() => {
     dispatch(getIncomes({ range }));
+    dispatch(getPaychecks({ range }));
   }, [range, dispatch]);
 
   // handleFilterClick
   useEffect(() => {
     if (trigger) {
-      console.log('Filter');
+      setOpen(true);
       toggleTrigger();
     }
   }, [trigger, toggleTrigger]);
 
   return (
     <Box>
-      {/* <FilterOptions
-        total={total}
-        incomes={filteredIncomes}
+      <IncomesSummary incomes={filteredIncomes} />
+      <IncomesTable incomes={filteredIncomes} />
+      <FilterDialog
+        title='Filter Options'
+        open={open}
+        setOpen={setOpen}
         range={range}
         setRange={setRange}
         typeFilter={typeFilter}
@@ -127,8 +131,7 @@ export default function Incomes(props) {
         setCategoryFilter={setCategoryFilter}
         sourceFilter={sourceFilter}
         setSourceFilter={setSourceFilter}
-      /> */}
-      <IncomesTable incomes={filteredIncomes} />
+      />
     </Box>
   );
 }

@@ -22,17 +22,20 @@ export default function StringFilter(props) {
       freeSolo
       getOptionLabel={(option) => option}
       options={options}
-      renderInput={(params) => (
-        <TextField
-          disabled={disabled}
-          id={label}
-          label={label}
-          variant='standard'
-          value={stringFilter}
-          onChange={handleChange}
-          {...params}
-        />
-      )}
+      renderInput={(params) => {
+        params.inputProps.value = stringFilter;
+        return (
+          <TextField
+            {...params}
+            disabled={disabled}
+            id={label}
+            label={label}
+            variant='standard'
+            value={stringFilter}
+            onChange={handleChange}
+          />
+        );
+      }}
       onChange={handleChange}
       sx={{ width: '100%', maxWidth: 350 }}
     />
