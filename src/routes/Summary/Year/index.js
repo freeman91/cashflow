@@ -74,12 +74,10 @@ export default function YearSummary(props) {
           <CashflowExpandedContainer year={year} />
         </Card>
       </Grid>
-      <Grid item xs={12}>
-        <MonthlyLineChart
-          incomeSumByMonth={incomeSumByMonth}
-          expenseSumByMonth={expenseSumByMonth}
-        />
-      </Grid>
+      <MonthlyLineChart
+        incomeSumByMonth={incomeSumByMonth}
+        expenseSumByMonth={expenseSumByMonth}
+      />
       <Grid item xs={12}>
         <MonthlyBreakdownTable
           year={year}

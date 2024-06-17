@@ -37,16 +37,12 @@ export default function MonthlyLineChart(props) {
     }
   }, [componentRef]);
 
-  // const handleMonthClick = (month) => {
-  //   dispatch(push(`/summary/${year}/${month + 1}`));
-  // };
-
   return (
     <Grid item xs={12}>
       <Card raised>
         <CardContent
           ref={componentRef}
-          sx={{ p: '4px', pt: 0, pb: '0px !important' }}
+          sx={{ p: '4px', pt: 0, pb: '0px !important', height: 175 }}
         >
           <LineChart
             width={width}
@@ -68,9 +64,7 @@ export default function MonthlyLineChart(props) {
             xAxis={[{ scaleType: 'point', data: MONTHS }]}
             leftAxis={null}
             slotProps={{
-              legend: {
-                hidden: true,
-              },
+              legend: { hidden: true },
             }}
           />
         </CardContent>
