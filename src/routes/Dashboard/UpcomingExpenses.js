@@ -8,6 +8,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 
 import ExpensesTable from './ExpensesTable';
@@ -30,24 +31,28 @@ export default function UpcomingExpenses() {
     setExpenses(sortBy(upcomingExpenses, 'date').reverse());
   }, [allExpenses, allRepayments]);
 
+  if (!expenses.length) return null;
+
   return (
-    <Card raised>
-      <CardHeader
-        title='upcoming expenses'
-        sx={{ p: 1, pt: '4px', pb: 0 }}
-        titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
-        action={
-          <IconButton
-            size='small'
-            onClick={() => dispatch(push(`/search/expenses`))}
-          >
-            <ArrowForwardIosIcon />
-          </IconButton>
-        }
-      />
-      <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
-        <ExpensesTable expenses={expenses} />
-      </CardContent>
-    </Card>
+    <Grid item xs={12}>
+      <Card raised>
+        <CardHeader
+          title='upcoming expenses'
+          sx={{ p: 1, pt: '4px', pb: 0 }}
+          titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
+          action={
+            <IconButton
+              size='small'
+              onClick={() => dispatch(push(`/search/expenses`))}
+            >
+              <ArrowForwardIosIcon />
+            </IconButton>
+          }
+        />
+        <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
+          <ExpensesTable expenses={expenses} />
+        </CardContent>
+      </Card>
+    </Grid>
   );
 }

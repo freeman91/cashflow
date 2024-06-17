@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useTheme } from '@emotion/react';
 import Card from '@mui/material/Card';
@@ -26,6 +26,16 @@ const MONTHS = [
 export default function MonthlyLineChart(props) {
   const { incomeSumByMonth, expenseSumByMonth } = props;
   const theme = useTheme();
+  const componentRef = useRef(null);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    if (componentRef.current) {
+      setWidth(componentRef.current.offsetWidth);
+      setHeight(componentRef.current.offsetHeight);
+    }
+  }, [componentRef]);
 
   // const handleMonthClick = (month) => {
   //   dispatch(push(`/summary/${year}/${month + 1}`));
@@ -34,10 +44,13 @@ export default function MonthlyLineChart(props) {
   return (
     <Grid item xs={12}>
       <Card raised>
-        <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
+        <CardContent
+          ref={componentRef}
+          sx={{ p: '4px', pt: 0, pb: '0px !important' }}
+        >
           <LineChart
-            width={375}
-            height={175}
+            width={width}
+            height={height}
             series={[
               {
                 data: incomeSumByMonth,

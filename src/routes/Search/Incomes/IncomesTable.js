@@ -25,7 +25,7 @@ export default function IncomesTable(props) {
       openDialog({
         type: income._type,
         mode: 'edit',
-        id: income.income_id,
+        id: income[`${income._type}_id`],
         attrs: income,
       })
     );

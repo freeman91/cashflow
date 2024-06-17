@@ -57,7 +57,6 @@ const RANGE_OPTIONS = [
 export default function RangeSelect(props) {
   const { range, setRange } = props;
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [customRange, setCustomRange] = useState({});
@@ -144,7 +143,7 @@ export default function RangeSelect(props) {
           ))}
         </List>
       </Popover>
-      <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Select Date Range</DialogTitle>
         <DialogContent>
           <Stack direction='column' spacing={2}>

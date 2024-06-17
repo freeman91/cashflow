@@ -56,9 +56,7 @@ export default function Dashboard() {
         <Networth />
       </Grid>
 
-      <Grid item xs={12}>
-        <UpcomingExpenses />
-      </Grid>
+      <UpcomingExpenses />
 
       <Grid item xs={12}>
         <RecentTransactions />

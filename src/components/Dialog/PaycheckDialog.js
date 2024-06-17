@@ -54,14 +54,17 @@ function PaycheckDialog() {
     }
   }, [id, paychecks]);
 
-  useEffect(() => {
+  const loadDefaultData = () => {
     if (user?.paycheck_defaults) {
       setPaycheck((e) => ({ ...e, ...user?.paycheck_defaults }));
     }
+  };
+
+  useEffect(() => {
     if (!isEmpty(attrs)) {
       setPaycheck((e) => ({ ...e, ...attrs, date: dayjs(attrs.date) }));
     }
-  }, [attrs, user?.paycheck_defaults]);
+  }, [attrs]);
 
   const handleChange = (e) => {
     setPaycheck({ ...paycheck, [e.target.id]: e.target.value });
@@ -103,17 +106,6 @@ function PaycheckDialog() {
     >
       <form style={{ width: '100%' }}>
         <List>
-          {/* {mode !== 'create' && (
-            <TextFieldListItem
-              id='paycheck_id'
-              label='paycheck_id'
-              value={paycheck.paycheck_id}
-              InputProps={{
-                readOnly: true,
-                disableUnderline: true,
-              }}
-            />
-          )} */}
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
               label='date'
@@ -157,7 +149,7 @@ function PaycheckDialog() {
             id='taxes'
             label='taxes'
             placeholder='0.00'
-            value={paycheck.taxes}
+            value={paycheck.taxes || ''}
             onChange={handleChangeNumber}
             inputProps={{ inputMode: 'decimal' }}
             InputProps={{
@@ -172,7 +164,7 @@ function PaycheckDialog() {
             id='retirement'
             label='retirement'
             placeholder='0.00'
-            value={paycheck.retirement}
+            value={paycheck.retirement || ''}
             onChange={handleChangeNumber}
             inputProps={{ inputMode: 'decimal' }}
             InputProps={{
@@ -187,7 +179,7 @@ function PaycheckDialog() {
             id='benefits'
             label='benefits'
             placeholder='0.00'
-            value={paycheck.benefits}
+            value={paycheck.benefits || ''}
             onChange={handleChangeNumber}
             inputProps={{ inputMode: 'decimal' }}
             InputProps={{
@@ -202,7 +194,7 @@ function PaycheckDialog() {
             id='other'
             label='other'
             placeholder='0.00'
-            value={paycheck.other}
+            value={paycheck.other || ''}
             onChange={handleChangeNumber}
             inputProps={{ inputMode: 'decimal' }}
             InputProps={{
@@ -235,9 +227,17 @@ function PaycheckDialog() {
               onClick={handleClose}
               variant='outlined'
               color='info'
-              sx={{ width: '45%' }}
+              sx={{ width: '30%' }}
             >
               cancel
+            </Button>
+            <Button
+              onClick={loadDefaultData}
+              variant='outlined'
+              color='info'
+              sx={{ width: '30%' }}
+            >
+              auto fill
             </Button>
             <Button
               type='submit'
@@ -245,7 +245,7 @@ function PaycheckDialog() {
               variant='contained'
               color='primary'
               onClick={handleSubmit}
-              sx={{ width: '45%' }}
+              sx={{ width: '30%' }}
             >
               submit
             </Button>

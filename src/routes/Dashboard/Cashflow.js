@@ -38,7 +38,7 @@ export default function Cashflow() {
 
       <Card raised>
         <CardHeader
-          title='cash flow'
+          title={`cash flow`}
           sx={{ p: 1, pt: '4px', pb: 0 }}
           titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
           action={
