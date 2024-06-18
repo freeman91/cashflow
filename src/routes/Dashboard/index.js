@@ -58,6 +58,9 @@ export default function Dashboard() {
         pr: 1,
         pt: 1,
         mb: 10,
+        overflowY: 'scroll',
+        height: '85vh',
+        WebkitOverflowScrolling: 'touch',
       }}
     >
       {loading > 0 && (
