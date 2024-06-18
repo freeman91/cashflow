@@ -26,21 +26,21 @@ export default function Cashflow() {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-        <Typography variant='body1' align='center' fontWeight='bold'>
-          {date.format('YYYY MMMM Do')}
-        </Typography>
-
-        <Typography variant='body1' align='center'>
-          {daysLeftInMonth} days left
-        </Typography>
-      </div>
-
       <Card raised>
         <CardHeader
-          title={`cash flow`}
+          disableTypography
+          title={
+            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+              <Typography variant='body1' align='center' fontWeight='bold'>
+                {date.format('MMMM YYYY')}
+              </Typography>
+
+              <Typography variant='body1' align='center' sx={{ ml: 3 }}>
+                {daysLeftInMonth} days left
+              </Typography>
+            </div>
+          }
           sx={{ p: 1, pt: '4px', pb: 0 }}
-          titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
           action={
             <IconButton
               size='small'

@@ -42,7 +42,7 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(
       setAppBar({
-        title: 'dashboard',
+        title: 'cashflow',
         rightAction: <SettingsButton />,
       })
     );
