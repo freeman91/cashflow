@@ -3,8 +3,6 @@ import dayjs from 'dayjs';
 import cloneDeep from 'lodash/cloneDeep';
 import map from 'lodash/map';
 
-import { useMediaQuery } from '@mui/material';
-import useTheme from '@mui/material/styles/useTheme';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -56,7 +54,6 @@ const RANGE_OPTIONS = [
 
 export default function RangeSelect(props) {
   const { range, setRange } = props;
-  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [customRange, setCustomRange] = useState({});
@@ -95,9 +92,9 @@ export default function RangeSelect(props) {
   const handleSubmit = () => {
     setRange({
       id: 5,
-      label: `${dayjs(customRange.start).format('MMM D')} - ${dayjs(
+      label: `${dayjs(customRange.start).format('YYYY MMM D')} - ${dayjs(
         customRange.end
-      ).format('MMM D')}`,
+      ).format('YYYY MMM D')}`,
       start: customRange.start,
       end: customRange.end,
     });
@@ -174,9 +171,7 @@ export default function RangeSelect(props) {
               slotProps={{
                 textField: {
                   variant: 'standard',
-                  inputProps: {
-                    readOnly: true,
-                  },
+                  inputProps: { readOnly: true },
                 },
               }}
             />

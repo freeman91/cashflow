@@ -33,7 +33,7 @@ function BaseDialog(props) {
       </DialogTitle>
       <DialogContent
         sx={{
-          minWidth: 300,
+          minWidth: 400,
           pb: 0,
           display: 'flex',
           justifyContent: 'center',

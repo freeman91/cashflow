@@ -64,6 +64,48 @@ const getUser = createAsyncThunk(
   }
 );
 
+const refresh = createAsyncThunk(
+  'user/refresh',
+  async (_, { dispatch, getState, requestId }) => {
+    const { item: user, currentRequestId } = getState().user;
+
+    if (requestId !== currentRequestId) return;
+
+    const start = dayjs()
+      .date(1)
+      .subtract(1, 'month')
+      .hour(0)
+      .minute(0)
+      .second(0);
+    const end = start.add(3, 'month').date(0).hour(0).minute(0).second(0);
+
+    try {
+      dispatch(showLoading());
+
+      dispatch(getAccounts(user.user_id));
+      dispatch(getAssets(user.user_id));
+      dispatch(getBills(user.user_id));
+      dispatch(getBorrows(user.user_id));
+      dispatch(getDebts(user.user_id));
+      dispatch(getExpenses({ user_id: user.user_id, range: { start, end } }));
+      dispatch(getIncomes({ user_id: user.user_id, range: { start, end } }));
+      dispatch(getNetworths(user.user_id));
+      dispatch(getPaychecks({ user_id: user.user_id, range: { start, end } }));
+      dispatch(getPurchases(user.user_id));
+      dispatch(getRepayments(user.user_id));
+      dispatch(getSales(user.user_id));
+      dispatch(getOptionLists(user.user_id));
+      dispatch(getCategories(user.user_id));
+
+      return {};
+    } catch (err) {
+      console.error(err);
+    } finally {
+      dispatch(hideLoading());
+    }
+  }
+);
+
 const putUser = createAsyncThunk(
   'users/putUser',
   async (updatedUser, { dispatch }) => {
@@ -84,9 +126,9 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    buildAsyncReducers(builder, [getUser, putUser]);
+    buildAsyncReducers(builder, [getUser, refresh, putUser]);
   },
 });
 
-export { getUser, putUser };
+export { getUser, refresh, putUser };
 export default reducer;
