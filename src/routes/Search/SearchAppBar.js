@@ -4,9 +4,11 @@ import { push } from 'redux-first-history';
 
 import FilterListIcon from '@mui/icons-material/FilterList';
 import MenuIcon from '@mui/icons-material/Menu';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 
 import { OPTIONS } from '.';
 import { setAppBar } from '../../store/appSettings';
@@ -61,6 +63,8 @@ export default function SearchAppBar(props) {
   };
 
   const open = Boolean(anchorEl);
+  const options = Object.keys(OPTIONS);
+  const availableOptions = options.filter((option) => option !== title);
   return (
     <Menu
       anchorEl={anchorEl}
@@ -70,13 +74,17 @@ export default function SearchAppBar(props) {
       onClick={handleClose}
       MenuListProps={{ sx: { p: 0 } }}
     >
-      {Object.keys(OPTIONS).map((option) => {
-        if (title === option) return null;
-        return (
-          <MenuItem key={option} onClick={() => handleClick(option)}>
-            {option}
-          </MenuItem>
-        );
+      {availableOptions.map((option, idx) => {
+        return [
+          <MenuItem
+            key={option}
+            onClick={() => handleClick(option)}
+            sx={{ p: 2 }}
+          >
+            <Typography variant='h6'>{option}</Typography>
+          </MenuItem>,
+          idx !== availableOptions.length - 1 ? <Divider /> : null,
+        ];
       })}
     </Menu>
   );

@@ -5,9 +5,11 @@ import { push } from 'redux-first-history';
 import get from 'lodash/get';
 
 import MenuIcon from '@mui/icons-material/Menu';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 
 const OPTIONS = ['accounts', 'assets', 'debts'];
 
@@ -37,6 +39,7 @@ export default function PageSelect(props) {
   };
 
   const open = Boolean(anchorEl);
+  const availableOptions = options.filter((option) => option !== currentPage);
   return (
     <>
       <IconButton
@@ -55,13 +58,17 @@ export default function PageSelect(props) {
         onClick={handleClose}
         MenuListProps={{ sx: { p: 0 } }}
       >
-        {options.map((option) => {
-          if (option === currentPage) return null;
-          return (
-            <MenuItem key={option} onClick={() => handleClick(option)}>
-              {option}
-            </MenuItem>
-          );
+        {availableOptions.map((option, idx) => {
+          return [
+            <MenuItem
+              key={option}
+              onClick={() => handleClick(option)}
+              sx={{ p: 2 }}
+            >
+              <Typography variant='h6'>{option}</Typography>
+            </MenuItem>,
+            idx !== availableOptions.length - 1 ? <Divider /> : null,
+          ];
         })}
       </Menu>
     </>

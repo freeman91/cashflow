@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 
+import { useTheme } from '@emotion/react';
+import { useMediaQuery } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
@@ -19,6 +21,8 @@ import { CustomTableCell } from '../../../components/Table/CustomTableCell';
 export default function IncomesTable(props) {
   const { incomes } = props;
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const greaterThanSM = useMediaQuery(theme.breakpoints.up('sm'));
 
   const handleClick = (income) => {
     dispatch(
@@ -39,14 +43,12 @@ export default function IncomesTable(props) {
             <TableHead>
               <TableRow key='headers'>
                 <TableCell sx={{ p: 1, pl: 2, pb: 0 }}>date</TableCell>
-                <TableCell sx={{ p: 1, pb: 0 }} align='right'>
-                  amount
-                </TableCell>
-                <TableCell sx={{ p: 1, pb: 0 }} align='right'>
-                  category
-                </TableCell>
+                <TableCell sx={{ p: 1, pb: 0 }}>source</TableCell>
+                {greaterThanSM && (
+                  <TableCell sx={{ p: 1, pb: 0 }}>category</TableCell>
+                )}
                 <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
-                  source
+                  amount
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -74,19 +76,28 @@ export default function IncomesTable(props) {
                     hover={true}
                     onClick={() => handleClick(income)}
                   >
-                    <CustomTableCell idx={idx} column='date'>
+                    <CustomTableCell
+                      idx={idx}
+                      column='date'
+                      sx={{ width: greaterThanSM ? '25%' : '33%' }}
+                    >
                       {sameDateAsPrevious
                         ? ''
                         : dayjs(income.date).format('MMM D')}
                     </CustomTableCell>
+                    <CustomTableCell
+                      idx={idx}
+                      sx={{ width: greaterThanSM ? '30%' : '33%' }}
+                    >
+                      {income.source || income.employer}
+                    </CustomTableCell>
+                    {greaterThanSM && (
+                      <CustomTableCell idx={idx}>
+                        {income.category || 'paycheck'}
+                      </CustomTableCell>
+                    )}
                     <CustomTableCell idx={idx} align='right'>
                       {numberToCurrency.format(amount)}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {income.category || 'paycheck'}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {income.source || income.employer}
                     </CustomTableCell>
                   </TableRow>
                 );

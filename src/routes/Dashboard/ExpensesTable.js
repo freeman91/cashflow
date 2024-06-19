@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@emotion/react';
+import { useMediaQuery } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
@@ -16,6 +17,7 @@ export default function ExpensesTable(props) {
   const { expenses } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
+  const greaterThanSM = useMediaQuery(theme.breakpoints.up('sm'));
 
   const handleClick = (expense) => {
     dispatch(
@@ -58,16 +60,29 @@ export default function ExpensesTable(props) {
                 }
                 onClick={() => handleClick(expense)}
               >
-                <CustomTableCell idx={idx} component='th' column='date'>
+                <CustomTableCell
+                  idx={idx}
+                  component='th'
+                  column='date'
+                  sx={{ width: greaterThanSM ? '25%' : '33%' }}
+                >
                   {sameDateAsPrevious
                     ? ''
                     : dayjs(expense.date).format('MMM D')}
                 </CustomTableCell>
+                <CustomTableCell
+                  idx={idx}
+                  sx={{ width: greaterThanSM ? '30%' : '33%' }}
+                >
+                  {vendor}
+                </CustomTableCell>
+                {greaterThanSM && (
+                  <CustomTableCell idx={idx}>
+                    {expense.category}
+                  </CustomTableCell>
+                )}
                 <CustomTableCell idx={idx} align='right' sx={{ color }}>
                   {numberToCurrency.format(amount)}
-                </CustomTableCell>
-                <CustomTableCell idx={idx} align='right' sx={{ width: '33%' }}>
-                  {vendor}
                 </CustomTableCell>
               </TableRow>
             );

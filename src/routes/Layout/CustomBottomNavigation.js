@@ -12,6 +12,7 @@ import MovingIcon from '@mui/icons-material/Moving';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -158,15 +159,18 @@ function CustomBottomNavigation(props) {
         transformOrigin={{ horizontal: 'center', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
       >
-        {transactionTypes.map((type) => (
-          <MenuItem
-            key={type}
-            onClick={() => handleTypeClick(type)}
-            sx={{ p: 2 }}
-          >
-            <Typography variant='h6'>{type}</Typography>
-          </MenuItem>
-        ))}
+        {transactionTypes.map((type, idx) => {
+          return [
+            <MenuItem
+              key={type}
+              onClick={() => handleTypeClick(type)}
+              sx={{ p: 2 }}
+            >
+              <Typography variant='h6'>{type}</Typography>
+            </MenuItem>,
+            idx !== transactionTypes.length - 1 ? <Divider /> : null,
+          ];
+        })}
       </Menu>
     </Box>
   );

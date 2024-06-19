@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import includes from 'lodash/includes';
 
 import { useTheme } from '@emotion/react';
+import { useMediaQuery } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
@@ -34,10 +35,16 @@ const findSource = (transaction) => {
   return '';
 };
 
+const findCategory = (transaction) => {
+  if (transaction.category) return transaction.category;
+  return transaction._type;
+};
+
 export default function TransactionsTable(props) {
   const { transactions } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
+  const greaterThanSM = useMediaQuery(theme.breakpoints.up('sm'));
 
   const handleClick = (transaction) => {
     dispatch(
@@ -67,6 +74,7 @@ export default function TransactionsTable(props) {
             const amount = findAmount(transaction);
             const source = findSource(transaction);
             const color = findColor(transaction);
+            const category = findCategory(transaction);
 
             const sameDateAsPrevious =
               idx === 0
@@ -82,20 +90,31 @@ export default function TransactionsTable(props) {
                 key={transaction[`${transaction._type}_id`]}
                 onClick={() => handleClick(transaction)}
               >
-                <CustomTableCell idx={idx} component='th' column='date'>
+                <CustomTableCell
+                  idx={idx}
+                  component='th'
+                  column='date'
+                  sx={{ width: greaterThanSM ? '25%' : '33%' }}
+                >
                   {sameDateAsPrevious
                     ? ''
                     : dayjs(transaction.date).format('MMM D')}
                 </CustomTableCell>
                 <CustomTableCell
                   idx={idx}
+                  sx={{ width: greaterThanSM ? '30%' : '33%' }}
+                >
+                  {source}
+                </CustomTableCell>
+                {greaterThanSM && (
+                  <CustomTableCell idx={idx}>{category}</CustomTableCell>
+                )}
+                <CustomTableCell
+                  idx={idx}
                   align='right'
                   sx={{ color, fontWeight: 'bold' }}
                 >
                   {numberToCurrency.format(amount)}
-                </CustomTableCell>
-                <CustomTableCell idx={idx} align='right' sx={{ width: '33%' }}>
-                  {source}
                 </CustomTableCell>
               </TableRow>
             );

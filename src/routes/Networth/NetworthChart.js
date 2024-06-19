@@ -119,7 +119,6 @@ export default function NetworthChart(props) {
           axisLine={false}
           tickLine={false}
           type='number'
-          // tickMargin={10}
           dataKey='timestamp'
           domain={[
             dayjs()
@@ -136,7 +135,7 @@ export default function NetworthChart(props) {
         />
 
         <Tooltip content={<ChartTooltip />} />
-        <ReferenceLine y={0} stroke={grey[300]} />
+        <ReferenceLine y={0} stroke={grey[300]} strokeDasharray='3 3' />
         <Line
           dot={false}
           type='monotone'

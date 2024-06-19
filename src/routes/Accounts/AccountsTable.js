@@ -4,6 +4,8 @@ import { push } from 'redux-first-history';
 import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
+import { useTheme } from '@emotion/react';
+import { useMediaQuery } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -19,6 +21,8 @@ import { CustomTableCell } from '../../components/Table/CustomTableCell';
 
 export default function AccountsTable() {
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const greaterThanSM = useMediaQuery(theme.breakpoints.up('sm'));
   const allAccounts = useSelector((state) => state.accounts.data);
   const allAssets = useSelector((state) => state.assets.data);
   const allDebts = useSelector((state) => state.debts.data);
@@ -79,20 +83,24 @@ export default function AccountsTable() {
                       key={account.account_id}
                       onClick={() => handleClick(account)}
                     >
-                      <CustomTableCell idx={idx} component='th' column='date'>
-                        {account.name}
-                      </CustomTableCell>
-                      <CustomTableCell idx={idx} align='right'>
-                        {numberToCurrency.format(account.net)}
-                      </CustomTableCell>
-                      <CustomTableCell idx={idx} align='right'>
+                      <CustomTableCell idx={idx} align='left' sx={{ p: 1 }}>
                         <IconButton
-                          size='small'
                           color='primary'
                           onClick={(e) => handleLinkClick(e, account)}
                         >
-                          <LaunchIcon sx={{ height: 20, width: 20 }} />
+                          <LaunchIcon sx={{ height: 25, width: 25 }} />
                         </IconButton>
+                      </CustomTableCell>
+                      <CustomTableCell idx={idx} component='th' align='left'>
+                        {account.name}
+                      </CustomTableCell>
+                      {greaterThanSM && (
+                        <CustomTableCell idx={idx} component='th'>
+                          {account.category}
+                        </CustomTableCell>
+                      )}
+                      <CustomTableCell idx={idx} align='right'>
+                        {numberToCurrency.format(account.net)}
                       </CustomTableCell>
                     </TableRow>
                   );

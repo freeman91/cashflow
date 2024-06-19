@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 import get from 'lodash/get';
 import map from 'lodash/map';
 
+import { useTheme } from '@emotion/react';
+import { useMediaQuery } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Checkbox from '@mui/material/Checkbox';
@@ -21,6 +23,8 @@ import { CustomTableCell } from '../../../components/Table/CustomTableCell';
 export default function ExpensesTable(props) {
   const { expenses } = props;
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const greaterThanSM = useMediaQuery(theme.breakpoints.up('sm'));
 
   const handleClick = (expense) => {
     dispatch(
@@ -41,11 +45,12 @@ export default function ExpensesTable(props) {
             <TableHead>
               <TableRow key='headers'>
                 <TableCell sx={{ p: 1, pl: 2, pb: 0 }}>date</TableCell>
+                <TableCell sx={{ p: 1, pb: 0 }}>vendor</TableCell>
+                {greaterThanSM && (
+                  <TableCell sx={{ p: 1, pb: 0 }}>category</TableCell>
+                )}
                 <TableCell sx={{ p: 1, pb: 0 }} align='right'>
                   amount
-                </TableCell>
-                <TableCell sx={{ p: 1, pb: 0 }} align='right'>
-                  vendor
                 </TableCell>
                 <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
                   paid
@@ -81,20 +86,28 @@ export default function ExpensesTable(props) {
                       hover={true}
                       onClick={() => handleClick(expense)}
                     >
-                      <CustomTableCell idx={idx} column='date'>
+                      <CustomTableCell
+                        idx={idx}
+                        column='date'
+                        sx={{ width: greaterThanSM ? '25%' : '33%' }}
+                      >
                         {sameDateAsPrevious
                           ? ''
                           : dayjs(expense.date).format('MMM D')}
                       </CustomTableCell>
-                      <CustomTableCell idx={idx} align='right'>
-                        {numberToCurrency.format(amount)}
-                      </CustomTableCell>
                       <CustomTableCell
                         idx={idx}
-                        align='right'
-                        sx={{ maxWidth: 150 }}
+                        sx={{ width: greaterThanSM ? '30%' : '33%' }}
                       >
                         {expense.vendor ? expense.vendor : expense.lender}
+                      </CustomTableCell>
+                      {greaterThanSM && (
+                        <CustomTableCell idx={idx}>
+                          {expense.category}
+                        </CustomTableCell>
+                      )}
+                      <CustomTableCell idx={idx} align='right'>
+                        {numberToCurrency.format(amount)}
                       </CustomTableCell>
                       <TableCell scope='row' align='right'>
                         <Checkbox

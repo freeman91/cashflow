@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';
+import reduce from 'lodash/reduce';
 
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Card from '@mui/material/Card';
@@ -18,7 +19,25 @@ import { BackButton } from '../Layout/CustomAppBar';
 
 export default function Networth() {
   const dispatch = useDispatch();
+
+  const networths = useSelector((state) => state.networths.data);
   const [selectedId, setSelectedId] = useState(null);
+
+  useEffect(() => {
+    const latestNetworth = reduce(
+      networths,
+      (mostRecent, current) => {
+        if (!mostRecent) return current;
+
+        const mostRecentDate = new Date(mostRecent.year, mostRecent.month - 1);
+        const currentDate = new Date(current.year, current.month - 1);
+
+        return currentDate > mostRecentDate ? current : mostRecent;
+      },
+      null
+    );
+    latestNetworth && setSelectedId(latestNetworth.networth_id);
+  }, [networths]);
 
   useEffect(() => {
     dispatch(

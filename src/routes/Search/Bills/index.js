@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openDialog } from '../../../store/dialogs';
 import sortBy from 'lodash/sortBy';
 
+import { useTheme } from '@emotion/react';
+import { useMediaQuery } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
@@ -11,12 +13,15 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { useEffect } from 'react';
+
 import { CustomTableCell } from '../../../components/Table/CustomTableCell';
 import { numberToCurrency } from '../../../helpers/currency';
 
 export default function Bills(props) {
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const greaterThanSM = useMediaQuery(theme.breakpoints.up('sm'));
+
   const allBills = useSelector((state) => state.bills.data);
   const [bills, setBills] = useState([]);
 
@@ -42,15 +47,26 @@ export default function Bills(props) {
           <Table>
             <TableHead>
               <TableRow key='headers'>
-                <TableCell sx={{ p: 1, pl: 2, pb: 0 }}>day</TableCell>
-                <TableCell sx={{ p: 1, pb: 0 }} align='right'>
-                  amount
+                <TableCell
+                  sx={{
+                    p: 1,
+                    pl: 1,
+                    pb: 0,
+                    width: greaterThanSM ? '15%' : '20%',
+                  }}
+                >
+                  day
                 </TableCell>
-                <TableCell sx={{ p: 1, pb: 0 }} align='right'>
-                  category
-                </TableCell>
-                <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
+                <TableCell
+                  sx={{ p: 1, pb: 0, width: greaterThanSM ? '30%' : '33%' }}
+                >
                   vendor
+                </TableCell>
+                {greaterThanSM && (
+                  <TableCell sx={{ p: 1, pb: 0 }}>category</TableCell>
+                )}
+                <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
+                  amount
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -64,17 +80,26 @@ export default function Bills(props) {
                     hover={true}
                     onClick={() => handleClick(bill)}
                   >
-                    <CustomTableCell idx={idx} column='day'>
+                    <CustomTableCell
+                      idx={idx}
+                      column='day'
+                      sx={{ width: greaterThanSM ? '15%' : '20%' }}
+                    >
                       {sameDateAsPrevious ? '' : bill.day}
                     </CustomTableCell>
+                    <CustomTableCell
+                      idx={idx}
+                      sx={{ width: greaterThanSM ? '30%' : '33%' }}
+                    >
+                      {bill.vendor}
+                    </CustomTableCell>
+                    {greaterThanSM && (
+                      <CustomTableCell idx={idx}>
+                        {bill.category}
+                      </CustomTableCell>
+                    )}
                     <CustomTableCell idx={idx} align='right'>
                       {numberToCurrency.format(bill.amount)}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {bill.category}
-                    </CustomTableCell>
-                    <CustomTableCell idx={idx} align='right'>
-                      {bill.vendor}
                     </CustomTableCell>
                   </TableRow>
                 );
