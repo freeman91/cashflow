@@ -11,22 +11,42 @@ export default function Day({
   onClick,
   hasExpenses,
   hasIncomes,
-  sameMonth,
+  selectedDate,
 }) {
   const theme = useTheme();
-  let isToday = dayjs().isSame(date, 'day');
+  const isToday = dayjs().isSame(date, 'day');
+  const isSameDayAsSelected = dayjs(selectedDate).isSame(date, 'day');
+  const opacity = date.isSame(selectedDate, 'month') ? 1 : 0.25;
 
-  const opacity = sameMonth ? 1 : 0.25;
+  const dateNumberColor = (() => {
+    if (isToday) return theme.palette.blue[500];
+    if (isSameDayAsSelected) return theme.palette.grey[800];
+    return theme.palette.text.primary;
+  })();
 
   return (
-    <Box sx={{ width: '14%' }} onClick={onClick}>
+    <Box
+      sx={{
+        width: '14%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+      }}
+      onClick={onClick}
+    >
       <Typography
         align='center'
         variant='h6'
         sx={{
           opacity,
-          color: isToday ? theme.palette.grey[500] : theme.palette.text.primary,
+          height: '30px',
+          width: '30px',
+          color: dateNumberColor,
+          backgroundColor: isSameDayAsSelected ? 'white' : 'transparent',
+          borderRadius: '50%',
         }}
+        fontWeight={isSameDayAsSelected ? 'bold' : 'regular'}
       >
         {date.date()}
       </Typography>
@@ -43,6 +63,7 @@ export default function Day({
             fontWeight='bold'
             sx={{ opacity }}
             color={theme.palette.red[500]}
+            lineHeight={0.5}
           >
             •
           </Typography>
@@ -54,6 +75,7 @@ export default function Day({
             fontWeight='bold'
             sx={{ opacity }}
             color={theme.palette.green[500]}
+            lineHeight={0.5}
           >
             •
           </Typography>

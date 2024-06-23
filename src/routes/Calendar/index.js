@@ -8,11 +8,7 @@ export default function Calendar() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      setAppBar({
-        title: 'calendar',
-      })
-    );
+    dispatch(setAppBar({ title: 'calendar' }));
   }, [dispatch]);
 
   return <Month />;

@@ -2,18 +2,19 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';
 
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 
 import { setAppBar } from '../../store/appSettings';
+import { refresh } from '../../store/user';
 import usePullToRefresh from '../../store/hooks/usePullRefresh';
 import Cashflow from './Cashflow';
 import UpcomingExpenses from './UpcomingExpenses';
 import RecentTransactions from './RecentTransactions';
 import Networth from './Networth';
-import { refresh } from '../../store/user';
 
 const SettingsButton = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,11 @@ export default function Dashboard() {
     dispatch(
       setAppBar({
         title: 'cashflow',
+        leftAction: (
+          <IconButton onClick={() => dispatch(push('/calendar'))}>
+            <CalendarMonthIcon sx={{ hieght: 25, width: 25 }} />
+          </IconButton>
+        ),
         rightAction: <SettingsButton />,
       })
     );

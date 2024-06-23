@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -15,6 +16,7 @@ import MonthYearSelector from '../../Selector/MonthYearSelector';
 import { getExpenses } from '../../../store/expenses';
 import { getIncomes } from '../../../store/incomes';
 import { getPaychecks } from '../../../store/paychecks';
+import SelectedTransactions from './SelectedTransactionsTable';
 
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
@@ -25,23 +27,21 @@ export default function Month() {
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
-  const [date, setDate] = useState(
-    dayjs().date(15).hour(12).minute(0).second(0)
-  );
+  const [selectedDate, setSelectedDate] = useState(dayjs());
   const [days, setDays] = useState([]);
   const [monthExpenses, setMonthExpenses] = useState([]);
   const [monthIncomes, setMonthIncomes] = useState([]);
   const [selectedTransactions, setSelectedTransactions] = useState([]);
 
   useEffect(() => {
-    let firstDayOfMonth = date.date(1).hour(12).minute(0).second(0);
+    let firstDayOfMonth = selectedDate.date(1).hour(12).minute(0).second(0);
     let firstDayOfWeek = firstDayOfMonth.day(0).hour(12).minute(0).second(0);
 
     const filterRecords = (records) => {
       return filter(records, (record) => {
         const expDay = dayjs(record.date);
         const BOM = firstDayOfWeek.hour(0);
-        const EOM = date.endOf('month').day(6).hour(23);
+        const EOM = selectedDate.endOf('month').day(6).hour(23);
         return (
           (expDay.isAfter(BOM, 'day') || expDay.isSame(BOM, 'day')) &&
           (expDay.isBefore(EOM, 'day') || expDay.isSame(EOM, 'day'))
@@ -72,7 +72,17 @@ export default function Month() {
     }
 
     setDays(_days);
-  }, [date, allExpenses, allIncomes, allRepayments, allPaychecks]);
+  }, [selectedDate, allExpenses, allIncomes, allRepayments, allPaychecks]);
+
+  useEffect(() => {
+    let expenses = filter(monthExpenses, (expense) => {
+      return dayjs(expense.date).isSame(selectedDate, 'day');
+    });
+    let incomes = filter(monthIncomes, (income) => {
+      return dayjs(income.date).isSame(selectedDate, 'day');
+    });
+    setSelectedTransactions([...expenses, ...incomes]);
+  }, [selectedDate, monthExpenses, monthIncomes]);
 
   const handleDateChange = (newDate) => {
     const start = newDate.startOf('month');
@@ -82,7 +92,7 @@ export default function Month() {
     dispatch(getIncomes({ range: { start, end } }));
     dispatch(getPaychecks({ range: { start, end } }));
 
-    setDate(newDate);
+    setSelectedDate(newDate);
   };
 
   const renderWeeks = () => {
@@ -97,7 +107,7 @@ export default function Month() {
         alignItems='center'
         key={`week-day-letter`}
         spacing={1}
-        pb={0}
+        sx={{ backgroundColor: (theme) => theme.palette.background.light }}
       >
         {map(range(7), (idx) => {
           return (
@@ -114,16 +124,22 @@ export default function Month() {
       </Stack>
     );
 
-    weeks.push(<Divider />);
     while (_days.length > 0) {
       weeks.push(
+        <Divider
+          key={`divider-${week}`}
+          sx={{ borderColor: (theme) => theme.palette.grey[700] }}
+        />
+      );
+      weeks.push(
         <Stack
+          key={`week-stack-${week}`}
           direction='row'
           justifyContent='space-between'
           alignItems='center'
-          key={`week-stack-${week}`}
           spacing={1}
-          pb={1}
+          pt={0.5}
+          pb={0.5}
         >
           {map(range(7), () => {
             let _day = _days.shift();
@@ -139,53 +155,53 @@ export default function Month() {
               <Day
                 key={`day-${_day.format('YYYY-MM-DD')}`}
                 date={_day}
-                sameMonth={_day.isSame(date, 'month')}
+                selectedDate={selectedDate}
                 hasExpenses={expenses.length > 0}
                 hasIncomes={incomes.length > 0}
-                onClick={() => {
-                  setSelectedTransactions([...expenses, ...incomes]);
-                }}
+                onClick={() => setSelectedDate(_day)}
               />
             );
           })}
         </Stack>
       );
-      weeks.push(<Divider />);
       week = week + 1;
     }
     return weeks;
   };
 
-  console.log('selectedTransactions: ', selectedTransactions);
-
   return (
-    <div style={{ marginTop: 8 }}>
-      <Stack
-        direction='row'
-        justifyContent='space-between'
-        alignItems='center'
-        key={`month-year-picker-stack`}
-        spacing={1}
-        pb={1}
-      >
-        <IconButton onClick={() => handleDateChange(date.subtract(1, 'month'))}>
-          <ArrowBackIosIcon />
-        </IconButton>
-        <MonthYearSelector
-          date={date}
-          handleDateChange={(newDate) => {
-            handleDateChange(newDate);
-          }}
-          interval='month'
-        />
-        <IconButton
-          disabled={date.isSame(dayjs().add(1, 'month'), 'month')}
-          onClick={() => handleDateChange(date.add(1, 'month'))}
+    <div style={{ marginTop: 8, margin: 8 }}>
+      <Card raised sx={{ mb: 1 }}>
+        <Stack
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
+          key={`month-year-picker-stack`}
+          spacing={1}
         >
-          <ArrowForwardIosIcon />
-        </IconButton>
-      </Stack>
-      {renderWeeks()}
+          <IconButton
+            onClick={() => handleDateChange(selectedDate.subtract(1, 'month'))}
+          >
+            <ArrowBackIosIcon />
+          </IconButton>
+          <MonthYearSelector
+            date={selectedDate}
+            handleDateChange={(newDate) => {
+              handleDateChange(newDate);
+            }}
+            interval='month'
+          />
+          <IconButton
+            disabled={selectedDate.isSame(dayjs().add(1, 'month'), 'month')}
+            onClick={() => handleDateChange(selectedDate.add(1, 'month'))}
+          >
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </Stack>
+      </Card>
+      <Card raised>{renderWeeks()}</Card>
+
+      <SelectedTransactions selectedTransactions={selectedTransactions} />
     </div>
   );
 }
