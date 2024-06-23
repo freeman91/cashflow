@@ -59,7 +59,7 @@ export default function Dashboard() {
         pt: 1,
         mb: 10,
         overflowY: 'scroll',
-        height: '85vh',
+        // height: '85vh',
         WebkitOverflowScrolling: 'touch',
       }}
     >

@@ -5,14 +5,18 @@ import dayjs from 'dayjs';
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 import Day from '../Day';
 import MonthYearSelector from '../../Selector/MonthYearSelector';
 import { getExpenses } from '../../../store/expenses';
 import { getIncomes } from '../../../store/incomes';
 import { getPaychecks } from '../../../store/paychecks';
+
+const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 export default function Month() {
   const dispatch = useDispatch();
@@ -27,6 +31,7 @@ export default function Month() {
   const [days, setDays] = useState([]);
   const [monthExpenses, setMonthExpenses] = useState([]);
   const [monthIncomes, setMonthIncomes] = useState([]);
+  const [selectedTransactions, setSelectedTransactions] = useState([]);
 
   useEffect(() => {
     let firstDayOfMonth = date.date(1).hour(12).minute(0).second(0);
@@ -85,11 +90,36 @@ export default function Month() {
     let _days = cloneDeep(days);
 
     let week = 1;
+    weeks.push(
+      <Stack
+        direction='row'
+        justifyContent='space-between'
+        alignItems='center'
+        key={`week-day-letter`}
+        spacing={1}
+        pb={0}
+      >
+        {map(range(7), (idx) => {
+          return (
+            <Typography
+              key={idx}
+              align='center'
+              sx={{ width: '14%' }}
+              variant='body2'
+            >
+              {daysOfWeek[idx]}
+            </Typography>
+          );
+        })}
+      </Stack>
+    );
+
+    weeks.push(<Divider />);
     while (_days.length > 0) {
       weeks.push(
         <Stack
           direction='row'
-          justifyContent='center'
+          justifyContent='space-between'
           alignItems='center'
           key={`week-stack-${week}`}
           spacing={1}
@@ -110,23 +140,29 @@ export default function Month() {
                 key={`day-${_day.format('YYYY-MM-DD')}`}
                 date={_day}
                 sameMonth={_day.isSame(date, 'month')}
-                expenses={expenses}
-                incomes={incomes}
+                hasExpenses={expenses.length > 0}
+                hasIncomes={incomes.length > 0}
+                onClick={() => {
+                  setSelectedTransactions([...expenses, ...incomes]);
+                }}
               />
             );
           })}
         </Stack>
       );
+      weeks.push(<Divider />);
       week = week + 1;
     }
     return weeks;
   };
 
+  console.log('selectedTransactions: ', selectedTransactions);
+
   return (
     <div style={{ marginTop: 8 }}>
       <Stack
         direction='row'
-        justifyContent='center'
+        justifyContent='space-between'
         alignItems='center'
         key={`month-year-picker-stack`}
         spacing={1}

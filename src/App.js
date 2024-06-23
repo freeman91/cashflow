@@ -16,14 +16,14 @@ import { history, store } from './store/createStore';
 import Layout from './routes/Layout';
 import Accounts from './routes/Accounts';
 import Dashboard from './routes/Dashboard';
-import Month from './components/Calendar/Month';
 import Summary from './routes/Summary';
 import Networth from './routes/Networth';
 import Search from './routes/Search';
 import Settings from './routes/Settings';
-import './styles/index.css';
 import Assets from './routes/Assets';
 import Debts from './routes/Debts';
+import Calendar from './routes/Calendar';
+import './styles/index.css';
 
 console.log('_package.version: ', _package.version);
 
@@ -40,7 +40,6 @@ const AppRoutes = () => {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/calendar' element={<Month />} />
         <Route path='/summary' element={<Summary />} />
         <Route path='/summary/:year' element={<Summary />} />
         <Route path='/summary/:year/:month' element={<Summary />} />
@@ -55,6 +54,7 @@ const AppRoutes = () => {
         <Route path='/assets/:assetId' element={<Assets />} />
         <Route path='/debts' element={<Debts />} />
         <Route path='/debts/:debtId' element={<Debts />} />
+        <Route path='/calendar' element={<Calendar />} />
       </Route>
       <Route path='*'>
         <Route index element={<Navigate to='/dashboard' />} />
