@@ -1,5 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
+import filter from 'lodash/filter';
 
 import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
@@ -9,8 +10,8 @@ import Typography from '@mui/material/Typography';
 export default function Day({
   date,
   onClick,
-  hasExpenses,
-  hasIncomes,
+  expenses,
+  incomes,
   selectedDate,
 }) {
   const theme = useTheme();
@@ -23,6 +24,9 @@ export default function Day({
     if (isSameDayAsSelected) return theme.palette.grey[800];
     return theme.palette.text.primary;
   })();
+
+  const paidExpenses = filter(expenses, { pending: false });
+  const pendingExpenses = filter(expenses, { pending: true });
 
   return (
     <Box
@@ -51,33 +55,47 @@ export default function Day({
         {date.date()}
       </Typography>
       <Stack
-        direction='row'
-        spacing={1}
+        direction='column'
+        // spacing={1}
         justifyContent='center'
         sx={{ height: 20 }}
       >
-        {hasExpenses && (
+        {incomes.length > 0 && (
           <Typography
             align='center'
-            variant='h4'
-            fontWeight='bold'
+            variant='body2'
             sx={{ opacity }}
-            color={theme.palette.red[500]}
+            color={theme.palette.green[600]}
+            fontWeight='bold'
             lineHeight={0.5}
           >
-            •
+            {`•`.repeat(incomes.length)}
           </Typography>
         )}
-        {hasIncomes && (
+
+        {paidExpenses.length > 0 && (
           <Typography
             align='center'
-            variant='h4'
-            fontWeight='bold'
+            variant='body2'
             sx={{ opacity }}
-            color={theme.palette.green[500]}
+            color={theme.palette.red[600]}
+            fontWeight='bold'
             lineHeight={0.5}
           >
-            •
+            {`•`.repeat(paidExpenses.length)}
+          </Typography>
+        )}
+
+        {pendingExpenses.length > 0 && (
+          <Typography
+            align='center'
+            variant='body2'
+            sx={{ opacity }}
+            color={theme.palette.red[300]}
+            fontWeight='bold'
+            lineHeight={0.5}
+          >
+            {`•`.repeat(pendingExpenses.length)}
           </Typography>
         )}
       </Stack>

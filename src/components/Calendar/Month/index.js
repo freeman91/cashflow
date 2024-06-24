@@ -141,7 +141,7 @@ export default function Month() {
           pt={0.5}
           pb={0.5}
         >
-          {map(range(7), () => {
+          {map(range(7), (idx) => {
             let _day = _days.shift();
 
             let expenses = filter(monthExpenses, (expense) => {
@@ -156,8 +156,8 @@ export default function Month() {
                 key={`day-${_day.format('YYYY-MM-DD')}`}
                 date={_day}
                 selectedDate={selectedDate}
-                hasExpenses={expenses.length > 0}
-                hasIncomes={incomes.length > 0}
+                expenses={expenses}
+                incomes={incomes}
                 onClick={() => setSelectedDate(_day)}
               />
             );
