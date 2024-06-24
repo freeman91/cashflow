@@ -24,7 +24,7 @@ export const muiTheme = createTheme({
       dark: '#272727',
       light: '#2e2e2e',
     },
-    primary: { main: blue[500] },
+    primary: { main: '#0067F5' },
     secondary: { main: green[500] },
     grey,
     blue,

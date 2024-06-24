@@ -52,6 +52,7 @@ export default function CustomAppBar() {
                   variant='h5'
                   fontWeight='bold'
                   sx={{ height: '100%' }}
+                  color='primary.main'
                 >
                   {title}
                 </Typography>

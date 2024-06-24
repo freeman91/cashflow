@@ -4,13 +4,18 @@ import includes from 'lodash/includes';
 import map from 'lodash/map';
 
 import { useTheme } from '@emotion/react';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
-import { openDialog } from '../../../store/dialogs';
-import { CustomTableCell } from '../../Table/CustomTableCell';
-import { numberToCurrency } from '../../../helpers/currency';
+import Typography from '@mui/material/Typography';
+
+import { openDialog } from '../../store/dialogs';
+import { numberToCurrency } from '../../helpers/currency';
+import { CustomTableCell } from '../../components/Table/CustomTableCell';
 
 const typeOrder = {
   paycheck: 1,
@@ -45,7 +50,7 @@ const findCategory = (transaction) => {
   return transaction._type;
 };
 
-export default function TransactionsTable(props) {
+export default function SelectedTransactions(props) {
   const { transactions } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -96,41 +101,56 @@ export default function TransactionsTable(props) {
     return theme.palette.red[300];
   };
 
-  return (
-    <TableContainer component='div'>
-      <Table size='medium'>
-        <TableBody>
-          {tableData.map((transaction, idx, array) => {
-            const amount = findAmount(transaction);
-            const source = findSource(transaction);
-            const color = findColor(transaction);
-            const category = findCategory(transaction);
+  if (!transactions.length) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: '50%',
+        }}
+      >
+        <Typography>no transactions</Typography>
+      </Box>
+    );
+  }
 
-            return (
-              <TableRow
-                hover={true}
-                key={transaction[`${transaction._type}_id`]}
-                onClick={() => handleClick(transaction)}
-              >
-                <CustomTableCell
-                  idx={idx}
-                  // sx={{ width: greaterThanSM ? '30%' : '33%' }}
-                >
-                  {source}
-                </CustomTableCell>
-                <CustomTableCell idx={idx}>{category}</CustomTableCell>
-                <CustomTableCell
-                  idx={idx}
-                  align='right'
-                  sx={{ color, fontWeight: 'bold' }}
-                >
-                  {numberToCurrency.format(amount)}
-                </CustomTableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+  return (
+    <Card raised sx={{ mt: 1, mb: 9 }}>
+      <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
+        <TableContainer component='div'>
+          <Table size='medium'>
+            <TableBody>
+              {tableData.map((transaction, idx, array) => {
+                const amount = findAmount(transaction);
+                const source = findSource(transaction);
+                const color = findColor(transaction);
+                const category = findCategory(transaction);
+
+                return (
+                  <TableRow
+                    hover={true}
+                    key={transaction[`${transaction._type}_id`]}
+                    onClick={() => handleClick(transaction)}
+                  >
+                    <CustomTableCell idx={idx}>{source}</CustomTableCell>
+                    <CustomTableCell idx={idx}>{category}</CustomTableCell>
+                    <CustomTableCell
+                      idx={idx}
+                      align='right'
+                      sx={{ color, fontWeight: 'bold' }}
+                    >
+                      {numberToCurrency.format(amount)}
+                    </CustomTableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </CardContent>
+    </Card>
   );
 }
