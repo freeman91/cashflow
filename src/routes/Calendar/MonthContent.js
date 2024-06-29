@@ -34,9 +34,9 @@ export default function MonthContent(props) {
         direction='row'
         justifyContent='space-between'
         alignItems='center'
-        key={`week-day-letter`}
+        key='week-day-letter'
         spacing={1}
-        sx={{ backgroundColor: (theme) => theme.palette.background.light }}
+        bgcolor='surface.100'
       >
         {map(range(7), (idx) => {
           return (
@@ -57,7 +57,7 @@ export default function MonthContent(props) {
       weeks.push(
         <Divider
           key={`divider-${week}`}
-          sx={{ borderColor: (theme) => theme.palette.grey[700] }}
+          sx={{ borderColor: (theme) => theme.palette.grey[40] }}
         />
       );
       weeks.push(
@@ -99,5 +99,5 @@ export default function MonthContent(props) {
     return weeks;
   };
 
-  return <Card raised>{renderWeeks()}</Card>;
+  return <Card>{renderWeeks()}</Card>;
 }

@@ -59,7 +59,7 @@ const Circle = ({ diameter, color }) => {
     margin: '1px',
   };
 
-  return <div style={circleStyle} />;
+  return <Box style={circleStyle} />;
 };
 
 export default function Day({
@@ -103,7 +103,7 @@ export default function Day({
 
   const dateNumberColor = (() => {
     if (isToday) return theme.palette.primary.main;
-    if (isSameDayAsSelected) return theme.palette.grey[800];
+    if (isSameDayAsSelected) return theme.palette.grey[40];
     return theme.palette.text.primary;
   })();
 
@@ -136,12 +136,12 @@ export default function Day({
       <Stack direction='column' justifyContent='center' sx={{ height: 20 }}>
         <Stack direction='row' alignItems='flex-end' justifyContent='center'>
           {incomes.length > 0 &&
-            map(_incomes, (income) => {
+            map(_incomes, (income, idx) => {
               const fontSize = showWeights ? getFontSize(income.amount) : 4;
               return (
                 <Circle
-                  key={income.income_idid}
-                  color={theme.palette.green[600]}
+                  key={(income.income_id || income.paycheck_id) + idx}
+                  color={theme.palette.success.main}
                   diameter={fontSize}
                 />
               );
@@ -150,12 +150,12 @@ export default function Day({
 
         {paidExpenses.length > 0 && (
           <Stack direction='row' alignItems='flex-end' justifyContent='center'>
-            {map(paidExpenses, (expense) => {
+            {map(paidExpenses, (expense, idx) => {
               const fontSize = showWeights ? getFontSize(expense.amount) : 4;
               return (
                 <Circle
-                  key={expense.expense_id}
-                  color={theme.palette.red[600]}
+                  key={(expense.expense_id || expense.repayement_id) + idx}
+                  color={theme.palette.danger.main}
                   diameter={fontSize}
                 />
               );
@@ -165,12 +165,12 @@ export default function Day({
 
         {pendingExpenses.length > 0 && (
           <Stack direction='row' alignItems='flex-end' justifyContent='center'>
-            {map(pendingExpenses, (expense) => {
+            {map(pendingExpenses, (expense, idx) => {
               const fontSize = showWeights ? getFontSize(expense.amount) : 4;
               return (
                 <Circle
-                  key={expense.expense_id}
-                  color={theme.palette.red[300]}
+                  key={(expense.expense_id || expense.repayement_id) + idx}
+                  color={theme.palette.danger.secondary}
                   diameter={fontSize}
                 />
               );

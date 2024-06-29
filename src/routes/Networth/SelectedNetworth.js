@@ -83,7 +83,7 @@ export default function SelectedNetworth(props) {
   return (
     <>
       <Grid item xs={12}>
-        <Card raised>
+        <Card>
           <CardHeader
             title={dayjs(networth?.date).format('YYYY  MMMM')}
             sx={{ p: 1, pt: '4px', pb: 0 }}
@@ -95,7 +95,7 @@ export default function SelectedNetworth(props) {
         </Card>
       </Grid>
       <Grid item xs={12}>
-        <Card raised>
+        <Card>
           <CardContent sx={{ p: 0, pb: '0 !important' }}>
             <Tabs value={tab} onChange={handleChangeTab} centered>
               {TABS.map((tab) => (
@@ -107,12 +107,7 @@ export default function SelectedNetworth(props) {
 
         {groupedItems.map((group) => {
           return (
-            <Accordian
-              key={group.group}
-              sx={{
-                backgroundColor: (theme) => theme.palette.background.dark,
-              }}
-            >
+            <Accordian key={group.group}>
               <AccordianSummary
                 expandIcon={<ExpandMoreIcon />}
                 sx={{

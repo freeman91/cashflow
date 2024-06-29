@@ -71,7 +71,7 @@ export default function AccountsTable() {
 
   return (
     <Grid item xs={12}>
-      <Card raised>
+      <Card>
         <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
           <TableContainer component={'div'}>
             <Table size='medium'>

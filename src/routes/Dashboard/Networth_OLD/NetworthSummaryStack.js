@@ -32,7 +32,9 @@ export default function NetworthSummaryStack(props) {
       <Typography
         variant='h4'
         color={
-          assetSum > debtSum ? theme.palette.green[600] : theme.palette.red[600]
+          assetSum > debtSum
+            ? theme.palette.success.main
+            : theme.palette.danger.main
         }
       >
         {numberToCurrency.format(assetSum - debtSum)}

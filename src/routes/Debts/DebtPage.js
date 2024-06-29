@@ -63,7 +63,7 @@ export default function DebtPage(props) {
   return (
     <>
       <Grid item xs={12}>
-        <Card raised>
+        <Card>
           <CardHeader
             disableTypography
             title={
@@ -86,7 +86,7 @@ export default function DebtPage(props) {
       </Grid>
       {borrows.length !== 0 && (
         <Grid item xs={12}>
-          <Card raised>
+          <Card>
             <CardHeader
               disableTypography
               title={
@@ -121,7 +121,7 @@ export default function DebtPage(props) {
       )}
       {repayments.length !== 0 && (
         <Grid item xs={12}>
-          <Card raised>
+          <Card>
             <CardHeader
               disableTypography
               title={

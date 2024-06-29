@@ -85,23 +85,3 @@ def print_paychecks():
 
 def main():
     pass
-
-
-# Palette
-
-# white: #ffffff
-# blue: #0067F5
-# dark grey: #303036
-# black: #000000
-# green:
-# red:
-
-# Options
-
-# Grey Green: #1B998B
-# Dark Green: #676F54, #042A2B
-# Black Green: #25291C
-# Black: #12130F
-# Jet: #303036
-# Van Dyke: #4B3B40
-# Mint: #40C9A2

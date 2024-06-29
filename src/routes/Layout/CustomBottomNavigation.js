@@ -115,13 +115,19 @@ function CustomBottomNavigation(props) {
         left: 0,
         right: 0,
         pb: 2,
-        backgroundColor: 'background.dark',
+        px: 2,
+        m: '4px',
+        borderRadius: '10px',
       }}
     >
       <BottomNavigation
-        showLabels
         value={pageName}
-        sx={{ backgroundColor: 'background.dark' }}
+        sx={{
+          // background: 'linear-gradient(0deg, #282828, #3f3f3f)',
+          // backgroundColor: 'surface.300',
+          backgroundColor: 'unset',
+          borderRadius: '10px',
+        }}
         onChange={(e, value) => {
           if (value === null) return;
           dispatch(push(`/${value}`));

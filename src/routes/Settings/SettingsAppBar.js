@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
+import BackIcon from '@mui/icons-material/ArrowBack';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -9,7 +10,31 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { OPTIONS } from '.';
 import { setAppBar, setHandleCreateClick } from '../../store/appSettings';
-import { BackButton } from '../Layout/CustomAppBar';
+
+export const BackButton = (props) => {
+  const { onClick } = props;
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      dispatch(push('/dashboard'));
+    }
+  };
+
+  return (
+    <IconButton onClick={handleClick}>
+      <BackIcon
+        sx={{
+          hieght: 25,
+          width: 25,
+          color: (theme) => theme.palette.primary.main,
+        }}
+      />
+    </IconButton>
+  );
+};
 
 export default function SettingsAppBar(props) {
   const { title, toggleTrigger } = props;
@@ -23,13 +48,14 @@ export default function SettingsAppBar(props) {
         title: title.replace('_', ' '),
         leftAction: <BackButton />,
         rightAction: (
-          <IconButton
-            size='small'
-            edge='start'
-            color='inherit'
-            onClick={handleMenuClick}
-          >
-            <MenuIcon />
+          <IconButton edge='start' color='inherit' onClick={handleMenuClick}>
+            <MenuIcon
+              sx={{
+                hieght: 25,
+                width: 25,
+                color: (theme) => theme.palette.primary.main,
+              }}
+            />
           </IconButton>
         ),
       })

@@ -55,7 +55,7 @@ export default function LargestExpenses(props) {
   }, [year, month, allExpenses, allRepayments, itemCount]);
 
   return (
-    <Card raised>
+    <Card>
       <CardHeader
         title='largest expenses'
         sx={{ p: 1, pt: '4px', pb: 0 }}

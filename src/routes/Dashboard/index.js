@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';
 
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import SettingsIcon from '@mui/icons-material/Settings';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -12,9 +12,12 @@ import { setAppBar } from '../../store/appSettings';
 import { refresh } from '../../store/user';
 import usePullToRefresh from '../../store/hooks/usePullRefresh';
 import Cashflow from './Cashflow';
-import UpcomingExpenses from './UpcomingExpenses';
-import RecentTransactions from './RecentTransactions';
 import Networth from './Networth';
+// import UpcomingExpenses from './UpcomingExpenses';
+// import RecentTransactions from './RecentTransactions';
+// import Networth from './Networth';
+// import MonthYearSelector from '../../components/Selector/MonthYearSelector';
+// import Calendar from '../Calendar';
 
 const SettingsButton = () => {
   const dispatch = useDispatch();
@@ -24,10 +27,55 @@ const SettingsButton = () => {
       size='small'
       onClick={() => dispatch(push('/settings'))}
     >
-      <SettingsIcon />
+      <MoreVertIcon />
     </IconButton>
   );
 };
+
+// const Tab = (props) => {
+//   const { label, Icon, tab, currentTab, setTab, orientation } = props;
+
+//   let borderRadius = '0 4px 4px 0';
+//   if (orientation === 'left') {
+//     borderRadius = '4px 0 0 4px';
+//   }
+
+//   let borderWidth = '1px 1px 1px 0';
+//   if (orientation === 'left') {
+//     borderWidth = '1px 0 1px 1px';
+//   }
+
+//   return (
+//     <ButtonBase sx={{ width: '50%', height: '100%' }}>
+//       <Box
+//         sx={{
+//           width: '100%',
+//           height: '100%',
+//           backgroundColor: currentTab === tab ? 'primary.main' : 'black',
+//           display: 'flex',
+//           alignItems: 'center',
+//           justifyContent: 'center',
+//           borderRadius: borderRadius,
+//           borderColor: currentTab !== tab ? 'primary.main' : 'unset',
+//           borderStyle: currentTab !== tab ? 'solid' : 'unset',
+//           borderWidth: currentTab !== tab ? borderWidth : 'unset',
+//         }}
+//         onClick={() => {
+//           currentTab !== tab && setTab(tab);
+//         }}
+//       >
+//         <Icon sx={{ color: currentTab === tab ? 'black' : 'primary.main' }} />
+//         <Typography
+//           color={currentTab === tab ? 'black' : 'primary.main'}
+//           align='center'
+//           sx={{ ml: 2 }}
+//         >
+//           {label}
+//         </Typography>
+//       </Box>
+//     </ButtonBase>
+//   );
+// };
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -43,50 +91,35 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(
       setAppBar({
-        title: 'cashflow',
-        leftAction: (
-          <IconButton onClick={() => dispatch(push('/calendar'))}>
-            <CalendarMonthIcon sx={{ hieght: 25, width: 25 }} />
-          </IconButton>
-        ),
+        title: null,
         rightAction: <SettingsButton />,
       })
     );
   }, [dispatch]);
 
   return (
-    <Grid
-      ref={ref}
-      container
-      spacing={1}
+    <Box
       sx={{
-        pl: 1,
-        pr: 1,
-        pt: 1,
-        mb: 10,
         overflowY: 'scroll',
-        // height: '85vh',
+        height: '100%',
         WebkitOverflowScrolling: 'touch',
       }}
     >
-      {loading > 0 && (
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <CircularProgress />
-        </Grid>
-      )}
-      <Grid item xs={12}>
+      <Grid
+        ref={ref}
+        container
+        spacing={1}
+        justifyContent='center'
+        alignItems='flex-start'
+      >
+        {loading > 0 && (
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+          </Grid>
+        )}
         <Cashflow />
-      </Grid>
-
-      <Grid item xs={12}>
         <Networth />
       </Grid>
-
-      <UpcomingExpenses />
-
-      <Grid item xs={12}>
-        <RecentTransactions />
-      </Grid>
-    </Grid>
+    </Box>
   );
 }

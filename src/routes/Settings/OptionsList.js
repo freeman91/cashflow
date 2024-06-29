@@ -68,7 +68,7 @@ export default function OptionsList(props) {
   };
 
   return (
-    <Card raised>
+    <Card>
       <CardContent sx={{ p: 0, pt: 1, pb: '4px !important' }}>
         <List disablePadding sx={{ minWidth: 350 }}>
           {options.map((option, idx) => {

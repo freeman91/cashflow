@@ -119,7 +119,7 @@ export default function Incomes(props) {
 
   return (
     <Box>
-      <Card raised sx={{ m: 1 }}>
+      <Card sx={{ m: 1 }}>
         <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
           <RangeSelect range={range} setRange={setRange} />
         </CardContent>

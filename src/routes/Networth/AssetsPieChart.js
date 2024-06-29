@@ -31,7 +31,7 @@ export default function Networth() {
   }, [allAssets]);
 
   return (
-    <Card raised>
+    <Card>
       <CardHeader
         title='assets'
         sx={{ p: 1, pt: '4px', pb: 0 }}

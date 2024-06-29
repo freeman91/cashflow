@@ -93,12 +93,12 @@ export default function Debts() {
     >
       {!debt && (
         <Grid item xs={12} display='flex' justifyContent='center'>
-          <Card raised>
+          <Card>
             <CardContent sx={{ p: 1, pt: '4px', pb: '0 !important' }}>
               <Typography
                 align='center'
                 variant='h4'
-                color={(theme) => theme.palette.red[600]}
+                color={(theme) => theme.palette.danger.main}
                 sx={{ px: 2 }}
               >
                 {numberToCurrency.format(debtSum)}

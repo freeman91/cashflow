@@ -58,12 +58,12 @@ export default function TransactionsTable(props) {
   };
 
   const findColor = (transaction) => {
-    if (transaction.pending) return theme.palette.red[300];
+    if (transaction.pending) return theme.palette.danger.secondary;
     if (includes(['expense', 'repayment'], transaction._type))
-      return theme.palette.red[600];
+      return theme.palette.danger.main;
     if (includes(['income', 'paycheck'], transaction._type))
-      return theme.palette.green[600];
-    return theme.palette.red[300];
+      return theme.palette.success.main;
+    return theme.palette.danger.secondary;
   };
 
   return (

@@ -133,7 +133,7 @@ export default function CashflowContainer(props) {
           <ListItem disableGutters disablePadding>
             <Box
               sx={{
-                backgroundColor: theme.palette.green[600],
+                backgroundColor: theme.palette.success.main,
                 height: 10,
                 width: `${(incomeSum / upperBound) * 100}%`,
                 borderRadius: BORDER_RADIUS,
@@ -169,7 +169,7 @@ export default function CashflowContainer(props) {
             >
               <Box
                 sx={{
-                  backgroundColor: theme.palette.red[600],
+                  backgroundColor: theme.palette.danger.main,
                   height: 10,
                   width: `${(expenseSum / upperBound) * 100}%`,
                   borderBottomLeftRadius: BORDER_RADIUS,
@@ -199,7 +199,7 @@ export default function CashflowContainer(props) {
             >
               <Box
                 sx={{
-                  backgroundColor: theme.palette.red[400],
+                  backgroundColor: theme.palette.danger.secondary,
                   height: 10,
                   width: `${(principalSum / upperBound) * 100}%`,
                   borderBottomRightRadius: BORDER_RADIUS,
@@ -213,8 +213,8 @@ export default function CashflowContainer(props) {
           variant='h4'
           color={
             incomeSum > expenseSum + principalSum
-              ? theme.palette.green[600]
-              : theme.palette.red[600]
+              ? theme.success.main
+              : theme.palette.danger.main
           }
         >
           {numberToCurrency.format(incomeSum - expenseSum - principalSum)}

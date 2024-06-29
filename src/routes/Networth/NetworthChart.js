@@ -6,7 +6,7 @@ import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 import dayjs from 'dayjs';
 
-import { blue, grey } from '@mui/material/colors';
+import { useTheme } from '@emotion/react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -46,6 +46,7 @@ function ChartTooltip({ active, payload, label }) {
 
 export default function NetworthChart(props) {
   const { setSelectedId } = props;
+  const theme = useTheme();
   const allNetworths = useSelector((state) => state.networths.data);
   const [chartData, setChartData] = useState([]);
   const [range, setRange] = useState({
@@ -135,12 +136,16 @@ export default function NetworthChart(props) {
         />
 
         <Tooltip content={<ChartTooltip />} />
-        <ReferenceLine y={0} stroke={grey[300]} strokeDasharray='3 3' />
+        <ReferenceLine
+          y={0}
+          stroke={theme.palette.grey[30]}
+          strokeDasharray='3 3'
+        />
         <Line
           dot={false}
           type='monotone'
           dataKey='networth'
-          stroke={blue[500]}
+          stroke={theme.palette.primary.main}
           strokeWidth={3}
         />
       </ComposedChart>

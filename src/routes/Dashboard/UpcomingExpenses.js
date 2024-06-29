@@ -35,7 +35,7 @@ export default function UpcomingExpenses() {
 
   return (
     <Grid item xs={12}>
-      <Card raised>
+      <Card>
         <CardHeader
           title='upcoming expenses'
           sx={{ p: 1, pt: '4px', pb: 0 }}

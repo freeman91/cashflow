@@ -45,7 +45,7 @@ export default function RecentTransactions() {
   }, [allExpenses, allRepayments, allIncomes, allPaychecks]);
 
   return (
-    <Card raised>
+    <Card>
       <CardHeader
         title='recent transactions'
         sx={{ p: 1, pt: '4px', pb: 0 }}

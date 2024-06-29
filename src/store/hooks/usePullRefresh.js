@@ -27,7 +27,7 @@ const usePullToRefresh = (pullRef, onTrigger) => {
       clearTimeout(timerRef.current);
       if (
         pullRef.current.scrollTop === 0 &&
-        endY.current > startY.current + 50
+        endY.current > startY.current + 450
       ) {
         dispatch(showLoading());
         pullRef.current.style.transform = 'translateY(0px)';

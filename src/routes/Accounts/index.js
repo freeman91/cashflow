@@ -16,7 +16,7 @@ import { saveNetworth } from '../../store/networths';
 import { setAppBar } from '../../store/appSettings';
 import AccountsTable from './AccountsTable';
 import AccountPage from './AccountPage';
-import CurrentNetworth from '../Dashboard/Networth/CurrentNetworth';
+// import CurrentNetworth from '../Dashboard/Networth/CurrentNetworth';
 import PageSelect from '../../components/Selector/PageSelect';
 import { BackButton } from '../Layout/CustomAppBar';
 
@@ -95,9 +95,9 @@ export default function Accounts() {
     >
       {!account && (
         <Grid item xs={12}>
-          <Card raised>
+          <Card>
             <CardContent sx={{ p: 1, pt: '4px', pb: '0 !important' }}>
-              <CurrentNetworth />
+              {/* <CurrentNetworth /> */}
             </CardContent>
           </Card>
         </Grid>

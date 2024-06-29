@@ -17,7 +17,7 @@ export default function AccountSummary(props) {
 
   return (
     <Grid item xs={12}>
-      <Card raised>
+      <Card>
         <CardHeader
           disableTypography
           title={
@@ -34,8 +34,8 @@ export default function AccountSummary(props) {
                 align='right'
                 color={
                   assetSum > debtSum
-                    ? theme.palette.green[600]
-                    : theme.palette.red[600]
+                    ? theme.palette.success.main
+                    : theme.palette.danger.main
                 }
               >
                 {numberToCurrency.format(assetSum - debtSum)}

@@ -17,6 +17,7 @@ const CustomTableCell = ({
       sx={{
         lineHeight: 1,
         fontWeight: column === 'date' ? 800 : 500,
+        borderBottom: (theme) => `1px solid ${theme.palette.grey[40]}`,
         ...sx,
       }}
     >

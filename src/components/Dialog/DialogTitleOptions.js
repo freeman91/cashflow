@@ -46,7 +46,7 @@ function DialogTitleOptions(props) {
       <IconButton
         onClick={handleClose}
         sx={{
-          color: (theme) => theme.palette.grey[500],
+          color: (theme) => theme.palette.grey[30],
           width: 33,
           height: 33,
         }}

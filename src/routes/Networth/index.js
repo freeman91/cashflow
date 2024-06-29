@@ -9,11 +9,12 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 
 import { setAppBar } from '../../store/appSettings';
 import NetworthChart from './NetworthChart';
-import CurrentNetworth from '../Dashboard/Networth/CurrentNetworth';
-import SelectedNetworth from './SelectedNetworth';
+// import CurrentNetworth from '../Dashboard/Networth/CurrentNetworth';
+// import SelectedNetworth from './SelectedNetworth';
 import PageSelect from '../../components/Selector/PageSelect';
 import { BackButton } from '../Layout/CustomAppBar';
 
@@ -40,13 +41,13 @@ export default function Networth() {
   }, [networths]);
 
   useEffect(() => {
-    dispatch(
-      setAppBar({
-        title: 'networth',
-        leftAction: <BackButton />,
-        rightAction: <PageSelect />,
-      })
-    );
+    // dispatch(
+    //   setAppBar({
+    //     title: 'networth',
+    //     leftAction: <BackButton />,
+    //     rightAction: <PageSelect />,
+    //   })
+    // );
   }, [dispatch]);
 
   return (
@@ -54,14 +55,19 @@ export default function Networth() {
       container
       spacing={1}
       sx={{
-        pl: 1,
-        pr: 1,
-        pt: 1,
+        // pl: 1,
+        // pr: 1,
+        // pt: 1,
         mb: 10,
       }}
     >
       <Grid item xs={12}>
-        <Card raised>
+        <Typography variant='h5' sx={{ ml: 2 }}>
+          Net Worth
+        </Typography>
+      </Grid>
+      {/* <Grid item xs={12}>
+        <Card>
           <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
             <NetworthChart setSelectedId={setSelectedId} />
           </CardContent>
@@ -71,7 +77,7 @@ export default function Networth() {
         <SelectedNetworth selectedId={selectedId} />
       ) : (
         <Grid item xs={12}>
-          <Card raised>
+          <Card>
             <CardHeader
               title='current'
               sx={{ p: 1, pt: '4px', pb: 0 }}
@@ -90,7 +96,7 @@ export default function Networth() {
             </CardContent>
           </Card>
         </Grid>
-      )}
+      )}*/}
     </Grid>
   );
 }

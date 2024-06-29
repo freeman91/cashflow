@@ -1,13 +1,4 @@
 import { createTheme } from '@mui/material/styles';
-import {
-  grey,
-  blue,
-  green,
-  red,
-  yellow,
-  orange,
-  purple,
-} from '@mui/material/colors';
 
 export const breakpoints = {
   xs: 0,
@@ -20,20 +11,43 @@ export const breakpoints = {
 export const muiTheme = createTheme({
   palette: {
     mode: 'dark',
-    background: {
-      dark: '#272727',
-      light: '#2e2e2e',
+    surface: {
+      100: '#121212',
+      200: '#282828',
+      300: '#3f3f3f',
+      400: '#575757',
+      500: '#717171',
+      600: '#8b8b8b',
     },
-    primary: { main: '#0067F5' },
-    secondary: { main: green[500] },
-    grey,
-    blue,
-    green,
-    red,
-    yellow,
-    orange,
-    purple,
-    black: '#121212',
+    primary: { main: '#3d99f8' },
+    secondary: { main: '#3caa57' },
+    green: {
+      100: '#d9ebdd',
+      200: '#85c093',
+      300: '#55a368',
+      400: '#3caa57',
+    },
+    red: {
+      100: '#996666',
+      200: '#ac5353',
+      300: '#b64949',
+      400: '#c03f3f',
+      500: '#ca3535',
+      600: '#d42b2b',
+    },
+    grey: {
+      0: '#f3f3f3',
+      10: '#c6c6c6',
+      20: '#919191',
+      30: '#5e5e5e',
+      40: '#303030',
+    },
+    black: '#282828',
+    jet: '#303036',
+    danger: { main: '#c03f3f', secondary: '#d6726b' },
+    success: { main: '#3caa57' },
+    warning: { main: '#d4952e' },
+    info: { main: '#5c98fb' },
   },
   typography: {
     fontFamily: '"Helvetica", "Arial", sans-serif',

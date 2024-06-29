@@ -43,7 +43,7 @@ export default function YearSummary(props) {
   return (
     <>
       <Grid item xs={12}>
-        <Card raised>
+        <Card>
           <CardHeader
             title={
               <Stack
@@ -70,7 +70,7 @@ export default function YearSummary(props) {
       </Grid>
 
       <Grid item xs={12}>
-        <Card raised>
+        <Card>
           <CashflowExpandedContainer year={year} />
         </Card>
       </Grid>

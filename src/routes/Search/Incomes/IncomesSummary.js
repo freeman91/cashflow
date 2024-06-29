@@ -51,7 +51,7 @@ export default function IncomesSummary(props) {
   }, [incomes]);
 
   return (
-    <Card raised sx={{ m: 1 }}>
+    <Card sx={{ m: 1 }}>
       <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
         <Stack
           spacing={1}

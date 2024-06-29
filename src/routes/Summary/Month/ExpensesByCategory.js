@@ -86,7 +86,7 @@ export default function ExpensesByCategory(props) {
   };
 
   return (
-    <Card raised>
+    <Card>
       <CardHeader
         title='expenses by category'
         sx={{ p: 1, pt: '4px', pb: 0 }}

@@ -41,7 +41,7 @@ export default function Bills(props) {
   };
 
   return (
-    <Card raised sx={{ m: 1 }}>
+    <Card sx={{ m: 1 }}>
       <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
         <TableContainer component={'div'}>
           <Table>

@@ -13,7 +13,7 @@ import CurrentNetworth from './CurrentNetworth';
 export default function Networth() {
   const dispatch = useDispatch();
   return (
-    <Card raised>
+    <Card>
       <CardHeader
         title='net worth'
         sx={{ p: 1, pt: '4px', pb: 0 }}

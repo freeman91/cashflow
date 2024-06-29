@@ -44,7 +44,7 @@ export default function AssetPage(props) {
   return (
     <>
       <Grid item xs={12}>
-        <Card raised>
+        <Card>
           <CardHeader
             disableTypography
             title={
@@ -67,7 +67,7 @@ export default function AssetPage(props) {
       </Grid>
       {purchases.length !== 0 && (
         <Grid item xs={12}>
-          <Card raised>
+          <Card>
             <CardHeader
               disableTypography
               title={
@@ -102,7 +102,7 @@ export default function AssetPage(props) {
       )}
       {sales.length !== 0 && (
         <Grid item xs={12}>
-          <Card raised>
+          <Card>
             <CardHeader
               disableTypography
               title={

@@ -39,7 +39,7 @@ export default function MonthlyLineChart(props) {
 
   return (
     <Grid item xs={12}>
-      <Card raised>
+      <Card>
         <CardContent
           ref={componentRef}
           sx={{ p: '4px', pt: 0, pb: '0px !important', height: 175 }}
@@ -52,13 +52,13 @@ export default function MonthlyLineChart(props) {
                 data: incomeSumByMonth,
                 label: 'incomes',
                 valueFormatter: (item) => numberToCurrency.format(item),
-                color: theme.palette.green[600],
+                color: theme.palette.success.main,
               },
               {
                 data: expenseSumByMonth,
                 label: 'expenses',
                 valueFormatter: (item) => numberToCurrency.format(item),
-                color: theme.palette.red[600],
+                color: theme.palette.danger.main,
               },
             ]}
             xAxis={[{ scaleType: 'point', data: MONTHS }]}

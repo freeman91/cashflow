@@ -18,10 +18,11 @@ export default function MonthYearSelector({ date, handleDateChange }) {
       slotProps={{
         textField: {
           variant: 'standard',
-          textAlign: 'center',
           margin: 'normal',
-          InputProps: { disableUnderline: true },
-          inputProps: { style: { textAlign: 'center' } },
+          InputProps: {
+            disableUnderline: true,
+          },
+          inputProps: { style: { textAlign: 'center', fontWeight: 800 } },
         },
       }}
     />

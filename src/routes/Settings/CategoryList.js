@@ -123,7 +123,7 @@ export default function CategoryList(props) {
   };
 
   return (
-    <Card raised>
+    <Card>
       <CardContent sx={{ p: 0, pb: '4px !important' }}>
         <List disablePadding>
           {sortBy(categories, 'name')?.map((category) => {

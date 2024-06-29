@@ -28,7 +28,7 @@ import './styles/index.css';
 console.log('_package.version: ', _package.version);
 
 const ReduxLoader = styled(LoadingBar)(({ theme }) => ({
-  backgroundColor: theme.palette.blue[500],
+  backgroundColor: theme.palette.primary.main,
   height: '3px',
   position: 'absolute',
   zIndex: 99999,

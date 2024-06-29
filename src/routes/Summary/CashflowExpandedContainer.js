@@ -121,8 +121,8 @@ export default function CashflowExpandedContainer(props) {
         variant='h4'
         color={
           incomeSum + paycheckSum > expenseSum + principalSum + interestSum
-            ? theme.palette.green[600]
-            : theme.palette.red[600]
+            ? theme.palette.success.main
+            : theme.palette.danger.main
         }
       >
         {numberToCurrency.format(

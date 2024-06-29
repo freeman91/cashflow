@@ -64,7 +64,7 @@ export default function PaycheckSettings(props) {
   };
 
   return (
-    <Card raised>
+    <Card>
       <CardContent sx={{ p: 0, pb: '4px !important' }}>
         <form>
           <List sx={{ minWidth: 350, px: 1 }}>

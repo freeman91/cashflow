@@ -31,8 +31,8 @@ export default function ExpensesTable(props) {
   };
 
   const findColor = (expense) => {
-    if (expense.pending) return theme.palette.red[300];
-    return theme.palette.red[600];
+    if (expense.pending) return theme.palette.danger.secondary;
+    return theme.palette.danger.main;
   };
 
   return (

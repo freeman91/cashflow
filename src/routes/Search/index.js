@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import get from 'lodash/get';
 
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
 import Expenses from './Expenses';
 import Incomes from './Incomes';
@@ -37,9 +39,14 @@ export default function Search() {
   };
 
   return (
-    <Box sx={{ mb: 9 }}>
-      <SearchAppBar title={selected} toggleTrigger={toggleTrigger} />
-      {renderTypeTable()}
-    </Box>
+    <Grid container spacing={1} sx={{ mb: 10 }}>
+      {/* <SearchAppBar title={selected} toggleTrigger={toggleTrigger} /> */}
+      <Grid item xs={12}>
+        <Typography variant='h5' sx={{ ml: 2 }}>
+          Search
+        </Typography>
+      </Grid>
+      {/* {renderTypeTable()} */}
+    </Grid>
   );
 }

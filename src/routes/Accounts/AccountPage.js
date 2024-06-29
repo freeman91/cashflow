@@ -44,7 +44,7 @@ export default function AccountPage(props) {
       <AccountSummary account={account} assetSum={assetSum} debtSum={debtSum} />
       {assets.length !== 0 && (
         <Grid item xs={12}>
-          <Card raised>
+          <Card>
             <CardHeader
               disableTypography
               title={
@@ -79,7 +79,7 @@ export default function AccountPage(props) {
       )}
       {debts.length !== 0 && (
         <Grid item xs={12}>
-          <Card raised>
+          <Card>
             <CardHeader
               disableTypography
               title={

@@ -106,7 +106,7 @@ export default function MonthlyBreakdownTable(props) {
   };
 
   return (
-    <Card raised>
+    <Card>
       <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
         <TableContainer component='div'>
           <Table size='medium'>
@@ -153,8 +153,8 @@ export default function MonthlyBreakdownTable(props) {
                       sx={{
                         color:
                           net < 0
-                            ? theme.palette.red[600]
-                            : theme.palette.green[600],
+                            ? theme.palette.danger.main
+                            : theme.palette.success.main,
                       }}
                     >
                       {numberToCurrency.format(net)}

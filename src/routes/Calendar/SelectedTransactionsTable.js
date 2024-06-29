@@ -4,14 +4,12 @@ import includes from 'lodash/includes';
 import map from 'lodash/map';
 
 import { useTheme } from '@emotion/react';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 
 import { openDialog } from '../../store/dialogs';
 import { numberToCurrency } from '../../helpers/currency';
@@ -93,32 +91,17 @@ export default function SelectedTransactions(props) {
   };
 
   const findColor = (transaction) => {
-    if (transaction.pending) return theme.palette.red[300];
+    if (transaction.pending) return theme.palette.danger.secondary;
     if (includes(['expense', 'repayment'], transaction._type))
-      return theme.palette.red[600];
+      return theme.palette.danger.main;
     if (includes(['income', 'paycheck'], transaction._type))
-      return theme.palette.green[600];
-    return theme.palette.red[300];
+      return theme.palette.success.main;
+    return theme.palette.danger.secondary;
   };
 
-  if (!transactions.length) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: '50%',
-        }}
-      >
-        <Typography>no transactions</Typography>
-      </Box>
-    );
-  }
-
+  if (!transactions.length) return null;
   return (
-    <Card raised sx={{ mt: 1, mb: 9 }}>
+    <Card sx={{ mt: 1, mb: 9 }}>
       <CardContent sx={{ p: '4px', pt: 0, pb: '0px !important' }}>
         <TableContainer component='div'>
           <Table size='medium'>
