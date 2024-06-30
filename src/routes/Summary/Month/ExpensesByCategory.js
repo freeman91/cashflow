@@ -7,15 +7,15 @@ import reduce from 'lodash/reduce';
 
 import PieChartIcon from '@mui/icons-material/PieChart';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../../helpers/currency';
 import { CustomTableCell } from '../../../components/Table/CustomTableCell';
@@ -86,12 +86,33 @@ export default function ExpensesByCategory(props) {
   };
 
   return (
-    <Card>
-      <CardHeader
-        title='expenses by category'
-        sx={{ p: 1, pt: '4px', pb: 0 }}
-        titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
-        action={
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        // borderRadius: '10px',
+        background: (theme) =>
+          `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[300]})`,
+      }}
+    >
+      <Stack spacing={1} direction='column'>
+        <Box
+          sx={{
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
+        >
+          <Typography
+            variant='h6'
+            color='grey.0'
+            fontWeight='bold'
+            sx={{ pl: 2, mt: 1 }}
+          >
+            by category
+          </Typography>
           <ToggleButtonGroup value={view} exclusive onChange={handleChange}>
             <ToggleButton value='list'>
               <ViewListIcon />
@@ -100,9 +121,7 @@ export default function ExpensesByCategory(props) {
               <PieChartIcon />
             </ToggleButton>
           </ToggleButtonGroup>
-        }
-      />
-      <CardContent sx={{ p: 1, pt: 0, pb: '4px !important' }}>
+        </Box>
         {view === 'list' && (
           <TableContainer component='div'>
             <Table size='medium'>
@@ -128,7 +147,7 @@ export default function ExpensesByCategory(props) {
           </TableContainer>
         )}
         {view === 'pie' && <CustomPieChart groupedExpenses={groupedExpenses} />}
-      </CardContent>
-    </Card>
+      </Stack>
+    </Box>
   );
 }

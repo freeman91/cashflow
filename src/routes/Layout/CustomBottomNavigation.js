@@ -12,7 +12,6 @@ import MovingIcon from '@mui/icons-material/Moving';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -116,17 +115,14 @@ function CustomBottomNavigation(props) {
         right: 0,
         pb: 2,
         px: 2,
-        m: '4px',
-        borderRadius: '10px',
+        backgroundColor: 'surface.200',
+        zIndex: 1,
       }}
     >
       <BottomNavigation
         value={pageName}
         sx={{
-          // background: 'linear-gradient(0deg, #282828, #3f3f3f)',
-          // backgroundColor: 'surface.300',
           backgroundColor: 'unset',
-          borderRadius: '10px',
         }}
         onChange={(e, value) => {
           if (value === null) return;
@@ -164,17 +160,35 @@ function CustomBottomNavigation(props) {
         MenuListProps={{ sx: { p: 0 } }}
         transformOrigin={{ horizontal: 'center', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+        sx={{
+          '& .MuiMenu-paper': {
+            backgroundColor: 'unset',
+            backgroundImage: 'unset',
+            boxShadow: 'unset',
+          },
+        }}
       >
-        {transactionTypes.map((type, idx) => {
+        {transactionTypes.map((type) => {
           return [
             <MenuItem
               key={type}
               onClick={() => handleTypeClick(type)}
-              sx={{ p: 2 }}
+              sx={{
+                my: 1,
+                p: '12px',
+                borderRadius: 1,
+                backgroundColor: 'primary.main',
+              }}
             >
-              <Typography variant='h6'>{type}</Typography>
+              <Typography
+                variant='h5'
+                align='center'
+                sx={{ width: '100%' }}
+                fontWeight='bold'
+              >
+                {type}
+              </Typography>
             </MenuItem>,
-            idx !== transactionTypes.length - 1 ? <Divider /> : null,
           ];
         })}
       </Menu>

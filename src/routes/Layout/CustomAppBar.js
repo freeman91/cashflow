@@ -32,57 +32,34 @@ export default function CustomAppBar() {
   );
 
   return (
-    <>
-      {/* <Box
-        component='img'
-        src='/images/wave1.svg'
-        alt='Wave'
-        title='Wave'
-        sx={{ position: 'absolute' }}
-      /> */}
-      {/* <Box
-        style={{
-          width: `${650}px`,
-          height: `${650}px`,
-          overflow: 'hidden',
-          backgroundColor: '#3d99f8',
-          borderRadius: '50%',
-          transition: 'width 0.1s, height 0.1s',
-          position: 'absolute',
-          zIndex: '-1',
-          top: -500,
-          left: -160,
-          opacity: '1',
-        }}
-      /> */}
-      <Grid
-        container
-        justifyContent='center'
-        sx={{
-          maxWidth: 700,
-          // mb: '25px',
-          p: 1,
-        }}
-      >
-        <Grid item xs={3} display='flex' justifyContent='flex-start'>
-          {leftAction}
-        </Grid>
-        <Grid item xs={6} sx={{ alignSelf: 'center' }}>
-          {title && (
-            <Typography
-              align='center'
-              variant='h5'
-              fontWeight='bold'
-              sx={{ height: '100%' }}
-            >
-              {title}
-            </Typography>
-          )}
-        </Grid>
-        <Grid item xs={3} display='flex' justifyContent='flex-end'>
-          {rightAction}
-        </Grid>
+    <Grid
+      container
+      justifyContent='center'
+      sx={{
+        maxWidth: 700,
+        p: 1,
+        backgroundColor: 'surface.200',
+        // borderBottom: (theme) => `1px solid ${theme.palette.surface[300]}`,
+      }}
+    >
+      <Grid item xs={3} display='flex' justifyContent='flex-start'>
+        {leftAction}
       </Grid>
-    </>
+      <Grid item xs={6} sx={{ alignSelf: 'center' }}>
+        {title && (
+          <Typography
+            align='center'
+            variant='h5'
+            fontWeight='bold'
+            sx={{ height: '100%' }}
+          >
+            {title}
+          </Typography>
+        )}
+      </Grid>
+      <Grid item xs={3} display='flex' justifyContent='flex-end'>
+        {rightAction}
+      </Grid>
+    </Grid>
   );
 }

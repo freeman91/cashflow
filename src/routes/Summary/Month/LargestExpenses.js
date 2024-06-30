@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { push } from 'redux-first-history';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
+import map from 'lodash/map';
 
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
-import ExpensesTable from '../../Dashboard/ExpensesTable';
+import { BoxCurrencyDisplay } from '../../Dashboard/Transactions';
 
 export default function LargestExpenses(props) {
   const { month, year } = props;
-  const dispatch = useDispatch();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
@@ -55,23 +52,45 @@ export default function LargestExpenses(props) {
   }, [year, month, allExpenses, allRepayments, itemCount]);
 
   return (
-    <Card>
-      <CardHeader
-        title='largest expenses'
-        sx={{ p: 1, pt: '4px', pb: 0 }}
-        titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
-        action={
-          <IconButton
-            size='small'
-            onClick={() => dispatch(push(`/search/expenses`))}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        borderTopRightRadius: '10px',
+        borderTopLeftRadius: '10px',
+        px: 1,
+        pb: 1,
+        background: (theme) => theme.palette.surface[300],
+      }}
+    >
+      <Stack spacing={1} direction='column'>
+        <Box
+          sx={{
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            width: '100%',
+          }}
+        >
+          <Typography
+            variant='h6'
+            color='grey.0'
+            fontWeight='bold'
+            sx={{ pl: 1, mt: 1 }}
           >
-            <ArrowForwardIosIcon />
-          </IconButton>
-        }
-      />
-      <CardContent sx={{ p: 1, pt: 0, pb: '0px !important' }}>
-        <ExpensesTable expenses={largestExpenses} />
-      </CardContent>
-    </Card>
+            largest expenses
+          </Typography>
+        </Box>
+        {map(largestExpenses, (expense) => {
+          return (
+            <BoxCurrencyDisplay
+              key={expense.expense_id || expense.repayment_id}
+              transaction={expense}
+            />
+          );
+        })}
+      </Stack>
+    </Box>
   );
 }

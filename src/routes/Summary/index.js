@@ -5,8 +5,8 @@ import { push } from 'redux-first-history';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 
 import YearPage from './Year';
 import MonthPage from './Month';
@@ -31,8 +31,8 @@ export default function Summary() {
   useEffect(() => {
     dispatch(
       setAppBar({
-        // title: 'summary',
-        // leftAction: <BackButton onClick={() => dispatch(push('/dashboard'))} />,
+        title: 'summary',
+        leftAction: <BackButton onClick={() => dispatch(push('/dashboard'))} />,
         // rightAction: null,
       })
     );
@@ -49,22 +49,21 @@ export default function Summary() {
   };
 
   return (
-    <Grid
-      container
-      spacing={1}
+    <Box
       sx={{
-        // pl: 1,
-        // pr: 1,
-        // pt: 1,
-        mb: 10,
+        overflowY: 'scroll',
+        height: '100%',
+        WebkitOverflowScrolling: 'touch',
       }}
     >
-      <Grid item xs={12}>
-        <Typography variant='h5' sx={{ ml: 2 }}>
-          Summary
-        </Typography>
+      <Grid
+        container
+        spacing={1}
+        justifyContent='center'
+        alignItems='flex-start'
+      >
+        {renderComponent()}
       </Grid>
-      {/* {renderComponent()} */}
-    </Grid>
+    </Box>
   );
 }

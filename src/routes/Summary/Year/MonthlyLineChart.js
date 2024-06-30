@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useTheme } from '@emotion/react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { LineChart } from '@mui/x-charts/LineChart';
 
@@ -38,37 +37,47 @@ export default function MonthlyLineChart(props) {
   }, [componentRef]);
 
   return (
-    <Grid item xs={12}>
-      <Card>
-        <CardContent
-          ref={componentRef}
-          sx={{ p: '4px', pt: 0, pb: '0px !important', height: 175 }}
-        >
-          <LineChart
-            width={width}
-            height={height}
-            series={[
-              {
-                data: incomeSumByMonth,
-                label: 'incomes',
-                valueFormatter: (item) => numberToCurrency.format(item),
-                color: theme.palette.success.main,
-              },
-              {
-                data: expenseSumByMonth,
-                label: 'expenses',
-                valueFormatter: (item) => numberToCurrency.format(item),
-                color: theme.palette.danger.main,
-              },
-            ]}
-            xAxis={[{ scaleType: 'point', data: MONTHS }]}
-            leftAxis={null}
-            slotProps={{
-              legend: { hidden: true },
-            }}
-          />
-        </CardContent>
-      </Card>
+    <Grid item xs={12} pt='0 !important'>
+      <Box
+        ref={componentRef}
+        sx={{
+          height: 200,
+          background: (theme) =>
+            `linear-gradient(0deg, ${theme.palette.surface[300]}, ${theme.palette.surface[400]})`,
+          borderBottomLeftRadius: '10px',
+          borderBottomRightRadius: '10px',
+        }}
+      >
+        <LineChart
+          width={width}
+          height={height}
+          series={[
+            {
+              data: incomeSumByMonth,
+              label: 'incomes',
+              valueFormatter: (item) => numberToCurrency.format(item),
+              color: theme.palette.success.main,
+            },
+            {
+              data: expenseSumByMonth,
+              label: 'expenses',
+              valueFormatter: (item) => numberToCurrency.format(item),
+              color: theme.palette.danger.main,
+            },
+          ]}
+          xAxis={[{ scaleType: 'point', data: MONTHS }]}
+          leftAxis={null}
+          slotProps={{
+            legend: { hidden: true },
+          }}
+          margin={{
+            top: 15,
+            right: 15,
+            bottom: 25,
+            left: 15,
+          }}
+        />
+      </Box>
     </Grid>
   );
 }

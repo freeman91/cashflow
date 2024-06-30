@@ -1,8 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import dayjs from 'dayjs';
-import filter from 'lodash/filter';
-import reduce from 'lodash/reduce';
+import React from 'react';
 
 import { useTheme } from '@emotion/react';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -12,9 +8,6 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import { getExpenses } from '../../store/expenses';
-import { getIncomes } from '../../store/incomes';
-import { getPaychecks } from '../../store/paychecks';
 import { _numberToCurrency } from '../../helpers/currency';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
 import BoxFlexColumn from '../../components/BoxFlexColumn';
@@ -57,9 +50,7 @@ const BoxCurrencyDisplay = (props) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         p: 1,
-        mt: 2,
-        pl: orientation === 'left' ? 2 : 1,
-        pr: orientation === 'right' ? 2 : 1,
+        mt: 1,
       }}
     >
       {orientation === 'right' && (
@@ -88,71 +79,14 @@ const BoxCurrencyDisplay = (props) => {
   );
 };
 
-export default function Cashflow() {
-  const dispatch = useDispatch();
+export default function CashflowContainer(props) {
+  const { incomeSum, expenseSum, principalSum } = props;
   const theme = useTheme();
-
-  const allExpenses = useSelector((state) => state.expenses.data);
-  const allRepayments = useSelector((state) => state.repayments.data);
-  const allIncomes = useSelector((state) => state.incomes.data);
-  const allPaychecks = useSelector((state) => state.paychecks.data);
-
-  const [date] = useState(dayjs().hour(12).minute(0));
-  const [incomeSum, setIncomeSum] = useState(0);
-  const [expenseSum, setExpenseSum] = useState(0);
-  const [principalSum, setPrincipalSum] = useState(0);
-
-  useEffect(() => {
-    let start = date.startOf('month');
-    let end = date.endOf('month');
-
-    dispatch(getExpenses({ range: { start, end } }));
-    dispatch(getIncomes({ range: { start, end } }));
-    dispatch(getPaychecks({ range: { start, end } }));
-  }, [dispatch, date]);
-
-  useEffect(() => {
-    let total = 0;
-    let incomes = filter(allIncomes, (income) => {
-      return dayjs(income.date).isSame(date, 'month');
-    });
-    let paychecks = filter(allPaychecks, (paycheck) => {
-      return dayjs(paycheck.date).isSame(date, 'month');
-    });
-
-    total += reduce(incomes, (sum, income) => sum + income.amount, 0);
-    total += reduce(paychecks, (sum, paycheck) => sum + paycheck.take_home, 0);
-    setIncomeSum(total);
-  }, [date, allIncomes, allPaychecks]);
-
-  useEffect(() => {
-    let total = 0;
-    let expenses = filter(allExpenses, (expense) => {
-      return dayjs(expense.date).isSame(date, 'month') && !expense.pending;
-    });
-
-    let repayments = filter(allRepayments, (repayment) => {
-      return dayjs(repayment.date).isSame(date, 'month') && !repayment.pending;
-    });
-
-    total += reduce(expenses, (sum, expense) => sum + expense.amount, 0);
-    total += reduce(
-      repayments,
-      (sum, repayment) =>
-        sum + repayment.interest + (repayment.escrow ? repayment.escrow : 0),
-      0
-    );
-
-    setExpenseSum(total);
-    setPrincipalSum(
-      reduce(repayments, (sum, repayment) => sum + repayment.principal, 0)
-    );
-  }, [date, allExpenses, allRepayments]);
 
   const net = incomeSum - expenseSum - principalSum;
 
   return (
-    <Grid item xs={12} m={1}>
+    <Grid item xs={12} mx={1}>
       <Box
         sx={{
           background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[300]} 75%)`,
@@ -178,7 +112,7 @@ export default function Cashflow() {
           </Typography>
         </BoxFlexCenter>
         <Typography variant='body2' align='center' color='grey.10'>
-          {date.format('MMMM') + ' cashflow'}
+          cashflow
         </Typography>
         <Box
           sx={{

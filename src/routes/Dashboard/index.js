@@ -13,11 +13,7 @@ import { refresh } from '../../store/user';
 import usePullToRefresh from '../../store/hooks/usePullRefresh';
 import Cashflow from './Cashflow';
 import Networth from './Networth';
-// import UpcomingExpenses from './UpcomingExpenses';
-// import RecentTransactions from './RecentTransactions';
-// import Networth from './Networth';
-// import MonthYearSelector from '../../components/Selector/MonthYearSelector';
-// import Calendar from '../Calendar';
+import Transactions from './Transactions';
 
 const SettingsButton = () => {
   const dispatch = useDispatch();
@@ -31,51 +27,6 @@ const SettingsButton = () => {
     </IconButton>
   );
 };
-
-// const Tab = (props) => {
-//   const { label, Icon, tab, currentTab, setTab, orientation } = props;
-
-//   let borderRadius = '0 4px 4px 0';
-//   if (orientation === 'left') {
-//     borderRadius = '4px 0 0 4px';
-//   }
-
-//   let borderWidth = '1px 1px 1px 0';
-//   if (orientation === 'left') {
-//     borderWidth = '1px 0 1px 1px';
-//   }
-
-//   return (
-//     <ButtonBase sx={{ width: '50%', height: '100%' }}>
-//       <Box
-//         sx={{
-//           width: '100%',
-//           height: '100%',
-//           backgroundColor: currentTab === tab ? 'primary.main' : 'black',
-//           display: 'flex',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//           borderRadius: borderRadius,
-//           borderColor: currentTab !== tab ? 'primary.main' : 'unset',
-//           borderStyle: currentTab !== tab ? 'solid' : 'unset',
-//           borderWidth: currentTab !== tab ? borderWidth : 'unset',
-//         }}
-//         onClick={() => {
-//           currentTab !== tab && setTab(tab);
-//         }}
-//       >
-//         <Icon sx={{ color: currentTab === tab ? 'black' : 'primary.main' }} />
-//         <Typography
-//           color={currentTab === tab ? 'black' : 'primary.main'}
-//           align='center'
-//           sx={{ ml: 2 }}
-//         >
-//           {label}
-//         </Typography>
-//       </Box>
-//     </ButtonBase>
-//   );
-// };
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -91,7 +42,7 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(
       setAppBar({
-        title: null,
+        title: 'cashflow',
         rightAction: <SettingsButton />,
       })
     );
@@ -119,6 +70,7 @@ export default function Dashboard() {
         )}
         <Cashflow />
         <Networth />
+        <Transactions />
       </Grid>
     </Box>
   );
