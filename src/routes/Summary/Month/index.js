@@ -28,7 +28,7 @@ export default function MonthSummary(props) {
 
   useEffect(() => {
     if (!year || !month) {
-      return;
+      setDate(dayjs());
     }
     setDate(
       dayjs()
@@ -38,15 +38,15 @@ export default function MonthSummary(props) {
   }, [year, month]);
 
   useEffect(() => {
-    setDate(dayjs().year(year));
+    if (!date) return;
 
-    const start = dayjs().year(year).startOf('month');
-    const end = dayjs().year(year).endOf('month');
+    const start = date.startOf('month');
+    const end = date.endOf('month');
 
     dispatch(getExpenses({ range: { start, end } }));
     dispatch(getPaychecks({ range: { start, end } }));
     dispatch(getIncomes({ range: { start, end } }));
-  }, [year, dispatch]);
+  }, [date, dispatch]);
 
   const handleYearClick = () => {
     dispatch(push(`/summary/${year}`));
@@ -57,6 +57,7 @@ export default function MonthSummary(props) {
     dispatch(
       push(`/summary/${previousMonth.year()}/${previousMonth.month() + 1}`)
     );
+    setDate(previousMonth);
   };
 
   const handleNextMonth = () => {
@@ -67,12 +68,7 @@ export default function MonthSummary(props) {
   return (
     <>
       <Grid item xs={12}>
-        <Box
-          sx={{
-            background: (theme) =>
-              `linear-gradient(0deg, ${theme.palette.surface[300]}, ${theme.palette.surface[400]})`,
-          }}
-        >
+        <Box sx={{ background: (theme) => theme.palette.surface[250] }}>
           <Stack
             direction='row'
             justifyContent='space-between'
@@ -100,14 +96,14 @@ export default function MonthSummary(props) {
           </Stack>
         </Box>
       </Grid>
+      <Grid item xs={12} pt='0 !important'>
+        <ExpensesByCategory year={year} month={month} />
+      </Grid>
       <Grid item xs={12}>
         <Cashflow year={year} month={month} />
       </Grid>
-      <Grid item xs={12} mt={3}>
+      <Grid item xs={12} mt={3} mb={10}>
         <LargestExpenses year={year} month={month} />
-      </Grid>
-      <Grid item xs={12} mb={10} pt='0 !important'>
-        <ExpensesByCategory year={year} month={month} />
       </Grid>
     </>
   );

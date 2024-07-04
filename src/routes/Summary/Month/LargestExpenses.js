@@ -5,10 +5,13 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 
 import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { BoxCurrencyDisplay } from '../../Dashboard/Transactions';
+import { TransactionBox } from '../../../components/TransactionBox';
 
 export default function LargestExpenses(props) {
   const { month, year } = props;
@@ -16,7 +19,7 @@ export default function LargestExpenses(props) {
   const allRepayments = useSelector((state) => state.repayments.data);
 
   const [largestExpenses, setLargestExpenses] = useState([]);
-  const [itemCount] = useState(5);
+  const [itemCount, setItemCount] = useState(5);
 
   useEffect(() => {
     let repayments = filter(allRepayments, (repayment) => {
@@ -56,11 +59,10 @@ export default function LargestExpenses(props) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        borderTopRightRadius: '10px',
-        borderTopLeftRadius: '10px',
+        borderRadius: '10px',
         px: 1,
         pb: 1,
-        background: (theme) => theme.palette.surface[300],
+        background: (theme) => theme.palette.surface[250],
       }}
     >
       <Stack spacing={1} direction='column'>
@@ -69,7 +71,7 @@ export default function LargestExpenses(props) {
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-start',
+            justifyContent: 'space-between',
             width: '100%',
           }}
         >
@@ -81,10 +83,29 @@ export default function LargestExpenses(props) {
           >
             largest expenses
           </Typography>
+          <FormControl
+            sx={{ minWidth: 120, mt: 1 }}
+            size='small'
+            variant='standard'
+          >
+            <Select
+              value={itemCount}
+              label='item count'
+              onChange={(event) => {
+                setItemCount(event.target.value);
+              }}
+              MenuProps={{ MenuListProps: { disablePadding: true } }}
+            >
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={20}>20</MenuItem>
+              <MenuItem value={30}>30</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
         {map(largestExpenses, (expense) => {
           return (
-            <BoxCurrencyDisplay
+            <TransactionBox
               key={expense.expense_id || expense.repayment_id}
               transaction={expense}
             />

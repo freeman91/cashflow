@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import find from 'lodash/find';
 import reduce from 'lodash/reduce';
@@ -12,9 +12,11 @@ import Typography from '@mui/material/Typography';
 import { _numberToCurrency } from '../../helpers/currency';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
 import BoxFlexColumn from '../../components/BoxFlexColumn';
+import { push } from 'redux-first-history';
 
 export default function Networth() {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const networths = useSelector((state) => state.networths.data);
   const assets = useSelector((state) => state.assets.data);
@@ -73,8 +75,9 @@ export default function Networth() {
   })();
 
   return (
-    <Grid item xs={12} m={2} mt={1}>
+    <Grid item xs={12} mx={2} mt='4px'>
       <Box
+        onClick={() => dispatch(push('/networth'))}
         sx={{
           width: '100%',
           height: 75,

@@ -14,6 +14,7 @@ export const muiTheme = createTheme({
     surface: {
       100: '#121212',
       200: '#282828',
+      250: '#2b2b2b',
       300: '#3f3f3f',
       400: '#575757',
       500: '#717171',
@@ -26,6 +27,15 @@ export const muiTheme = createTheme({
       200: '#85c093',
       300: '#55a368',
       400: '#3caa57',
+      chart: {
+        veregy: '#3caa57',
+        'together & compoany': '#29ab87',
+        tips: '#4cbb17',
+        refund: '#d0f0c0',
+        other: '#98fb98',
+        sale: '#9dc183',
+        gift: '#2e8b57',
+      },
     },
     red: {
       100: '#996666',

@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
-
-import CashflowContainer from '../CashflowContainer';
+import CashflowContainer from '../../../components/CashflowContainer';
 
 export default function Cashflow(props) {
   const { year } = props;
@@ -18,7 +17,6 @@ export default function Cashflow(props) {
   const [date, setDate] = useState(null);
   const [incomeSum, setIncomeSum] = useState(0);
   const [expenseSum, setExpenseSum] = useState(0);
-  const [principalSum, setPrincipalSum] = useState(0);
 
   useEffect(() => {
     if (year) {
@@ -58,21 +56,21 @@ export default function Cashflow(props) {
     total += reduce(
       repayments,
       (sum, repayment) =>
-        sum + repayment.interest + (repayment.escrow ? repayment.escrow : 0),
+        sum +
+        repayment.principal +
+        repayment.interest +
+        (repayment.escrow ? repayment.escrow : 0),
       0
     );
 
     setExpenseSum(total);
-    setPrincipalSum(
-      reduce(repayments, (sum, repayment) => sum + repayment.principal, 0)
-    );
   }, [date, allExpenses, allRepayments]);
 
   return (
     <CashflowContainer
+      date={date?.format('YYYY')}
       incomeSum={incomeSum}
       expenseSum={expenseSum}
-      principalSum={principalSum}
     />
   );
 }

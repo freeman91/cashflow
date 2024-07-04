@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 
-export default function BoxFlexColumn({ alignItems = 'center', children }) {
+export default function BoxFlexColumn({ alignItems = 'center', sx, children }) {
   return (
     <Box
       sx={{
@@ -9,6 +9,7 @@ export default function BoxFlexColumn({ alignItems = 'center', children }) {
         alignItems,
         justifyContent: 'center',
         flexDirection: 'column',
+        ...sx,
       }}
     >
       {children}

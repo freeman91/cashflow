@@ -32,16 +32,7 @@ export default function CustomAppBar() {
   );
 
   return (
-    <Grid
-      container
-      justifyContent='center'
-      sx={{
-        maxWidth: 700,
-        p: 1,
-        backgroundColor: 'surface.200',
-        // borderBottom: (theme) => `1px solid ${theme.palette.surface[300]}`,
-      }}
-    >
+    <Grid container justifyContent='center' sx={{ maxWidth: 700, p: 1 }}>
       <Grid item xs={3} display='flex' justifyContent='flex-start'>
         {leftAction}
       </Grid>

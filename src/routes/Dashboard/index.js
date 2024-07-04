@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 
 import { setAppBar } from '../../store/appSettings';
 import { refresh } from '../../store/user';
-import usePullToRefresh from '../../store/hooks/usePullRefresh';
+import usePullToRefresh from '../../store/hooks/usePullToRefresh';
 import Cashflow from './Cashflow';
 import Networth from './Networth';
 import Transactions from './Transactions';
@@ -31,18 +31,17 @@ const SettingsButton = () => {
 export default function Dashboard() {
   const dispatch = useDispatch();
   const ref = useRef(null);
-  const loading = useSelector((state) => state.loadingBar.default);
 
-  const onTrigger = async () => {
+  const onRefresh = async () => {
     dispatch(refresh());
   };
 
-  usePullToRefresh(ref, onTrigger);
+  const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
 
   useEffect(() => {
     dispatch(
       setAppBar({
-        title: 'cashflow',
+        // title: 'cashflow',
         rightAction: <SettingsButton />,
       })
     );
@@ -63,9 +62,9 @@ export default function Dashboard() {
         justifyContent='center'
         alignItems='flex-start'
       >
-        {loading > 0 && (
+        {(isRefreshing || pullPosition > 100) && (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress />
+            <CircularProgress sx={{ mt: 1 }} />
           </Grid>
         )}
         <Cashflow />

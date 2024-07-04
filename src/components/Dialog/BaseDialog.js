@@ -37,7 +37,7 @@ function BaseDialog(props) {
           pb: 0,
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}
       >
         {children}

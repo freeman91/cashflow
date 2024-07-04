@@ -1,225 +1,122 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import dayjs from 'dayjs';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
-import filter from 'lodash/filter';
-import reduce from 'lodash/reduce';
+import React from 'react';
 
 import { useTheme } from '@emotion/react';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import { numberToCurrency } from '../helpers/currency';
-import { getExpenses } from '../store/expenses';
-import { getIncomes } from '../store/incomes';
-import { getPaychecks } from '../store/paychecks';
+import { _numberToCurrency } from '../helpers/currency';
+import BoxFlexCenter from './BoxFlexCenter';
+import BoxFlexColumn from './BoxFlexColumn';
+import CustomIconButton from './CustomIconButton';
 
-dayjs.extend(advancedFormat);
-const BORDER_RADIUS = '2px';
+const BoxCurrencyDisplay = (props) => {
+  const { value, label, color, icon, orientation } = props;
+
+  const deg = orientation === 'right' ? '90deg' : '-90deg';
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        width: 175,
+        height: 75,
+        background: `linear-gradient(${deg}, ${color[200]}, ${color[400]})`,
+        boxShadow: 6,
+        zIndex: 1,
+        borderRadius: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        p: 1,
+        mt: 1,
+      }}
+    >
+      {orientation === 'right' && (
+        <CustomIconButton color={color}>{icon}</CustomIconButton>
+      )}
+
+      <BoxFlexColumn
+        alignItems={orientation === 'left' ? 'flex-start' : 'flex-end'}
+      >
+        <Typography variant='body2' color='grey.0'>
+          {label}
+        </Typography>
+        <BoxFlexCenter>
+          <Typography variant='h5' color='grey.10'>
+            $
+          </Typography>
+          <Typography variant='h5' color='white' fontWeight='bold'>
+            {_numberToCurrency.format(value)}
+          </Typography>
+        </BoxFlexCenter>
+      </BoxFlexColumn>
+      {orientation === 'left' && (
+        <CustomIconButton color={color}>{icon}</CustomIconButton>
+      )}
+    </Box>
+  );
+};
 
 export default function CashflowContainer(props) {
-  const { month, year } = props;
+  const { date, incomeSum, expenseSum } = props;
   const theme = useTheme();
-  const dispatch = useDispatch();
 
-  const allExpenses = useSelector((state) => state.expenses.data);
-  const allRepayments = useSelector((state) => state.repayments.data);
-  const allIncomes = useSelector((state) => state.incomes.data);
-  const allPaychecks = useSelector((state) => state.paychecks.data);
-
-  const [incomeSum, setIncomeSum] = useState(0);
-  const [expenseSum, setExpenseSum] = useState(0);
-  const [principalSum, setPrincipalSum] = useState(0);
-
-  const [upperBound, setUpperBound] = useState(100);
-
-  useEffect(() => {
-    let start = dayjs().year(year).startOf('year');
-    let end = dayjs().year(year).endOf('year');
-
-    if (month) {
-      start = dayjs()
-        .year(year)
-        .month(month - 1)
-        .startOf('month');
-      end = dayjs()
-        .year(year)
-        .month(month - 1)
-        .endOf('month');
-    }
-
-    dispatch(getExpenses({ range: { start, end } }));
-    dispatch(getIncomes({ range: { start, end } }));
-    dispatch(getPaychecks({ range: { start, end } }));
-  }, [dispatch, year, month]);
-
-  useEffect(() => {
-    let total = 0;
-    let incomes = filter(allIncomes, (income) => {
-      const tDate = dayjs(income.date);
-      return (
-        tDate.year() === year && (month ? tDate.month() === month - 1 : true)
-      );
-    });
-    let paychecks = filter(allPaychecks, (paycheck) => {
-      const tDate = dayjs(paycheck.date);
-      return (
-        tDate.year() === year && (month ? tDate.month() === month - 1 : true)
-      );
-    });
-
-    total += reduce(incomes, (sum, income) => sum + income.amount, 0);
-    total += reduce(paychecks, (sum, paycheck) => sum + paycheck.take_home, 0);
-    setIncomeSum(total);
-  }, [year, month, allIncomes, allPaychecks]);
-
-  useEffect(() => {
-    let total = 0;
-    let expenses = filter(allExpenses, (expense) => {
-      const tDate = dayjs(expense.date);
-      return (
-        tDate.year() === Number(year) &&
-        (month ? tDate.month() === month - 1 : true) &&
-        !expense.pending
-      );
-    });
-
-    let repayments = filter(allRepayments, (repayment) => {
-      const tDate = dayjs(repayment.date);
-      return (
-        tDate.year() === year &&
-        (month ? tDate.month() === month - 1 : true) &&
-        !repayment.pending
-      );
-    });
-
-    total += reduce(expenses, (sum, expense) => sum + expense.amount, 0);
-    total += reduce(
-      repayments,
-      (sum, repayment) =>
-        sum + repayment.interest + (repayment.escrow ? repayment.escrow : 0),
-      0
-    );
-
-    setExpenseSum(total);
-    setPrincipalSum(
-      reduce(repayments, (sum, repayment) => sum + repayment.principal, 0)
-    );
-  }, [year, month, allExpenses, allRepayments]);
-
-  useEffect(() => {
-    let maxValue = Math.max(incomeSum, expenseSum + principalSum);
-    setUpperBound(Math.ceil(maxValue / 100) * 100);
-  }, [incomeSum, expenseSum, principalSum]);
+  const net = incomeSum - expenseSum;
 
   return (
-    <CardContent sx={{ p: 1, pt: 0, pb: '8px !important' }}>
-      <Stack
-        direction='row'
-        justifyContent='space-between'
-        sx={{ alignItems: 'center' }}
+    <Grid item xs={12} mx={1}>
+      <Box
+        sx={{
+          background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[400]} 75%)`,
+          height: 140,
+          width: '100%',
+          pt: 2,
+          borderRadius: '10px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
       >
-        <List disablePadding sx={{ width: '50%' }}>
-          <ListItem disableGutters disablePadding>
-            <ListItemText sx={{ width: '30%' }} secondary='earned' />
-            <ListItemText primary={numberToCurrency.format(incomeSum)} />
-          </ListItem>
-          <ListItem disableGutters disablePadding>
-            <Box
-              sx={{
-                backgroundColor: theme.palette.success.main,
-                height: 10,
-                width: `${(incomeSum / upperBound) * 100}%`,
-                borderRadius: BORDER_RADIUS,
-              }}
-            />
-          </ListItem>
-          <ListItem disableGutters disablePadding>
-            <ListItemText sx={{ width: '30%' }} secondary='spent' />
-            <ListItemText
-              primary={'-' + numberToCurrency.format(expenseSum + principalSum)}
-            />
-          </ListItem>
-          <ListItem disableGutters disablePadding>
-            <Tooltip
-              title={
-                <ListItem disablePadding disableGutters>
-                  <ListItemText
-                    primary='expenses'
-                    primaryTypographyProps={{ variant: 'body2' }}
-                    sx={{ m: 0, mr: 1, p: 0 }}
-                  />
-                  <ListItemText
-                    sx={{ p: 0, m: 0 }}
-                    primary={'-' + numberToCurrency.format(expenseSum)}
-                    primaryTypographyProps={{
-                      variant: 'body2',
-                      align: 'right',
-                      fontWeight: 800,
-                    }}
-                  />
-                </ListItem>
-              }
-            >
-              <Box
-                sx={{
-                  backgroundColor: theme.palette.danger.main,
-                  height: 10,
-                  width: `${(expenseSum / upperBound) * 100}%`,
-                  borderBottomLeftRadius: BORDER_RADIUS,
-                  borderTopLeftRadius: BORDER_RADIUS,
-                }}
-              />
-            </Tooltip>
-            <Tooltip
-              title={
-                <ListItem disablePadding disableGutters>
-                  <ListItemText
-                    primary='principal'
-                    primaryTypographyProps={{ variant: 'body2' }}
-                    sx={{ m: 0, mr: 1, p: 0 }}
-                  />
-                  <ListItemText
-                    sx={{ p: 0, m: 0 }}
-                    primary={'-' + numberToCurrency.format(principalSum)}
-                    primaryTypographyProps={{
-                      variant: 'body2',
-                      align: 'right',
-                      fontWeight: 800,
-                    }}
-                  />
-                </ListItem>
-              }
-            >
-              <Box
-                sx={{
-                  backgroundColor: theme.palette.danger.secondary,
-                  height: 10,
-                  width: `${(principalSum / upperBound) * 100}%`,
-                  borderBottomRightRadius: BORDER_RADIUS,
-                  borderTopRightRadius: BORDER_RADIUS,
-                }}
-              />
-            </Tooltip>
-          </ListItem>
-        </List>
-        <Typography
-          variant='h4'
-          color={
-            incomeSum > expenseSum + principalSum
-              ? theme.success.main
-              : theme.palette.danger.main
-          }
-        >
-          {numberToCurrency.format(incomeSum - expenseSum - principalSum)}
+        <BoxFlexCenter>
+          {net < 0 && (
+            <Typography variant='h4' color='grey.10'>
+              -
+            </Typography>
+          )}
+          <Typography variant='h4' color='grey.10'>
+            $
+          </Typography>
+          <Typography variant='h4' color='white' fontWeight='bold'>
+            {_numberToCurrency.format(Math.abs(net))}
+          </Typography>
+        </BoxFlexCenter>
+        <Typography variant='body2' align='center' color='grey.10'>
+          {date} cashflow
         </Typography>
-      </Stack>
-    </CardContent>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+          }}
+        >
+          <BoxCurrencyDisplay
+            value={incomeSum}
+            label='incomes'
+            color={theme.palette.green}
+            icon={<TrendingUpIcon />}
+            orientation='left'
+          />
+          <BoxCurrencyDisplay
+            value={expenseSum}
+            label='expenses'
+            color={theme.palette.red}
+            icon={<TrendingDownIcon />}
+            orientation='right'
+          />
+        </Box>
+      </Box>
+    </Grid>
   );
 }

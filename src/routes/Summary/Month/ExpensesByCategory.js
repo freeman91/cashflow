@@ -5,30 +5,31 @@ import filter from 'lodash/filter';
 import groupBy from 'lodash/groupBy';
 import reduce from 'lodash/reduce';
 
-import PieChartIcon from '@mui/icons-material/PieChart';
-import ViewListIcon from '@mui/icons-material/ViewList';
+import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 
-import { numberToCurrency } from '../../../helpers/currency';
-import { CustomTableCell } from '../../../components/Table/CustomTableCell';
-import CustomPieChart from './CustomPieChart';
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { _numberToCurrency } from '../../../helpers/currency';
+import BoxFlexCenter from '../../../components/BoxFlexCenter';
+import BoxFlexColumn from '../../../components/BoxFlexColumn';
 
 export default function ExpensesByCategory(props) {
   const { year, month } = props;
+  const theme = useTheme();
 
-  const [view, setView] = useState('list');
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
+  const allIncomes = useSelector((state) => state.incomes.data);
+  const allPaychecks = useSelector((state) => state.paychecks.data);
 
-  const [groupedExpenses, setGroupedExpenses] = useState([]);
+  const [expenses, setExpenses] = useState([]);
+  const [incomes, setIncomes] = useState([]);
+  const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    setSelected(null);
+  }, [year, month]);
 
   useEffect(() => {
     let repayments = filter(allRepayments, (repayment) => {
@@ -62,10 +63,12 @@ export default function ExpensesByCategory(props) {
 
     let _groupedExpenses = groupBy(items, 'category');
     _groupedExpenses = Object.keys(_groupedExpenses).map((key) => {
+      const color = theme.chartColors[key] || theme.palette.red[600];
       return {
         id: key,
         label: key,
         category: key,
+        color,
         value: reduce(
           _groupedExpenses[key],
           (sum, item) => sum + item.amount,
@@ -74,80 +77,160 @@ export default function ExpensesByCategory(props) {
       };
     });
     _groupedExpenses.sort((a, b) => b.value - a.value);
-    setGroupedExpenses(_groupedExpenses);
-  }, [year, month, allExpenses, allRepayments]);
+    setExpenses(_groupedExpenses);
+  }, [year, month, allExpenses, allRepayments, theme]);
 
-  const handleClick = (group) => {
-    console.log('group: ', group);
-  };
+  useEffect(() => {
+    let _incomes = filter(allIncomes, (income) => {
+      const tDate = dayjs(income.date);
+      return tDate.year() === year && tDate.month() === month - 1;
+    });
 
-  const handleChange = (event, nextView) => {
-    setView(nextView);
+    let paychecks = filter(allPaychecks, (paycheck) => {
+      const tDate = dayjs(paycheck.date);
+      return tDate.year() === Number(year) && tDate.month() === month - 1;
+    });
+
+    const items = [
+      ..._incomes,
+      ...paychecks.map((paycheck) => {
+        return {
+          ...paycheck,
+          category: paycheck.employer,
+          amount: paycheck.take_home,
+        };
+      }),
+    ];
+
+    let _groupedExpenses = groupBy(items, 'category');
+    _groupedExpenses = Object.keys(_groupedExpenses).map((key, idx) => {
+      let color = theme.palette.green.chart[key] || theme.palette.green[200];
+      return {
+        id: key,
+        label: key,
+        category: key,
+        color,
+        value: reduce(
+          _groupedExpenses[key],
+          (sum, item) => sum + item.amount,
+          0
+        ),
+      };
+    });
+    _groupedExpenses.sort((a, b) => b.value - a.value);
+    setIncomes(_groupedExpenses);
+  }, [year, month, allIncomes, allPaychecks, theme]);
+
+  const handleClick = (e, type, catIdx) => {
+    if (type === 'expense') {
+      setSelected(expenses[catIdx]);
+    } else {
+      setSelected(incomes[catIdx]);
+    }
   };
 
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        // borderRadius: '10px',
         background: (theme) =>
-          `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[300]})`,
+          `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
+        borderBottomLeftRadius: '10px',
+        borderBottomRightRadius: '10px',
       }}
     >
-      <Stack spacing={1} direction='column'>
+      {selected && (
         <Box
           sx={{
-            cursor: 'pointer',
+            position: 'relative',
+            height: 0,
+            top: 25,
+            zIndex: 1,
             display: 'flex',
+            justifyContent: 'center',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
           }}
         >
-          <Typography
-            variant='h6'
-            color='grey.0'
-            fontWeight='bold'
-            sx={{ pl: 2, mt: 1 }}
+          <Box
+            sx={{
+              background: theme.palette.surface[300],
+              px: 2,
+              pt: '4px',
+              borderRadius: '10px',
+              boxShadow: 4,
+            }}
           >
-            by category
-          </Typography>
-          <ToggleButtonGroup value={view} exclusive onChange={handleChange}>
-            <ToggleButton value='list'>
-              <ViewListIcon />
-            </ToggleButton>
-            <ToggleButton value='pie'>
-              <PieChartIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
+            <BoxFlexColumn alignItems='flex-start'>
+              <BoxFlexCenter>
+                <Box
+                  sx={{
+                    backgroundColor: selected.color,
+                    width: '1rem',
+                    height: '1rem',
+                    borderRadius: '3px',
+                    mr: 1,
+                  }}
+                />
+                <Typography variant='body2' color='grey.0'>
+                  {selected.category}
+                </Typography>
+              </BoxFlexCenter>
+              <BoxFlexCenter>
+                <Typography variant='h5' color='grey.10'>
+                  $
+                </Typography>
+                <Typography variant='h5' color='white' fontWeight='bold'>
+                  {_numberToCurrency.format(selected.value)}
+                </Typography>
+              </BoxFlexCenter>
+            </BoxFlexColumn>
+          </Box>
         </Box>
-        {view === 'list' && (
-          <TableContainer component='div'>
-            <Table size='medium'>
-              <TableBody>
-                {groupedExpenses.map((group, idx) => {
-                  return (
-                    <TableRow
-                      hover={true}
-                      key={group.category}
-                      onClick={() => handleClick(group)}
-                    >
-                      <CustomTableCell idx={idx} component='th'>
-                        {group.category}
-                      </CustomTableCell>
-                      <CustomTableCell idx={idx} align='right'>
-                        {numberToCurrency.format(group.value)}
-                      </CustomTableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-        {view === 'pie' && <CustomPieChart groupedExpenses={groupedExpenses} />}
-      </Stack>
+      )}
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+        }}
+      >
+        <ResponsiveContainer width='50%' height={225}>
+          <PieChart width={200} height={225}>
+            <Pie
+              data={incomes}
+              dataKey='value'
+              fill={theme.palette.green[400]}
+              onClick={(e, catIdx) => handleClick(e, 'income', catIdx)}
+            >
+              {incomes.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={entry.color}
+                  stroke={entry.color}
+                />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+        <ResponsiveContainer width='50%' height={225}>
+          <PieChart width={200} height={225}>
+            <Pie
+              data={expenses}
+              dataKey='value'
+              fill={theme.palette.red[600]}
+              onClick={(e, catIdx) => handleClick(e, 'expense', catIdx)}
+            >
+              {expenses.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={entry.color}
+                  stroke={entry.color}
+                />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+      </Box>
     </Box>
   );
 }

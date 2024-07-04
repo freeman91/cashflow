@@ -24,6 +24,7 @@ export default function Summary() {
     const today = dayjs();
     const _year = get(location.pathname.split('/'), '2', today.year());
     const _month = get(location.pathname.split('/'), '3', null);
+
     setYear(Number(_year));
     setMonth(Number(_month));
   }, [location]);
