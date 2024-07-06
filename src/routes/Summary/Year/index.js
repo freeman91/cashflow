@@ -21,8 +21,8 @@ import Cashflow from './Cashflow';
 import MonthlyBreakdown from './MonthlyBreakdown';
 import MonthlyLineChart from './MonthlyLineChart';
 import { StyledTab, StyledTabs } from '../../../components/StyledTabs';
-import IncomesBreakdown from './IncomesBreakdown';
-import ExpensesBreakdown from './ExpensesBreakdown';
+import IncomesBreakdown from '../IncomesBreakdown';
+import ExpensesBreakdown from '../ExpensesBreakdown';
 
 export const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 

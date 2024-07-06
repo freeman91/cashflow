@@ -21,6 +21,7 @@ export const dialogs = (() => {
     'repayment',
     'sale',
     'newTransaction',
+    'transactions',
   ].reduce((acc, resourceType) => {
     acc[resourceType] = {
       open: false,

@@ -17,6 +17,7 @@ import PaycheckDialog from '../../components/Dialog/PaycheckDialog';
 import PurchaseDialog from '../../components/Dialog/PurchaseDialog';
 import RepaymentDialog from '../../components/Dialog/RepaymentDialog';
 import SaleDialog from '../../components/Dialog/SaleDialog';
+import TransactionsDialog from '../../components/Dialog/TransactionsDialog';
 
 import { getUser } from '../../store/user';
 import CustomBottomNavigation from './CustomBottomNavigation';
@@ -60,6 +61,7 @@ function Layout() {
       <PurchaseDialog />
       <RepaymentDialog />
       <SaleDialog />
+      <TransactionsDialog />
       <CustomSnackbar />
     </Box>
   );
