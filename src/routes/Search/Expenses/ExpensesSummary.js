@@ -43,7 +43,7 @@ export default function ExpensesSummary(props) {
   }, [expenses]);
 
   return (
-    <Card sx={{ m: 1 }}>
+    <Card raised sx={{ mt: 1 }}>
       <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
         <Stack
           spacing={1}

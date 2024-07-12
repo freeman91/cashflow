@@ -49,6 +49,7 @@ class Bill(BaseModel):
             escrow = None
 
             if self.subcategory == "mortgage":
+                # TODO: ?
                 escrow = 320.81
                 principal -= escrow
 

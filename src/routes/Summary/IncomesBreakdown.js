@@ -73,11 +73,10 @@ export default function IncomesBreakdown(props) {
 
   return (
     <Stack
-      spacing={1}
+      spacing={'4px'}
       direction='column'
       justifyContent='center'
       alignItems='center'
-      sx={{ mt: 1 }}
     >
       <Box
         sx={{

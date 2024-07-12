@@ -1,102 +1,81 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
-import reduce from 'lodash/reduce';
 
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
 
 import { setAppBar } from '../../store/appSettings';
+import { BackButton, SettingsButton } from '../Layout/CustomAppBar';
 import NetworthChart from './NetworthChart';
-// import CurrentNetworth from '../Dashboard/Networth/CurrentNetworth';
-// import SelectedNetworth from './SelectedNetworth';
-import PageSelect from '../../components/Selector/PageSelect';
-import { BackButton } from '../Layout/CustomAppBar';
+import SelectedNetworth from './SelectedNetworth';
+import CurrentNetworth from './CurrentNetworth';
 
 export default function Networth() {
   const dispatch = useDispatch();
-
-  const networths = useSelector((state) => state.networths.data);
   const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
-    const latestNetworth = reduce(
-      networths,
-      (mostRecent, current) => {
-        if (!mostRecent) return current;
-
-        const mostRecentDate = new Date(mostRecent.year, mostRecent.month - 1);
-        const currentDate = new Date(current.year, current.month - 1);
-
-        return currentDate > mostRecentDate ? current : mostRecent;
-      },
-      null
+    dispatch(
+      setAppBar({
+        leftAction: <BackButton />,
+        rightAction: (
+          <Stack spacing={1} direction='row'>
+            <Card raised>
+              <IconButton onClick={() => dispatch(push('/accounts'))}>
+                <AccountBalanceIcon />
+              </IconButton>
+            </Card>
+            <Card raised>
+              <IconButton onClick={() => dispatch(push('/assets'))}>
+                <AccountBalanceWalletIcon />
+              </IconButton>
+            </Card>
+            <Card raised>
+              <IconButton onClick={() => dispatch(push('/debts'))}>
+                <CreditCardIcon />
+              </IconButton>
+            </Card>
+            <SettingsButton />
+          </Stack>
+        ),
+      })
     );
-    latestNetworth && setSelectedId(latestNetworth.networth_id);
-  }, [networths]);
-
-  useEffect(() => {
-    // dispatch(
-    //   setAppBar({
-    //     title: 'networth',
-    //     leftAction: <BackButton />,
-    //     rightAction: <PageSelect />,
-    //   })
-    // );
   }, [dispatch]);
 
   return (
-    <Grid
-      container
-      spacing={1}
+    <Box
       sx={{
-        // pl: 1,
-        // pr: 1,
-        // pt: 1,
-        mb: 10,
+        overflowY: 'scroll',
+        height: '100%',
+        WebkitOverflowScrolling: 'touch',
       }}
     >
-      <Grid item xs={12}>
-        <Typography variant='h5' sx={{ ml: 2 }}>
-          Net Worth
-        </Typography>
-      </Grid>
-      {/* <Grid item xs={12}>
-        <Card>
-          <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
-            <NetworthChart setSelectedId={setSelectedId} />
-          </CardContent>
-        </Card>
-      </Grid>
-      {selectedId ? (
-        <SelectedNetworth selectedId={selectedId} />
-      ) : (
+      <Grid
+        container
+        spacing={1}
+        justifyContent='center'
+        alignItems='flex-start'
+        sx={{ mb: 10 }}
+      >
         <Grid item xs={12}>
-          <Card>
-            <CardHeader
-              title='current'
-              sx={{ p: 1, pt: '4px', pb: 0 }}
-              titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
-              action={
-                <IconButton
-                  size='small'
-                  onClick={() => dispatch(push('/accounts'))}
-                >
-                  <ArrowForwardIosIcon />
-                </IconButton>
-              }
-            />
-            <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
-              <CurrentNetworth />
-            </CardContent>
-          </Card>
+          <NetworthChart
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+          />
         </Grid>
-      )}*/}
-    </Grid>
+        {selectedId ? (
+          <SelectedNetworth selectedId={selectedId} />
+        ) : (
+          <CurrentNetworth />
+        )}
+      </Grid>
+    </Box>
   );
 }

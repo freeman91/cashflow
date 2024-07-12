@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import filter from 'lodash/filter';
+import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import ItemsTable from './ItemsTable';
-import AccountSummary from './AccountSummary';
 import { numberToCurrency } from '../../helpers/currency';
+import AccountBox from './AccountBox';
+import ItemBox from '../../components/ItemBox';
 
 export default function AccountPage(props) {
   const { account } = props;
@@ -41,71 +39,53 @@ export default function AccountPage(props) {
 
   return (
     <>
-      <AccountSummary account={account} assetSum={assetSum} debtSum={debtSum} />
+      <Grid item xs={12} mx={1}>
+        <AccountBox account={{ ...account, net: assetSum - debtSum }} />
+      </Grid>
       {assets.length !== 0 && (
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader
-              disableTypography
-              title={
-                <Stack
-                  direction='row'
-                  justifyContent='space-between'
-                  sx={{ alignItems: 'center' }}
-                >
-                  <Typography variant='body1' align='left' fontWeight='bold'>
-                    assets
-                  </Typography>
-                  {debtSum > 0 && (
-                    <Typography variant='h6' align='right' fontWeight='bold'>
-                      {numberToCurrency.format(assetSum)}
-                    </Typography>
-                  )}
-                </Stack>
-              }
-              sx={{ p: 1, pt: '4px', pb: 0 }}
-            />
-            <CardContent
-              sx={{
-                p: 1,
-                pt: 0,
-                pb: `${assets.length ? 0 : '4px'} !important`,
-              }}
-            >
-              <ItemsTable items={assets} />
-            </CardContent>
-          </Card>
+        <Grid item xs={12} mx={1}>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: debtSum > 0 ? 'space-between' : 'center',
+            }}
+          >
+            <Typography variant='h6' fontWeight='bold' sx={{ width: '100%' }}>
+              assets
+            </Typography>
+            {debtSum > 0 && (
+              <Typography variant='h6' align='right' fontWeight='bold'>
+                {numberToCurrency.format(assetSum)}
+              </Typography>
+            )}
+          </Box>
+          {map(assets, (asset) => {
+            return <ItemBox key={asset.asset_id} item={asset} />;
+          })}
         </Grid>
       )}
       {debts.length !== 0 && (
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader
-              disableTypography
-              title={
-                <Stack
-                  direction='row'
-                  justifyContent='space-between'
-                  sx={{ alignItems: 'center' }}
-                >
-                  <Typography variant='body1' align='left' fontWeight='bold'>
-                    debts
-                  </Typography>
-                  {assetSum > 0 && (
-                    <Typography variant='h6' align='right' fontWeight='bold'>
-                      {numberToCurrency.format(debtSum)}
-                    </Typography>
-                  )}
-                </Stack>
-              }
-              sx={{ p: 1, pt: '4px', pb: 0 }}
-            />
-            <CardContent
-              sx={{ p: 1, pt: 0, pb: `${debts.length ? 0 : '4px'} !important` }}
-            >
-              <ItemsTable items={debts} />
-            </CardContent>
-          </Card>
+        <Grid item xs={12} mx={1}>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: assetSum > 0 ? 'space-between' : 'center',
+            }}
+          >
+            <Typography variant='h6' fontWeight='bold' sx={{ width: '100%' }}>
+              debts
+            </Typography>
+            {debtSum > 0 && (
+              <Typography variant='h6' align='right' fontWeight='bold'>
+                {numberToCurrency.format(debtSum)}
+              </Typography>
+            )}
+          </Box>
+          {map(debts, (debt) => {
+            return <ItemBox key={debt.debt_id} item={debt} />;
+          })}
         </Grid>
       )}
     </>

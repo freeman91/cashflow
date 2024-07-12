@@ -42,10 +42,8 @@ export default function MonthlyLineChart(props) {
         ref={componentRef}
         sx={{
           height: 200,
-          background: (theme) =>
-            `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
-          borderBottomLeftRadius: '10px',
-          borderBottomRightRadius: '10px',
+          // background: (theme) =>
+          //   `linear-gradient(0deg, ${theme.palette.surface[250]}, ${theme.palette.surface[300]})`,
         }}
       >
         <LineChart

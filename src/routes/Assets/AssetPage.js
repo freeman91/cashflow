@@ -5,16 +5,13 @@ import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
-import { numberToCurrency } from '../../helpers/currency';
-import PurchasesTable from './PurchasesTable';
-import SalesTable from './SalesTable';
+import { StyledTab, StyledTabs } from '../../components/StyledTabs';
+import PurchasesStack from './PurchasesStack';
+import SalesStack from './SalesStack';
+import ItemBox from '../../components/ItemBox';
+import DataBox from '../../components/DataBox';
 
 export default function AssetPage(props) {
   const { asset } = props;
@@ -22,6 +19,7 @@ export default function AssetPage(props) {
   const allPurchases = useSelector((state) => state.purchases.data);
   const allSales = useSelector((state) => state.sales.data);
 
+  const [tabIdx, setTabIdx] = useState(0);
   const [purchases, setPurchases] = useState([]);
   const [purchaseSum, setPurchaseSum] = useState(0);
   const [sales, setSales] = useState([]);
@@ -30,9 +28,9 @@ export default function AssetPage(props) {
   useEffect(() => {
     const assetPurchases = filter(allPurchases, { asset_id: asset.asset_id });
     setPurchaseSum(
-      reduce(assetPurchases, (acc, purchase) => acc + purchase.value, 0)
+      reduce(assetPurchases, (acc, purchase) => acc + purchase.amount, 0)
     );
-    setPurchases(sortBy(assetPurchases, 'value').reverse());
+    setPurchases(sortBy(assetPurchases, 'amount').reverse());
   }, [allPurchases, asset.asset_id]);
 
   useEffect(() => {
@@ -41,95 +39,40 @@ export default function AssetPage(props) {
     setSales(sortBy(assetSales, 'amount'));
   }, [allSales, asset.asset_id]);
 
+  const handleChange = (event, newValue) => {
+    setTabIdx(newValue);
+  };
+
   return (
     <>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader
-            disableTypography
-            title={
-              <Stack
-                direction='row'
-                justifyContent='space-between'
-                sx={{ alignItems: 'center' }}
-              >
-                <Typography variant='h6' align='left' fontWeight='bold'>
-                  {asset.name}
-                </Typography>
-                <Typography variant='h5' align='right'>
-                  {numberToCurrency.format(asset.value)}
-                </Typography>
-              </Stack>
-            }
-            sx={{ p: 1, pt: '4px', pb: '4px' }}
-          />
-        </Card>
+      <Grid item xs={12} mx={1}>
+        <ItemBox item={asset} />
       </Grid>
-      {purchases.length !== 0 && (
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader
-              disableTypography
-              title={
-                <Stack
-                  direction='row'
-                  justifyContent='space-between'
-                  sx={{ alignItems: 'center' }}
-                >
-                  <Typography variant='body1' align='left' fontWeight='bold'>
-                    purchases
-                  </Typography>
-                  {saleSum > 0 && (
-                    <Typography variant='h6' align='right' fontWeight='bold'>
-                      {numberToCurrency.format(purchaseSum)}
-                    </Typography>
-                  )}
-                </Stack>
-              }
-              sx={{ p: 1, pt: '4px', pb: 0 }}
-            />
-            <CardContent
-              sx={{
-                p: 1,
-                pt: 0,
-                pb: `${purchases.length ? 0 : '4px'} !important`,
-              }}
-            >
-              <PurchasesTable assetId={asset.asset_id} />
-            </CardContent>
-          </Card>
-        </Grid>
+      <Grid item xs={12}>
+        <StyledTabs value={tabIdx} onChange={handleChange} centered>
+          <StyledTab label='purchases' sx={{ width: '35%' }} />
+          <StyledTab label='sales' sx={{ width: '35%' }} />
+        </StyledTabs>
+      </Grid>
+      {tabIdx === 0 && purchases.length !== 0 && (
+        <>
+          <Grid item xs={12} mx={1} pt={'2px !important'}>
+            <DataBox label='total' value={purchaseSum} />
+          </Grid>
+          <Grid item xs={12} mx={1} mb={10} pt={'0 !important'}>
+            <PurchasesStack assetId={asset.asset_id} />
+          </Grid>
+        </>
       )}
-      {sales.length !== 0 && (
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader
-              disableTypography
-              title={
-                <Stack
-                  direction='row'
-                  justifyContent='space-between'
-                  sx={{ alignItems: 'center' }}
-                >
-                  <Typography variant='body1' align='left' fontWeight='bold'>
-                    sales
-                  </Typography>
-                  {purchaseSum > 0 && (
-                    <Typography variant='h6' align='right' fontWeight='bold'>
-                      {numberToCurrency.format(saleSum)}
-                    </Typography>
-                  )}
-                </Stack>
-              }
-              sx={{ p: 1, pt: '4px', pb: 0 }}
-            />
-            <CardContent
-              sx={{ p: 1, pt: 0, pb: `${sales.length ? 0 : '4px'} !important` }}
-            >
-              <SalesTable assetId={asset.asset_id} />
-            </CardContent>
-          </Card>
-        </Grid>
+      {tabIdx === 1 && sales.length !== 0 && (
+        <>
+          <Grid item xs={12} mx={1} pt={'0 !important'}>
+            <DataBox label='total' value={saleSum} />
+          </Grid>
+          <Grid item xs={12} mx={1} mb={10} pt={'2px !important'}>
+            <SalesStack assetId={asset.asset_id} />
+          </Grid>
+        </>
       )}
     </>
   );

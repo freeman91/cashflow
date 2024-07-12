@@ -1,32 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { openDialog } from '../../../store/dialogs';
+import dayjs from 'dayjs';
 import sortBy from 'lodash/sortBy';
+import map from 'lodash/map';
 
 import { useTheme } from '@emotion/react';
-import { useMediaQuery } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-import { CustomTableCell } from '../../../components/Table/CustomTableCell';
-import { numberToCurrency } from '../../../helpers/currency';
+import { openDialog } from '../../../store/dialogs';
+import { findIcon } from '../../../helpers/transactions';
+import { _numberToCurrency } from '../../../helpers/currency';
+import CustomIconButton from '../../../components/CustomIconButton';
+import BoxFlexColumn from '../../../components/BoxFlexColumn';
+import BoxFlexCenter from '../../../components/BoxFlexCenter';
+
+function getNextBillDate(day, months) {
+  const today = dayjs();
+
+  // Iterate over the months
+  for (const month of months) {
+    // Create a date for the current year and the specified month
+    let billDate = dayjs()
+      .month(month - 1)
+      .date(day);
+
+    // If the bill date is before today, move to next month
+    if (billDate.isBefore(today, 'day')) {
+      continue;
+    }
+
+    // If the bill date is valid, return it
+    if (billDate.isValid()) {
+      return billDate;
+    }
+  }
+
+  // If no valid bill date is found in the current year, check the next year
+  for (const month of months) {
+    let billDate = dayjs()
+      .add(1, 'year')
+      .month(month - 1)
+      .date(day);
+
+    if (billDate.isValid()) {
+      return billDate;
+    }
+  }
+
+  return null;
+}
 
 export default function Bills(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const greaterThanSM = useMediaQuery(theme.breakpoints.up('sm'));
 
   const allBills = useSelector((state) => state.bills.data);
   const [bills, setBills] = useState([]);
 
   useEffect(() => {
-    setBills(sortBy(allBills, 'day'));
+    let _bills = map(allBills, (bill) => {
+      const nextBillDate = getNextBillDate(bill.day, bill.months);
+      return { ...bill, nextBillDate };
+    });
+    setBills(sortBy(_bills, 'nextBillDate'));
   }, [allBills]);
 
   const handleClick = (bill) => {
@@ -40,74 +77,69 @@ export default function Bills(props) {
     );
   };
 
-  return (
-    <Card sx={{ m: 1 }}>
-      <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
-        <TableContainer component={'div'}>
-          <Table>
-            <TableHead>
-              <TableRow key='headers'>
-                <TableCell
-                  sx={{
-                    p: 1,
-                    pl: 1,
-                    pb: 0,
-                    width: greaterThanSM ? '15%' : '20%',
-                  }}
-                >
-                  day
-                </TableCell>
-                <TableCell
-                  sx={{ p: 1, pb: 0, width: greaterThanSM ? '30%' : '33%' }}
-                >
-                  vendor
-                </TableCell>
-                {greaterThanSM && (
-                  <TableCell sx={{ p: 1, pb: 0 }}>category</TableCell>
-                )}
-                <TableCell sx={{ p: 1, pr: 2, pb: 0 }} align='right'>
-                  amount
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {bills.map((bill, idx, array) => {
-                const sameDateAsPrevious =
-                  idx === 0 ? false : bill.day === array[idx - 1].day;
-                return (
-                  <TableRow
-                    key={bill.bill_id || bill.repayment_id}
-                    hover={true}
-                    onClick={() => handleClick(bill)}
-                  >
-                    <CustomTableCell
-                      idx={idx}
-                      column='day'
-                      sx={{ width: greaterThanSM ? '15%' : '20%' }}
-                    >
-                      {sameDateAsPrevious ? '' : bill.day}
-                    </CustomTableCell>
-                    <CustomTableCell
-                      idx={idx}
-                      sx={{ width: greaterThanSM ? '30%' : '33%' }}
-                    >
-                      {bill.vendor}
-                    </CustomTableCell>
-                    {greaterThanSM && (
-                      <CustomTableCell idx={idx}>
-                        {bill.category}
-                      </CustomTableCell>
-                    )}
-                    <CustomTableCell idx={idx} align='right'>
-                      {numberToCurrency.format(bill.amount)}
-                    </CustomTableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </CardContent>
-    </Card>
-  );
+  return map(bills, (bill) => {
+    const icon = findIcon(bill);
+    return (
+      <Box
+        key={bill.bill_id}
+        onClick={() => handleClick(bill)}
+        sx={{
+          position: 'relative',
+          background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
+          zIndex: 1,
+          borderRadius: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          p: '4px',
+          mt: 1,
+          pr: 2,
+          mx: 1,
+          border: `2px solid ${theme.palette.surface[400]}`,
+        }}
+      >
+        <CustomIconButton color={theme.palette.red}>{icon}</CustomIconButton>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            ml: 2,
+          }}
+        >
+          <BoxFlexColumn alignItems='space-between'>
+            <Typography
+              variant='h6'
+              color='grey.0'
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                display: '-webkit-box',
+                WebkitLineClamp: '1',
+                WebkitBoxOrient: 'vertical',
+              }}
+            >
+              {bill.name}
+            </Typography>
+            <Typography variant='body2' color='grey.0'>
+              {bill.category}
+            </Typography>
+          </BoxFlexColumn>
+          <BoxFlexColumn alignItems='space-between'>
+            <Typography align='right' variant='body2' color='grey.0'>
+              {bill.nextBillDate.format('MMM D, YYYY')}
+            </Typography>
+            <BoxFlexCenter>
+              <Typography variant='h5' color='grey.10'>
+                $
+              </Typography>
+              <Typography variant='h5' color='white' fontWeight='bold'>
+                {_numberToCurrency.format(bill.amount)}
+              </Typography>
+            </BoxFlexCenter>
+          </BoxFlexColumn>
+        </Box>
+      </Box>
+    );
+  });
 }

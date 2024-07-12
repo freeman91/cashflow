@@ -9,8 +9,8 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 
 import { findId } from '../../helpers/transactions';
-import { TransactionBox } from '../../components/TransactionBox';
 import { StyledTab, StyledTabs } from '../../components/StyledTabs';
+import TransactionBox from '../../components/TransactionBox';
 
 export default function Transactions() {
   const allExpenses = useSelector((state) => state.expenses.data);
@@ -18,10 +18,9 @@ export default function Transactions() {
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
+  const [tabIdx, setTabIdx] = useState(0);
   const [recent, setRecent] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
-
-  const [tabIdx, setTabIdx] = useState(0);
 
   useEffect(() => {
     const today = dayjs().hour(23).minute(59);

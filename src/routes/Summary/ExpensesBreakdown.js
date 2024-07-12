@@ -65,7 +65,7 @@ export default function ExpensesBreakdown(props) {
 
   return (
     <Stack
-      spacing={1}
+      spacing={'4px'}
       direction='column'
       justifyContent='center'
       alignItems='center'

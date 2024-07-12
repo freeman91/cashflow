@@ -1,12 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { push } from 'redux-first-history';
 
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 
 import { setAppBar } from '../../store/appSettings';
 import { refresh } from '../../store/user';
@@ -14,19 +12,7 @@ import usePullToRefresh from '../../store/hooks/usePullToRefresh';
 import Cashflow from './Cashflow';
 import Networth from './Networth';
 import Transactions from './Transactions';
-
-const SettingsButton = () => {
-  const dispatch = useDispatch();
-  return (
-    <IconButton
-      edge='end'
-      size='small'
-      onClick={() => dispatch(push('/settings'))}
-    >
-      <MoreVertIcon />
-    </IconButton>
-  );
-};
+import { CalendarButton, SettingsButton } from '../Layout/CustomAppBar';
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -41,8 +27,12 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(
       setAppBar({
-        // title: 'cashflow',
-        rightAction: <SettingsButton />,
+        rightAction: (
+          <Stack spacing={1} direction='row'>
+            <CalendarButton />
+            <SettingsButton />
+          </Stack>
+        ),
       })
     );
   }, [dispatch]);

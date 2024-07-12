@@ -15,7 +15,7 @@ export default function DataBox(props) {
     <Box
       onClick={onClick}
       sx={{
-        background: `linear-gradient(0deg, ${theme.palette.surface[400]}, ${theme.palette.surface[500]})`,
+        background: `linear-gradient(0deg, ${theme.palette.surface[250]}, ${theme.palette.surface[300]})`,
         borderRadius: '5px',
         display: 'flex',
         alignItems: 'center',

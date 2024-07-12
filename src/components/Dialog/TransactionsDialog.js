@@ -5,18 +5,18 @@ import map from 'lodash/map';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
+import { findAmount, findId } from '../../helpers/transactions';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
-import { TransactionBox } from '../TransactionBox';
-import { findAmount, findId } from '../../helpers/transactions';
 import SortMenuButton from './options/SortMenuButton';
+import TransactionBox from '../TransactionBox';
 
 function TransactionsDialog() {
   const dispatch = useDispatch();
   const { id, attrs } = useSelector((state) => state.dialogs.transactions);
 
   const [transactions, setTransactions] = useState([]);
-  const [sortAmount, setSortAmount] = useState('desc');
+  const [sortAmount, setSortAmount] = useState('');
 
   useEffect(() => {
     if (sortAmount === '') {

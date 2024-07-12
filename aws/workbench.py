@@ -43,12 +43,6 @@ HNB_ACCESS_TOKEN = os.getenv("HNB_ACCESS_TOKEN")
 ALLY_ACCESS_TOKEN = os.getenv("ALLY_ACCESS_TOKEN")
 
 
-def update_categories():
-    cats = dynamo.categories.get(user_id=USER_ID, category_type="expense")
-    # cats.categories = OPTIONS
-    cats.save()
-
-
 # def plaid_get_account_balances():
 #     configuration = plaid.Configuration(
 #         host=plaid.Environment.Development,
@@ -81,6 +75,10 @@ def print_paychecks():
                     "benefits": paycheck.benefits,
                 }
             )
+
+
+def test():
+    pass
 
 
 def main():

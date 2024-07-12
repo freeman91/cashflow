@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import dayjs from 'dayjs';
 import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 import reduce from 'lodash/reduce';
@@ -10,18 +9,14 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordian from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordianSummary from '@mui/material/AccordionSummary';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 
-import NetworthSummaryStack from '../Dashboard/Networth/NetworthSummaryStack';
 import { numberToCurrency } from '../../helpers/currency';
+import { StyledTab, StyledTabs } from '../../components/StyledTabs';
+import NetworthContainer from './NetworthContainer';
 
 const TABS = ['assets', 'debts'];
 
@@ -30,12 +25,11 @@ export default function SelectedNetworth(props) {
 
   const networths = useSelector((state) => state.networths.data);
   const [networth, setNetworth] = useState(null);
+  const [tabIdx, setTabIdx] = useState(0);
 
   const [assetSum, setAssetSum] = useState(0);
   const [debtSum, setDebtSum] = useState(0);
   const [groupedItems, setGroupedItems] = useState([]);
-
-  const [tab, setTab] = useState(0);
 
   useEffect(() => {
     if (selectedId) {
@@ -59,7 +53,7 @@ export default function SelectedNetworth(props) {
 
   useEffect(() => {
     if (networth) {
-      let _items = networth[TABS[tab]];
+      let _items = networth[TABS[tabIdx]];
       let _groupedItems = groupBy(_items, 'category');
       _groupedItems = Object.keys(_groupedItems).map((group) => {
         const groupItems = _groupedItems[group];
@@ -74,86 +68,84 @@ export default function SelectedNetworth(props) {
     } else {
       setGroupedItems([]);
     }
-  }, [tab, networth]);
+  }, [tabIdx, networth]);
 
-  const handleChangeTab = (e, newValue) => {
-    setTab(newValue);
+  const handleChange = (event, newValue) => {
+    setTabIdx(newValue);
   };
 
+  if (!networth) return null;
   return (
     <>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader
-            title={dayjs(networth?.date).format('YYYY  MMMM')}
-            sx={{ p: 1, pt: '4px', pb: 0 }}
-            titleTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
-          />
-          <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
-            <NetworthSummaryStack assetSum={assetSum} debtSum={debtSum} />
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <CardContent sx={{ p: 0, pb: '0 !important' }}>
-            <Tabs value={tab} onChange={handleChangeTab} centered>
-              {TABS.map((tab) => (
-                <Tab key={tab} label={tab} />
-              ))}
-            </Tabs>
-          </CardContent>
-        </Card>
+      <NetworthContainer
+        assetSum={assetSum}
+        debtSum={debtSum}
+        year={networth.year}
+        month={networth.month}
+      />
 
-        {groupedItems.map((group) => {
-          return (
-            <Accordian key={group.group}>
-              <AccordianSummary
-                expandIcon={<ExpandMoreIcon />}
-                sx={{
-                  '& .MuiAccordionSummary-content': {
-                    justifyContent: 'space-between',
-                    mr: 2,
-                  },
-                }}
-              >
-                <span>{group.group}</span>
-                <span>{numberToCurrency.format(group.sum)}</span>
-              </AccordianSummary>
-              <AccordionDetails>
-                {
-                  <List disablePadding>
-                    {group.items.map((item) => {
-                      return (
-                        <ListItem
-                          disablePadding
-                          disableGutters
-                          key={item.name + item.value}
-                        >
-                          <ListItemText
-                            primary={item.name}
-                            primaryTypographyProps={{ variant: 'body2' }}
-                            sx={{ m: 0, mr: 1, p: 0 }}
-                          />
-                          <ListItemText
-                            sx={{ p: 0, m: 0 }}
-                            primary={numberToCurrency.format(item.value)}
-                            primaryTypographyProps={{
-                              variant: 'body2',
-                              align: 'right',
-                              fontWeight: 800,
-                            }}
-                          />
-                        </ListItem>
-                      );
-                    })}
-                  </List>
-                }
-              </AccordionDetails>
-            </Accordian>
-          );
-        })}
+      <Grid item xs={12} mt={3}>
+        <StyledTabs value={tabIdx} onChange={handleChange} centered>
+          <StyledTab label='assets' sx={{ width: '35%' }} />
+          <StyledTab label='debts' sx={{ width: '35%' }} />
+        </StyledTabs>
       </Grid>
+
+      {groupedItems.map((group, idx) => {
+        return (
+          <Accordian
+            key={group.group}
+            sx={{
+              mt: idx === 0 ? '4px' : 'unset',
+              width: '100%',
+              bgcolor: 'surface.250',
+            }}
+          >
+            <AccordianSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                '& .MuiAccordionSummary-content': {
+                  justifyContent: 'space-between',
+                  mr: 2,
+                },
+              }}
+            >
+              <span>{group.group}</span>
+              <span>{numberToCurrency.format(group.sum)}</span>
+            </AccordianSummary>
+            <AccordionDetails>
+              {
+                <List disablePadding>
+                  {group.items.map((item) => {
+                    return (
+                      <ListItem
+                        disablePadding
+                        disableGutters
+                        key={item.name + item.value}
+                      >
+                        <ListItemText
+                          primary={item.name}
+                          primaryTypographyProps={{ variant: 'body2' }}
+                          sx={{ m: 0, mr: 1, p: 0 }}
+                        />
+                        <ListItemText
+                          sx={{ p: 0, m: 0 }}
+                          primary={numberToCurrency.format(item.value)}
+                          primaryTypographyProps={{
+                            variant: 'body2',
+                            align: 'right',
+                            fontWeight: 800,
+                          }}
+                        />
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              }
+            </AccordionDetails>
+          </Accordian>
+        );
+      })}
     </>
   );
 }

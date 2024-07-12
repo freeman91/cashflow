@@ -1,51 +1,38 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import filter from 'lodash/filter';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 
 import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import {
-  findAmount,
-  findCategory,
-  findColor,
-  findIcon,
-  findSource,
-} from '../helpers/transactions';
-import { openDialog } from '../store/dialogs';
-import { _numberToCurrency } from '../helpers/currency';
-import BoxFlexCenter from './BoxFlexCenter';
-import BoxFlexColumn from './BoxFlexColumn';
-import CustomIconButton from './CustomIconButton';
+import { _numberToCurrency } from '../../helpers/currency';
+import { openDialog } from '../../store/dialogs';
+import BoxFlexColumn from '../../components/BoxFlexColumn';
+import BoxFlexCenter from '../../components/BoxFlexCenter';
 
-const TransactionBox = (props) => {
-  const { transaction } = props;
+const BorrowBox = (props) => {
+  const { borrow } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const handleClick = (transaction) => {
+  const handleClick = () => {
     dispatch(
       openDialog({
-        type: transaction._type,
+        type: borrow._type,
         mode: 'edit',
-        id: transaction[`${transaction._type}_id`],
-        attrs: transaction,
+        id: borrow.borrow_id,
+        attrs: borrow,
       })
     );
   };
 
-  const amount = findAmount(transaction);
-  const source = findSource(transaction);
-  const category = findCategory(transaction);
-  const color = findColor(transaction);
-  const icon = findIcon(transaction);
-
-  const [c1, c2] = color.split('.');
-  const themeColor = theme.palette[c1][c2];
   return (
     <Box
-      onClick={() => handleClick(transaction)}
+      onClick={handleClick}
       sx={{
         position: 'relative',
         background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
@@ -56,10 +43,9 @@ const TransactionBox = (props) => {
         p: '4px',
         mt: 1,
         pr: 2,
-        border: `2px solid ${themeColor}`,
+        border: `2px solid ${theme.palette.surface[500]}`,
       }}
     >
-      <CustomIconButton color={theme.palette[c1]}>{icon}</CustomIconButton>
       <Box
         sx={{
           display: 'flex',
@@ -81,22 +67,22 @@ const TransactionBox = (props) => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {source}
+            {borrow.lender}
           </Typography>
           <Typography variant='body2' color='grey.0'>
-            {category}
+            lender
           </Typography>
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
           <Typography align='right' variant='body2' color='grey.0'>
-            {dayjs(transaction.date).format('MMM D')}
+            {dayjs(borrow.date).format('MMM D, YYYY')}
           </Typography>
           <BoxFlexCenter>
             <Typography variant='h5' color='grey.10'>
               $
             </Typography>
             <Typography variant='h5' color='white' fontWeight='bold'>
-              {_numberToCurrency.format(amount)}
+              {_numberToCurrency.format(borrow.amount)}
             </Typography>
           </BoxFlexCenter>
         </BoxFlexColumn>
@@ -105,4 +91,17 @@ const TransactionBox = (props) => {
   );
 };
 
-export default TransactionBox;
+export default function BorrowsStack(props) {
+  const { debtId } = props;
+  const allBorrows = useSelector((state) => state.borrows.data);
+  const [borrows, setBorrows] = useState([]);
+
+  useEffect(() => {
+    let _borrows = filter(allBorrows, { debt_id: debtId });
+    setBorrows(sortBy(_borrows, 'date').reverse());
+  }, [allBorrows, debtId]);
+
+  return map(borrows, (borrow) => {
+    return <BorrowBox key={borrow.borrow_id} borrow={borrow} />;
+  });
+}

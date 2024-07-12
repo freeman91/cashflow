@@ -1,110 +1,106 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'redux-first-history';
 
 import find from 'lodash/find';
 import reduce from 'lodash/reduce';
 
-import EditIcon from '@mui/icons-material/Edit';
+import { useTheme } from '@emotion/react';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { numberToCurrency } from '../../helpers/currency';
+import { _numberToCurrency } from '../../helpers/currency';
 import { setAppBar } from '../../store/appSettings';
 import { BackButton } from '../Layout/CustomAppBar';
-import { openDialog } from '../../store/dialogs';
-import DebtsTable from './DebtsTable';
+import DebtsStack from './DebtsStack';
 import DebtPage from './DebtPage';
-import PageSelect from '../../components/Selector/PageSelect';
+import BoxFlexCenter from '../../components/BoxFlexCenter';
 
 export default function Debts() {
+  const theme = useTheme();
   const dispatch = useDispatch();
   const location = useLocation();
   const debts = useSelector((state) => state.debts.data);
 
+  let debtId = location.pathname.replace('/debts', '');
+  debtId = debtId.replace('/', '');
   const [debt, setDebt] = useState(null);
   const [debtSum, setDebtSum] = useState(0);
-  const [id, setId] = useState('');
 
   useEffect(() => {
     dispatch(
       setAppBar({
-        title: 'debts',
         leftAction: <BackButton />,
-        rightAction: debt ? (
-          <IconButton
-            onClick={() =>
-              dispatch(
-                openDialog({
-                  type: 'debt',
-                  mode: 'edit',
-                  id: debt.debt_id,
-                })
-              )
-            }
-          >
-            <EditIcon />
-          </IconButton>
-        ) : (
-          <PageSelect />
+        rightAction: (
+          <Stack spacing={1} direction='row'>
+            <Card raised>
+              <IconButton onClick={() => dispatch(push('/accounts'))}>
+                <AccountBalanceIcon />
+              </IconButton>
+            </Card>
+            <Card raised>
+              <IconButton onClick={() => dispatch(push('/assets'))}>
+                <AccountBalanceWalletIcon />
+              </IconButton>
+            </Card>
+          </Stack>
         ),
       })
     );
   }, [dispatch, debt]);
 
   useEffect(() => {
-    let _pathname = location.pathname;
-    let _id = _pathname.replace('/debts', '');
-    _id = _id.replace('/', '');
-    setId(_id);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (id) {
-      let _debt = find(debts, { debt_id: id });
+    if (debtId) {
+      let _debt = find(debts, { debt_id: debtId });
       setDebt(_debt);
       setDebtSum(0);
     } else {
       setDebt(null);
       setDebtSum(reduce(debts, (sum, debt) => sum + debt.amount, 0));
     }
-  }, [debts, id]);
+  }, [debts, debtId]);
 
   const renderComponent = () => {
-    if (debt) {
+    if (debtId) {
       return <DebtPage debt={debt} />;
     }
-    return <DebtsTable />;
+    return <DebtsStack />;
   };
 
+  if (debtId && !debt) return null;
   return (
-    <Grid
-      container
-      spacing={1}
-      sx={{
-        pl: 1,
-        pr: 1,
-        pt: 1,
-        mb: 10,
-      }}
-    >
+    <Grid container spacing={1} mb={10}>
       {!debt && (
-        <Grid item xs={12} display='flex' justifyContent='center'>
-          <Card>
-            <CardContent sx={{ p: 1, pt: '4px', pb: '0 !important' }}>
-              <Typography
-                align='center'
-                variant='h4'
-                color={(theme) => theme.palette.danger.main}
-                sx={{ px: 2 }}
-              >
-                {numberToCurrency.format(debtSum)}
+        <Grid item xs={12} mx={1}>
+          <Box
+            sx={{
+              background: `linear-gradient(0deg, ${theme.palette.surface[300]}, ${theme.palette.surface[400]})`,
+              width: '100%',
+              py: 1,
+              borderRadius: '10px',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <BoxFlexCenter>
+              <Typography variant='h4' color='grey.10'>
+                $
               </Typography>
-            </CardContent>
-          </Card>
+              <Typography variant='h4' color='white' fontWeight='bold'>
+                {_numberToCurrency.format(debtSum)}
+              </Typography>
+            </BoxFlexCenter>
+            <Typography variant='body2' align='center' color='grey.10'>
+              debt total
+            </Typography>
+          </Box>
         </Grid>
       )}
       {renderComponent()}

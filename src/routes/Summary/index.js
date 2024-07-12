@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { push } from 'redux-first-history';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 
 import YearPage from './Year';
 import MonthPage from './Month';
 import { setAppBar } from '../../store/appSettings';
-import { BackButton } from '../Layout/CustomAppBar';
+import {
+  BackButton,
+  CalendarButton,
+  SettingsButton,
+} from '../Layout/CustomAppBar';
 
 export default function Summary() {
   const dispatch = useDispatch();
@@ -32,12 +36,19 @@ export default function Summary() {
   useEffect(() => {
     dispatch(
       setAppBar({
-        title: 'summary',
-        leftAction: <BackButton onClick={() => dispatch(push('/dashboard'))} />,
-        // rightAction: null,
+        leftAction: <BackButton />,
+        rightAction:
+          year && month ? (
+            <Stack spacing={1} direction='row'>
+              <CalendarButton year={year} month={month} />
+              <SettingsButton />
+            </Stack>
+          ) : (
+            <SettingsButton />
+          ),
       })
     );
-  }, [dispatch]);
+  }, [dispatch, year, month]);
 
   const renderComponent = () => {
     if (year) {

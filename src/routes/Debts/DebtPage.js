@@ -6,20 +6,13 @@ import get from 'lodash/get';
 import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
-import { numberToCurrency } from '../../helpers/currency';
-import BorrowsTable from './BorrowsTable';
-import RepaymentsTable from './RepaymentsTable';
+import { StyledTab, StyledTabs } from '../../components/StyledTabs';
+import BorrowsStack from './BorrowsStack';
+import RepaymentsStack from './RepaymentsStack';
+import ItemBox from '../../components/ItemBox';
+import DataBox from '../../components/DataBox';
 
 export default function DebtPage(props) {
   const { debt } = props;
@@ -27,6 +20,7 @@ export default function DebtPage(props) {
   const allBorrows = useSelector((state) => state.borrows.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
+  const [tabIdx, setTabIdx] = useState(0);
   const [borrows, setBorrows] = useState([]);
   const [borrowSum, setBorrowSum] = useState(0);
   const [repayments, setRepayments] = useState([]);
@@ -60,134 +54,48 @@ export default function DebtPage(props) {
     setRepayments(debtRepayments);
   }, [allRepayments, debt.debt_id]);
 
+  const handleChange = (event, newValue) => {
+    setTabIdx(newValue);
+  };
+
   return (
     <>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader
-            disableTypography
-            title={
-              <Stack
-                direction='row'
-                justifyContent='space-between'
-                sx={{ alignItems: 'center' }}
-              >
-                <Typography variant='h6' align='left' fontWeight='bold'>
-                  {debt.name}
-                </Typography>
-                <Typography variant='h5' align='right'>
-                  {numberToCurrency.format(debt.amount)}
-                </Typography>
-              </Stack>
-            }
-            sx={{ p: 1, pt: '4px', pb: '4px' }}
-          />
-        </Card>
+      <Grid item xs={12} mx={1}>
+        <ItemBox item={debt} />
       </Grid>
-      {borrows.length !== 0 && (
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader
-              disableTypography
-              title={
-                <Stack
-                  direction='row'
-                  justifyContent='space-between'
-                  sx={{ alignItems: 'center' }}
-                >
-                  <Typography variant='body1' align='left' fontWeight='bold'>
-                    borrowed
-                  </Typography>
-                  {principalSum + interestSum + escrowSum > 0 && (
-                    <Typography variant='h6' align='right' fontWeight='bold'>
-                      {numberToCurrency.format(borrowSum)}
-                    </Typography>
-                  )}
-                </Stack>
-              }
-              sx={{ p: 1, pt: '4px', pb: 0 }}
-            />
-            <CardContent
-              sx={{
-                p: 1,
-                pt: 0,
-                pb: `${borrows.length ? 0 : '4px'} !important`,
-              }}
-            >
-              <BorrowsTable debtId={debt.debt_id} />
-            </CardContent>
-          </Card>
-        </Grid>
+      <Grid item xs={12}>
+        <StyledTabs value={tabIdx} onChange={handleChange} centered>
+          <StyledTab label='repayments' sx={{ width: '35%' }} />
+          <StyledTab label='borrows' sx={{ width: '35%' }} />
+        </StyledTabs>
+      </Grid>
+      {tabIdx === 0 && repayments.length !== 0 && (
+        <>
+          <Grid item xs={12} mx={1} pt={'2px !important'}>
+            <DataBox label='principal' value={principalSum} />
+          </Grid>
+          <Grid item xs={12} mx={1} pt={'4px !important'}>
+            <DataBox label='interest' value={interestSum} />
+          </Grid>
+          {escrowSum > 0 && (
+            <Grid item xs={12} mx={1} pt={'4px !important'}>
+              <DataBox label='escrow' value={escrowSum} />
+            </Grid>
+          )}
+          <Grid item xs={12} mx={1} mb={10} pt={'0 !important'}>
+            <RepaymentsStack debtId={debt.debt_id} />
+          </Grid>
+        </>
       )}
-      {repayments.length !== 0 && (
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader
-              disableTypography
-              title={
-                <Stack
-                  direction='row'
-                  justifyContent='space-between'
-                  sx={{ alignItems: 'center' }}
-                >
-                  <Typography variant='body1' align='left' fontWeight='bold'>
-                    repayments
-                  </Typography>
-                  <Typography variant='h6' align='right' fontWeight='bold'>
-                    {numberToCurrency.format(
-                      principalSum + interestSum + escrowSum
-                    )}
-                  </Typography>
-                </Stack>
-              }
-              sx={{ p: 1, pt: '4px', pb: 0 }}
-            />
-            <CardContent
-              sx={{
-                p: 1,
-                pt: 0,
-                pb: `${repayments.length ? 0 : '4px'} !important`,
-              }}
-            >
-              <List dense disablePadding>
-                <ListItem>
-                  <ListItemText primary='principal' />
-                  <ListItemText
-                    primary={numberToCurrency.format(principalSum)}
-                    primaryTypographyProps={{
-                      align: 'right',
-                      fontWeight: 'bold',
-                    }}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary='interest' />
-                  <ListItemText
-                    primary={numberToCurrency.format(interestSum)}
-                    primaryTypographyProps={{
-                      align: 'right',
-                      fontWeight: 'bold',
-                    }}
-                  />
-                </ListItem>
-                {escrowSum > 0 && (
-                  <ListItem>
-                    <ListItemText primary='escrow' />
-                    <ListItemText
-                      primary={numberToCurrency.format(escrowSum)}
-                      primaryTypographyProps={{
-                        align: 'right',
-                        fontWeight: 'bold',
-                      }}
-                    />
-                  </ListItem>
-                )}
-              </List>
-              <Divider />
-              <RepaymentsTable debtId={debt.debt_id} />
-            </CardContent>
-          </Card>
-        </Grid>
+      {tabIdx === 1 && borrows.length !== 0 && (
+        <>
+          <Grid item xs={12} mx={1} pt={'2px !important'}>
+            <DataBox label='total' value={borrowSum} />
+          </Grid>
+          <Grid item xs={12} mx={1} mb={10} pt={'0 !important'}>
+            <BorrowsStack debtId={debt.debt_id} />
+          </Grid>
+        </>
       )}
     </>
   );

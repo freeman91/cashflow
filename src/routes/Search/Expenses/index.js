@@ -4,19 +4,21 @@ import dayjs from 'dayjs';
 import get from 'lodash/get';
 import filter from 'lodash/filter';
 import includes from 'lodash/includes';
+import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
+import { findId } from '../../../helpers/transactions';
 import { getExpenses } from '../../../store/expenses';
 import RangeSelect, {
   RANGE_OPTIONS,
 } from '../../../components/Selector/RangeSelect';
-import ExpensesTable from './ExpensesTable';
 import FilterDialog from './FilterDialog';
 import ExpensesSummary from './ExpensesSummary';
+import TransactionBox from '../../../components/TransactionBox';
 
 export default function Expenses(props) {
   const { trigger, toggleTrigger } = props;
@@ -150,14 +152,16 @@ export default function Expenses(props) {
   }, [trigger, toggleTrigger]);
 
   return (
-    <Box>
-      <Card sx={{ m: 1 }}>
+    <Box sx={{ px: 1 }}>
+      <Card raised>
         <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
           <RangeSelect range={range} setRange={setRange} />
         </CardContent>
       </Card>
       <ExpensesSummary expenses={filteredExpenses} />
-      <ExpensesTable expenses={filteredExpenses} />
+      {map(filteredExpenses, (expense) => {
+        return <TransactionBox key={findId(expense)} transaction={expense} />;
+      })}
       <FilterDialog
         title='filter options'
         open={open}

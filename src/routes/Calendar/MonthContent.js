@@ -5,7 +5,6 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import range from 'lodash/range';
 
-import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -36,7 +35,7 @@ export default function MonthContent(props) {
         alignItems='center'
         key='week-day-letter'
         spacing={1}
-        bgcolor='surface.100'
+        bgcolor='surface.250'
       >
         {map(range(7), (idx) => {
           return (
@@ -69,6 +68,7 @@ export default function MonthContent(props) {
           spacing={1}
           pt={0.5}
           pb={0.5}
+          bgcolor='surface.250'
         >
           {map(range(7), (idx) => {
             let _day = _days.shift();
@@ -96,8 +96,14 @@ export default function MonthContent(props) {
       );
       week = week + 1;
     }
+    weeks.push(
+      <Divider
+        key='divider-end'
+        sx={{ borderColor: (theme) => theme.palette.grey[40] }}
+      />
+    );
     return weeks;
   };
 
-  return <Card>{renderWeeks()}</Card>;
+  return renderWeeks();
 }

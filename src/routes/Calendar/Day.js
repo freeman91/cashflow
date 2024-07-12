@@ -9,6 +9,8 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+import { findId } from '../../helpers/transactions';
+
 const fontSizeWeights = {
   0: 4,
   10: 5,
@@ -136,11 +138,11 @@ export default function Day({
       <Stack direction='column' justifyContent='center' sx={{ height: 20 }}>
         <Stack direction='row' alignItems='flex-end' justifyContent='center'>
           {incomes.length > 0 &&
-            map(_incomes, (income, idx) => {
+            map(_incomes, (income) => {
               const fontSize = showWeights ? getFontSize(income.amount) : 4;
               return (
                 <Circle
-                  key={(income.income_id || income.paycheck_id) + idx}
+                  key={findId(income)}
                   color={theme.palette.success.main}
                   diameter={fontSize}
                 />
@@ -154,7 +156,7 @@ export default function Day({
               const fontSize = showWeights ? getFontSize(expense.amount) : 4;
               return (
                 <Circle
-                  key={(expense.expense_id || expense.repayement_id) + idx}
+                  key={findId(expense)}
                   color={theme.palette.danger.main}
                   diameter={fontSize}
                 />
@@ -165,11 +167,11 @@ export default function Day({
 
         {pendingExpenses.length > 0 && (
           <Stack direction='row' alignItems='flex-end' justifyContent='center'>
-            {map(pendingExpenses, (expense, idx) => {
+            {map(pendingExpenses, (expense) => {
               const fontSize = showWeights ? getFontSize(expense.amount) : 4;
               return (
                 <Circle
-                  key={(expense.expense_id || expense.repayement_id) + idx}
+                  key={findId(expense)}
                   color={theme.palette.danger.secondary}
                   diameter={fontSize}
                 />

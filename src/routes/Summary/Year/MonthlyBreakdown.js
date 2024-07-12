@@ -32,7 +32,7 @@ const MonthBox = (props) => {
     <Box
       onClick={handleClick}
       sx={{
-        background: `linear-gradient(0deg, ${theme.palette.surface[400]}, ${theme.palette.surface[500]})`,
+        background: `linear-gradient(0deg, ${theme.palette.surface[250]}, ${theme.palette.surface[300]})`,
         borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',

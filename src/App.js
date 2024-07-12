@@ -55,6 +55,7 @@ const AppRoutes = () => {
         <Route path='/debts' element={<Debts />} />
         <Route path='/debts/:debtId' element={<Debts />} />
         <Route path='/calendar' element={<Calendar />} />
+        <Route path='/calendar/:year/:month' element={<Calendar />} />
       </Route>
       <Route path='*'>
         <Route index element={<Navigate to='/dashboard' />} />

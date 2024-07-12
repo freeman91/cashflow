@@ -7,11 +7,10 @@ import filter from 'lodash/filter';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
 import { getExpenses } from '../../../store/expenses';
 import { getPaychecks } from '../../../store/paychecks';
@@ -70,7 +69,7 @@ export default function MonthSummary(props) {
     });
 
     setIncomes([...yearIncomes, ...yearPaychecks]);
-  }, [year, allIncomes, allPaychecks]);
+  }, [year, month, allIncomes, allPaychecks]);
 
   useEffect(() => {
     let yearExpenses = filter(allExpenses, (expense) => {
@@ -92,18 +91,13 @@ export default function MonthSummary(props) {
     });
 
     setExpenses([...yearExpenses, ...yearRepayments]);
-  }, [year, allExpenses, allRepayments]);
-
-  const handleYearClick = () => {
-    dispatch(push(`/summary/${year}`));
-  };
+  }, [year, month, allExpenses, allRepayments]);
 
   const handlePreviousMonth = () => {
     const previousMonth = date?.subtract(1, 'month');
     dispatch(
       push(`/summary/${previousMonth.year()}/${previousMonth.month() + 1}`)
     );
-    setDate(previousMonth);
   };
 
   const handleNextMonth = () => {
@@ -117,41 +111,45 @@ export default function MonthSummary(props) {
 
   return (
     <>
-      <Grid item xs={12}>
-        <Box sx={{ background: (theme) => theme.palette.surface[250] }}>
-          <Stack
-            direction='row'
-            justifyContent='space-between'
-            alignItems='center'
-          >
-            <IconButton onClick={() => handlePreviousMonth()}>
+      <Grid item xs={12} pt='0 !important'>
+        <ExpensesByCategory year={year} month={month} />
+      </Grid>
+
+      <Grid
+        item
+        xs={12}
+        mx={2}
+        sx={{ position: 'relative', top: 25, height: 0 }}
+      >
+        <Stack
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
+          mx={1}
+        >
+          <Card raised>
+            <IconButton
+              onClick={() => handlePreviousMonth()}
+              sx={{ ml: '4px', pl: 1, pr: 0, mr: '4px' }}
+            >
               <ArrowBackIosIcon />
             </IconButton>
-            <Button
-              sx={{ p: 0, fontSize: 20, color: '#fff' }}
-              variant='text'
-              onClick={() => handleYearClick()}
-            >
-              <Typography variant='h6'>{year}</Typography>
-            </Button>
-            <Typography variant='h6' sx={{ px: 2 }}>
-              {date?.format('MMMM')}
-            </Typography>
+          </Card>
+          <Card raised>
             <IconButton
               disabled={date?.isSame(today, 'month')}
               onClick={() => handleNextMonth()}
             >
               <ArrowForwardIosIcon />
             </IconButton>
-          </Stack>
-        </Box>
+          </Card>
+        </Stack>
       </Grid>
-      <Grid item xs={12} pt='0 !important'>
-        <ExpensesByCategory year={year} month={month} />
-      </Grid>
-      <Grid item xs={12}>
+
+      <Grid item xs={12} pt={'0 !important'}>
         <Cashflow year={year} month={month} />
       </Grid>
+
       <Grid item xs={12} sx={{ mb: 9, mt: 3 }}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>
           <StyledTab label='incomes' sx={{ width: '40%' }} />

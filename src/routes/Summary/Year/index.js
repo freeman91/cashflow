@@ -9,10 +9,10 @@ import reduce from 'lodash/reduce';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
 import { getExpenses } from '../../../store/expenses';
 import { getPaychecks } from '../../../store/paychecks';
@@ -136,33 +136,43 @@ export default function YearSummary(props) {
 
   return (
     <>
-      <Grid item xs={12} mt='1px'>
-        <Box sx={{ background: (theme) => theme.palette.surface[250] }}>
-          <Stack
-            direction='row'
-            justifyContent='space-between'
-            alignItems='center'
-          >
-            <IconButton onClick={() => handlePreviousYear()}>
+      <MonthlyLineChart
+        incomeSumByMonth={incomeSumByMonth}
+        expenseSumByMonth={expenseSumByMonth}
+      />
+
+      <Grid
+        item
+        xs={12}
+        mx={2}
+        sx={{ position: 'relative', top: 25, height: 0 }}
+      >
+        <Stack
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
+          mx={1}
+        >
+          <Card raised>
+            <IconButton
+              onClick={() => handlePreviousYear()}
+              sx={{ ml: '4px', pl: 1, pr: 0, mr: '4px' }}
+            >
               <ArrowBackIosIcon />
             </IconButton>
-            <Typography variant='h6'>{year}</Typography>
+          </Card>
+          <Card raised>
             <IconButton
               disabled={date?.isSame(today, 'year')}
               onClick={() => handleNextYear()}
             >
               <ArrowForwardIosIcon />
             </IconButton>
-          </Stack>
-        </Box>
+          </Card>
+        </Stack>
       </Grid>
 
-      <MonthlyLineChart
-        incomeSumByMonth={incomeSumByMonth}
-        expenseSumByMonth={expenseSumByMonth}
-      />
-
-      <Grid item xs={12}>
+      <Grid item xs={12} pt={'0 !important'}>
         <Cashflow year={year} />
       </Grid>
 

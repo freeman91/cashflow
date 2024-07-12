@@ -74,7 +74,7 @@ def asset() -> Asset:
 def bill() -> Bill:
     _user = user()
     bills = [
-        {"name": f"{bill.name} [{bill.account_id}]", "value": bill}
+        {"name": f"{bill.name} [{bill.vendor}]", "value": bill}
         for bill in sort_by(dynamo.bill.get(user_id=_user.user_id), "name")
     ]
 

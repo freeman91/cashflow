@@ -130,20 +130,13 @@ export default function ExpensesByCategory(props) {
   };
 
   return (
-    <Box
-      sx={{
-        background: (theme) =>
-          `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
-        borderBottomLeftRadius: '10px',
-        borderBottomRightRadius: '10px',
-      }}
-    >
+    <Box>
       {selected && (
         <Box
           sx={{
             position: 'relative',
             height: 0,
-            top: 25,
+            top: 50,
             zIndex: 1,
             display: 'flex',
             justifyContent: 'center',

@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import get from 'lodash/get';
 import filter from 'lodash/filter';
 import includes from 'lodash/includes';
+import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import toLower from 'lodash/toLower';
 
@@ -11,14 +12,15 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
+import { findId } from '../../../helpers/transactions';
 import { getIncomes } from '../../../store/incomes';
 import { getPaychecks } from '../../../store/paychecks';
 import RangeSelect, {
   RANGE_OPTIONS,
 } from '../../../components/Selector/RangeSelect';
-import IncomesTable from './IncomesTable';
 import IncomesSummary from './IncomesSummary';
 import FilterDialog from './FilterDialog';
+import TransactionBox from '../../../components/TransactionBox';
 
 export default function Incomes(props) {
   const { trigger, toggleTrigger } = props;
@@ -118,14 +120,16 @@ export default function Incomes(props) {
   }, [trigger, toggleTrigger]);
 
   return (
-    <Box>
-      <Card sx={{ m: 1 }}>
+    <Box sx={{ px: 1 }}>
+      <Card raised>
         <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
           <RangeSelect range={range} setRange={setRange} />
         </CardContent>
       </Card>
       <IncomesSummary incomes={filteredIncomes} />
-      <IncomesTable incomes={filteredIncomes} />
+      {map(filteredIncomes, (income) => {
+        return <TransactionBox key={findId(income)} transaction={income} />;
+      })}
       <FilterDialog
         title='filter options'
         open={open}
