@@ -24,7 +24,7 @@ import {
   ListItemText,
   Select,
 } from '@mui/material';
-import { cloneDeep, includes, range, remove } from 'lodash';
+import { cloneDeep, range } from 'lodash';
 import dayjs from 'dayjs';
 import DebtSelect from '../Selector/DebtSelect';
 
@@ -233,6 +233,7 @@ function BillDialog() {
                     return 'all';
                   } else {
                     return selected.reduce((acc, curr, idx) => {
+                      console.log('curr: ', curr);
                       const month = dayjs()
                         .month(Number(curr) - 1)
                         .format('MMMM');
@@ -243,17 +244,11 @@ function BillDialog() {
                   }
                 }}
                 onChange={(e) => {
-                  const value = e.target.value;
                   let months = cloneDeep(bill.months);
-
-                  if (includes(bill.months, Number(value))) {
-                    remove(months, (month) => month === Number(value));
-                  } else {
-                    months = months.concat(Number(value));
-                    months.sort(function (a, b) {
-                      return a - b;
-                    });
-                  }
+                  months = e.target.value;
+                  months.sort(function (a, b) {
+                    return a - b;
+                  });
                   setBill({ ...bill, months });
                 }}
               >
