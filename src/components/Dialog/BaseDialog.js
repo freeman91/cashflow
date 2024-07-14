@@ -24,7 +24,17 @@ function BaseDialog(props) {
   };
 
   return (
-    <Dialog fullScreen={fullScreen} open={open} onClose={handleClose}>
+    <Dialog
+      fullScreen={fullScreen}
+      open={open}
+      onClose={handleClose}
+      sx={{
+        '& .MuiDialog-paperFullScreen': {
+          backgroundColor: '#202020',
+          backgroundImage: 'unset',
+        },
+      }}
+    >
       <DialogTitle sx={{ pb: 0 }}>
         {title}
         <DialogTitleOptions mode={mode} handleClose={handleCloseBase}>

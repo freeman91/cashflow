@@ -5,20 +5,14 @@ import groupBy from 'lodash/groupBy';
 import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Accordian from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordianSummary from '@mui/material/AccordionSummary';
 import Grid from '@mui/material/Grid';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 
-import { numberToCurrency } from '../../helpers/currency';
 import { StyledTab, StyledTabs } from '../../components/StyledTabs';
 import NetworthContainer from './NetworthContainer';
+import ItemBox from './ItemBox';
+import DataBox from './DataBox';
 
-const TABS = ['assets', 'debts'];
+export const TABS = ['assets', 'debts'];
 
 export default function SelectedNetworth(props) {
   const { selectedId } = props;
@@ -27,6 +21,7 @@ export default function SelectedNetworth(props) {
   const [networth, setNetworth] = useState(null);
   const [tabIdx, setTabIdx] = useState(0);
 
+  const [expanded, setExpanded] = useState('');
   const [assetSum, setAssetSum] = useState(0);
   const [debtSum, setDebtSum] = useState(0);
   const [groupedItems, setGroupedItems] = useState([]);
@@ -83,67 +78,32 @@ export default function SelectedNetworth(props) {
         year={networth.year}
         month={networth.month}
       />
-
       <Grid item xs={12} mt={3}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>
           <StyledTab label='assets' sx={{ width: '35%' }} />
           <StyledTab label='debts' sx={{ width: '35%' }} />
         </StyledTabs>
       </Grid>
-
       {groupedItems.map((group, idx) => {
         return (
-          <Accordian
-            key={group.group}
-            sx={{
-              mt: idx === 0 ? '4px' : 'unset',
-              width: '100%',
-              bgcolor: 'surface.250',
-            }}
-          >
-            <AccordianSummary
-              expandIcon={<ExpandMoreIcon />}
-              sx={{
-                '& .MuiAccordionSummary-content': {
-                  justifyContent: 'space-between',
-                  mr: 2,
-                },
-              }}
-            >
-              <span>{group.group}</span>
-              <span>{numberToCurrency.format(group.sum)}</span>
-            </AccordianSummary>
-            <AccordionDetails>
-              {
-                <List disablePadding>
-                  {group.items.map((item) => {
-                    return (
-                      <ListItem
-                        disablePadding
-                        disableGutters
-                        key={item.name + item.value}
-                      >
-                        <ListItemText
-                          primary={item.name}
-                          primaryTypographyProps={{ variant: 'body2' }}
-                          sx={{ m: 0, mr: 1, p: 0 }}
-                        />
-                        <ListItemText
-                          sx={{ p: 0, m: 0 }}
-                          primary={numberToCurrency.format(item.value)}
-                          primaryTypographyProps={{
-                            variant: 'body2',
-                            align: 'right',
-                            fontWeight: 800,
-                          }}
-                        />
-                      </ListItem>
-                    );
-                  })}
-                </List>
-              }
-            </AccordionDetails>
-          </Accordian>
+          <Grid item key={group + idx} xs={12} mx={1} pt={'2px !important'}>
+            <DataBox
+              expanded={group.group === expanded}
+              label={group.group}
+              value={group.sum}
+              setExpanded={setExpanded}
+            />
+            {expanded === group.group &&
+              group.items.map((item) => {
+                return (
+                  <ItemBox
+                    key={item.name + item.value}
+                    tab={TABS[tabIdx]}
+                    item={item}
+                  />
+                );
+              })}
+          </Grid>
         );
       })}
     </>

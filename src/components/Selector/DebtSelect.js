@@ -22,6 +22,7 @@ function DebtSelect(props) {
     <FormControl variant='standard' fullWidth>
       <InputLabel id='debt-label'>debt</InputLabel>
       <Select
+        disabled
         labelId='debt-label'
         id='item_id'
         value={get(resource, 'debt_id', '')}

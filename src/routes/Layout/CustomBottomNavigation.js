@@ -122,13 +122,12 @@ function CustomBottomNavigation(props) {
     >
       <BottomNavigation
         value={pageName}
-        sx={{
-          backgroundColor: 'unset',
-        }}
+        sx={{ backgroundColor: 'unset' }}
         onChange={(e, value) => {
           if (value === null) return;
           dispatch(push(`/${value}`));
         }}
+        showLabels
       >
         <BottomNavigationAction
           label='dashboard'
