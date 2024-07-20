@@ -10,8 +10,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import SaveIcon from '@mui/icons-material/Save';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
@@ -123,26 +121,99 @@ export default function CategoryList(props) {
   };
 
   return (
-    <Card>
-      <CardContent sx={{ p: 0, pb: '4px !important' }}>
-        <List disablePadding>
-          {sortBy(categories, 'name')?.map((category) => {
-            return (
-              <React.Fragment key={category.name + '-edit'}>
-                {editing.type === 'category' &&
-                editing.name === category.name ? (
-                  <form onSubmit={handleSave}>
+    <List disablePadding>
+      {sortBy(categories, 'name')?.map((category) => {
+        return (
+          <React.Fragment key={category.name + '-edit'}>
+            {editing.type === 'category' && editing.name === category.name ? (
+              <form onSubmit={handleSave}>
+                <ClickAwayListener
+                  onClickAway={() => setEditing(defaultEditingObj)}
+                >
+                  <ListItem sx={{ pl: 0, pr: 0 }}>
+                    <TextField
+                      fullWidth
+                      variant='standard'
+                      sx={{ px: 2 }}
+                      placeholder={placeholder}
+                      key={category.name}
+                      id={category.name}
+                      value={editing.value || ''}
+                      onChange={(e) => handleChange(e.target.value)}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position='end'>
+                            <IconButton onClick={handleSave}>
+                              <SaveIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </ListItem>
+                </ClickAwayListener>
+              </form>
+            ) : (
+              <ListItem disableGutters sx={{ minWidth: 350 }}>
+                <ListItemButton
+                  onClick={() =>
+                    setEditing({
+                      type: 'category',
+                      name: category.name,
+                      value: category.name,
+                    })
+                  }
+                  sx={{ justifyContent: 'left' }}
+                >
+                  {<EditIcon />}
+                </ListItemButton>
+                <ListItemText
+                  primary={category.name}
+                  primaryTypographyProps={{
+                    align: 'center',
+                    fontWeight: 'bold',
+                  }}
+                  sx={{ width: '75%' }}
+                />
+                <ListItemButton
+                  onClick={() => {
+                    if (openedCategory === category.name) {
+                      setOpenedCategory(null);
+                    } else {
+                      setOpenedCategory(category.name);
+                    }
+                  }}
+                  sx={{ justifyContent: 'right' }}
+                >
+                  {openedCategory === category.name ? (
+                    <ExpandLess />
+                  ) : (
+                    <ExpandMore />
+                  )}
+                </ListItemButton>
+              </ListItem>
+            )}
+            <Divider sx={{ mx: 1 }} />
+            <Collapse
+              in={openedCategory === category.name}
+              timeout='auto'
+              unmountOnExit
+            >
+              {sortBy(category.subcategories).map((subcategory) => {
+                return editing.type === 'subcategory' &&
+                  editing.name === subcategory ? (
+                  <form key={subcategory} onSubmit={handleSave}>
                     <ClickAwayListener
                       onClickAway={() => setEditing(defaultEditingObj)}
                     >
-                      <ListItem sx={{ pl: 0, pr: 0 }}>
+                      <ListItem sx={{ pl: 4, pr: 0 }}>
                         <TextField
                           fullWidth
                           variant='standard'
                           sx={{ px: 2 }}
                           placeholder={placeholder}
-                          key={category.name}
-                          id={category.name}
+                          key={subcategory}
+                          id={subcategory}
                           value={editing.value || ''}
                           onChange={(e) => handleChange(e.target.value)}
                           InputProps={{
@@ -159,105 +230,27 @@ export default function CategoryList(props) {
                     </ClickAwayListener>
                   </form>
                 ) : (
-                  <ListItem disableGutters sx={{ minWidth: 350 }}>
+                  <ListItem key={subcategory} dense>
                     <ListItemButton
+                      sx={{ pl: 4 }}
                       onClick={() =>
                         setEditing({
-                          type: 'category',
-                          name: category.name,
-                          value: category.name,
+                          type: 'subcategory',
+                          name: subcategory,
+                          value: subcategory,
                         })
                       }
-                      sx={{ justifyContent: 'left' }}
                     >
-                      {<EditIcon />}
-                    </ListItemButton>
-                    <ListItemText
-                      primary={category.name}
-                      primaryTypographyProps={{
-                        align: 'center',
-                        fontWeight: 'bold',
-                      }}
-                      sx={{ width: '75%' }}
-                    />
-                    <ListItemButton
-                      onClick={() => {
-                        if (openedCategory === category.name) {
-                          setOpenedCategory(null);
-                        } else {
-                          setOpenedCategory(category.name);
-                        }
-                      }}
-                      sx={{ justifyContent: 'right' }}
-                    >
-                      {openedCategory === category.name ? (
-                        <ExpandLess />
-                      ) : (
-                        <ExpandMore />
-                      )}
+                      {subcategory}
                     </ListItemButton>
                   </ListItem>
-                )}
-                <Divider sx={{ mx: 1 }} />
-                <Collapse
-                  in={openedCategory === category.name}
-                  timeout='auto'
-                  unmountOnExit
-                >
-                  {sortBy(category.subcategories).map((subcategory) => {
-                    return editing.type === 'subcategory' &&
-                      editing.name === subcategory ? (
-                      <form key={subcategory} onSubmit={handleSave}>
-                        <ClickAwayListener
-                          onClickAway={() => setEditing(defaultEditingObj)}
-                        >
-                          <ListItem sx={{ pl: 4, pr: 0 }}>
-                            <TextField
-                              fullWidth
-                              variant='standard'
-                              sx={{ px: 2 }}
-                              placeholder={placeholder}
-                              key={subcategory}
-                              id={subcategory}
-                              value={editing.value || ''}
-                              onChange={(e) => handleChange(e.target.value)}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position='end'>
-                                    <IconButton onClick={handleSave}>
-                                      <SaveIcon />
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </ListItem>
-                        </ClickAwayListener>
-                      </form>
-                    ) : (
-                      <ListItem key={subcategory} dense>
-                        <ListItemButton
-                          sx={{ pl: 4 }}
-                          onClick={() =>
-                            setEditing({
-                              type: 'subcategory',
-                              name: subcategory,
-                              value: subcategory,
-                            })
-                          }
-                        >
-                          {subcategory}
-                        </ListItemButton>
-                      </ListItem>
-                    );
-                  })}
-                  <Divider sx={{ mx: 1 }} />
-                </Collapse>
-              </React.Fragment>
-            );
-          })}
-        </List>
-      </CardContent>
-    </Card>
+                );
+              })}
+              <Divider sx={{ mx: 1 }} />
+            </Collapse>
+          </React.Fragment>
+        );
+      })}
+    </List>
   );
 }

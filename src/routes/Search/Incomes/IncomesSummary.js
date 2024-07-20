@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import get from 'lodash/get';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 
-import { numberToCurrency } from '../../../helpers/currency';
-import { useEffect } from 'react';
+import { ListItemValue } from '../../../components/List/ListItemValue';
 
 export default function IncomesSummary(props) {
   const { incomes } = props;
@@ -60,122 +58,35 @@ export default function IncomesSummary(props) {
           sx={{ alignItems: 'flex-start' }}
         >
           <List disablePadding sx={{ width: '100%' }}>
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                primary='paychecks'
-                primaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                sx={{ width: '30%' }}
-                secondary='take home'
-                secondaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-              <ListItemText
-                primary={numberToCurrency.format(paycheckSum)}
-                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-              />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                sx={{ width: '30%' }}
-                secondary='taxes'
-                secondaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-              <ListItemText
-                primary={numberToCurrency.format(taxesSum)}
-                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-              />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                sx={{ width: '30%' }}
-                secondary='retirement'
-                secondaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-              <ListItemText
-                primary={numberToCurrency.format(retirementSum)}
-                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-              />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                sx={{ width: '30%' }}
-                secondary='benefits'
-                secondaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-              <ListItemText
-                primary={numberToCurrency.format(benefitsSum)}
-                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-              />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                sx={{ width: '30%' }}
-                secondary='other'
-                secondaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-              <ListItemText
-                primary={numberToCurrency.format(otherSum)}
-                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-              />
-            </ListItem>
+            <ListItemValue
+              label='gross income'
+              value={
+                paycheckSum +
+                taxesSum +
+                retirementSum +
+                benefitsSum +
+                otherSum +
+                incomeSum
+              }
+              fontWeight='bold'
+            />
+            <ListItemValue
+              label='net income'
+              value={paycheckSum + incomeSum}
+              fontWeight='bold'
+            />
             <Divider />
-            {otherSum > 0 && (
-              <>
-                <ListItem disableGutters disablePadding>
-                  <ListItemText
-                    sx={{ width: '30%' }}
-                    secondary='other income'
-                    secondaryTypographyProps={{ fontWeight: 'bold' }}
-                  />
-                  <ListItemText
-                    primary={numberToCurrency.format(incomeSum)}
-                    primaryTypographyProps={{
-                      fontWeight: 'bold',
-                      align: 'right',
-                    }}
-                  />
-                </ListItem>
-                <Divider />
-              </>
-            )}
-
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                primary='totals'
-                primaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                sx={{ width: '30%' }}
-                secondary='gross'
-                secondaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-              <ListItemText
-                primary={numberToCurrency.format(
-                  paycheckSum +
-                    taxesSum +
-                    retirementSum +
-                    benefitsSum +
-                    otherSum
-                )}
-                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-              />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                sx={{ width: '30%' }}
-                secondary='net'
-                secondaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-              <ListItemText
-                primary={numberToCurrency.format(paycheckSum + otherSum)}
-                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-              />
-            </ListItem>
+            <ListItemText
+              secondary='paychecks'
+              secondaryTypographyProps={{ fontWeight: 'bold' }}
+            />
+            <ListItemValue label='take home' value={paycheckSum} />
+            <ListItemValue label='taxes' value={taxesSum} />
+            <ListItemValue label='retirement' value={retirementSum} />
+            <ListItemValue label='benefits' value={benefitsSum} />
+            <ListItemValue label='other' value={otherSum} />
+            <Divider />
+            <ListItemValue label='other income' value={incomeSum} />
           </List>
         </Stack>
       </CardContent>

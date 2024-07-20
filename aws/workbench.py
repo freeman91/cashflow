@@ -10,11 +10,11 @@ from uuid import uuid4
 import inquirer
 from pydash import find, map_, uniq, sort_by, filter_
 
-# import plaid
-# from plaid.api import plaid_api
-# from plaid.model.liabilities_get_request import LiabilitiesGetRequest
-# from plaid.model.transactions_get_request import TransactionsGetRequest
-# from plaid.model.accounts_balance_get_request import AccountsBalanceGetRequest
+import plaid
+from plaid.api import plaid_api
+from plaid.model.liabilities_get_request import LiabilitiesGetRequest
+from plaid.model.transactions_get_request import TransactionsGetRequest
+from plaid.model.accounts_balance_get_request import AccountsBalanceGetRequest
 
 import prompts
 from services import dynamo
@@ -42,22 +42,22 @@ PLAID_SECRET = os.getenv("PLAID_SECRET")
 HNB_ACCESS_TOKEN = os.getenv("HNB_ACCESS_TOKEN")
 ALLY_ACCESS_TOKEN = os.getenv("ALLY_ACCESS_TOKEN")
 
+configuration = plaid.Configuration(
+    host=plaid.Environment.Production,
+    api_key={"clientId": PLAID_CLIENT_ID, "secret": PLAID_SECRET},
+)
 
-# def plaid_get_account_balances():
-#     configuration = plaid.Configuration(
-#         host=plaid.Environment.Development,
-#         api_key={
-#             "clientId": PLAID_CLIENT_ID,
-#             "secret": PLAID_SECRET,
-#         },
-#     )
-#     api_client = plaid.ApiClient(configuration)
-#     client = plaid_api.PlaidApi(api_client)
 
-#     request = AccountsBalanceGetRequest(access_token=HNB_ACCESS_TOKEN)
-#     response = client.accounts_balance_get(request)
-#     accounts = response["accounts"]
-#     pprint(accounts)
+def plaid_get_account_balances():
+
+    api_client = plaid.ApiClient(configuration)
+    client = plaid_api.PlaidApi(api_client)
+
+    request = AccountsBalanceGetRequest(access_token=HNB_ACCESS_TOKEN)
+    response = client.accounts_balance_get(request)
+    accounts = response["accounts"]
+    pprint(accounts)
+    return accounts
 
 
 def print_paychecks():

@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import get from 'lodash/get';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
-
-import { numberToCurrency } from '../../../helpers/currency';
-import { useEffect } from 'react';
+import { ListItemValue } from '../../../components/List/ListItemValue';
 
 export default function ExpensesSummary(props) {
   const { expenses } = props;
@@ -51,47 +47,22 @@ export default function ExpensesSummary(props) {
           justifyContent='space-between'
           sx={{ alignItems: 'flex-start' }}
         >
-          <List disablePadding sx={{ width: '50%' }}>
-            <ListItem disableGutters disablePadding>
-              <ListItemText
-                sx={{ width: '30%' }}
-                secondary='spent'
-                secondaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-              <ListItemText
-                primary={numberToCurrency.format(
-                  expenseSum + principalSum + interestSum + escrowSum
-                )}
-                primaryTypographyProps={{ fontWeight: 'bold' }}
-              />
-            </ListItem>
+          <List disablePadding sx={{ width: '100%' }}>
+            <ListItemValue
+              label='total spent'
+              value={expenseSum + principalSum + interestSum + escrowSum}
+              fontWeight='bold'
+            />
             <Divider />
-            <ListItem disableGutters disablePadding>
-              <ListItemText sx={{ width: '30%' }} secondary='expenses' />
-              <ListItemText primary={numberToCurrency.format(expenseSum)} />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText sx={{ width: '30%' }} secondary='repayments' />
-              <ListItemText
-                primary={numberToCurrency.format(
-                  principalSum + interestSum + escrowSum
-                )}
-              />
-            </ListItem>
-          </List>
-          <List disablePadding sx={{ width: '50%' }}>
-            <ListItem disableGutters disablePadding>
-              <ListItemText sx={{ width: '30%' }} secondary='principal' />
-              <ListItemText primary={numberToCurrency.format(principalSum)} />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText sx={{ width: '30%' }} secondary='interest' />
-              <ListItemText primary={numberToCurrency.format(interestSum)} />
-            </ListItem>
-            <ListItem disableGutters disablePadding>
-              <ListItemText sx={{ width: '30%' }} secondary='escrow' />
-              <ListItemText primary={numberToCurrency.format(escrowSum)} />
-            </ListItem>
+            <ListItemValue label='expenses' value={expenseSum} />
+            <ListItemValue
+              label='repayments'
+              value={principalSum + interestSum + escrowSum}
+            />
+            <Divider />
+            <ListItemValue label='principal' value={principalSum} />
+            <ListItemValue label='interest' value={interestSum} />
+            <ListItemValue label='escrow' value={escrowSum} />
           </List>
         </Stack>
       </CardContent>

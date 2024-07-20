@@ -5,8 +5,6 @@ import find from 'lodash/find';
 import get from 'lodash/get';
 
 import SaveIcon from '@mui/icons-material/Save';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -68,56 +66,52 @@ export default function OptionsList(props) {
   };
 
   return (
-    <Card>
-      <CardContent sx={{ p: 0, pt: 1, pb: '4px !important' }}>
-        <List disablePadding sx={{ minWidth: 350 }}>
-          {options.map((option, idx) => {
-            if (selectedIdx === idx) {
-              return (
-                <form key={option} onSubmit={handleSave}>
-                  <TextFieldListItem
-                    sx={{ px: 2 }}
-                    placeholder={placeholder}
-                    key={option}
-                    id={option}
-                    value={selectedOption || ''}
-                    onChange={(e) => handleChange(e.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='end'>
-                          <IconButton
-                            onClick={handleSave}
-                            disabled={selectedOption === option}
-                          >
-                            <SaveIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </form>
-              );
-            }
+    <List disablePadding sx={{ minWidth: 350 }}>
+      {options.map((option, idx) => {
+        if (selectedIdx === idx) {
+          return (
+            <form key={option} onSubmit={handleSave}>
+              <TextFieldListItem
+                sx={{ px: 2 }}
+                placeholder={placeholder}
+                key={option}
+                id={option}
+                value={selectedOption || ''}
+                onChange={(e) => handleChange(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton
+                        onClick={handleSave}
+                        disabled={selectedOption === option}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </form>
+          );
+        }
 
-            return (
-              <React.Fragment key={option}>
-                <ListItem dense>
-                  <ListItemButton
-                    onClick={() => {
-                      setSelectedIdx(idx);
-                      setSelectedOption(option);
-                    }}
-                    sx={{ justifyContent: 'left' }}
-                  >
-                    {option}
-                  </ListItemButton>
-                </ListItem>
-                <Divider sx={{ mx: 1 }} />
-              </React.Fragment>
-            );
-          })}
-        </List>
-      </CardContent>
-    </Card>
+        return (
+          <React.Fragment key={option}>
+            <ListItem dense>
+              <ListItemButton
+                onClick={() => {
+                  setSelectedIdx(idx);
+                  setSelectedOption(option);
+                }}
+                sx={{ justifyContent: 'left' }}
+              >
+                {option}
+              </ListItemButton>
+            </ListItem>
+            <Divider sx={{ mx: 1 }} />
+          </React.Fragment>
+        );
+      })}
+    </List>
   );
 }
