@@ -45,9 +45,5 @@ def get(user_id: str = None, bill_id: str = None) -> Bill:
 def update(user_id: str, bill_id: str, **kwargs) -> Bill:
     actions = []
     bill = Bill.get(user_id, bill_id)
-
-    print(f"kwargs: {kwargs}")
-
     bill.update(actions=[*actions, Bill.last_update.set(datetime.now(timezone.utc))])
-
     return bill

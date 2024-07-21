@@ -15,7 +15,7 @@ import ListItem from '@mui/material/ListItem';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { deleteBill, postBill, putBill } from '../../store/bills';
-import { closeDialog } from '../../store/dialogs';
+import { closeDialog, openDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import {
   Checkbox,
@@ -127,12 +127,66 @@ function BillDialog() {
     setBill(defaultBill);
   };
 
+  const handleGenerateExpense = () => {
+    const type = bill?.debt_id ? 'repayment' : 'expense';
+    let attrs = {
+      user_id: bill.user_id,
+      category: bill.category,
+      subcategory: bill.subcategory,
+      pending: true,
+      date: bill.nextBillDate,
+    };
+
+    if (type === 'repayment') {
+      let principal,
+        interest,
+        escrow = null;
+      const debt = find(debts, { debt_id: bill.debt_id });
+
+      interest = debt.amount * (debt.interest_rate / 12);
+      principal = bill.amount - interest;
+
+      if (bill.subcategory === 'mortgage') {
+        escrow = 320.81;
+        principal -= escrow;
+      }
+
+      attrs = {
+        ...attrs,
+        principal,
+        interest,
+        escrow,
+        lender: bill.vendor,
+        debt_id: bill.debt_id,
+        bill_id: bill.bill_id,
+      };
+    } else {
+      attrs = {
+        ...attrs,
+        amount: bill.amount,
+        vendor: bill.vendor,
+        bill_id: bill.bill_id,
+      };
+    }
+
+    dispatch(
+      openDialog({
+        type,
+        mode: 'create',
+        attrs,
+      })
+    );
+  };
+
   return (
     <BaseDialog
       type={defaultBill._type}
       title={`${mode} ${defaultBill._type}`}
       handleClose={handleClose}
-      titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
+      titleOptions={[
+        <MenuItem onClick={handleDelete}>delete</MenuItem>,
+        <MenuItem onClick={handleGenerateExpense}>generate expense</MenuItem>,
+      ]}
     >
       <form style={{ width: '100%' }}>
         <List>
@@ -233,7 +287,6 @@ function BillDialog() {
                     return 'all';
                   } else {
                     return selected.reduce((acc, curr, idx) => {
-                      console.log('curr: ', curr);
                       const month = dayjs()
                         .month(Number(curr) - 1)
                         .format('MMMM');

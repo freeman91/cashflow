@@ -15,6 +15,7 @@ const AutocompleteListItem = ({ label, ...props }) => {
         autoSelect
         freeSolo
         getOptionLabel={(option) => option}
+        ListboxProps={{ sx: { bgcolor: 'surface.300' } }}
         renderInput={(params) => (
           <TextField label={label} {...params} fullWidth variant='standard' />
         )}
