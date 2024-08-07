@@ -184,8 +184,12 @@ function BillDialog() {
       title={`${mode} ${defaultBill._type}`}
       handleClose={handleClose}
       titleOptions={[
-        <MenuItem onClick={handleDelete}>delete</MenuItem>,
-        <MenuItem onClick={handleGenerateExpense}>generate expense</MenuItem>,
+        <MenuItem key='delete-menu-item' onClick={handleDelete}>
+          delete
+        </MenuItem>,
+        <MenuItem key='generate-menu-item' onClick={handleGenerateExpense}>
+          generate expense
+        </MenuItem>,
       ]}
     >
       <form style={{ width: '100%' }}>

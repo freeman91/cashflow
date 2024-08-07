@@ -76,7 +76,7 @@ export default function Debts() {
 
   if (debtId && !debt) return null;
   return (
-    <Grid container spacing={1} mb={10}>
+    <Grid container spacing={1} sx={{ pb: 10 }}>
       {!debt && (
         <Grid item xs={12} mx={1}>
           <Box

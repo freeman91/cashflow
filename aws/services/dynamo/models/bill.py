@@ -65,6 +65,7 @@ class Bill(BaseModel):
                 pending=True,
                 debt_id=self.debt_id,
                 bill_id=self.bill_id,
+                description=self.name,
             )
 
         return dynamo.expense.create(
@@ -76,4 +77,5 @@ class Bill(BaseModel):
             vendor=self.vendor,
             pending=True,
             bill_id=self.bill_id,
+            description=self.name,
         )
