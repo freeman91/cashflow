@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from uuid import uuid4
 
@@ -37,7 +36,7 @@ def get(year: int = None, month: int = None, user_id: str = None) -> Networth:
                     (Networth.year == year) & (Networth.month == month),
                 )
             )
-        except (StopIteration):
+        except StopIteration:
             return None
 
     if user_id:

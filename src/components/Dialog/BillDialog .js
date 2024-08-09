@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
+import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
+import range from 'lodash/range';
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import List from '@mui/material/List';
-import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { deleteBill, postBill, putBill } from '../../store/bills';
 import { closeDialog, openDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
-import {
-  Checkbox,
-  FormControl,
-  InputLabel,
-  ListItemText,
-  Select,
-} from '@mui/material';
-import { cloneDeep, range } from 'lodash';
-import dayjs from 'dayjs';
 import DebtSelect from '../Selector/DebtSelect';
+import DecimalFieldListItem from '../List/DecimalFieldListItem';
 
 const defaultBill = {
   bill_id: '',
@@ -214,28 +212,7 @@ function BillDialog() {
             value={bill.name}
             onChange={handleChange}
           />
-          <TextFieldListItem
-            id='amount'
-            label='amount'
-            placeholder='0.00'
-            value={bill.amount}
-            onChange={(e) => {
-              if (
-                e.target.value === '' ||
-                (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
-              ) {
-                setBill({ ...bill, amount: e.target.value });
-              }
-            }}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <DecimalFieldListItem id='amount' item={bill} setItem={setBill} />
           <AutocompleteListItem
             id='vendor'
             label='vendor'
@@ -325,8 +302,8 @@ function BillDialog() {
 
           <ListItem
             key='buttons'
-            disablePadding
-            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+            disableGutters
+            sx={{ justifyContent: 'space-around' }}
           >
             <Button
               onClick={handleClose}

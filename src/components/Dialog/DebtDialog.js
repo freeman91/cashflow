@@ -6,10 +6,9 @@ import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutocompleteListItem from '../List/AutocompleteListItem';
+import PercentIcon from '@mui/icons-material/Percent';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
@@ -19,6 +18,7 @@ import { deleteDebt, postDebt, putDebt } from '../../store/debts';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import AccountSelect from '../Selector/AccountSelect';
+import DecimalFieldListItem from '../List/DecimalFieldListItem';
 
 const defaultDebt = {
   debt_id: '',
@@ -80,15 +80,6 @@ function DebtDialog() {
     }
   }, [attrs]);
 
-  const handleChangeNumber = (e) => {
-    if (
-      e.target.value === '' ||
-      (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
-    ) {
-      setDebt({ ...debt, [e.target.id]: e.target.value });
-    }
-  };
-
   const handleChange = (e) => {
     setDebt({ ...debt, [e.target.id]: e.target.value });
   };
@@ -143,22 +134,7 @@ function DebtDialog() {
             value={debt.name}
             onChange={handleChange}
           />
-          <TextFieldListItem
-            id='amount'
-            label='amount'
-            placeholder='0.00'
-            value={debt.amount}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-
+          <DecimalFieldListItem id='amount' item={debt} setItem={setDebt} />
           <AutocompleteListItem
             id='category'
             label='category'
@@ -173,20 +149,16 @@ function DebtDialog() {
             options={subcategories}
             onChange={handleChange}
           />
-
-          <TextFieldListItem
+          <DecimalFieldListItem
             id='interest_rate'
-            label='interest rate'
-            placeholder='0.00'
-            value={debt.interest_rate}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
+            item={debt}
+            setItem={setDebt}
+            startAdornment={<PercentIcon />}
           />
-
           <ListItem
             key='buttons'
-            disablePadding
-            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+            disableGutters
+            sx={{ justifyContent: 'space-around' }}
           >
             <Button
               onClick={handleClose}

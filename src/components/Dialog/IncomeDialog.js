@@ -5,7 +5,6 @@ import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DescriptionIcon from '@mui/icons-material/Description';
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import Button from '@mui/material/Button';
@@ -20,6 +19,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { deleteIncome, postIncome, putIncome } from '../../store/incomes';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
+import DecimalFieldListItem from '../List/DecimalFieldListItem';
 
 const defaultIncome = {
   income_id: '',
@@ -123,28 +123,7 @@ function IncomeDialog() {
               }}
             />
           </ListItem>
-          <TextFieldListItem
-            id='amount'
-            label='amount'
-            placeholder='0.00'
-            value={income.amount}
-            onChange={(e) => {
-              if (
-                e.target.value === '' ||
-                (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
-              ) {
-                setIncome({ ...income, amount: e.target.value });
-              }
-            }}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <DecimalFieldListItem id='amount' item={income} setItem={setIncome} />
           <AutocompleteListItem
             id='source'
             label='source'
@@ -174,8 +153,8 @@ function IncomeDialog() {
           />
           <ListItem
             key='buttons'
-            disablePadding
-            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+            disableGutters
+            sx={{ justifyContent: 'space-around' }}
           >
             <Button
               onClick={handleClose}

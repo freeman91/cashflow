@@ -6,9 +6,7 @@ import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
@@ -20,6 +18,7 @@ import { deleteSale, postSale, putSale } from '../../store/sales';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import AssetSelect from '../Selector/AssetSelect';
+import DecimalFieldListItem from '../List/DecimalFieldListItem';
 
 const defaultSale = {
   sale_id: '',
@@ -81,14 +80,6 @@ function SaleDialog() {
   const handleChange = (e) => {
     setSale({ ...sale, [e.target.id]: e.target.value });
   };
-  const handleChangeNumber = (e) => {
-    if (
-      e.target.value === '' ||
-      (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
-    ) {
-      setSale({ ...sale, [e.target.id]: e.target.value });
-    }
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -147,45 +138,14 @@ function SaleDialog() {
               }}
             />
           </ListItem>
-          <TextFieldListItem
-            id='amount'
-            label='amount'
-            placeholder='0.00'
-            value={sale.amount}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <TextFieldListItem
+          <DecimalFieldListItem id='amount' item={sale} setItem={setSale} />
+          <DecimalFieldListItem
             id='shares'
-            label='shares'
-            placeholder='0.00'
-            value={sale.shares}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
+            item={sale}
+            setItem={setSale}
+            startAdornment={null}
           />
-          <TextFieldListItem
-            id='price'
-            label='price'
-            placeholder='0.00'
-            value={sale.price}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <DecimalFieldListItem id='price' item={sale} setItem={setSale} />
           <TextFieldListItem
             id='vendor'
             label='vendor'
@@ -194,8 +154,8 @@ function SaleDialog() {
           />
           <ListItem
             key='buttons'
-            disablePadding
-            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+            disableGutters
+            sx={{ justifyContent: 'space-around' }}
           >
             <Button
               onClick={handleClose}

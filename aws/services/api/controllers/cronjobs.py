@@ -102,7 +102,7 @@ def networth_snapshot():
     """
 
     if request.method == "POST":
-        _date = datetime.now()
+        _date = datetime.now().hour(12).minute(0).second(0).microsecond(0)
 
         assets = []
         debts = []
@@ -123,6 +123,7 @@ def networth_snapshot():
                             "value": asset.value,
                             "category": asset.category,
                             "vendor": account.name,
+                            "asset_id": asset.asset_id,
                         }
                     )
 
@@ -137,6 +138,7 @@ def networth_snapshot():
                             "value": debt.amount,
                             "category": debt.category,
                             "lender": account.name,
+                            "debt_id": debt.debt_id,
                         }
                     )
 

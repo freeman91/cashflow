@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';
 
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -20,6 +20,7 @@ import CurrentNetworth from './CurrentNetworth';
 export default function Networth() {
   const dispatch = useDispatch();
   const [selectedId, setSelectedId] = useState(null);
+  const networths = useSelector((state) => state.networths.data);
 
   useEffect(() => {
     dispatch(
@@ -49,6 +50,16 @@ export default function Networth() {
     );
   }, [dispatch]);
 
+  const handleSelectPreviousMonth = () => {
+    let networth;
+    for (let i = 0; i <= networths.length - 1; i++) {
+      if (!networth || networths[i].date > networth.date) {
+        networth = networths[i];
+      }
+    }
+    setSelectedId(networth.networth_id);
+  };
+
   return (
     <Box
       sx={{
@@ -71,9 +82,14 @@ export default function Networth() {
           />
         </Grid>
         {selectedId ? (
-          <SelectedNetworth selectedId={selectedId} />
+          <SelectedNetworth
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+          />
         ) : (
-          <CurrentNetworth />
+          <CurrentNetworth
+            handleSelectPreviousMonth={handleSelectPreviousMonth}
+          />
         )}
       </Grid>
     </Box>

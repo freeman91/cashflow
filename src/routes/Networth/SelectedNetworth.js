@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Card from '@mui/material/Card';
+import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 
 import { StyledTab, StyledTabs } from '../../components/StyledTabs';
 import NetworthContainer from './NetworthContainer';
@@ -15,7 +21,7 @@ import DataBox from './DataBox';
 export const TABS = ['assets', 'debts'];
 
 export default function SelectedNetworth(props) {
-  const { selectedId } = props;
+  const { selectedId, setSelectedId } = props;
 
   const networths = useSelector((state) => state.networths.data);
   const [networth, setNetworth] = useState(null);
@@ -69,14 +75,74 @@ export default function SelectedNetworth(props) {
     setTabIdx(newValue);
   };
 
+  const handleSelectPreviousMonth = () => {
+    const nextNetworthDate = dayjs()
+      .year(networth.year)
+      .month(networth.month - 1)
+      .subtract(1, 'month');
+
+    const nextNetworth = find(networths, {
+      year: nextNetworthDate.year(),
+      month: nextNetworthDate.month() + 1,
+    });
+    if (nextNetworth) {
+      setSelectedId(nextNetworth.networth_id);
+    }
+  };
+
+  const handleSelectNextMonth = () => {
+    const nextNetworthDate = dayjs()
+      .year(networth.year)
+      .month(networth.month - 1)
+      .add(1, 'month');
+
+    const nextNetworth = find(networths, {
+      year: nextNetworthDate.year(),
+      month: nextNetworthDate.month() + 1,
+    });
+    if (nextNetworth) {
+      setSelectedId(nextNetworth.networth_id);
+    } else {
+      setSelectedId(null);
+    }
+  };
+
   if (!networth) return null;
   return (
     <>
+      <Grid
+        item
+        xs={12}
+        mx={2}
+        sx={{ position: 'relative', top: 25, height: 0 }}
+      >
+        <Stack
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
+          mx={1}
+        >
+          <Card raised>
+            <IconButton
+              onClick={handleSelectPreviousMonth}
+              sx={{ ml: '4px', pl: 1, pr: 0, mr: '4px' }}
+            >
+              <ArrowBackIosIcon />
+            </IconButton>
+          </Card>
+          <Card raised>
+            <IconButton onClick={handleSelectNextMonth}>
+              <ArrowForwardIosIcon />
+            </IconButton>
+          </Card>
+        </Stack>
+      </Grid>
       <NetworthContainer
         assetSum={assetSum}
         debtSum={debtSum}
         year={networth.year}
         month={networth.month}
+        noTopPadding
       />
       <Grid item xs={12} mt={3}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>

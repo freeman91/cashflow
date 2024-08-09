@@ -6,9 +6,7 @@ import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
@@ -20,6 +18,7 @@ import { deleteBorrow, postBorrow, putBorrow } from '../../store/borrows';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DebtSelect from '../Selector/DebtSelect';
+import DecimalFieldListItem from '../List/DecimalFieldListItem';
 
 const defaultBorrow = {
   borrow_id: '',
@@ -137,28 +136,7 @@ function BorrowDialog() {
               }}
             />
           </ListItem>
-          <TextFieldListItem
-            id='amount'
-            label='amount'
-            placeholder='0.00'
-            value={borrow.amount}
-            onChange={(e) => {
-              if (
-                e.target.value === '' ||
-                (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
-              ) {
-                setBorrow({ ...borrow, amount: e.target.value });
-              }
-            }}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <DecimalFieldListItem id='amount' item={borrow} setItem={setBorrow} />
           <TextFieldListItem
             id='lender'
             label='lender'
@@ -167,8 +145,8 @@ function BorrowDialog() {
           />
           <ListItem
             key='buttons'
-            disablePadding
-            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+            disableGutters
+            sx={{ justifyContent: 'space-around' }}
           >
             <Button
               onClick={handleClose}

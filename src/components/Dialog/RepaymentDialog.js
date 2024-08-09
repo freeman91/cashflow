@@ -32,6 +32,7 @@ import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DebtSelect from '../Selector/DebtSelect';
 import AutocompleteListItem from '../List/AutocompleteListItem';
+import DecimalFieldListItem from '../List/DecimalFieldListItem';
 
 const defaultRepayment = {
   repayment_id: '',
@@ -131,15 +132,6 @@ function RepaymentDialog() {
     setRepayment({ ...repayment, [e.target.id]: e.target.value });
   };
 
-  const handleChangeNumber = (e) => {
-    if (
-      e.target.value === '' ||
-      (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
-    ) {
-      setRepayment({ ...repayment, [e.target.id]: e.target.value });
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (mode === 'create') {
@@ -231,51 +223,21 @@ function RepaymentDialog() {
               ),
             }}
           />
-          <TextFieldListItem
+          <DecimalFieldListItem
             id='principal'
-            label='principal'
-            placeholder='0.00'
-            value={repayment.principal}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
+            item={repayment}
+            setItem={setRepayment}
           />
-          <TextFieldListItem
+          <DecimalFieldListItem
             id='interest'
-            label='interest'
-            placeholder='0.00'
-            value={repayment.interest}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
+            item={repayment}
+            setItem={setRepayment}
           />
           {debt?.name === 'Mortgage' && (
-            <TextFieldListItem
+            <DecimalFieldListItem
               id='escrow'
-              label='escrow'
-              placeholder='0.00'
-              value={repayment.escrow}
-              onChange={handleChangeNumber}
-              inputProps={{ inputMode: 'decimal' }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <AttachMoneyIcon />
-                  </InputAdornment>
-                ),
-              }}
+              item={repayment}
+              setItem={setRepayment}
             />
           )}
           <TextFieldListItem
@@ -318,8 +280,8 @@ function RepaymentDialog() {
           </ListItem>
           <ListItem
             key='buttons'
-            disablePadding
-            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+            disableGutters
+            sx={{ justifyContent: 'space-around' }}
           >
             <Button
               onClick={handleClose}

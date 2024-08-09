@@ -24,6 +24,7 @@ import {
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import AssetSelect from '../Selector/AssetSelect';
+import DecimalFieldListItem from '../List/DecimalFieldListItem';
 
 const defaultPurchase = {
   purchase_id: '',
@@ -151,22 +152,11 @@ function PurchaseDialog() {
               }}
             />
           </ListItem>
-          <TextFieldListItem
+          <DecimalFieldListItem
             id='amount'
-            label='amount'
-            placeholder='0.00'
-            value={purchase.amount}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
+            item={purchase}
+            setItem={setPurchase}
           />
-
           <TextFieldListItem
             id='shares'
             label='shares'
@@ -198,8 +188,8 @@ function PurchaseDialog() {
           />
           <ListItem
             key='buttons'
-            disablePadding
-            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+            disableGutters
+            sx={{ justifyContent: 'space-around' }}
           >
             <Button
               onClick={handleClose}

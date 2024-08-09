@@ -5,7 +5,12 @@ import groupBy from 'lodash/groupBy';
 import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 
 import { StyledTab, StyledTabs } from '../../components/StyledTabs';
 import { TABS } from './SelectedNetworth';
@@ -14,7 +19,7 @@ import DataBox from './DataBox';
 import ItemBox from './ItemBox';
 
 export default function CurrentNetworth(props) {
-  const { showItems = true } = props;
+  const { showItems = true, handleSelectPreviousMonth } = props;
   const today = dayjs();
   const assets = useSelector((state) => state.assets.data);
   const debts = useSelector((state) => state.debts.data);
@@ -64,11 +69,43 @@ export default function CurrentNetworth(props) {
 
   return (
     <>
+      {handleSelectPreviousMonth && (
+        <Grid
+          item
+          xs={12}
+          mx={2}
+          sx={{ position: 'relative', top: 25, height: 0 }}
+        >
+          <Stack
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+            mx={1}
+          >
+            <Card raised>
+              <IconButton
+                onClick={handleSelectPreviousMonth}
+                sx={{ ml: '4px', pl: 1, pr: 0, mr: '4px' }}
+              >
+                <ArrowBackIosIcon />
+              </IconButton>
+            </Card>
+            <Card raised>
+              <IconButton disabled>
+                <ArrowForwardIosIcon />
+              </IconButton>
+            </Card>
+          </Stack>
+        </Grid>
+      )}
+
       <NetworthContainer
         assetSum={assetSum}
         debtSum={debtSum}
         year={today.year()}
         month={today.month() + 1}
+        subtitle='current net worth'
+        noTopPadding={!!handleSelectPreviousMonth}
       />
 
       {showItems && (

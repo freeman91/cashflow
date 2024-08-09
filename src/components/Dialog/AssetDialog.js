@@ -5,10 +5,8 @@ import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
@@ -18,6 +16,7 @@ import { deleteAsset, postAsset, putAsset } from '../../store/assets';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import AccountSelect from '../Selector/AccountSelect';
+import DecimalFieldListItem from '../List/DecimalFieldListItem';
 
 const defaultAsset = {
   asset_id: '',
@@ -55,15 +54,6 @@ function AssetDialog() {
       setAsset((e) => ({ ...e, ...attrs }));
     }
   }, [attrs]);
-
-  const handleChangeNumber = (e) => {
-    if (
-      e.target.value === '' ||
-      (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
-    ) {
-      setAsset({ ...asset, [e.target.id]: e.target.value });
-    }
-  };
 
   const handleChange = (e) => {
     setAsset({ ...asset, [e.target.id]: e.target.value });
@@ -132,21 +122,7 @@ function AssetDialog() {
             value={asset.name}
             onChange={handleChange}
           />
-          <TextFieldListItem
-            id='value'
-            label='value'
-            placeholder='0.00'
-            value={asset.value}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <DecimalFieldListItem id='value' item={asset} setItem={setAsset} />
           <AutocompleteListItem
             id='category'
             label='category'
@@ -155,37 +131,21 @@ function AssetDialog() {
             onChange={handleChange}
           />
           {hasShares && (
-            <TextFieldListItem
+            <DecimalFieldListItem
               id='shares'
-              label='shares'
-              placeholder='0.00'
-              value={asset.shares}
-              onChange={handleChangeNumber}
-              inputProps={{ inputMode: 'decimal' }}
+              item={asset}
+              setItem={setAsset}
+              startAdornment={null}
             />
           )}
           {hasShares && (
-            <TextFieldListItem
-              id='price'
-              label='price'
-              placeholder='0.00'
-              value={asset.price}
-              onChange={handleChangeNumber}
-              inputProps={{ inputMode: 'decimal' }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <AttachMoneyIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <DecimalFieldListItem id='price' item={asset} setItem={setAsset} />
           )}
 
           <ListItem
             key='buttons'
-            disablePadding
-            sx={{ pt: 1, pl: 0, pr: 0, justifyContent: 'space-between' }}
+            disableGutters
+            sx={{ justifyContent: 'space-around' }}
           >
             <Button
               onClick={handleClose}

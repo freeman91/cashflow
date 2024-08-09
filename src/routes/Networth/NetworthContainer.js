@@ -66,12 +66,19 @@ const BoxCurrencyDisplay = (props) => {
 };
 
 export default function NetworthContainer(props) {
-  const { assetSum, debtSum, year, month } = props;
+  const {
+    assetSum,
+    debtSum,
+    year,
+    month,
+    subtitle = null,
+    noTopPadding,
+  } = props;
   const theme = useTheme();
 
   const net = assetSum - debtSum;
   return (
-    <Grid item xs={12} mx={1}>
+    <Grid item xs={12} mx={1} sx={{ pt: noTopPadding ? '0 !important' : null }}>
       <Box
         sx={{
           background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[400]} 75%)`,
@@ -97,10 +104,12 @@ export default function NetworthContainer(props) {
           </Typography>
         </BoxFlexCenter>
         <Typography variant='body2' align='center' color='grey.10'>
-          {dayjs()
-            .year(year)
-            .month(month - 1)
-            .format('MMMM YYYY')}
+          {subtitle
+            ? subtitle
+            : dayjs()
+                .year(year)
+                .month(month - 1)
+                .format('MMMM YYYY')}
         </Typography>
         <Box
           sx={{
