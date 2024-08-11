@@ -68,9 +68,22 @@ const PurchaseBox = (props) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          ml: 2,
+          ml: 1,
         }}
       >
+        <BoxFlexColumn alignItems='space-between'>
+          <Typography variant='body2' color='grey.0'>
+            {dayjs(purchase.date).format('MMM D, YYYY')}
+          </Typography>
+          <BoxFlexCenter justifyContent='flex-start'>
+            <Typography variant='h5' color='grey.10'>
+              $
+            </Typography>
+            <Typography variant='h5' color='white' fontWeight='bold'>
+              {numberToCurrency(purchase.amount)}
+            </Typography>
+          </BoxFlexCenter>
+        </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
           <BoxFlexCenter>
             <Typography variant='h6' color='grey.0'>
@@ -101,19 +114,6 @@ const PurchaseBox = (props) => {
           <Typography variant='body2' color='grey.0'>
             shares
           </Typography>
-        </BoxFlexColumn>
-        <BoxFlexColumn alignItems='space-between'>
-          <Typography align='right' variant='body2' color='grey.0'>
-            {dayjs(purchase.date).format('MMM D, YYYY')}
-          </Typography>
-          <BoxFlexCenter>
-            <Typography variant='h5' color='grey.10'>
-              $
-            </Typography>
-            <Typography variant='h5' color='white' fontWeight='bold'>
-              {numberToCurrency(purchase.amount)}
-            </Typography>
-          </BoxFlexCenter>
         </BoxFlexColumn>
       </Box>
     </Box>

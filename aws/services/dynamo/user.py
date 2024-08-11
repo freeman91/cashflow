@@ -1,7 +1,9 @@
+# pylint: disable=too-many-arguments, arguments-renamed, arguments-differ
 """User pynamodb model"""
 
 import os
 import bcrypt
+from uuid import uuid4
 from pynamodb.attributes import (
     BinaryAttribute,
     MapAttribute,
@@ -45,3 +47,37 @@ class User(BaseModel):
 
     def verify_password(self, input_password: str):
         return bcrypt.checkpw(input_password.encode("utf-8"), self.password)
+
+    @classmethod
+    def create(cls, email: str, name: str, password: str) -> "User":
+        user = cls(
+            user_id=f"user:{uuid4()}",
+            email=email,
+            name=name,
+            password=bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()),
+        )
+        user.save()
+        return user
+
+    @classmethod
+    def get_(cls, user_id: str) -> "User":
+        return next(cls.query(user_id))
+
+    @classmethod
+    def update_(cls, user_id: str, body: dict) -> "User":
+        user = cls.get_(user_id=user_id)
+
+        paycheck_defaults = body.get("paycheck_defaults")
+
+        for attr in [
+            "employer",
+            "take_home",
+            "taxes",
+            "retirement",
+            "benefits",
+            "other",
+        ]:
+            setattr(user.paycheck_defaults, attr, paycheck_defaults.get(attr))
+
+        user.save()
+        return user

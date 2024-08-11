@@ -13,6 +13,7 @@ import BorrowsStack from './BorrowsStack';
 import RepaymentsStack from './RepaymentsStack';
 import ItemBox from '../../components/ItemBox';
 import DataBox from '../../components/DataBox';
+import DebtChart from '../Networth/DebtChart';
 
 export default function DebtPage(props) {
   const { debt } = props;
@@ -65,8 +66,9 @@ export default function DebtPage(props) {
       </Grid>
       <Grid item xs={12}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>
-          <StyledTab label='repayments' sx={{ width: '35%' }} />
-          <StyledTab label='borrows' sx={{ width: '35%' }} />
+          <StyledTab label='repayments' sx={{ width: '25%' }} />
+          <StyledTab label='borrows' sx={{ width: '25%' }} />
+          <StyledTab label='history' sx={{ width: '25%' }} />
         </StyledTabs>
       </Grid>
       {tabIdx === 0 && repayments.length !== 0 && (
@@ -95,6 +97,14 @@ export default function DebtPage(props) {
           <Grid item xs={12} mx={1} mb={10} pt={'0 !important'}>
             <BorrowsStack debtId={debt.debt_id} />
           </Grid>
+        </>
+      )}
+      {tabIdx === 2 && (
+        <>
+          <Grid item xs={12} mx={1} pt={'2px !important'}>
+            <DebtChart debt={debt} />
+          </Grid>
+          <Grid item xs={12} mx={1} mb={10} pt={'0 !important'}></Grid>
         </>
       )}
     </>

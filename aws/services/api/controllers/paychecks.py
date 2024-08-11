@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from flask import Blueprint, request
 
-from services import dynamo
+from services.dynamo import Paycheck
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -17,7 +17,7 @@ def _paychecks(user_id: str):
     if request.method == "POST":
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
-        paycheck = dynamo.paycheck.create(
+        paycheck = Paycheck.create(
             user_id=user_id,
             _date=_date,
             employer=body.get("employer"),
@@ -38,9 +38,7 @@ def _paychecks(user_id: str):
         return success_result(
             [
                 paycheck.as_dict()
-                for paycheck in dynamo.paycheck.search(
-                    user_id=user_id, start=start, end=end
-                )
+                for paycheck in Paycheck.search(user_id=user_id, start=start, end=end)
             ]
         )
     return failure_result()
@@ -51,11 +49,11 @@ def _paychecks(user_id: str):
 def _paycheck(user_id: str, paycheck_id: str):
     if request.method == "GET":
         return success_result(
-            dynamo.paycheck.get(user_id=user_id, paycheck_id=paycheck_id).as_dict()
+            Paycheck.get_(user_id=user_id, paycheck_id=paycheck_id).as_dict()
         )
 
     if request.method == "PUT":
-        paycheck = dynamo.paycheck.get(user_id=user_id, paycheck_id=paycheck_id)
+        paycheck = Paycheck.get_(user_id=user_id, paycheck_id=paycheck_id)
         paycheck.date = datetime.strptime(
             request.json["date"][:19], "%Y-%m-%dT%H:%M:%S"
         )
@@ -71,7 +69,7 @@ def _paycheck(user_id: str, paycheck_id: str):
         return success_result(paycheck.as_dict())
 
     if request.method == "DELETE":
-        dynamo.paycheck.get(user_id=user_id, paycheck_id=paycheck_id).delete()
+        Paycheck.get_(user_id=user_id, paycheck_id=paycheck_id).delete()
         return success_result(f"{paycheck_id} deleted")
 
     return failure_result()

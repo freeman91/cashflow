@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 
-from services import dynamo
+from services.dynamo import Debt
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -17,7 +17,7 @@ def _debts(user_id: str):
         body = request.json
         interest_rate = body.get("interest_rate")
 
-        debt = dynamo.debt.create(
+        debt = Debt.create(
             user_id=user_id,
             account_id=body.get("account_id"),
             name=body.get("name"),
@@ -29,9 +29,7 @@ def _debts(user_id: str):
         return success_result(debt.as_dict())
 
     if request.method == "GET":
-        return success_result(
-            [debt.as_dict() for debt in dynamo.debt.get(user_id=user_id)]
-        )
+        return success_result([debt.as_dict() for debt in Debt.list(user_id=user_id)])
     return failure_result()
 
 
@@ -39,12 +37,10 @@ def _debts(user_id: str):
 @debts.route("/debts/<user_id>/<debt_id>", methods=["GET", "PUT", "DELETE"])
 def _debt(user_id: str, debt_id: str):
     if request.method == "GET":
-        return success_result(
-            dynamo.debt.get(user_id=user_id, debt_id=debt_id).as_dict()
-        )
+        return success_result(Debt.get_(user_id=user_id, debt_id=debt_id).as_dict())
 
     if request.method == "PUT":
-        debt = dynamo.debt.get(user_id=user_id, debt_id=debt_id)
+        debt = Debt.get_(user_id=user_id, debt_id=debt_id)
         debt.amount = float(request.json.get("amount"))
 
         interest_rate = request.json.get("interest_rate")
@@ -57,7 +53,7 @@ def _debt(user_id: str, debt_id: str):
         return success_result(debt.as_dict())
 
     if request.method == "DELETE":
-        dynamo.debt.get(user_id=user_id, debt_id=debt_id).delete()
+        Debt.get_(user_id=user_id, debt_id=debt_id).delete()
         return success_result(f"{debt_id} deleted")
 
     return failure_result()

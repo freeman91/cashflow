@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 
-from services import dynamo
+from services.dynamo import OptionList
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -18,10 +18,7 @@ def _option_lists(user_id: str):
 
     if request.method == "GET":
         return success_result(
-            [
-                option_list.as_dict()
-                for option_list in dynamo.option_list.get(user_id=user_id)
-            ]
+            [option_list.as_dict() for option_list in OptionList.list(user_id=user_id)]
         )
     return failure_result()
 
@@ -35,7 +32,7 @@ def _option_list(user_id: str, option_type: str):
         pass
 
     if request.method == "POST":
-        option_list = dynamo.option_list.create(
+        option_list = OptionList.create(
             user_id=user_id,
             option_type=option_type,
             options=request.json.get("options"),
@@ -44,7 +41,7 @@ def _option_list(user_id: str, option_type: str):
         return success_result(option_list.as_dict())
 
     if request.method == "PUT":
-        option_list = dynamo.option_list.get(user_id=user_id, option_type=option_type)
+        option_list = OptionList.get_(user_id=user_id, option_type=option_type)
         option_list.options = request.json.get("options")
         option_list.save()
 

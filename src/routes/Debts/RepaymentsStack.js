@@ -52,9 +52,26 @@ const RepaymentBox = (props) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          ml: 2,
+          ml: 1,
         }}
       >
+        <BoxFlexColumn alignItems='space-between'>
+          <Typography align='left' variant='body2' color='grey.0'>
+            {dayjs(repayment.date).format('MMM D, YYYY')}
+          </Typography>
+          <BoxFlexCenter justifyContent='flex-start'>
+            <Typography variant='h5' color='grey.10'>
+              $
+            </Typography>
+            <Typography variant='h5' color='white' fontWeight='bold'>
+              {_numberToCurrency.format(
+                repayment.principal +
+                  repayment.interest +
+                  (repayment.escrow ? repayment.escrow : 0)
+              )}
+            </Typography>
+          </BoxFlexCenter>
+        </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
           <BoxFlexCenter>
             <Typography variant='h6' color='grey.0'>
@@ -80,23 +97,6 @@ const RepaymentBox = (props) => {
           <Typography variant='body2' color='grey.0'>
             interest
           </Typography>
-        </BoxFlexColumn>
-        <BoxFlexColumn alignItems='space-between'>
-          <Typography align='right' variant='body2' color='grey.0'>
-            {dayjs(repayment.date).format('MMM D, YYYY')}
-          </Typography>
-          <BoxFlexCenter>
-            <Typography variant='h5' color='grey.10'>
-              $
-            </Typography>
-            <Typography variant='h5' color='white' fontWeight='bold'>
-              {_numberToCurrency.format(
-                repayment.principal +
-                  repayment.interest +
-                  (repayment.escrow ? repayment.escrow : 0)
-              )}
-            </Typography>
-          </BoxFlexCenter>
         </BoxFlexColumn>
       </Box>
     </Box>

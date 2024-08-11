@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta
 from flask import Blueprint, request
 
-from services import dynamo
+from services.dynamo import Expense
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -20,7 +20,7 @@ def _expenses(user_id: str):
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
 
-        expense = dynamo.expense.create(
+        expense = Expense.create(
             user_id=user_id,
             _date=_date,
             amount=float(body.get("amount")),
@@ -41,9 +41,7 @@ def _expenses(user_id: str):
         return success_result(
             [
                 expense.as_dict()
-                for expense in dynamo.expense.search(
-                    user_id=user_id, start=start, end=end
-                )
+                for expense in Expense.search(user_id=user_id, start=start, end=end)
             ]
         )
 
@@ -55,11 +53,11 @@ def _expenses(user_id: str):
 def _expense(user_id: str, expense_id: str):
     if request.method == "GET":
         return success_result(
-            dynamo.expense.get(user_id=user_id, expense_id=expense_id).as_dict()
+            Expense.get_(user_id=user_id, expense_id=expense_id).as_dict()
         )
 
     if request.method == "PUT":
-        expense = dynamo.expense.get(user_id=user_id, expense_id=expense_id)
+        expense = Expense.get_(user_id=user_id, expense_id=expense_id)
         expense.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
 
         expense.amount = float(request.json.get("amount"))
@@ -78,7 +76,7 @@ def _expense(user_id: str, expense_id: str):
         return success_result(expense.as_dict())
 
     if request.method == "DELETE":
-        dynamo.expense.get(user_id=user_id, expense_id=expense_id).delete()
+        Expense.get_(user_id=user_id, expense_id=expense_id).delete()
         return success_result(f"{expense_id} deleted")
 
     return failure_result()

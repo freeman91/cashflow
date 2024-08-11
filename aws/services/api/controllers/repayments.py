@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, request
 
-from services import dynamo
+from services.dynamo import Repayment
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -18,7 +18,7 @@ def _repayments(user_id: str):
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
         escrow = body.get("escrow")
-        repayment = dynamo.repayment.create(
+        repayment = Repayment.create(
             user_id=user_id,
             _date=_date,
             principal=float(body.get("principal")),
@@ -35,7 +35,7 @@ def _repayments(user_id: str):
 
     if request.method == "GET":
         return success_result(
-            [repayment.as_dict() for repayment in dynamo.repayment.get(user_id=user_id)]
+            [repayment.as_dict() for repayment in Repayment.list(user_id=user_id)]
         )
 
     return failure_result()
@@ -48,11 +48,11 @@ def _repayments(user_id: str):
 def _repayment(user_id: str, repayment_id: str):
     if request.method == "GET":
         return success_result(
-            dynamo.repayment.get(user_id=user_id, repayment_id=repayment_id).as_dict()
+            Repayment.get_(user_id=user_id, repayment_id=repayment_id).as_dict()
         )
 
     if request.method == "PUT":
-        repayment = dynamo.repayment.get(user_id=user_id, repayment_id=repayment_id)
+        repayment = Repayment.get_(user_id=user_id, repayment_id=repayment_id)
         repayment.date = datetime.strptime(
             request.json["date"][:19], "%Y-%m-%dT%H:%M:%S"
         )
@@ -75,7 +75,7 @@ def _repayment(user_id: str, repayment_id: str):
         return success_result(repayment.as_dict())
 
     if request.method == "DELETE":
-        dynamo.repayment.get(user_id=user_id, repayment_id=repayment_id).delete()
+        Repayment.get_(user_id=user_id, repayment_id=repayment_id).delete()
         return success_result(f"{repayment_id} deleted")
 
     return failure_result()

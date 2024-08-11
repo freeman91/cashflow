@@ -2,7 +2,7 @@
 
 from flask import Blueprint, request
 
-from services import dynamo
+from services.dynamo import Asset
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -17,7 +17,7 @@ assets = Blueprint("assets", __name__)
 def _assets(user_id: str):
     if request.method == "POST":
         body = request.json
-        asset = dynamo.asset.create(
+        asset = Asset.create(
             user_id=user_id,
             account_id=body.get("account_id"),
             name=body.get("name"),
@@ -30,7 +30,7 @@ def _assets(user_id: str):
 
     if request.method == "GET":
         return success_result(
-            [asset.as_dict() for asset in dynamo.asset.get(user_id=user_id)]
+            [asset.as_dict() for asset in Asset.list(user_id=user_id)]
         )
     return failure_result()
 
@@ -39,29 +39,23 @@ def _assets(user_id: str):
 @assets.route("/assets/<user_id>/<asset_id>", methods=["GET", "PUT", "DELETE"])
 def _asset(user_id: str, asset_id: str):
     if request.method == "GET":
-        return success_result(
-            dynamo.asset.get(user_id=user_id, asset_id=asset_id).as_dict()
-        )
+        return success_result(Asset.get_(user_id=user_id, asset_id=asset_id).as_dict())
 
     if request.method == "PUT":
-        asset = dynamo.asset.get(user_id=user_id, asset_id=asset_id)
+        asset = Asset.get_(user_id=user_id, asset_id=asset_id)
 
         asset.value = float(request.json.get("value"))
         asset.shares = float(request.json.get("shares") or 0)
         asset.price = float(request.json.get("price") or 0)
 
-        for attr in [
-            "account_id",
-            "name",
-            "category",
-        ]:
+        for attr in ["account_id", "name", "category"]:
             setattr(asset, attr, request.json.get(attr))
 
         asset.save()
         return success_result(asset.as_dict())
 
     if request.method == "DELETE":
-        dynamo.asset.get(user_id=user_id, asset_id=asset_id).delete()
+        Asset.get_(user_id=user_id, asset_id=asset_id).delete()
         return success_result(f"{asset_id} deleted")
 
     return failure_result()

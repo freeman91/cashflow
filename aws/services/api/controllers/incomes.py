@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from flask import Blueprint, request
 
-from services import dynamo
+from services.dynamo import Income
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -17,7 +17,7 @@ def _incomes(user_id: str):
     if request.method == "POST":
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
-        income = dynamo.income.create(
+        income = Income.create(
             user_id=user_id,
             _date=_date,
             amount=float(body.get("amount")),
@@ -35,9 +35,7 @@ def _incomes(user_id: str):
         return success_result(
             [
                 income.as_dict()
-                for income in dynamo.income.search(
-                    user_id=user_id, start=start, end=end
-                )
+                for income in Income.search(user_id=user_id, start=start, end=end)
             ]
         )
     return failure_result()
@@ -48,11 +46,11 @@ def _incomes(user_id: str):
 def _income(user_id: str, income_id: str):
     if request.method == "GET":
         return success_result(
-            dynamo.income.get(user_id=user_id, income_id=income_id).as_dict()
+            Income.get_(user_id=user_id, income_id=income_id).as_dict()
         )
 
     if request.method == "PUT":
-        income = dynamo.income.get(user_id=user_id, income_id=income_id)
+        income = Income.get_(user_id=user_id, income_id=income_id)
         income.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
         income.amount = float(request.json.get("amount"))
 
@@ -63,7 +61,7 @@ def _income(user_id: str, income_id: str):
         return success_result(income.as_dict())
 
     if request.method == "DELETE":
-        dynamo.income.get(user_id=user_id, income_id=income_id).delete()
+        Income.get_(user_id=user_id, income_id=income_id).delete()
         return success_result(f"{income_id} deleted")
 
     return failure_result()

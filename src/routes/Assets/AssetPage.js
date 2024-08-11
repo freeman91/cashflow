@@ -12,6 +12,7 @@ import PurchasesStack from './PurchasesStack';
 import SalesStack from './SalesStack';
 import ItemBox from '../../components/ItemBox';
 import DataBox from '../../components/DataBox';
+import AssetChart from '../Networth/AssetChart';
 
 export default function AssetPage(props) {
   const { asset } = props;
@@ -50,8 +51,9 @@ export default function AssetPage(props) {
       </Grid>
       <Grid item xs={12}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>
-          <StyledTab label='purchases' sx={{ width: '35%' }} />
-          <StyledTab label='sales' sx={{ width: '35%' }} />
+          <StyledTab label='purchases' sx={{ width: '25%' }} />
+          <StyledTab label='sales' sx={{ width: '25%' }} />
+          <StyledTab label='history' sx={{ width: '25%' }} />
         </StyledTabs>
       </Grid>
       {tabIdx === 0 && purchases.length !== 0 && (
@@ -72,6 +74,14 @@ export default function AssetPage(props) {
           <Grid item xs={12} mx={1} mb={10} pt={'2px !important'}>
             <SalesStack assetId={asset.asset_id} />
           </Grid>
+        </>
+      )}
+      {tabIdx === 2 && (
+        <>
+          <Grid item xs={12} mx={1} pt={'2px !important'}>
+            <AssetChart asset={asset} />
+          </Grid>
+          <Grid item xs={12} mx={1} mb={10} pt={'0 !important'}></Grid>
         </>
       )}
     </>

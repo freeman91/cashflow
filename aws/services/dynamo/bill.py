@@ -1,6 +1,9 @@
+# pylint: disable=too-many-arguments, arguments-renamed
 """Bill pynamodb model"""
 
 import os
+from typing import List, Optional
+from uuid import uuid4
 from datetime import datetime, timezone
 from pynamodb.attributes import (
     NumberAttribute,
@@ -9,7 +12,7 @@ from pynamodb.attributes import (
     UTCDateTimeAttribute,
 )
 
-from services import dynamo
+from .. import dynamo
 from .base import BaseModel
 
 TYPE = "bill"
@@ -41,9 +44,55 @@ class Bill(BaseModel):
     def __repr__(self):
         return f"Bill<{self.user_id}, {self.name}, {self.amount}>"
 
+    @classmethod
+    def create(
+        cls,
+        user_id: str,
+        name: str,
+        amount: float,
+        category: str,
+        subcategory: str,
+        vendor: str,
+        day: str,
+        months: List,
+        debt_id: str,
+    ) -> "Bill":
+        bill = cls(
+            user_id=user_id,
+            bill_id=f"bill:{uuid4()}",
+            name=name,
+            amount=amount,
+            category=category,
+            subcategory=subcategory,
+            vendor=vendor,
+            day=day,
+            months=months,
+            debt_id=debt_id,
+            last_update=datetime.now(timezone.utc),
+        )
+        bill.save()
+        return bill
+
+    @classmethod
+    def update_(cls, user_id: str, bill_id: str, **kwargs) -> "Bill":
+        actions = []
+        bill = cls.get(user_id, bill_id)
+        bill.update(actions=[*actions, cls.last_update.set(datetime.now(timezone.utc))])
+        return bill
+
+    @classmethod
+    def get_(cls, user_id: str, bill_id: str) -> "Bill":
+        return super().get_(user_id, bill_id)
+
+    @classmethod
+    def list(
+        cls, user_id: Optional[str] = None, bill_id: Optional[str] = None
+    ) -> list["Bill"]:
+        return super().list(user_id, bill_id)
+
     def generate(self, year: int, month: int):
         if self.debt_id:
-            debt = dynamo.debt.get(user_id=USER_ID, debt_id=self.debt_id)
+            debt = dynamo.Debt.get_(user_id=USER_ID, debt_id=self.debt_id)
             interest = debt.amount * (debt.interest_rate / 12)
             principal = self.amount - interest
             escrow = None
@@ -53,7 +102,7 @@ class Bill(BaseModel):
                 escrow = 320.81
                 principal -= escrow
 
-            return dynamo.repayment.create(
+            return dynamo.Repayment.create(
                 user_id=debt.user_id,
                 _date=datetime(year, month, self.day, 12, 0),
                 principal=principal,
@@ -68,7 +117,7 @@ class Bill(BaseModel):
                 description=self.name,
             )
 
-        return dynamo.expense.create(
+        return dynamo.Expense.create(
             user_id=USER_ID,
             amount=self.amount,
             _date=datetime(year, month, self.day, 12, 0),

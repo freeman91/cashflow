@@ -9,7 +9,7 @@ from flask import request, Blueprint
 from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
 
-from services import dynamo
+from services.dynamo import Account, Asset, Bill, Debt, Networth
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -46,7 +46,7 @@ def update_crypto_prices():
 
     if request.method == "PUT":
         crypto_assets = list(
-            filter_(dynamo.asset.get(), lambda asset: asset.category == "crypto")
+            filter_(Asset.list(), lambda asset: asset.category == "crypto")
         )
 
         tickers = map_(crypto_assets, lambda asset: asset.name.upper())
@@ -73,7 +73,7 @@ def update_stock_prices():
 
     if request.method == "PUT":
         stock_assets = list(
-            filter_(dynamo.asset.get(), lambda asset: asset.category == "stock")
+            filter_(Asset.list(), lambda asset: asset.category == "stock")
         )
 
         tickers = map_(stock_assets, lambda asset: asset.name.upper())
@@ -107,9 +107,9 @@ def networth_snapshot():
         assets = []
         debts = []
 
-        accounts = dynamo.account.get(user_id=USER_ID)
-        allAssets = dynamo.asset.get(user_id=USER_ID)
-        allDebts = dynamo.debt.get(user_id=USER_ID)
+        accounts = Account.list(user_id=USER_ID)
+        allAssets = Asset.list(user_id=USER_ID)
+        allDebts = Debt.list(user_id=USER_ID)
 
         for account in accounts:
             account_assets = filter_(
@@ -119,11 +119,11 @@ def networth_snapshot():
                 if asset.value > 0:
                     assets.append(
                         {
+                            "asset_id": asset.asset_id,
+                            "account_id": account.account_id,
                             "name": asset.name,
                             "value": asset.value,
                             "category": asset.category,
-                            "vendor": account.name,
-                            "asset_id": asset.asset_id,
                         }
                     )
 
@@ -134,19 +134,19 @@ def networth_snapshot():
                 if debt.amount > 0:
                     debts.append(
                         {
+                            "debt_id": debt.debt_id,
+                            "account_id": account.account_id,
                             "name": debt.name,
                             "value": debt.amount,
                             "category": debt.category,
-                            "lender": account.name,
-                            "debt_id": debt.debt_id,
                         }
                     )
 
-        networth = dynamo.networth.get(
-            year=_date.year, month=_date.month, user_id=USER_ID
+        networth = Networth.get_month(
+            user_id=USER_ID, year=_date.year, month=_date.month
         )
         if not networth:
-            dynamo.networth.create(
+            Networth.create(
                 user_id=USER_ID,
                 _date=_date,
                 year=_date.year,
@@ -177,7 +177,7 @@ def generate_bill_expenses():
         count = 0
         _date = date.today() + timedelta(days=31)
 
-        for bill in dynamo.bill.get():
+        for bill in Bill.list():
             if _date.day == bill.day and _date.month in bill.months:
                 expense = bill.generate(year=_date.year, month=_date.month)
                 print(f"{bill.name} - {expense}")

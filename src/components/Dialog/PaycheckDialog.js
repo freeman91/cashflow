@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DescriptionIcon from '@mui/icons-material/Description';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -22,6 +21,7 @@ import {
 } from '../../store/paychecks';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
+import DecimalFieldListItem from '../List/DecimalFieldListItem';
 
 const defaultPaycheck = {
   paycheck_id: '',
@@ -68,15 +68,6 @@ function PaycheckDialog() {
 
   const handleChange = (e) => {
     setPaycheck({ ...paycheck, [e.target.id]: e.target.value });
-  };
-
-  const handleChangeNumber = (e) => {
-    if (
-      e.target.value === '' ||
-      (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
-    ) {
-      setPaycheck({ ...paycheck, [e.target.id]: e.target.value });
-    }
   };
 
   const handleSubmit = (e) => {
@@ -130,81 +121,16 @@ function PaycheckDialog() {
             value={paycheck.employer}
             onChange={handleChange}
           />
-          <TextFieldListItem
-            id='take_home'
-            label='take home'
-            placeholder='0.00'
-            value={paycheck.take_home}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextFieldListItem
-            id='taxes'
-            label='taxes'
-            placeholder='0.00'
-            value={paycheck.taxes || ''}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextFieldListItem
-            id='retirement'
-            label='retirement'
-            placeholder='0.00'
-            value={paycheck.retirement || ''}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextFieldListItem
-            id='benefits'
-            label='benefits'
-            placeholder='0.00'
-            value={paycheck.benefits || ''}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextFieldListItem
-            id='other'
-            label='other'
-            placeholder='0.00'
-            value={paycheck.other || ''}
-            onChange={handleChangeNumber}
-            inputProps={{ inputMode: 'decimal' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <AttachMoneyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+          {['take_home', 'taxes', 'retirement', 'benefits', 'other'].map(
+            (attr) => (
+              <DecimalFieldListItem
+                key={attr}
+                id={attr}
+                item={paycheck}
+                setItem={setPaycheck}
+              />
+            )
+          )}
           <TextFieldListItem
             id='description'
             label='description'

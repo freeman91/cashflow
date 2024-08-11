@@ -76,7 +76,7 @@ export default function Assets() {
 
   if (assetId && !asset) return null;
   return (
-    <Grid container spacing={1} sx={{ pb: 10 }}>
+    <Grid container spacing={1}>
       {!asset && (
         <Grid item xs={12} mx={1}>
           <Box

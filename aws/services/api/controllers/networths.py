@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 
-from services import dynamo
+from services.dynamo import Networth
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -18,7 +18,7 @@ def _networths(user_id: str):
 
     if request.method == "GET":
         return success_result(
-            [networth.as_dict() for networth in dynamo.networth.get(user_id=user_id)]
+            [networth.as_dict() for networth in Networth.list(user_id=user_id)]
         )
     return failure_result()
 

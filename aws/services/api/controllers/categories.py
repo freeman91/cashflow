@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 
-from services import dynamo
+from services.dynamo import Categories
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -20,7 +20,7 @@ def _categories(user_id: str):
         return success_result(
             [
                 category_data.as_dict()
-                for category_data in dynamo.categories.get(user_id=user_id)
+                for category_data in Categories.list(user_id=user_id)
             ]
         )
     return failure_result()
@@ -32,11 +32,11 @@ def _categories(user_id: str):
 )
 def _category_data(user_id: str, category_type: str):
     if request.method == "GET":
-        result = dynamo.categories.get(user_id=user_id, category_type=category_type)
+        result = Categories.get_(user_id=user_id, category_type=category_type)
         return success_result(result.as_dict())
 
     if request.method == "POST":
-        category_data = dynamo.categories.create(
+        category_data = Categories.create(
             user_id=user_id,
             category_type=category_type,
             categories=request.json.get("categories"),
@@ -45,9 +45,7 @@ def _category_data(user_id: str, category_type: str):
         return success_result(category_data.as_dict())
 
     if request.method == "PUT":
-        category_data = dynamo.categories.get(
-            user_id=user_id, category_type=category_type
-        )
+        category_data = Categories.get_(user_id=user_id, category_type=category_type)
         category_data.categories = request.json.get("categories")
         category_data.save()
 

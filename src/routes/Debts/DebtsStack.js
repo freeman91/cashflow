@@ -17,7 +17,7 @@ export default function DebtsStack() {
   }, [allDebts]);
 
   return (
-    <Grid item xs={12} mx={1} pt={'0 !important'} mb={1}>
+    <Grid item xs={12} mx={1} pt={'0 !important'} mb={1} pb={10}>
       {map(debts, (debt) => {
         return <ItemBox key={debt.debt_id} item={debt} />;
       })}
