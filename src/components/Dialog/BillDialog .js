@@ -204,9 +204,11 @@ function BillDialog() {
               }}
             />
           )} */}
-          <ListItem key='debt-select' disablePadding sx={{ pt: 2, pb: 1 }}>
-            <DebtSelect resource={bill} setResource={setBill} />
-          </ListItem>
+          {(mode === 'create' || bill.debt_id) && (
+            <ListItem key='debt-select' disablePadding sx={{ pt: 2, pb: 1 }}>
+              <DebtSelect mode={mode} resource={bill} setResource={setBill} />
+            </ListItem>
+          )}
           <PaymentFromSelect resource={bill} setResource={setBill} />
           <TextFieldListItem
             id='name'

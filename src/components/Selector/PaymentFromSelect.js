@@ -20,19 +20,19 @@ function PaymentFromSelect(props) {
   const [debts, setDebts] = useState([]);
 
   useEffect(() => {
-    setAssets(
-      filter(allAssets, (asset) => {
-        return ['checking', 'saving', 'cash'].includes(asset.category);
-      })
-    );
+    let _assets = filter(allAssets, (asset) => {
+      return ['checking', 'saving', 'cash'].includes(asset.category);
+    });
+    _assets = sortBy(_assets, 'name');
+    setAssets(_assets);
   }, [allAssets]);
 
   useEffect(() => {
-    setDebts(
-      filter(allDebts, (debt) => {
-        return debt.category === 'credit';
-      })
-    );
+    let _debts = filter(allDebts, (debt) => {
+      return debt.category === 'credit';
+    });
+    _debts = sortBy(_debts, 'name');
+    setDebts(_debts);
   }, [allDebts]);
 
   const handleChangeDebt = (e) => {
@@ -61,7 +61,7 @@ function PaymentFromSelect(props) {
           None
         </MenuItem>
         <ListSubheader>debts</ListSubheader>
-        {sortBy(debts, 'name ').map((debt) => (
+        {debts.map((debt) => (
           <MenuItem
             key={debt.debt_id}
             id={`${debt.debt_id}-menu-item`}
@@ -71,7 +71,7 @@ function PaymentFromSelect(props) {
           </MenuItem>
         ))}
         <ListSubheader>assets</ListSubheader>
-        {sortBy(assets, 'name ').map((asset) => (
+        {assets.map((asset) => (
           <MenuItem
             key={asset.asset_id}
             id={`${asset.asset_id}-menu-item`}

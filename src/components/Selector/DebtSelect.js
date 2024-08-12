@@ -9,7 +9,7 @@ import Select from '@mui/material/Select';
 import { sortBy } from 'lodash';
 
 function DebtSelect(props) {
-  const { resource, setResource } = props;
+  const { mode, resource, setResource } = props;
 
   const debts = useSelector((state) => state.debts.data);
 
@@ -22,7 +22,7 @@ function DebtSelect(props) {
     <FormControl variant='standard' fullWidth>
       <InputLabel id='debt-label'>debt</InputLabel>
       <Select
-        disabled
+        disabled={mode === 'edit'}
         labelId='debt-label'
         id='item_id'
         value={get(resource, 'debt_id', '')}
@@ -34,8 +34,9 @@ function DebtSelect(props) {
             alignItems: 'center',
           },
         }}
+        MenuProps={{ MenuListProps: { disablePadding: true } }}
       >
-        <MenuItem key='none' id={`none-menu-item`} value={''}>
+        <MenuItem key='none' id={`none-menu-item`} value=''>
           None
         </MenuItem>
         {sortBy(debts, 'name ').map((debt) => (
