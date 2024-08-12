@@ -10,7 +10,6 @@ import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
-import Typography from '@mui/material/Typography';
 import {
   ComposedChart,
   Bar,
@@ -19,9 +18,7 @@ import {
   XAxis,
 } from 'recharts';
 
-import { _numberToCurrency, numberToCurrency } from '../../helpers/currency';
-import BoxFlexColumn from '../../components/BoxFlexColumn';
-import BoxFlexCenter from '../../components/BoxFlexCenter';
+import { numberToCurrency } from '../../helpers/currency';
 
 const BoxMonthValue = (props) => {
   const { label, value } = props;
@@ -37,19 +34,10 @@ const BoxMonthValue = (props) => {
         boxShadow: 4,
       }}
     >
-      <BoxFlexColumn alignItems='flex-start'>
-        <Typography variant='body2' color='grey.0'>
-          {label}
-        </Typography>
-        <BoxFlexCenter>
-          <Typography variant='h5' color='grey.10'>
-            $
-          </Typography>
-          <Typography variant='h5' color='white' fontWeight='bold'>
-            {_numberToCurrency.format(value)}
-          </Typography>
-        </BoxFlexCenter>
-      </BoxFlexColumn>
+      <List disablePadding>
+        <ListItemText primary={label} />
+        <ListItemText primary={numberToCurrency.format(value)} />
+      </List>
     </Box>
   );
 };
@@ -183,10 +171,10 @@ export default function AssetChart(props) {
         </ComposedChart>
       </ResponsiveContainer>
       {selected && (
-        <List>
+        <List disablePadding>
           <ListItemText
             primary={dayjs(Number(selected.timestamp)).format('MMMM YYYY')}
-            secondary='date'
+            primaryTypographyProps={{ fontWeight: 'bold' }}
           />
           <ListItemText primary={account?.name} secondary='account' />
           <ListItemText

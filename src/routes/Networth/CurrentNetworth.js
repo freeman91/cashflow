@@ -129,9 +129,10 @@ export default function CurrentNetworth(props) {
               />
               {expanded === group.group &&
                 group.items.map((item) => {
+                  const value = item?.value || item?.amount;
                   return (
                     <ItemBox
-                      key={item.name + item.value}
+                      key={item.name + value}
                       tab={TABS[tabIdx]}
                       item={item}
                     />

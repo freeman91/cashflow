@@ -39,6 +39,7 @@ class Bill(BaseModel):
     day = NumberAttribute()
     months = ListAttribute()
     debt_id = UnicodeAttribute(null=True)
+    payment_from_id = UnicodeAttribute(null=True)
     last_update = UTCDateTimeAttribute(default=datetime.now(timezone.utc))
 
     def __repr__(self):
@@ -56,6 +57,7 @@ class Bill(BaseModel):
         day: str,
         months: List,
         debt_id: str,
+        payment_from_id: str,
     ) -> "Bill":
         bill = cls(
             user_id=user_id,
@@ -68,6 +70,7 @@ class Bill(BaseModel):
             day=day,
             months=months,
             debt_id=debt_id,
+            payment_from_id=payment_from_id,
             last_update=datetime.now(timezone.utc),
         )
         bill.save()
@@ -114,7 +117,7 @@ class Bill(BaseModel):
                 pending=True,
                 debt_id=self.debt_id,
                 bill_id=self.bill_id,
-                description=self.name,
+                payment_from_id=self.payment_from_id,
             )
 
         return dynamo.Expense.create(
@@ -126,5 +129,5 @@ class Bill(BaseModel):
             vendor=self.vendor,
             pending=True,
             bill_id=self.bill_id,
-            description=self.name,
+            payment_from_id=self.payment_from_id,
         )

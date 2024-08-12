@@ -77,12 +77,9 @@ export default function AssetPage(props) {
         </>
       )}
       {tabIdx === 2 && (
-        <>
-          <Grid item xs={12} mx={1} pt={'2px !important'}>
-            <AssetChart asset={asset} />
-          </Grid>
-          <Grid item xs={12} mx={1} mb={10} pt={'0 !important'}></Grid>
-        </>
+        <Grid item xs={12} mx={1} pt={'2px !important'}>
+          <AssetChart asset={asset} />
+        </Grid>
       )}
     </>
   );

@@ -29,6 +29,7 @@ def _expenses(user_id: str):
             subcategory=body.get("subcategory"),
             pending=body.get("pending"),
             bill_id=body.get("bill_id"),
+            payment_from_id=body.get("payment_from_id"),
             description=body.get("description"),
         )
         return success_result(expense.as_dict())
@@ -68,6 +69,7 @@ def _expense(user_id: str, expense_id: str):
             "subcategory",
             "pending",
             "bill_id",
+            "payment_from_id",
             "description",
         ]:
             setattr(expense, attr, request.json.get(attr))

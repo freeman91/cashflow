@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import find from 'lodash/find';
+import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
 import isNull from 'lodash/isNull';
 import sortBy from 'lodash/sortBy';
+import map from 'lodash/map';
+import uniq from 'lodash/uniq';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@emotion/react';
@@ -21,8 +24,10 @@ import {
 import { numberToCurrency } from '../../helpers/currency';
 
 const BoxMonthValue = (props) => {
-  const { label, value } = props;
+  const { label, payload } = props;
   const theme = useTheme();
+  const assets = useSelector((state) => state.assets.data);
+  const debts = useSelector((state) => state.debts.data);
 
   return (
     <Box
@@ -35,8 +40,29 @@ const BoxMonthValue = (props) => {
       }}
     >
       <List disablePadding>
-        <ListItemText primary={label} />
-        <ListItemText primary={numberToCurrency.format(value)} />
+        <ListItemText
+          primary={label}
+          primaryTypographyProps={{ fontWeight: 'bold' }}
+        />
+        {map(payload, (item) => {
+          let itemState = {};
+          let negative = false;
+          if (item.name.startsWith('asset')) {
+            itemState = find(assets, { asset_id: item.name });
+          } else if (item.name.startsWith('debt')) {
+            negative = true;
+            itemState = find(debts, { debt_id: item.name });
+          }
+
+          let value = item.value * (negative ? -1 : 1);
+          return (
+            <ListItemText
+              key={item.name}
+              primary={itemState?.name || item.name}
+              secondary={numberToCurrency.format(value)}
+            />
+          );
+        })}
       </List>
     </Box>
   );
@@ -44,43 +70,63 @@ const BoxMonthValue = (props) => {
 
 function ChartTooltip({ active, payload, label, ...props }) {
   if (active && payload && payload.length) {
-    const value = payload[0].value;
     return (
       <BoxMonthValue
         label={dayjs(Number(label)).format('MMMM YYYY')}
-        value={value}
+        payload={payload}
       />
     );
   }
   return null;
 }
 
-export default function DebtChart(props) {
-  const { debt } = props;
+export default function AccountChart(props) {
+  const { account } = props;
   const theme = useTheme();
-  const allNetworths = useSelector((state) => state.networths.data);
-  const allAccounts = useSelector((state) => state.accounts.data);
 
-  const [account, setAccount] = useState(null);
+  const allNetworths = useSelector((state) => state.networths.data);
+  const assets = useSelector((state) => state.assets.data);
+  const debts = useSelector((state) => state.debts.data);
+
   const [selected, setSelected] = useState(null);
   const [chartData, setChartData] = useState([]);
+  const [assetIds, setAssetIds] = useState([]);
+  const [debtIds, setDebtIds] = useState([]);
   const [range, setRange] = useState({
     start: { month: 10, year: 2018 },
     end: { month: 1, year: 2030 },
   });
 
   useEffect(() => {
+    let _assetIds = [];
+    let _debtIds = [];
     let _data = reduce(
       allNetworths,
       (acc, networth) => {
-        const debtValue = find(networth.debts, { debt_id: debt.debt_id });
+        const networthAssets = filter(networth.assets, {
+          account_id: account.account_id,
+        });
+        const networthDebts = filter(networth.debts, {
+          account_id: account.account_id,
+        });
 
-        if (debtValue) {
+        let assets = {};
+        let debts = {};
+        for (const asset of networthAssets) {
+          _assetIds.push(asset.asset_id);
+          assets[asset.asset_id] = asset.value;
+        }
+        for (const debt of networthDebts) {
+          _debtIds.push(debt.debt_id);
+          debts[debt.debt_id] = debt.value;
+        }
+        if (networthAssets.length > 0 || networthDebts.length > 0) {
           return [
             ...acc,
             {
               timestamp: dayjs(networth.date).date(15).unix() * 1000,
-              ...debtValue,
+              ...assets,
+              ...debts,
             },
           ];
         } else {
@@ -89,10 +135,15 @@ export default function DebtChart(props) {
       },
       []
     );
+
+    _assetIds = uniq(_assetIds);
+    _debtIds = uniq(_debtIds);
+    setAssetIds(_assetIds);
+    setDebtIds(_debtIds);
+
     _data = sortBy(_data, 'timestamp');
     const first = _data[0];
     const last = _data[_data.length - 1];
-
     if (first && last) {
       setRange({
         start: {
@@ -106,13 +157,7 @@ export default function DebtChart(props) {
       });
     }
     setChartData(_data);
-  }, [allNetworths, debt]);
-
-  useEffect(() => {
-    if (selected?.account_id) {
-      setAccount(find(allAccounts, { account_id: selected.account_id }));
-    }
-  }, [selected, allAccounts]);
+  }, [account, allNetworths]);
 
   return (
     <Box sx={{ p: 1 }}>
@@ -162,25 +207,61 @@ export default function DebtChart(props) {
             }}
           />
           <Tooltip content={<ChartTooltip />} />
-          <Bar
-            dot={false}
-            type='monotone'
-            dataKey='value'
-            fill={theme.palette.red[200]}
-          />
+          {map(assetIds, (assetId) => {
+            return (
+              <Bar
+                stackId='assets'
+                key={assetId}
+                type='monotone'
+                dataKey={assetId}
+                fill={theme.palette.green[300]}
+                stroke='transparent'
+              />
+            );
+          })}
+          {map(debtIds, (debtId) => {
+            return (
+              <Bar
+                stackId='debts'
+                key={debtId}
+                type='monotone'
+                dataKey={debtId}
+                fill={theme.palette.red[300]}
+                stroke='transparent'
+              />
+            );
+          })}
         </ComposedChart>
       </ResponsiveContainer>
       {selected && (
-        <List>
+        <List disablePadding>
           <ListItemText
             primary={dayjs(Number(selected.timestamp)).format('MMMM YYYY')}
             primaryTypographyProps={{ fontWeight: 'bold' }}
           />
-          <ListItemText primary={account?.name} secondary='account' />
-          <ListItemText
-            primary={numberToCurrency.format(selected.value)}
-            secondary='value'
-          />
+          {map(Object.keys(selected), (id) => {
+            if (id === 'timestamp') {
+              return null;
+            }
+            let negative = false;
+
+            let itemState = {};
+            if (id.startsWith('asset')) {
+              itemState = find(assets, { asset_id: id });
+            } else if (id.startsWith('debt')) {
+              negative = true;
+              itemState = find(debts, { debt_id: id });
+            }
+
+            let value = selected[id] * (negative ? -1 : 1);
+            return (
+              <ListItemText
+                key={id}
+                primary={itemState?.name || id}
+                secondary={numberToCurrency.format(value)}
+              />
+            );
+          })}
         </List>
       )}
     </Box>

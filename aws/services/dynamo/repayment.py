@@ -40,6 +40,7 @@ class Repayment(BaseModel):
     debt_id = UnicodeAttribute()
     bill_id = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
+    payment_from_id = UnicodeAttribute(null=True)
 
     def __repr__(self):
         return f"Repayment<{self.user_id}, {self.date}, {self.lender}, {self.principal}, {self.interest}>"
@@ -59,6 +60,7 @@ class Repayment(BaseModel):
         bill_id: str = None,
         pending: bool = False,
         description: str = None,
+        payment_from_id: str = None,
     ) -> "Repayment":
         repayment = cls(
             user_id=user_id,
@@ -74,6 +76,7 @@ class Repayment(BaseModel):
             bill_id=bill_id,
             pending=pending,
             description=description,
+            payment_from_id=payment_from_id,
         )
         repayment.save()
         return repayment

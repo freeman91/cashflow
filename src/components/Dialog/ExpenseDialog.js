@@ -25,6 +25,7 @@ import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
+import PaymentFromSelect from '../Selector/PaymentFromSelect';
 
 const defaultExpense = {
   expense_id: '',
@@ -42,17 +43,29 @@ const defaultExpense = {
 
 function ExpenseDialog() {
   const dispatch = useDispatch();
+
   const optionLists = useSelector((state) => state.optionLists.data);
   const categoriesData = useSelector((state) => state.categories.data);
+  const bills = useSelector((state) => state.bills.data);
   const expenses = useSelector((state) => state.expenses.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.expense);
-  const [expense, setExpense] = useState(defaultExpense);
 
+  const [bill, setBill] = useState({ name: '' });
+  const [expense, setExpense] = useState(defaultExpense);
   const [expenseCategories, setExpenseCategories] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
 
   const expenseVendors = find(optionLists, { option_type: 'expense_vendor' });
+
+  useEffect(() => {
+    const _bill = find(bills, { bill_id: expense.bill_id });
+    if (_bill) {
+      setBill(_bill);
+    } else {
+      setBill({ name: '' });
+    }
+  }, [expense.bill_id, bills]);
 
   useEffect(() => {
     setExpenseCategories(
@@ -137,6 +150,14 @@ function ExpenseDialog() {
               }}
             />
           )} */}
+          {bill.name && (
+            <TextFieldListItem
+              label='bill'
+              value={bill.name}
+              InputProps={{ readOnly: true }}
+            />
+          )}
+          <PaymentFromSelect resource={expense} setResource={setExpense} />
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
               label='date'
@@ -181,13 +202,6 @@ function ExpenseDialog() {
             options={subcategories}
             onChange={handleChange}
           />
-          {expense.bill_id && (
-            <TextFieldListItem
-              id='bill_id'
-              label='bill'
-              value={expense.bill_id}
-            />
-          )}
           {expense.asset_id && (
             <TextFieldListItem
               id='asset_id'

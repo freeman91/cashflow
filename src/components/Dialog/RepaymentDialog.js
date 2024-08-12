@@ -33,6 +33,7 @@ import BaseDialog from './BaseDialog';
 import DebtSelect from '../Selector/DebtSelect';
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
+import PaymentFromSelect from '../Selector/PaymentFromSelect';
 
 const defaultRepayment = {
   repayment_id: '',
@@ -190,6 +191,7 @@ function RepaymentDialog() {
             />
           )} */}
           <DebtSelect resource={repayment} setResource={setRepayment} />
+          <PaymentFromSelect resource={repayment} setResource={setRepayment} />
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <DatePicker
               label='date'
@@ -215,7 +217,6 @@ function RepaymentDialog() {
             inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               readOnly: true,
-              disableUnderline: true,
               startAdornment: (
                 <InputAdornment position='start'>
                   <AttachMoneyIcon />

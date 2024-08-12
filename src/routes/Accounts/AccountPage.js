@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import { numberToCurrency } from '../../helpers/currency';
 import AccountBox from './AccountBox';
 import ItemBox from '../../components/ItemBox';
+import { StyledTab, StyledTabs } from '../../components/StyledTabs';
+import AccountChart from '../Networth/AccountChart';
 
 export default function AccountPage(props) {
   const { account } = props;
@@ -20,6 +22,7 @@ export default function AccountPage(props) {
   const allAssets = useSelector((state) => state.assets.data);
   const allDebts = useSelector((state) => state.debts.data);
 
+  const [tabIdx, setTabIdx] = useState(0);
   const [assets, setAssets] = useState([]);
   const [assetSum, setAssetSum] = useState(0);
   const [debts, setDebts] = useState([]);
@@ -37,13 +40,24 @@ export default function AccountPage(props) {
     setDebts(sortBy(accountDebts, 'amount'));
   }, [allDebts, account.account_id]);
 
+  const handleChange = (event, newValue) => {
+    setTabIdx(newValue);
+  };
+
   return (
     <>
       <Grid item xs={12} mx={1}>
         <AccountBox account={{ ...account, net: assetSum - debtSum }} />
       </Grid>
-      {assets.length !== 0 && (
-        <Grid item xs={12} mx={1}>
+      <Grid item xs={12}>
+        <StyledTabs value={tabIdx} onChange={handleChange} centered>
+          <StyledTab label='assets' sx={{ width: '25%' }} />
+          <StyledTab label='debts' sx={{ width: '25%' }} />
+          <StyledTab label='history' sx={{ width: '25%' }} />
+        </StyledTabs>
+      </Grid>
+      {tabIdx === 0 && assets.length !== 0 && (
+        <Grid item xs={12} mx={1} pt='0 !important'>
           <Box
             sx={{
               width: '100%',
@@ -51,9 +65,6 @@ export default function AccountPage(props) {
               justifyContent: debtSum > 0 ? 'space-between' : 'center',
             }}
           >
-            <Typography variant='h6' fontWeight='bold' sx={{ width: '100%' }}>
-              assets
-            </Typography>
             {debtSum > 0 && (
               <Typography variant='h6' align='right' fontWeight='bold'>
                 {numberToCurrency.format(assetSum)}
@@ -65,7 +76,7 @@ export default function AccountPage(props) {
           })}
         </Grid>
       )}
-      {debts.length !== 0 && (
+      {tabIdx === 1 && debts.length !== 0 && (
         <Grid item xs={12} mx={1}>
           <Box
             sx={{
@@ -74,9 +85,6 @@ export default function AccountPage(props) {
               justifyContent: assetSum > 0 ? 'space-between' : 'center',
             }}
           >
-            <Typography variant='h6' fontWeight='bold' sx={{ width: '100%' }}>
-              debts
-            </Typography>
             {debtSum > 0 && (
               <Typography variant='h6' align='right' fontWeight='bold'>
                 {numberToCurrency.format(debtSum)}
@@ -86,6 +94,11 @@ export default function AccountPage(props) {
           {map(debts, (debt) => {
             return <ItemBox key={debt.debt_id} item={debt} />;
           })}
+        </Grid>
+      )}
+      {tabIdx === 2 && (
+        <Grid item xs={12} mx={1} pt={'2px !important'}>
+          <AccountChart account={account} />
         </Grid>
       )}
     </>

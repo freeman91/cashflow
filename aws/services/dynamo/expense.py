@@ -36,7 +36,7 @@ class Expense(BaseModel):
     subcategory = UnicodeAttribute(default="")
     pending = BooleanAttribute(default=False)
     bill_id = UnicodeAttribute(null=True)
-    asset_id = UnicodeAttribute(null=True)
+    payment_from_id = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
 
     def __repr__(self):
@@ -53,6 +53,7 @@ class Expense(BaseModel):
         subcategory: str,
         pending: bool = False,
         bill_id: str = None,
+        payment_from_id: str = None,
         description: str = None,
     ) -> "Expense":
         expense = cls(
@@ -65,6 +66,7 @@ class Expense(BaseModel):
             vendor=vendor,
             pending=pending,
             bill_id=bill_id,
+            payment_from_id=payment_from_id,
             description=description,
         )
         expense.save()

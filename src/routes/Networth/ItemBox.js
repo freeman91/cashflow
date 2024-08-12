@@ -62,7 +62,7 @@ const ItemBox = (props) => {
             $
           </Typography>
           <Typography variant='h5' color='white' fontWeight='bold'>
-            {_numberToCurrency.format(item.value)}
+            {_numberToCurrency.format(item?.value || item?.amount)}
           </Typography>
         </BoxFlexCenter>
       </Box>

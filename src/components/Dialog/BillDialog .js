@@ -25,6 +25,7 @@ import { closeDialog, openDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DebtSelect from '../Selector/DebtSelect';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
+import PaymentFromSelect from '../Selector/PaymentFromSelect';
 
 const defaultBill = {
   bill_id: '',
@@ -206,6 +207,7 @@ function BillDialog() {
           <ListItem key='debt-select' disablePadding sx={{ pt: 2, pb: 1 }}>
             <DebtSelect resource={bill} setResource={setBill} />
           </ListItem>
+          <PaymentFromSelect resource={bill} setResource={setBill} />
           <TextFieldListItem
             id='name'
             label='name'

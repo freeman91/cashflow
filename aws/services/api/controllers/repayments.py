@@ -29,6 +29,7 @@ def _repayments(user_id: str):
             subcategory=body.get("subcategory"),
             debt_id=body.get("debt_id"),
             bill_id=body.get("bill_id"),
+            payment_from_id=body.get("payment_from_id"),
             pending=body.get("pending", True),
         )
         return success_result(repayment.as_dict())
@@ -67,6 +68,7 @@ def _repayment(user_id: str, repayment_id: str):
             "subcategory",
             "debt_id",
             "bill_id",
+            "payment_from_id",
             "pending",
         ]:
             setattr(repayment, attr, request.json.get(attr))

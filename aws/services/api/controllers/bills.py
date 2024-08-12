@@ -26,6 +26,7 @@ def _bills(user_id: str):
             day=body.get("day"),
             months=body.get("months"),
             debt_id=body.get("debt_id"),
+            payment_from_id=body.get("payment_from_id"),
         )
         return success_result(bill.as_dict())
 
@@ -52,6 +53,7 @@ def _bill(user_id: str, bill_id: str):
             "day",
             "months",
             "debt_id",
+            "payment_from_id",
         ]:
             setattr(bill, attr, request.json.get(attr))
 
