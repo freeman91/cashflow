@@ -97,7 +97,7 @@ function PaycheckDialog() {
     >
       <form style={{ width: '100%' }}>
         <List>
-          <ListItem sx={{ pl: 0, pr: 0 }}>
+          <ListItem disableGutters>
             <DatePicker
               label='date'
               value={paycheck.date}

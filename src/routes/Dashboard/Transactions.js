@@ -54,7 +54,7 @@ export default function Transactions() {
       }
     );
 
-    setUpcoming(sortBy(upcomingExpenses, 'date').reverse());
+    setUpcoming(sortBy(upcomingExpenses, 'date'));
   }, [allExpenses, allRepayments]);
 
   const handleChange = (event, newValue) => {

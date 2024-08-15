@@ -157,8 +157,7 @@ function ExpenseDialog() {
               InputProps={{ readOnly: true }}
             />
           )}
-          <PaymentFromSelect resource={expense} setResource={setExpense} />
-          <ListItem sx={{ pl: 0, pr: 0 }}>
+          <ListItem disableGutters>
             <DatePicker
               label='date'
               value={expense.date}
@@ -175,6 +174,9 @@ function ExpenseDialog() {
                 },
               }}
             />
+          </ListItem>
+          <ListItem disableGutters>
+            <PaymentFromSelect resource={expense} setResource={setExpense} />
           </ListItem>
           <DecimalFieldListItem
             id='amount'
@@ -222,7 +224,7 @@ function ExpenseDialog() {
               ),
             }}
           />
-          <ListItem key='pending' disablePadding sx={{ pl: 0, pr: 0 }}>
+          <ListItem key='pending' disableGutters disablePadding>
             <ListItemButton
               role={undefined}
               onClick={() =>

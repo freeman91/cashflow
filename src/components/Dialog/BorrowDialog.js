@@ -118,7 +118,7 @@ function BorrowDialog() {
             />
           )} */}
           <DebtSelect resource={borrow} setResource={setBorrow} />
-          <ListItem sx={{ pl: 0, pr: 0 }}>
+          <ListItem disableGutters>
             <DatePicker
               label='date'
               value={borrow.date}

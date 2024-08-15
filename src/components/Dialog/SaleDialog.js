@@ -120,7 +120,7 @@ function SaleDialog() {
             />
           )} */}
           <AssetSelect resource={sale} setResource={setSale} />
-          <ListItem sx={{ pl: 0, pr: 0 }}>
+          <ListItem disableGutters>
             <DatePicker
               label='date'
               value={sale.date}

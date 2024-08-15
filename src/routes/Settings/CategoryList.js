@@ -130,7 +130,7 @@ export default function CategoryList(props) {
                 <ClickAwayListener
                   onClickAway={() => setEditing(defaultEditingObj)}
                 >
-                  <ListItem sx={{ pl: 0, pr: 0 }}>
+                  <ListItem disableGutters>
                     <TextField
                       fullWidth
                       variant='standard'

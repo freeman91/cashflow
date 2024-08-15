@@ -190,9 +190,16 @@ function RepaymentDialog() {
               }}
             />
           )} */}
-          <DebtSelect resource={repayment} setResource={setRepayment} />
-          <PaymentFromSelect resource={repayment} setResource={setRepayment} />
-          <ListItem sx={{ pl: 0, pr: 0 }}>
+          <ListItem disableGutters>
+            <DebtSelect resource={repayment} setResource={setRepayment} />
+          </ListItem>
+          <ListItem disableGutters>
+            <PaymentFromSelect
+              resource={repayment}
+              setResource={setRepayment}
+            />
+          </ListItem>
+          <ListItem disableGutters>
             <DatePicker
               label='date'
               value={repayment?.date}
@@ -261,7 +268,7 @@ function RepaymentDialog() {
             options={subcategories}
             onChange={handleChange}
           />
-          <ListItem key='pending' disablePadding sx={{ pl: 0, pr: 0 }}>
+          <ListItem key='pending' disablePadding disableGutters>
             <ListItemButton
               role={undefined}
               onClick={() =>

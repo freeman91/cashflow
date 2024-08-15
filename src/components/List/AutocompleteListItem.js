@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 
 const AutocompleteListItem = ({ label, ...props }) => {
   return (
-    <ListItem sx={{ pl: 0, pr: 0 }}>
+    <ListItem disableGutters>
       <Autocomplete
         fullWidth
         data-lpignore='true'

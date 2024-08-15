@@ -105,7 +105,7 @@ function IncomeDialog() {
               }}
             />
           )} */}
-          <ListItem sx={{ pl: 0, pr: 0 }}>
+          <ListItem disableGutters>
             <DatePicker
               label='date'
               value={income.date}
