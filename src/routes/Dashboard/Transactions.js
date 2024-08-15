@@ -4,13 +4,18 @@ import dayjs from 'dayjs';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 import { findId } from '../../helpers/transactions';
-import { StyledTab, StyledTabs } from '../../components/StyledTabs';
-import TransactionBox from '../../components/TransactionBox';
+import TransactionBox2 from '../../components/TransactionBox2';
+import BoxFlexCenter from '../../components/BoxFlexCenter';
 
 export default function Transactions() {
   const allExpenses = useSelector((state) => state.expenses.data);
@@ -25,7 +30,7 @@ export default function Transactions() {
   useEffect(() => {
     const today = dayjs().hour(23).minute(59);
     const fourDaysAgo = dayjs().subtract(4, 'day').hour(0).minute(0);
-    const recentTransactions = [
+    let recentTransactions = [
       ...allExpenses,
       ...allRepayments,
       ...allIncomes,
@@ -42,49 +47,74 @@ export default function Transactions() {
       return eDate >= fourDaysAgo && eDate <= today;
     });
 
-    setRecent(sortBy(recentTransactions, ['date', 'type']).reverse());
+    recentTransactions = sortBy(recentTransactions, ['date', 'type'])
+      .reverse()
+      .slice(0, 10);
+    setRecent(recentTransactions);
   }, [allExpenses, allRepayments, allIncomes, allPaychecks]);
 
   useEffect(() => {
-    const threeDaysFromNow = dayjs().add(3, 'day').hour(23).minute(59);
-    const upcomingExpenses = [...allExpenses, ...allRepayments].filter(
-      (expense) => {
-        const eDate = dayjs(expense.date);
-        return eDate <= threeDaysFromNow && expense.pending;
-      }
+    let pendingExpenses = [...allExpenses, ...allRepayments].filter(
+      (expense) => expense.pending
     );
-
-    setUpcoming(sortBy(upcomingExpenses, 'date'));
+    pendingExpenses = sortBy(pendingExpenses, 'date').slice(0, 5);
+    setUpcoming(pendingExpenses);
   }, [allExpenses, allRepayments]);
 
-  const handleChange = (event, newValue) => {
-    setTabIdx(newValue);
+  const handleChange = () => {
+    setTabIdx(tabIdx === 1 ? 0 : 1);
   };
 
+  const label = (() => {
+    if (tabIdx === 0) return 'recent';
+    if (tabIdx === 1) return 'upcoming';
+    return null;
+  })();
   return (
-    <Grid item xs={12} sx={{ mb: 9 }}>
-      <StyledTabs value={tabIdx} onChange={handleChange} centered>
-        <StyledTab label='recent' sx={{ width: '35%' }} />
-        <StyledTab label='upcoming' sx={{ width: '35%' }} />
-      </StyledTabs>
-      <Box sx={{ width: '100%', px: 1, pb: 1, mt: '2px' }}>
+    <Grid
+      item
+      xs={12}
+      sx={{ mb: 9 }}
+      // mx={1}
+      pt={'0 !important'}
+    >
+      <BoxFlexCenter
+        sx={{ flexDirection: 'row', justifyContent: 'space-between', mx: 2 }}
+      >
+        {label && (
+          <Typography variant='h5' fontWeight='bold' color='grey.0'>
+            {label + ' transactions'}
+          </Typography>
+        )}
+        <IconButton onClick={handleChange}>
+          <SwapHorizIcon fontSize='large' />
+        </IconButton>
+      </BoxFlexCenter>
+      <Box sx={{ width: '100%', pb: 2 }}>
         {tabIdx === 0 && (
-          <Stack spacing={1} direction='column'>
-            {map(recent, (transaction) => {
-              return (
-                <TransactionBox
-                  key={findId(transaction)}
-                  transaction={transaction}
-                />
-              );
-            })}
-          </Stack>
+          <Card raised>
+            <Stack spacing={1} direction='column' pt={1} pb={1}>
+              {/* <Divider /> */}
+              {map(recent, (transaction, idx) => {
+                const id = findId(transaction);
+                return (
+                  <React.Fragment key={id}>
+                    <TransactionBox2
+                      key={findId(transaction)}
+                      transaction={transaction}
+                    />
+                    {idx < recent.length - 1 && <Divider />}
+                  </React.Fragment>
+                );
+              })}
+            </Stack>
+          </Card>
         )}
         {tabIdx === 1 && (
           <Stack spacing={1} direction='column'>
             {map(upcoming, (expense) => {
               return (
-                <TransactionBox key={findId(expense)} transaction={expense} />
+                <TransactionBox2 key={findId(expense)} transaction={expense} />
               );
             })}
           </Stack>

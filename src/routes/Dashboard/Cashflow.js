@@ -70,7 +70,7 @@ export default function Cashflow() {
 
   return (
     <CashflowContainer
-      date={date.format('MMMM')}
+      date={date}
       incomeSum={incomeSum}
       expenseSum={expenseSum}
     />

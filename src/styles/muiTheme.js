@@ -60,7 +60,7 @@ export const muiTheme = createTheme({
     info: { main: '#5c98fb' },
   },
   typography: {
-    fontFamily: '"Helvetica", "Arial", sans-serif',
+    fontFamily: '"Arial", "Helvetica", sans-serif',
     defaultFontSize: '0.875rem',
     button: {
       textTransform: 'none',

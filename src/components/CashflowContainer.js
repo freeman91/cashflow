@@ -4,6 +4,7 @@ import { useTheme } from '@emotion/react';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -40,11 +41,11 @@ const BoxCurrencyDisplay = (props) => {
       <BoxFlexColumn
         alignItems={orientation === 'left' ? 'flex-start' : 'flex-end'}
       >
-        <Typography variant='body2' color='grey.0'>
+        <Typography variant='body1' color='text.secondary'>
           {label}
         </Typography>
         <BoxFlexCenter>
-          <Typography variant='h5' color='grey.10'>
+          <Typography variant='h5' color='text.secondary'>
             $
           </Typography>
           <Typography variant='h5' color='white' fontWeight='bold'>
@@ -64,58 +65,45 @@ export default function CashflowContainer(props) {
   const theme = useTheme();
 
   const net = incomeSum - expenseSum;
-
   return (
     <Grid item xs={12} mx={1}>
-      <Box
-        sx={{
-          background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[400]} 75%)`,
-          height: 140,
-          width: '100%',
-          pt: 2,
-          borderRadius: '10px',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <Card raised sx={{ pt: 1, pb: 6, borderRadius: '10px' }}>
         <BoxFlexCenter>
-          {net < 0 && (
-            <Typography variant='h4' color='grey.10'>
-              -
-            </Typography>
-          )}
-          <Typography variant='h4' color='grey.10'>
+          <Typography variant='h4' color='text.secondary'>
             $
           </Typography>
           <Typography variant='h4' color='white' fontWeight='bold'>
-            {_numberToCurrency.format(Math.abs(net))}
+            {_numberToCurrency.format(net)}
           </Typography>
         </BoxFlexCenter>
-        <Typography variant='body2' align='center' color='grey.10'>
-          {date} cashflow
+        <Typography variant='body1' align='center' color='text.secondary'>
+          {date.format('MMMM').toLowerCase()} cashflow
         </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-          }}
-        >
-          <BoxCurrencyDisplay
-            value={incomeSum}
-            label='incomes'
-            color={theme.palette.green}
-            icon={<TrendingUpIcon />}
-            orientation='left'
-          />
-          <BoxCurrencyDisplay
-            value={expenseSum}
-            label='expenses'
-            color={theme.palette.red}
-            icon={<TrendingDownIcon />}
-            orientation='right'
-          />
-        </Box>
+      </Card>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          position: 'relative',
+          top: '-20px',
+          height: 30,
+        }}
+      >
+        <BoxCurrencyDisplay
+          value={incomeSum}
+          label='incomes'
+          color={theme.palette.green}
+          icon={<TrendingUpIcon />}
+          orientation='left'
+        />
+        <BoxCurrencyDisplay
+          value={expenseSum}
+          label='expenses'
+          color={theme.palette.red}
+          icon={<TrendingDownIcon />}
+          orientation='right'
+        />
       </Box>
     </Grid>
   );

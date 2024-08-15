@@ -4,8 +4,7 @@ import dayjs from 'dayjs';
 import find from 'lodash/find';
 import reduce from 'lodash/reduce';
 
-import { useTheme } from '@emotion/react';
-import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -15,7 +14,6 @@ import BoxFlexColumn from '../../components/BoxFlexColumn';
 import { push } from 'redux-first-history';
 
 export default function Networth() {
-  const theme = useTheme();
   const dispatch = useDispatch();
 
   const networths = useSelector((state) => state.networths.data);
@@ -75,26 +73,26 @@ export default function Networth() {
   })();
 
   return (
-    <Grid item xs={12} mx={2} mt='4px'>
-      <Box
+    <Grid item xs={12} mx={1}>
+      <Card
+        raised
         onClick={() => dispatch(push('/networth'))}
         sx={{
-          width: '100%',
-          height: 75,
-          background: `linear-gradient(0deg, ${theme.palette.surface[300]}, ${theme.palette.surface[500]})`,
           borderRadius: '10px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-around',
-          mt: 2,
+          justifyContent: 'space-between',
+          mt: 1,
+          py: 1,
+          px: 2,
         }}
       >
         <BoxFlexColumn alignItems='flex-start'>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body2' color='text.secondary'>
             networth
           </Typography>
           <BoxFlexCenter>
-            <Typography variant='h5' color='grey.10'>
+            <Typography variant='h5' color='text.secondary'>
               $
             </Typography>
             <Typography variant='h5' color='white' fontWeight='bold'>
@@ -103,10 +101,10 @@ export default function Networth() {
           </BoxFlexCenter>
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='center'>
-          <BoxFlexCenter bgDark={true}>
+          <BoxFlexCenter>
             {differenceAttrs.symbol && (
               <Typography
-                variant='body2'
+                variant='body1'
                 color={differenceAttrs.color}
                 fontWeight='bold'
               >
@@ -114,28 +112,28 @@ export default function Networth() {
               </Typography>
             )}
             <Typography
-              variant='body2'
+              variant='body1'
               color={differenceAttrs.color}
               fontWeight='bold'
             >
               $
             </Typography>
             <Typography
-              variant='body2'
+              variant='body1'
               color={differenceAttrs.color}
               fontWeight='bold'
             >
               {_numberToCurrency.format(Math.abs(difference))}
             </Typography>
             <Typography
-              variant='body2'
+              variant='body1'
               color={differenceAttrs.color}
               fontWeight='bold'
             >
               &nbsp;
             </Typography>
             <Typography
-              variant='body2'
+              variant='body1'
               color={differenceAttrs.color}
               fontWeight='bold'
             >
@@ -143,7 +141,7 @@ export default function Networth() {
             </Typography>
           </BoxFlexCenter>
         </BoxFlexColumn>
-      </Box>
+      </Card>
     </Grid>
   );
 }
