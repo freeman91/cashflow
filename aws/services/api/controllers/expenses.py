@@ -32,6 +32,14 @@ def _expenses(user_id: str):
             payment_from_id=body.get("payment_from_id"),
             description=body.get("description"),
         )
+
+        if not expense.pending and expense.payment_from_id:
+            # TODO
+            # get asset/debt
+            # decrease or increase value
+            # return asset/debt
+            pass
+
         return success_result(expense.as_dict())
 
     if request.method == "GET":

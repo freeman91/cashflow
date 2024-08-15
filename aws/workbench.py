@@ -54,7 +54,9 @@ def print_paychecks():
 
 
 def test():
-    pass
+    from yahoo_fin import stock_info
+
+    return stock_info.get_live_price("FXAIX")
 
 
 def main():
