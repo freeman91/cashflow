@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import map from 'lodash/map';
 
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 
 import { findId } from '../../helpers/transactions';
@@ -42,6 +45,7 @@ const findCategory = (transaction) => {
 
 export default function SelectedTransactionsStack(props) {
   const { transactions } = props;
+  const bills = useSelector((state) => state.bills.data);
 
   const [tableData, setTableData] = useState([]);
 
@@ -50,7 +54,7 @@ export default function SelectedTransactionsStack(props) {
       return {
         ...transaction,
         amount: findAmount(transaction),
-        source: findSource(transaction),
+        source: findSource(transaction, bills),
         category: findCategory(transaction),
       };
     });
@@ -67,21 +71,26 @@ export default function SelectedTransactionsStack(props) {
     });
 
     setTableData(_data);
-  }, [transactions]);
+  }, [transactions, bills]);
 
   if (!transactions.length) return null;
   return (
-    <Box sx={{ width: '100%', px: 1, pb: 1, mt: 1, mb: 9 }}>
-      <Stack spacing={1} direction='column'>
-        {map(tableData, (transaction) => {
-          return (
-            <TransactionBox
-              key={findId(transaction)}
-              transaction={transaction}
-            />
-          );
-        })}
-      </Stack>
+    <Box sx={{ width: '100%', pb: 1, mt: 1, mb: 9 }}>
+      <Card raised sx={{ borderRadius: 'unset' }}>
+        <Stack spacing={1} direction='column' py={1}>
+          {map(tableData, (transaction, idx) => {
+            const key = findId(transaction);
+            return (
+              <React.Fragment key={key}>
+                <TransactionBox transaction={transaction} />
+                {idx < transactions.length - 1 && (
+                  <Divider sx={{ mx: '8px !important' }} />
+                )}
+              </React.Fragment>
+            );
+          })}
+        </Stack>
+      </Card>
     </Box>
   );
 }

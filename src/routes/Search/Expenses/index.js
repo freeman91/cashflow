@@ -10,6 +10,8 @@ import sortBy from 'lodash/sortBy';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 
 import { findId } from '../../../helpers/transactions';
 import { getExpenses } from '../../../store/expenses';
@@ -152,16 +154,31 @@ export default function Expenses(props) {
   }, [trigger, toggleTrigger]);
 
   return (
-    <Box sx={{ px: 1 }}>
-      <Card raised>
-        <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
-          <RangeSelect range={range} setRange={setRange} />
-        </CardContent>
+    <>
+      <Box sx={{ px: 1, mb: 1 }}>
+        <Card raised>
+          <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
+            <RangeSelect range={range} setRange={setRange} />
+          </CardContent>
+        </Card>
+        <ExpensesSummary expenses={filteredExpenses} />
+      </Box>
+
+      <Card raised sx={{ borderRadius: 'unset' }}>
+        <Stack spacing={1} direction='column' py={1}>
+          {map(filteredExpenses, (expense, idx) => {
+            const key = findId(expense);
+            return (
+              <React.Fragment key={key}>
+                <TransactionBox transaction={expense} />
+                {idx < filteredExpenses.length - 1 && (
+                  <Divider sx={{ mx: '8px !important' }} />
+                )}
+              </React.Fragment>
+            );
+          })}
+        </Stack>
       </Card>
-      <ExpensesSummary expenses={filteredExpenses} />
-      {map(filteredExpenses, (expense) => {
-        return <TransactionBox key={findId(expense)} transaction={expense} />;
-      })}
       <FilterDialog
         title='filter options'
         open={open}
@@ -181,6 +198,6 @@ export default function Expenses(props) {
         billFilter={billFilter}
         setBillFilter={setBillFilter}
       />
-    </Box>
+    </>
   );
 }

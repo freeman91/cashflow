@@ -8,6 +8,7 @@ import sortBy from 'lodash/sortBy';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -93,9 +94,11 @@ export default function ExpensesBreakdown(props) {
           <MenuIcon sx={{ width: 25, height: 25 }} />
         </IconButton>
       </Box>
-      <DataBox label='principal' value={principal} />
-      <DataBox label='interest' value={interest} />
-      <DataBox label='escrow' value={escrow} />
+      <Card raised sx={{ width: '100%', borderRadius: 'unset' }}>
+        <DataBox label='principal' value={principal} />
+        <DataBox label='interest' value={interest} />
+        <DataBox label='escrow' value={escrow} />
+      </Card>
       <Box
         sx={{
           display: 'flex',
@@ -119,22 +122,24 @@ export default function ExpensesBreakdown(props) {
           <MenuIcon sx={{ width: 25, height: 25 }} />
         </IconButton>
       </Box>
-      {otherExpenses.map((expense) => (
-        <DataBox
-          key={expense.category}
-          label={expense.category}
-          value={expense.amount}
-          onClick={() => {
-            dispatch(
-              openDialog({
-                type: 'transactions',
-                id: expense.category,
-                attrs: expense.expenses,
-              })
-            );
-          }}
-        />
-      ))}
+      <Card raised sx={{ width: '100%', borderRadius: 'unset' }}>
+        {otherExpenses.map((expense) => (
+          <DataBox
+            key={expense.category}
+            label={expense.category}
+            value={expense.amount}
+            onClick={() => {
+              dispatch(
+                openDialog({
+                  type: 'transactions',
+                  id: expense.category,
+                  attrs: expense.expenses,
+                })
+              );
+            }}
+          />
+        ))}
+      </Card>
     </Stack>
   );
 }

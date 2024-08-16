@@ -5,14 +5,19 @@ import dayjs from 'dayjs';
 import map from 'lodash/map';
 
 import { useTheme } from '@emotion/react';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 
+import { MONTHS } from '.';
 import { _numberToCurrency } from '../../../helpers/currency';
 import BoxFlexCenter from '../../../components/BoxFlexCenter';
 import BoxFlexColumn from '../../../components/BoxFlexColumn';
-import { MONTHS } from '.';
+import CustomIconButton from '../../../components/CustomIconButton';
 
 const MonthBox = (props) => {
   const { year, month, incomeSum, expenseSum } = props;
@@ -26,32 +31,32 @@ const MonthBox = (props) => {
   };
 
   const net = incomeSum - expenseSum;
-  const color = net >= 0 ? theme.palette.green[400] : theme.palette.red[400];
-
+  const color = net >= 0 ? theme.palette.green : theme.palette.red;
+  const icon = net >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />;
   return (
     <Box
       onClick={handleClick}
       sx={{
-        background: `linear-gradient(0deg, ${theme.palette.surface[250]}, ${theme.palette.surface[300]})`,
         borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
+        pl: 1,
         pr: 2,
-        border: `2px solid ${color}`,
-        width: '100%',
+        cursor: 'pointer',
       }}
     >
+      <CustomIconButton color={color}>{icon}</CustomIconButton>
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          ml: 2,
+          ml: 1,
         }}
       >
         <BoxFlexColumn alignItems='flex-start' sx={{ width: '33%' }}>
-          <Typography align='left' variant='body2' color='grey.0'>
+          <Typography align='left' variant='body2' color='text.secondary'>
             {date.format('MMMM')}
           </Typography>
           <BoxFlexCenter>
@@ -92,27 +97,34 @@ export default function MonthlyBreakdown(props) {
   const { year, incomeSumByMonth, expenseSumByMonth } = props;
 
   return (
-    <Stack
-      spacing={1}
-      direction='column'
-      justifyContent='center'
-      alignItems='center'
-    >
-      {map(MONTHS, (month) => {
-        const incomeSum = incomeSumByMonth[month];
-        const expenseSum = expenseSumByMonth[month];
+    <Card raised sx={{ borderRadius: 0 }}>
+      <Stack
+        spacing={1}
+        direction='column'
+        // justifyContent='center'
+        // alignItems='center'
+        pt={1}
+        pb={1}
+      >
+        {map(MONTHS, (month, idx) => {
+          const incomeSum = incomeSumByMonth[month];
+          const expenseSum = expenseSumByMonth[month];
 
-        if (incomeSum === 0 && expenseSum === 0) return null;
-        return (
-          <MonthBox
-            key={month}
-            year={year}
-            month={month}
-            incomeSum={incomeSum}
-            expenseSum={expenseSum}
-          />
-        );
-      })}
-    </Stack>
+          if (incomeSum === 0 && expenseSum === 0) return null;
+          return (
+            <React.Fragment key={year + month + idx}>
+              {idx !== 0 && <Divider />}
+              <MonthBox
+                key={month}
+                year={year}
+                month={month}
+                incomeSum={incomeSum}
+                expenseSum={expenseSum}
+              />
+            </React.Fragment>
+          );
+        })}
+      </Stack>
+    </Card>
   );
 }

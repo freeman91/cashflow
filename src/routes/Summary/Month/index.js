@@ -127,7 +127,10 @@ export default function MonthSummary(props) {
           alignItems='center'
           mx={1}
         >
-          <Card raised>
+          <Card
+            raised
+            sx={{ backgroundImage: 'unset', bgcolor: 'surface.300' }}
+          >
             <IconButton
               onClick={() => handlePreviousMonth()}
               sx={{ ml: '4px', pl: 1, pr: 0, mr: '4px' }}
@@ -135,7 +138,10 @@ export default function MonthSummary(props) {
               <ArrowBackIosIcon />
             </IconButton>
           </Card>
-          <Card raised>
+          <Card
+            raised
+            sx={{ backgroundImage: 'unset', bgcolor: 'surface.300' }}
+          >
             <IconButton
               disabled={date?.isSame(today, 'month')}
               onClick={() => handleNextMonth()}
@@ -150,12 +156,12 @@ export default function MonthSummary(props) {
         <Cashflow year={year} month={month} />
       </Grid>
 
-      <Grid item xs={12} sx={{ mb: 9, mt: 3 }}>
+      <Grid item xs={12} sx={{ mb: 9, mt: 1 }}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>
           <StyledTab label='incomes' sx={{ width: '40%' }} />
           <StyledTab label='expenses' sx={{ width: '40%' }} />
         </StyledTabs>
-        <Box sx={{ mt: '2px', px: 1, pb: 1 }}>
+        <Box>
           {tabIdx === 0 && <IncomesBreakdown incomes={incomes} />}
           {tabIdx === 1 && <ExpensesBreakdown expenses={expenses} />}
         </Box>

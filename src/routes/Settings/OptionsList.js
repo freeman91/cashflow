@@ -108,7 +108,7 @@ export default function OptionsList(props) {
                 {option}
               </ListItemButton>
             </ListItem>
-            <Divider sx={{ mx: 1 }} />
+            {options.length - 1 !== idx && <Divider sx={{ mx: 1 }} />}
           </React.Fragment>
         );
       })}

@@ -126,21 +126,20 @@ export default function Calendar() {
         WebkitOverflowScrolling: 'touch',
       }}
     >
-      <Box sx={{ background: (theme) => theme.palette.surface[250] }}>
-        <Stack
-          direction='row'
-          justifyContent='space-between'
-          alignItems='center'
-        >
-          <IconButton onClick={() => handlePreviousMonth()}>
-            <ArrowBackIosIcon />
-          </IconButton>
-          <Typography variant='h6'>{date?.format('MMMM YYYY')}</Typography>
-          <IconButton onClick={() => handleNextMonth()}>
-            <ArrowForwardIosIcon />
-          </IconButton>
-        </Stack>
-      </Box>
+      <Stack
+        direction='row'
+        justifyContent='space-between'
+        alignItems='center'
+        sx={{ px: 2, pb: 1 }}
+      >
+        <IconButton onClick={() => handlePreviousMonth()}>
+          <ArrowBackIosIcon />
+        </IconButton>
+        <Typography variant='h6'>{date?.format('MMMM YYYY')}</Typography>
+        <IconButton onClick={() => handleNextMonth()}>
+          <ArrowForwardIosIcon />
+        </IconButton>
+      </Stack>
       <MonthContent
         selectedDate={date}
         setSelectedDate={selectedDate}

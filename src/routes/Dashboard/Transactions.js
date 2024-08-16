@@ -14,7 +14,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { findId } from '../../helpers/transactions';
-import TransactionBox2 from '../../components/TransactionBox2';
+import TransactionBox from '../../components/TransactionBox';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
 
 export default function Transactions() {
@@ -49,7 +49,7 @@ export default function Transactions() {
 
     recentTransactions = sortBy(recentTransactions, ['date', 'type'])
       .reverse()
-      .slice(0, 10);
+      .slice(0, 7);
     setRecent(recentTransactions);
   }, [allExpenses, allRepayments, allIncomes, allPaychecks]);
 
@@ -57,7 +57,7 @@ export default function Transactions() {
     let pendingExpenses = [...allExpenses, ...allRepayments].filter(
       (expense) => expense.pending
     );
-    pendingExpenses = sortBy(pendingExpenses, 'date').slice(0, 5);
+    pendingExpenses = sortBy(pendingExpenses, 'date').slice(0, 7);
     setUpcoming(pendingExpenses);
   }, [allExpenses, allRepayments]);
 
@@ -71,13 +71,7 @@ export default function Transactions() {
     return null;
   })();
   return (
-    <Grid
-      item
-      xs={12}
-      sx={{ mb: 9 }}
-      // mx={1}
-      pt={'0 !important'}
-    >
+    <Grid item xs={12} sx={{ mb: 9 }} pt={'0 !important'}>
       <BoxFlexCenter
         sx={{ flexDirection: 'row', justifyContent: 'space-between', mx: 2 }}
       >
@@ -98,11 +92,10 @@ export default function Transactions() {
                 const key = findId(transaction);
                 return (
                   <React.Fragment key={key}>
-                    <TransactionBox2
-                      key={findId(transaction)}
-                      transaction={transaction}
-                    />
-                    {idx < recent.length - 1 && <Divider />}
+                    <TransactionBox transaction={transaction} />
+                    {idx < recent.length - 1 && (
+                      <Divider sx={{ mx: '8px !important' }} />
+                    )}
                   </React.Fragment>
                 );
               })}
@@ -116,11 +109,13 @@ export default function Transactions() {
                 const key = findId(expense);
                 return (
                   <React.Fragment key={key}>
-                    <TransactionBox2
+                    <TransactionBox
                       key={findId(expense)}
                       transaction={expense}
                     />
-                    {idx < upcoming.length - 1 && <Divider />}
+                    {idx < upcoming.length - 1 && (
+                      <Divider sx={{ mx: '8px !important' }} />
+                    )}
                   </React.Fragment>
                 );
               })}

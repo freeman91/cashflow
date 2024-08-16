@@ -7,6 +7,8 @@ import map from 'lodash/map';
 
 import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -76,16 +78,11 @@ const BillBox = (props) => {
       key={bill.bill_id}
       onClick={() => handleClick(bill)}
       sx={{
-        position: 'relative',
-        background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
-        zIndex: 1,
-        borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
-        p: '4px',
-        mt: 1,
+        pl: 1,
         pr: 2,
-        border: `2px solid ${theme.palette.surface[400]}`,
+        cursor: 'pointer',
       }}
     >
       <CustomIconButton color={theme.palette.red}>{icon}</CustomIconButton>
@@ -95,13 +92,12 @@ const BillBox = (props) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          ml: 2,
+          ml: 1,
         }}
       >
         <BoxFlexColumn alignItems='space-between'>
           <Typography
             variant='h6'
-            color='grey.0'
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -112,19 +108,19 @@ const BillBox = (props) => {
           >
             {bill.name}
           </Typography>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body2' color='text.secondary'>
             {bill.category}
           </Typography>
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
-          <Typography align='right' variant='body2' color='grey.0'>
+          <Typography align='right' variant='body2' color='text.secondary'>
             {bill.nextBillDate.format('MMM D, YYYY')}
           </Typography>
           <BoxFlexCenter>
             <Typography variant='h5' color='grey.10'>
               $
             </Typography>
-            <Typography variant='h5' color='white' fontWeight='bold'>
+            <Typography variant='h5' fontWeight='bold'>
               {_numberToCurrency.format(bill.amount)}
             </Typography>
           </BoxFlexCenter>
@@ -173,24 +169,37 @@ export default function Bills() {
         <StyledTab label='templates' sx={{ width: '35%' }} />
         <StyledTab label='pending' sx={{ width: '35%' }} />
       </StyledTabs>
-      <Box sx={{ px: 1, pt: '2px' }}>
+      <Box sx={{ pt: '2px' }}>
         {tabIdx === 0 && (
-          <Stack spacing={1} direction='column'>
-            {map(bills, (bill) => {
-              return (
-                <BillBox key={bill.bill_id} bill={bill} icon={findIcon(bill)} />
-              );
-            })}
-          </Stack>
+          <Card raised sx={{ borderRadius: 'unset' }}>
+            <Stack spacing={1} direction='column' py={1}>
+              {map(bills, (bill, idx) => {
+                return (
+                  <React.Fragment key={bill.bill_id}>
+                    <BillBox bill={bill} icon={findIcon(bill)} />
+                    {idx < bills.length - 1 && <Divider />}
+                  </React.Fragment>
+                );
+              })}
+            </Stack>
+          </Card>
         )}
         {tabIdx === 1 && (
-          <Stack spacing={1} direction='column'>
-            {map(expenses, (expense) => {
-              return (
-                <TransactionBox key={findId(expense)} transaction={expense} />
-              );
-            })}
-          </Stack>
+          <Card raised sx={{ borderRadius: 'unset' }}>
+            <Stack spacing={1} direction='column' py={1}>
+              {map(expenses, (expense, idx) => {
+                const key = findId(expense);
+                return (
+                  <React.Fragment key={key}>
+                    <TransactionBox transaction={expense} />
+                    {idx < expenses.length - 1 && (
+                      <Divider sx={{ mx: '8px !important' }} />
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </Stack>
+          </Card>
         )}
       </Box>
     </Box>

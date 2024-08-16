@@ -1,3 +1,5 @@
+import find from 'lodash/find';
+
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
@@ -18,7 +20,11 @@ const findAmount = (transaction) => {
   return 0;
 };
 
-const findSource = (transaction) => {
+const findSource = (transaction, bills) => {
+  if (transaction.bill_id) {
+    const bill = find(bills, (bill) => bill.bill_id === transaction.bill_id);
+    if (bill) return bill.name;
+  }
   if (transaction.vendor) return transaction.vendor;
   if (transaction.lender) return transaction.lender;
   if (transaction.employer) return transaction.employer;
@@ -50,12 +56,12 @@ const findColor = (transaction) => {
   switch (transaction._type) {
     case 'repayment':
     case 'expense':
-      return 'red.400';
+      return 'red';
     case 'paycheck':
     case 'income':
-      return 'green.400';
+      return 'green';
     default:
-      return 'red.400';
+      return 'red';
   }
 };
 

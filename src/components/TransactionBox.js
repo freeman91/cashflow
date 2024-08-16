@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@emotion/react';
@@ -23,6 +23,7 @@ const TransactionBox = (props) => {
   const { transaction } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
+  const bills = useSelector((state) => state.bills.data);
 
   const handleClick = (transaction) => {
     dispatch(
@@ -36,43 +37,33 @@ const TransactionBox = (props) => {
   };
 
   const amount = findAmount(transaction);
-  const source = findSource(transaction);
+  const source = findSource(transaction, bills);
   const category = findCategory(transaction);
   const color = findColor(transaction);
   const icon = findIcon(transaction);
 
-  const [c1, c2] = color.split('.');
-  const themeColor = theme.palette[c1][c2];
   return (
     <Box
       onClick={() => handleClick(transaction)}
       sx={{
-        position: 'relative',
-        background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
-        zIndex: 1,
-        borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
-        p: '4px',
-        mt: 1,
-        pr: 2,
-        border: `2px solid ${themeColor}`,
+        px: 2,
+        cursor: 'pointer',
       }}
     >
-      <CustomIconButton color={theme.palette[c1]}>{icon}</CustomIconButton>
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          ml: 2,
+          mr: 1,
         }}
       >
         <BoxFlexColumn alignItems='space-between'>
           <Typography
             variant='h6'
-            color='grey.0'
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -83,16 +74,16 @@ const TransactionBox = (props) => {
           >
             {source}
           </Typography>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body1' color='text.secondary'>
             {category}
           </Typography>
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
-          <Typography align='right' variant='body2' color='grey.0'>
+          <Typography align='right' variant='body2' color='text.secondary'>
             {dayjs(transaction.date).format('MMM D')}
           </Typography>
           <BoxFlexCenter>
-            <Typography variant='h5' color='grey.10'>
+            <Typography variant='h5' color='text.secondary'>
               $
             </Typography>
             <Typography variant='h5' color='white' fontWeight='bold'>
@@ -101,6 +92,7 @@ const TransactionBox = (props) => {
           </BoxFlexCenter>
         </BoxFlexColumn>
       </Box>
+      <CustomIconButton color={theme.palette[color]}>{icon}</CustomIconButton>
     </Box>
   );
 };

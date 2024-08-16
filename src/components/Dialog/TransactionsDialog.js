@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import map from 'lodash/map';
 
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 
 import { findAmount, findId } from '../../helpers/transactions';
@@ -47,16 +49,21 @@ function TransactionsDialog() {
         <Stack spacing={1} width='100%'>
           <SortMenuButton selected={sortAmount} setSelected={setSortAmount} />
         </Stack>
-        <Stack spacing={1} direction='column' width='100%'>
-          {map(transactions, (transaction) => {
-            return (
-              <TransactionBox
-                key={findId(transaction)}
-                transaction={transaction}
-              />
-            );
-          })}
-        </Stack>
+        <Card raised>
+          <Stack spacing={1} direction='column' width='100%' py={1}>
+            {map(transactions, (transaction, idx) => {
+              const key = findId(transaction);
+              return (
+                <React.Fragment key={key}>
+                  <TransactionBox transaction={transaction} />
+                  {idx < transactions.length - 1 && (
+                    <Divider sx={{ mx: '8px !important' }} />
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </Stack>
+        </Card>
       </Box>
     </BaseDialog>
   );

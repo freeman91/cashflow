@@ -133,20 +133,11 @@ export default function Settings() {
   const options = Object.keys(OPTIONS);
   const availableOptions = options.filter((option) => option !== selected);
   return (
-    <Box sx={{ mb: 10, mt: 1 }}>
-      <Card raised sx={{ mx: 1, mb: 1 }}>
-        {
-          <Typography
-            variant='h5'
-            align='center'
-            fontWeight='bold'
-            sx={{ py: 1 }}
-          >
-            {selected.replace('_', ' ')}
-          </Typography>
-        }
-      </Card>
-      <Card raised sx={{ mx: 1 }}>
+    <Box>
+      <Typography variant='h5' align='center' fontWeight='bold' sx={{ mb: 1 }}>
+        {selected.replace('_', ' ')}
+      </Typography>
+      <Card raised sx={{ mb: 10, borderRadius: 'unset' }}>
         {renderOptionComponent()}
       </Card>
       <Menu

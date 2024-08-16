@@ -8,6 +8,7 @@ import sortBy from 'lodash/sortBy';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -102,46 +103,58 @@ export default function IncomesBreakdown(props) {
         </IconButton>
       </Box>
 
-      <DataBox label='take home' value={takeHome} />
-      <DataBox label='retirement' value={retirement} />
-      <DataBox label='benefits' value={benefits} />
-      <DataBox label='taxes' value={taxes} />
-      <DataBox label='other' value={other} />
+      <Card raised sx={{ width: '100%', borderRadius: 'unset' }}>
+        <DataBox label='take home' value={takeHome} />
+        <DataBox label='retirement' value={retirement} />
+        <DataBox label='benefits' value={benefits} />
+        <DataBox label='taxes' value={taxes} />
+        <DataBox label='other' value={other} />
+      </Card>
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%',
-        }}
-      >
-        <Typography variant='body1' color='white' sx={{ width: '100%', pl: 1 }}>
-          other incomes
-        </Typography>
-        <IconButton
-          onClick={() =>
-            handleOpenTransactions(
-              'incomes',
-              filter(incomes, (income) => income._type === 'income')
-            )
-          }
+      {otherIncomes.length > 0 && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
         >
-          <MenuIcon sx={{ width: 25, height: 25 }} />
-        </IconButton>
-      </Box>
+          <Typography
+            variant='body1'
+            color='white'
+            sx={{ width: '100%', pl: 1 }}
+          >
+            other incomes
+          </Typography>
+          <IconButton
+            onClick={() =>
+              handleOpenTransactions(
+                'incomes',
+                filter(incomes, (income) => income._type === 'income')
+              )
+            }
+          >
+            <MenuIcon sx={{ width: 25, height: 25 }} />
+          </IconButton>
+        </Box>
+      )}
 
-      {otherIncomes.map((income) => (
-        <DataBox
-          key={income.category}
-          label={income.category}
-          value={income.amount}
-          onClick={() =>
-            handleOpenTransactions(income.category, income.incomes)
-          }
-        />
-      ))}
+      {otherIncomes.length > 0 && (
+        <Card raised sx={{ width: '100%', borderRadius: 'unset' }}>
+          {otherIncomes.map((income) => (
+            <DataBox
+              key={income.category}
+              label={income.category}
+              value={income.amount}
+              onClick={() =>
+                handleOpenTransactions(income.category, income.incomes)
+              }
+            />
+          ))}
+        </Card>
+      )}
     </Stack>
   );
 }

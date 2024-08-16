@@ -11,6 +11,8 @@ import toLower from 'lodash/toLower';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 
 import { findId } from '../../../helpers/transactions';
 import { getIncomes } from '../../../store/incomes';
@@ -120,16 +122,30 @@ export default function Incomes(props) {
   }, [trigger, toggleTrigger]);
 
   return (
-    <Box sx={{ px: 1 }}>
-      <Card raised>
-        <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
-          <RangeSelect range={range} setRange={setRange} />
-        </CardContent>
+    <>
+      <Box sx={{ px: 1, mb: 1 }}>
+        <Card raised>
+          <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
+            <RangeSelect range={range} setRange={setRange} />
+          </CardContent>
+        </Card>
+        <IncomesSummary incomes={filteredIncomes} />
+      </Box>
+      <Card raised sx={{ borderRadius: 'unset' }}>
+        <Stack spacing={1} direction='column' py={1}>
+          {map(filteredIncomes, (income, idx) => {
+            const key = findId(income);
+            return (
+              <React.Fragment key={key}>
+                <TransactionBox transaction={income} />
+                {idx < filteredIncomes.length - 1 && (
+                  <Divider sx={{ mx: '8px !important' }} />
+                )}
+              </React.Fragment>
+            );
+          })}
+        </Stack>
       </Card>
-      <IncomesSummary incomes={filteredIncomes} />
-      {map(filteredIncomes, (income) => {
-        return <TransactionBox key={findId(income)} transaction={income} />;
-      })}
       <FilterDialog
         title='filter options'
         open={open}
@@ -145,6 +161,6 @@ export default function Incomes(props) {
         sourceFilter={sourceFilter}
         setSourceFilter={setSourceFilter}
       />
-    </Box>
+    </>
   );
 }
