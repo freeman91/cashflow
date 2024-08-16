@@ -68,7 +68,7 @@ export default function Cashflow(props) {
 
   return (
     <CashflowContainer
-      date={date?.format('YYYY')}
+      dateStr={date?.format('YYYY')}
       incomeSum={incomeSum}
       expenseSum={expenseSum}
     />

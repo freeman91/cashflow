@@ -41,8 +41,8 @@ const TransactionBox2 = (props) => {
   const color = findColor(transaction);
   const icon = findIcon(transaction);
 
-  const [c1, c2] = color.split('.');
-  const themeColor = theme.palette[c1][c2];
+  const [c1] = color.split('.');
+  // const themeColor = theme.palette[c1][c2];
   return (
     <Box
       onClick={() => handleClick(transaction)}

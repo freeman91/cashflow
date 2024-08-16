@@ -61,7 +61,7 @@ const BoxCurrencyDisplay = (props) => {
 };
 
 export default function CashflowContainer(props) {
-  const { date, incomeSum, expenseSum } = props;
+  const { dateStr, incomeSum, expenseSum } = props;
   const theme = useTheme();
 
   const net = incomeSum - expenseSum;
@@ -77,7 +77,7 @@ export default function CashflowContainer(props) {
           </Typography>
         </BoxFlexCenter>
         <Typography variant='body1' align='center' color='text.secondary'>
-          {date.format('MMMM').toLowerCase()} cashflow
+          {dateStr?.toLowerCase()} cashflow
         </Typography>
       </Card>
       <Box

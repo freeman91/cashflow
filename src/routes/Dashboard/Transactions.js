@@ -90,15 +90,14 @@ export default function Transactions() {
           <SwapHorizIcon fontSize='large' />
         </IconButton>
       </BoxFlexCenter>
-      <Box sx={{ width: '100%', pb: 2 }}>
+      <Box sx={{ width: '100%' }}>
         {tabIdx === 0 && (
-          <Card raised>
+          <Card raised sx={{ borderRadius: 0 }}>
             <Stack spacing={1} direction='column' pt={1} pb={1}>
-              {/* <Divider /> */}
               {map(recent, (transaction, idx) => {
-                const id = findId(transaction);
+                const key = findId(transaction);
                 return (
-                  <React.Fragment key={id}>
+                  <React.Fragment key={key}>
                     <TransactionBox2
                       key={findId(transaction)}
                       transaction={transaction}
@@ -111,13 +110,22 @@ export default function Transactions() {
           </Card>
         )}
         {tabIdx === 1 && (
-          <Stack spacing={1} direction='column'>
-            {map(upcoming, (expense) => {
-              return (
-                <TransactionBox2 key={findId(expense)} transaction={expense} />
-              );
-            })}
-          </Stack>
+          <Card raised sx={{ borderRadius: 0 }}>
+            <Stack spacing={1} direction='column' pt={1} pb={1}>
+              {map(upcoming, (expense, idx) => {
+                const key = findId(expense);
+                return (
+                  <React.Fragment key={key}>
+                    <TransactionBox2
+                      key={findId(expense)}
+                      transaction={expense}
+                    />
+                    {idx < upcoming.length - 1 && <Divider />}
+                  </React.Fragment>
+                );
+              })}
+            </Stack>
+          </Card>
         )}
       </Box>
     </Grid>
