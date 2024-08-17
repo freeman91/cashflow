@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -9,11 +8,7 @@ import BoxFlexColumn from '../../components/BoxFlexColumn';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
 
 const ItemBox = (props) => {
-  const { tab, item } = props;
-  const theme = useTheme();
-
-  const color =
-    tab === 'assets' ? theme.palette.green[400] : theme.palette.red[400];
+  const { item } = props;
 
   return (
     <Box

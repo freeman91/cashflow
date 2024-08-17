@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useTheme } from '@emotion/react';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
@@ -12,7 +11,7 @@ import BoxFlexCenter from '../../components/BoxFlexCenter';
 
 export default function DataBox(props) {
   const { label, value, expanded, setExpanded } = props;
-  const theme = useTheme();
+
   return (
     <Box
       onClick={() => setExpanded(expanded ? '' : label)}
