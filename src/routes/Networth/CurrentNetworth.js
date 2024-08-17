@@ -8,6 +8,7 @@ import sortBy from 'lodash/sortBy';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -82,7 +83,10 @@ export default function CurrentNetworth(props) {
             alignItems='center'
             mx={1}
           >
-            <Card raised>
+            <Card
+              raised
+              sx={{ backgroundImage: 'unset', bgcolor: 'surface.300' }}
+            >
               <IconButton
                 onClick={handleSelectPreviousMonth}
                 sx={{ ml: '4px', pl: 1, pr: 0, mr: '4px' }}
@@ -90,7 +94,10 @@ export default function CurrentNetworth(props) {
                 <ArrowBackIosIcon />
               </IconButton>
             </Card>
-            <Card raised>
+            <Card
+              raised
+              sx={{ backgroundImage: 'unset', bgcolor: 'surface.300' }}
+            >
               <IconButton disabled>
                 <ArrowForwardIosIcon />
               </IconButton>
@@ -116,31 +123,44 @@ export default function CurrentNetworth(props) {
           </StyledTabs>
         </Grid>
       )}
-
-      {showItems &&
-        groupedItems.map((group, idx) => {
-          return (
-            <Grid item key={group + idx} xs={12} mx={1} pt={'2px !important'}>
-              <DataBox
-                expanded={group.group === expanded}
-                label={group.group}
-                value={group.sum}
-                setExpanded={setExpanded}
-              />
-              {expanded === group.group &&
-                group.items.map((item) => {
-                  const value = item?.value || item?.amount;
-                  return (
-                    <ItemBox
-                      key={item.name + value}
-                      tab={TABS[tabIdx]}
-                      item={item}
-                    />
-                  );
-                })}
-            </Grid>
-          );
-        })}
+      {showItems && (
+        <Card raised sx={{ width: '100%', borderRadius: 'unset', mt: '2px' }}>
+          <Stack
+            spacing={'4px'}
+            direction='column'
+            justifyContent='center'
+            alignItems='center'
+            px={2}
+          >
+            {groupedItems.map((group, idx) => {
+              return (
+                <React.Fragment key={group + idx}>
+                  <DataBox
+                    expanded={group.group === expanded}
+                    label={group.group}
+                    value={group.sum}
+                    setExpanded={setExpanded}
+                  />
+                  {expanded === group.group &&
+                    group.items.map((item) => {
+                      const value = item?.value || item?.amount;
+                      return (
+                        <ItemBox
+                          key={item.name + value}
+                          tab={TABS[tabIdx]}
+                          item={item}
+                        />
+                      );
+                    })}
+                  {idx < groupedItems.length - 1 && (
+                    <Divider sx={{ mx: '8px !important', width: '100%' }} />
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </Stack>
+        </Card>
+      )}
     </>
   );
 }

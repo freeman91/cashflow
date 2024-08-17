@@ -70,6 +70,7 @@ export default function Transactions() {
     if (tabIdx === 1) return 'upcoming';
     return null;
   })();
+  const transactions = tabIdx === 1 ? recent : upcoming;
   return (
     <Grid item xs={12} sx={{ mb: 9 }} pt={'0 !important'}>
       <BoxFlexCenter
@@ -84,11 +85,11 @@ export default function Transactions() {
           <SwapHorizIcon fontSize='large' />
         </IconButton>
       </BoxFlexCenter>
-      <Box sx={{ width: '100%' }}>
-        {tabIdx === 0 && (
+      {transactions.length > 0 && (
+        <Box sx={{ width: '100%' }}>
           <Card raised sx={{ borderRadius: 0 }}>
             <Stack spacing={1} direction='column' pt={1} pb={1}>
-              {map(recent, (transaction, idx) => {
+              {map(transactions, (transaction, idx) => {
                 const key = findId(transaction);
                 return (
                   <React.Fragment key={key}>
@@ -101,28 +102,8 @@ export default function Transactions() {
               })}
             </Stack>
           </Card>
-        )}
-        {tabIdx === 1 && (
-          <Card raised sx={{ borderRadius: 0 }}>
-            <Stack spacing={1} direction='column' pt={1} pb={1}>
-              {map(upcoming, (expense, idx) => {
-                const key = findId(expense);
-                return (
-                  <React.Fragment key={key}>
-                    <TransactionBox
-                      key={findId(expense)}
-                      transaction={expense}
-                    />
-                    {idx < upcoming.length - 1 && (
-                      <Divider sx={{ mx: '8px !important' }} />
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </Stack>
-          </Card>
-        )}
-      </Box>
+        </Box>
+      )}
     </Grid>
   );
 }

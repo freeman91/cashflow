@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -79,31 +80,16 @@ export default function NetworthContainer(props) {
   const net = assetSum - debtSum;
   return (
     <Grid item xs={12} mx={1} sx={{ pt: noTopPadding ? '0 !important' : null }}>
-      <Box
-        sx={{
-          background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[400]} 75%)`,
-          height: 140,
-          width: '100%',
-          pt: 2,
-          borderRadius: '10px',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <Card raised sx={{ pt: 1, pb: 6, borderRadius: '10px' }}>
         <BoxFlexCenter>
-          {net < 0 && (
-            <Typography variant='h4' color='grey.10'>
-              -
-            </Typography>
-          )}
-          <Typography variant='h4' color='grey.10'>
+          <Typography variant='h4' color='text.secondary'>
             $
           </Typography>
           <Typography variant='h4' color='white' fontWeight='bold'>
-            {_numberToCurrency.format(Math.abs(net))}
+            {_numberToCurrency.format(net)}
           </Typography>
         </BoxFlexCenter>
-        <Typography variant='body2' align='center' color='grey.10'>
+        <Typography variant='body2' align='center' color='text.secondary'>
           {subtitle
             ? subtitle
             : dayjs()
@@ -111,28 +97,31 @@ export default function NetworthContainer(props) {
                 .month(month - 1)
                 .format('MMMM YYYY')}
         </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-          }}
-        >
-          <BoxCurrencyDisplay
-            value={assetSum}
-            label='assets'
-            color={theme.palette.green}
-            icon={<AccountBalanceWalletIcon />}
-            orientation='left'
-          />
-          <BoxCurrencyDisplay
-            value={debtSum}
-            label='debts'
-            color={theme.palette.red}
-            icon={<CreditCardIcon />}
-            orientation='right'
-          />
-        </Box>
+      </Card>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          position: 'relative',
+          top: '-20px',
+          height: 30,
+        }}
+      >
+        <BoxCurrencyDisplay
+          value={assetSum}
+          label='assets'
+          color={theme.palette.green}
+          icon={<AccountBalanceWalletIcon />}
+          orientation='left'
+        />
+        <BoxCurrencyDisplay
+          value={debtSum}
+          label='debts'
+          color={theme.palette.red}
+          icon={<CreditCardIcon />}
+          orientation='right'
+        />
       </Box>
     </Grid>
   );

@@ -30,11 +30,9 @@ export default function DataBox(props) {
           width: '100%',
         }}
       >
-        <BoxFlexCenter>
-          <Typography variant='body1' color='text.secondary'>
-            {label}
-          </Typography>
-        </BoxFlexCenter>
+        <Typography variant='body1' color='text.secondary'>
+          {label}
+        </Typography>
         <BoxFlexCenter>
           <Typography variant='h6' color='grey.10'>
             $

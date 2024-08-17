@@ -17,14 +17,13 @@ export default function DataBox(props) {
     <Box
       onClick={() => setExpanded(expanded ? '' : label)}
       sx={{
-        background: `linear-gradient(0deg, ${theme.palette.surface[250]}, ${theme.palette.surface[300]})`,
-        borderRadius: '5px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         py: '4px',
         width: '100%',
-        px: 1,
+        pl: 1,
+        cursor: 'pointer',
       }}
     >
       <Box
@@ -33,9 +32,12 @@ export default function DataBox(props) {
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
+          mr: 1,
         }}
       >
-        <BoxFlexCenter>{label}</BoxFlexCenter>
+        <Typography variant='body1' color='text.secondary'>
+          {label}
+        </Typography>
         <BoxFlexCenter>
           <Typography variant='h6' color='grey.10'>
             $
