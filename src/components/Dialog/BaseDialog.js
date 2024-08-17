@@ -11,7 +11,14 @@ import { closeDialog } from '../../store/dialogs';
 import DialogTitleOptions from './DialogTitleOptions';
 
 function BaseDialog(props) {
-  const { type, title, titleOptions, children, handleClose = null } = props;
+  const {
+    type,
+    title,
+    titleOptions,
+    children,
+    handleClose = null,
+    disableGutters = false,
+  } = props;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
@@ -48,6 +55,7 @@ function BaseDialog(props) {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'flex-start',
+          px: disableGutters ? 1 : 2,
         }}
       >
         {children}

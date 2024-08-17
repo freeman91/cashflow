@@ -43,23 +43,17 @@ export default function ItemBox(props) {
   };
 
   const amount = 'amount' in item ? item.amount : item.value;
-  const color =
-    item._type === 'asset' ? theme.palette.green[400] : theme.palette.red[400];
+  // const color =
+  // item._type === 'asset' ? theme.palette.green[400] : theme.palette.red[400];
   return (
     <Box
       key={item.asset_id}
       onClick={(e) => handleClick(e, item)}
       sx={{
-        position: 'relative',
-        background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
-        zIndex: 1,
-        borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
-        p: '4px',
-        mt: 1,
-        pr: 2,
-        border: `2px solid ${color}`,
+        px: 1,
+        cursor: 'pointer',
       }}
     >
       <IconButton

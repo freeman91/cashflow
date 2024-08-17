@@ -163,6 +163,27 @@ export default function Bills() {
     setTabIdx(newValue);
   };
 
+  const items =
+    tabIdx === 0
+      ? map(bills, (bill, idx) => {
+          return (
+            <React.Fragment key={bill.bill_id}>
+              <BillBox bill={bill} icon={findIcon(bill)} />
+              {idx < bills.length - 1 && <Divider />}
+            </React.Fragment>
+          );
+        })
+      : map(expenses, (expense, idx) => {
+          const key = findId(expense);
+          return (
+            <React.Fragment key={key}>
+              <TransactionBox transaction={expense} />
+              {idx < expenses.length - 1 && (
+                <Divider sx={{ mx: '8px !important' }} />
+              )}
+            </React.Fragment>
+          );
+        });
   return (
     <Box>
       <StyledTabs value={tabIdx} onChange={handleChange} centered>
@@ -170,37 +191,11 @@ export default function Bills() {
         <StyledTab label='pending' sx={{ width: '35%' }} />
       </StyledTabs>
       <Box sx={{ pt: '2px' }}>
-        {tabIdx === 0 && (
-          <Card raised sx={{ borderRadius: 'unset' }}>
-            <Stack spacing={1} direction='column' py={1}>
-              {map(bills, (bill, idx) => {
-                return (
-                  <React.Fragment key={bill.bill_id}>
-                    <BillBox bill={bill} icon={findIcon(bill)} />
-                    {idx < bills.length - 1 && <Divider />}
-                  </React.Fragment>
-                );
-              })}
-            </Stack>
-          </Card>
-        )}
-        {tabIdx === 1 && (
-          <Card raised sx={{ borderRadius: 'unset' }}>
-            <Stack spacing={1} direction='column' py={1}>
-              {map(expenses, (expense, idx) => {
-                const key = findId(expense);
-                return (
-                  <React.Fragment key={key}>
-                    <TransactionBox transaction={expense} />
-                    {idx < expenses.length - 1 && (
-                      <Divider sx={{ mx: '8px !important' }} />
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </Stack>
-          </Card>
-        )}
+        <Card raised sx={{ borderRadius: '10px' }}>
+          <Stack spacing={1} direction='column' py={1}>
+            {items}
+          </Stack>
+        </Card>
       </Box>
     </Box>
   );

@@ -122,7 +122,7 @@ export default function ExpensesBreakdown(props) {
           <MenuIcon sx={{ width: 25, height: 25 }} />
         </IconButton>
       </Box>
-      <Card raised sx={{ width: '100%', borderRadius: 'unset' }}>
+      <Card raised sx={{ width: '100%', borderRadius: '10px' }}>
         {otherExpenses.map((expense) => (
           <DataBox
             key={expense.category}

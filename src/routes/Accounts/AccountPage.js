@@ -7,6 +7,7 @@ import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -47,7 +48,9 @@ export default function AccountPage(props) {
   return (
     <>
       <Grid item xs={12} mx={1}>
-        <AccountBox account={{ ...account, net: assetSum - debtSum }} />
+        <Card raised sx={{ borderRadius: '10px', py: 1 }}>
+          <AccountBox account={{ ...account, net: assetSum - debtSum }} />
+        </Card>
       </Grid>
       <Grid item xs={12}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>

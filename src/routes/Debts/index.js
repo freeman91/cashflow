@@ -6,10 +6,8 @@ import { push } from 'redux-first-history';
 import find from 'lodash/find';
 import reduce from 'lodash/reduce';
 
-import { useTheme } from '@emotion/react';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -24,7 +22,6 @@ import DebtPage from './DebtPage';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
 
 export default function Debts() {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const location = useLocation();
   const debts = useSelector((state) => state.debts.data);
@@ -79,16 +76,7 @@ export default function Debts() {
     <Grid container spacing={1}>
       {!debt && (
         <Grid item xs={12} mx={1}>
-          <Box
-            sx={{
-              background: `linear-gradient(0deg, ${theme.palette.surface[300]}, ${theme.palette.surface[400]})`,
-              width: '100%',
-              py: 1,
-              borderRadius: '10px',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
+          <Card raised sx={{ borderRadius: '10px', py: 1 }}>
             <BoxFlexCenter>
               <Typography variant='h4' color='grey.10'>
                 $
@@ -98,9 +86,9 @@ export default function Debts() {
               </Typography>
             </BoxFlexCenter>
             <Typography variant='body2' align='center' color='grey.10'>
-              debt total
+              debt sum
             </Typography>
-          </Box>
+          </Card>
         </Grid>
       )}
       {renderComponent()}

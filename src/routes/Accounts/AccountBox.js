@@ -31,16 +31,11 @@ export default function AccountBox(props) {
       key={account.account_id}
       onClick={() => handleClick(account)}
       sx={{
-        position: 'relative',
-        background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
-        zIndex: 1,
-        borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
-        p: '4px',
-        mt: 1,
+        pl: 1,
         pr: 2,
-        border: `2px solid ${theme.palette.surface[600]}`,
+        cursor: 'pointer',
       }}
     >
       <IconButton
@@ -78,7 +73,7 @@ export default function AccountBox(props) {
           >
             {account.name}
           </Typography>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body2' color='text.secondary'>
             {account.category}
           </Typography>
         </BoxFlexColumn>

@@ -70,9 +70,9 @@ export default function Transactions() {
     if (tabIdx === 1) return 'upcoming';
     return null;
   })();
-  const transactions = tabIdx === 1 ? recent : upcoming;
+  const transactions = tabIdx === 0 ? recent : upcoming;
   return (
-    <Grid item xs={12} sx={{ mb: 9 }} pt={'0 !important'}>
+    <Grid item xs={12} sx={{ mb: 10, mx: 1 }} pt={'0 !important'}>
       <BoxFlexCenter
         sx={{ flexDirection: 'row', justifyContent: 'space-between', mx: 2 }}
       >
@@ -87,14 +87,14 @@ export default function Transactions() {
       </BoxFlexCenter>
       {transactions.length > 0 && (
         <Box sx={{ width: '100%' }}>
-          <Card raised sx={{ borderRadius: 0 }}>
+          <Card raised sx={{ borderRadius: '10px' }}>
             <Stack spacing={1} direction='column' pt={1} pb={1}>
               {map(transactions, (transaction, idx) => {
                 const key = findId(transaction);
                 return (
                   <React.Fragment key={key}>
                     <TransactionBox transaction={transaction} />
-                    {idx < recent.length - 1 && (
+                    {idx < transactions.length - 1 && (
                       <Divider sx={{ mx: '8px !important' }} />
                     )}
                   </React.Fragment>

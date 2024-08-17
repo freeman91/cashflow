@@ -131,7 +131,7 @@ export default function Incomes(props) {
         </Card>
         <IncomesSummary incomes={filteredIncomes} />
       </Box>
-      <Card raised sx={{ borderRadius: 'unset' }}>
+      <Card raised sx={{ borderRadius: '10px' }}>
         <Stack spacing={1} direction='column' py={1}>
           {map(filteredIncomes, (income, idx) => {
             const key = findId(income);

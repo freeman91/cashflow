@@ -4,7 +4,10 @@ import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 import map from 'lodash/map';
 
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 
 import AccountBox from './AccountBox';
 
@@ -42,10 +45,21 @@ export default function AccountsStack() {
   }, [allAccounts, allAssets, allDebts]);
 
   return (
-    <Grid item xs={12} mx={1} mt={2}>
-      {map(accounts, (account) => {
-        return <AccountBox key={account.account_id} account={account} />;
-      })}
+    <Grid item xs={12} mx={1} pt='16px !important'>
+      <Card raised sx={{ borderRadius: '10px' }}>
+        <Stack spacing={1} direction='column' pt={1} pb={1}>
+          {map(accounts, (account, idx) => {
+            return (
+              <React.Fragment key={account.account_id}>
+                <AccountBox account={account} />
+                {idx < accounts.length - 1 && (
+                  <Divider sx={{ mx: '8px !important' }} />
+                )}
+              </React.Fragment>
+            );
+          })}
+        </Stack>
+      </Card>
     </Grid>
   );
 }

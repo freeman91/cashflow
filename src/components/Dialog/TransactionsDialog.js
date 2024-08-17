@@ -44,7 +44,12 @@ function TransactionsDialog() {
   };
 
   return (
-    <BaseDialog type='transactions' title={id} handleClose={handleClose}>
+    <BaseDialog
+      type='transactions'
+      title={id}
+      handleClose={handleClose}
+      disableGutters
+    >
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <Stack spacing={1} width='100%'>
           <SortMenuButton selected={sortAmount} setSelected={setSortAmount} />

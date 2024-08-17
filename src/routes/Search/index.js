@@ -98,7 +98,7 @@ export default function Search() {
       }}
     >
       <Grid container spacing={1} pb={10}>
-        <Grid item xs={12}>
+        <Grid item xs={12} mx={1}>
           {renderTypeTable()}
         </Grid>
         <Menu

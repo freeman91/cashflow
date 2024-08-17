@@ -5,6 +5,7 @@ import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 
 import { StyledTab, StyledTabs } from '../../components/StyledTabs';
@@ -47,7 +48,9 @@ export default function AssetPage(props) {
   return (
     <>
       <Grid item xs={12} mx={1}>
-        <ItemBox item={asset} />
+        <Card raised sx={{ borderRadius: '10px', py: 1 }}>
+          <ItemBox item={asset} />
+        </Card>
       </Grid>
       <Grid item xs={12}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>
