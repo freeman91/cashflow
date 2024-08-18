@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
 import { useTheme } from '@emotion/react';
-import EditIcon from '@mui/icons-material/Edit';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -43,8 +44,10 @@ export default function ItemBox(props) {
   };
 
   const amount = 'amount' in item ? item.amount : item.value;
-  // const color =
-  // item._type === 'asset' ? theme.palette.green[400] : theme.palette.red[400];
+  const color =
+    item._type === 'asset' ? theme.palette.green[400] : theme.palette.red[400];
+  const Icon =
+    item._type === 'asset' ? AccountBalanceWalletIcon : CreditCardIcon;
   return (
     <Box
       key={item.asset_id}
@@ -63,9 +66,10 @@ export default function ItemBox(props) {
           boxShadow: 6,
           borderRadius: '50%',
           p: '4px',
+          color,
         }}
       >
-        <EditIcon />
+        <Icon />
       </IconButton>
       <Box
         sx={{
@@ -79,7 +83,6 @@ export default function ItemBox(props) {
         <BoxFlexColumn alignItems='space-between'>
           <Typography
             variant='h6'
-            color='grey.0'
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -90,12 +93,12 @@ export default function ItemBox(props) {
           >
             {item.name}
           </Typography>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body2' color='text.secondary'>
             {item.category}
           </Typography>
         </BoxFlexColumn>
         <BoxFlexCenter>
-          <Typography variant='h5' color='grey.10'>
+          <Typography variant='h5' color='text.secondary'>
             $
           </Typography>
           <Typography variant='h5' color='white' fontWeight='bold'>

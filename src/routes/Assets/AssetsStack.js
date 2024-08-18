@@ -21,7 +21,7 @@ export default function AssetsStack() {
 
   return (
     <Grid item xs={12} mx={1} mb={1} pb={10}>
-      <Card raised sx={{ borderRadius: '10px' }}>
+      <Card raised>
         <Stack spacing={1} direction='column' pt={1} pb={1}>
           {map(assets, (asset, idx) => {
             return (

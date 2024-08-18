@@ -164,7 +164,7 @@ export default function Expenses(props) {
         <ExpensesSummary expenses={filteredExpenses} />
       </Box>
 
-      <Card raised sx={{ borderRadius: '10px' }}>
+      <Card raised>
         <Stack spacing={1} direction='column' py={1}>
           {map(filteredExpenses, (expense, idx) => {
             const key = findId(expense);

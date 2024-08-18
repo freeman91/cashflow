@@ -46,7 +46,7 @@ export default function AccountsStack() {
 
   return (
     <Grid item xs={12} mx={1} pt='16px !important'>
-      <Card raised sx={{ borderRadius: '10px' }}>
+      <Card raised>
         <Stack spacing={1} direction='column' pt={1} pb={1}>
           {map(accounts, (account, idx) => {
             return (

@@ -191,7 +191,7 @@ export default function Bills() {
         <StyledTab label='pending' sx={{ width: '35%' }} />
       </StyledTabs>
       <Box sx={{ pt: '2px' }}>
-        <Card raised sx={{ borderRadius: '10px' }}>
+        <Card raised>
           <Stack spacing={1} direction='column' py={1}>
             {items}
           </Stack>

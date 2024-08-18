@@ -67,7 +67,6 @@ export default function MonthContent(props) {
           spacing={1}
           pt={0.5}
           pb={0.5}
-          // bgcolor='surface.250'
         >
           {map(range(7), (idx) => {
             let _day = _days.shift();

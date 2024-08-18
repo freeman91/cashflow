@@ -94,7 +94,7 @@ export default function ExpensesBreakdown(props) {
           <MenuIcon sx={{ width: 25, height: 25 }} />
         </IconButton>
       </Box>
-      <Card raised sx={{ width: '100%', borderRadius: 'unset' }}>
+      <Card raised sx={{ width: '100%' }}>
         <DataBox label='principal' value={principal} />
         <DataBox label='interest' value={interest} />
         <DataBox label='escrow' value={escrow} />
@@ -122,7 +122,7 @@ export default function ExpensesBreakdown(props) {
           <MenuIcon sx={{ width: 25, height: 25 }} />
         </IconButton>
       </Box>
-      <Card raised sx={{ width: '100%', borderRadius: '10px' }}>
+      <Card raised sx={{ width: '100%' }}>
         {otherExpenses.map((expense) => (
           <DataBox
             key={expense.category}

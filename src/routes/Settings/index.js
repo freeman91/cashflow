@@ -137,7 +137,7 @@ export default function Settings() {
       <Typography variant='h5' align='center' fontWeight='bold' sx={{ mb: 1 }}>
         {selected.replace('_', ' ')}
       </Typography>
-      <Card raised sx={{ mb: 10, borderRadius: '10px' }}>
+      <Card raised sx={{ mb: 10 }}>
         {renderOptionComponent()}
       </Card>
       <Menu

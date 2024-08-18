@@ -102,7 +102,7 @@ def networth_snapshot():
     """
 
     if request.method == "POST":
-        _date = datetime.now().hour(12).minute(0).second(0).microsecond(0)
+        _date = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
 
         assets = []
         debts = []

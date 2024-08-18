@@ -21,7 +21,7 @@ export default function DebtsStack() {
 
   return (
     <Grid item xs={12} mx={1} mb={1} pb={10}>
-      <Card raised sx={{ borderRadius: '10px' }}>
+      <Card raised>
         <Stack spacing={1} direction='column' pt={1} pb={1}>
           {map(debts, (debt, idx) => {
             return (

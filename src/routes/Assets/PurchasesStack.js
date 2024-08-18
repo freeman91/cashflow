@@ -5,8 +5,10 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { openDialog } from '../../store/dialogs';
@@ -32,7 +34,6 @@ const numberToCurrency = (value) => {
 
 const PurchaseBox = (props) => {
   const { purchase } = props;
-  const theme = useTheme();
   const dispatch = useDispatch();
 
   const handleClick = () => {
@@ -50,16 +51,10 @@ const PurchaseBox = (props) => {
     <Box
       onClick={handleClick}
       sx={{
-        position: 'relative',
-        background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
-        zIndex: 1,
-        borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
-        p: '4px',
-        mt: 1,
-        pr: 2,
-        border: `2px solid ${theme.palette.surface[500]}`,
+        px: 2,
+        cursor: 'pointer',
       }}
     >
       <Box
@@ -68,39 +63,38 @@ const PurchaseBox = (props) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          ml: 1,
         }}
       >
         <BoxFlexColumn alignItems='space-between'>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body2' color='text.secondary'>
             {dayjs(purchase.date).format('MMM D, YYYY')}
           </Typography>
           <BoxFlexCenter justifyContent='flex-start'>
-            <Typography variant='h5' color='grey.10'>
+            <Typography variant='h5' color='text.secondary'>
               $
             </Typography>
-            <Typography variant='h5' color='white' fontWeight='bold'>
+            <Typography variant='h5' fontWeight='bold'>
               {numberToCurrency(purchase.amount)}
             </Typography>
           </BoxFlexCenter>
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
           <BoxFlexCenter>
-            <Typography variant='h6' color='grey.0'>
+            <Typography variant='h6' color='text.secondary'>
               $
             </Typography>
-            <Typography variant='h6' color='grey.0' fontWeight='bold'>
+            <Typography variant='h6' fontWeight='bold'>
               {numberToCurrency(purchase.price)}
             </Typography>
           </BoxFlexCenter>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body2' color='text.secondary'>
             price
           </Typography>
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
           <Typography
             variant='h6'
-            color='grey.0'
+            fontWeight='bold'
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -111,7 +105,7 @@ const PurchaseBox = (props) => {
           >
             {numberToCurrency(purchase.shares)}
           </Typography>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body2' color='text.secondary'>
             shares
           </Typography>
         </BoxFlexColumn>
@@ -130,7 +124,20 @@ export default function PurchasesStack(props) {
     setPurchases(sortBy(_purchases, 'date').reverse());
   }, [allPurchases, assetId]);
 
-  return map(purchases, (purchase) => {
-    return <PurchaseBox key={purchase.purchase_id} purchase={purchase} />;
-  });
+  return (
+    <Card raised>
+      <Stack spacing={1} direction='column' pt={1} pb={1}>
+        {map(purchases, (purchase, idx) => {
+          return (
+            <React.Fragment key={purchase.purchase_id}>
+              <PurchaseBox purchase={purchase} />
+              {idx < purchases.length - 1 && (
+                <Divider sx={{ mx: '8px !important' }} />
+              )}
+            </React.Fragment>
+          );
+        })}
+      </Stack>
+    </Card>
+  );
 }

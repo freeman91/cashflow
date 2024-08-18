@@ -76,7 +76,7 @@ export default function SelectedTransactionsStack(props) {
   if (!transactions.length) return null;
   return (
     <Box sx={{ width: '100%', pb: 1, mt: 1, mb: 9, px: 1 }}>
-      <Card raised sx={{ borderRadius: '10px' }}>
+      <Card raised>
         <Stack spacing={1} direction='column' py={1}>
           {map(tableData, (transaction, idx) => {
             const key = findId(transaction);

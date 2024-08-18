@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
 
+import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import ListSubheader from '@mui/material/ListSubheader';
@@ -36,8 +37,10 @@ function PaymentFromSelect(props) {
   }, [allDebts]);
 
   const handleChangeDebt = (e) => {
-    if (e.target.value === '') return;
-    setResource({ ...resource, payment_from_id: e.target.value });
+    setResource((prevResource) => ({
+      ...prevResource,
+      payment_from_id: e.target.value,
+    }));
   };
 
   return (
@@ -60,7 +63,12 @@ function PaymentFromSelect(props) {
         <MenuItem key='none' id='none-menu-item' value=''>
           None
         </MenuItem>
-        <ListSubheader>debts</ListSubheader>
+        <Divider sx={{ mx: 1 }} />
+        <ListSubheader
+          sx={{ bgcolor: 'unset', fontWeight: 800, textAlign: 'center' }}
+        >
+          debts
+        </ListSubheader>
         {debts.map((debt) => (
           <MenuItem
             key={debt.debt_id}
@@ -70,7 +78,12 @@ function PaymentFromSelect(props) {
             {debt.name}
           </MenuItem>
         ))}
-        <ListSubheader>assets</ListSubheader>
+        <Divider sx={{ mx: 1 }} />
+        <ListSubheader
+          sx={{ bgcolor: 'unset', fontWeight: 800, textAlign: 'center' }}
+        >
+          assets
+        </ListSubheader>
         {assets.map((asset) => (
           <MenuItem
             key={asset.asset_id}

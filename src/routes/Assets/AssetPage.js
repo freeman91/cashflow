@@ -7,13 +7,16 @@ import sortBy from 'lodash/sortBy';
 
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
+import { _numberToCurrency } from '../../helpers/currency';
 import { StyledTab, StyledTabs } from '../../components/StyledTabs';
 import PurchasesStack from './PurchasesStack';
 import SalesStack from './SalesStack';
 import ItemBox from '../../components/ItemBox';
-import DataBox from '../../components/DataBox';
 import AssetChart from '../Networth/AssetChart';
+import BoxFlexCenter from '../../components/BoxFlexCenter';
+import DataBox from '../../components/DataBox';
 
 export default function AssetPage(props) {
   const { asset } = props;
@@ -21,11 +24,21 @@ export default function AssetPage(props) {
   const allPurchases = useSelector((state) => state.purchases.data);
   const allSales = useSelector((state) => state.sales.data);
 
-  const [tabIdx, setTabIdx] = useState(0);
+  const [tabIdx, setTabIdx] = useState(null);
   const [purchases, setPurchases] = useState([]);
   const [purchaseSum, setPurchaseSum] = useState(0);
   const [sales, setSales] = useState([]);
   const [saleSum, setSaleSum] = useState(0);
+
+  useEffect(() => {
+    if (purchases.length > 0) {
+      setTabIdx('purchases');
+    } else if (sales.length > 0) {
+      setTabIdx('sales');
+    } else {
+      setTabIdx('history');
+    }
+  }, [purchases.length, sales.length]);
 
   useEffect(() => {
     const assetPurchases = filter(allPurchases, { asset_id: asset.asset_id });
@@ -52,34 +65,55 @@ export default function AssetPage(props) {
           <ItemBox item={asset} />
         </Card>
       </Grid>
-      <Grid item xs={12}>
-        <StyledTabs value={tabIdx} onChange={handleChange} centered>
-          <StyledTab label='purchases' sx={{ width: '25%' }} />
-          <StyledTab label='sales' sx={{ width: '25%' }} />
-          <StyledTab label='history' sx={{ width: '25%' }} />
-        </StyledTabs>
-      </Grid>
-      {tabIdx === 0 && purchases.length !== 0 && (
+      {tabIdx !== null && (
+        <Grid item xs={12}>
+          <StyledTabs value={tabIdx} onChange={handleChange} centered>
+            {purchases.length > 0 && (
+              <StyledTab
+                label='purchases'
+                value='purchases'
+                sx={{ width: '25%' }}
+              />
+            )}
+            {sales.length > 0 && (
+              <StyledTab label='sales' value='sales' sx={{ width: '25%' }} />
+            )}
+            <StyledTab label='history' value='history' sx={{ width: '25%' }} />
+          </StyledTabs>
+        </Grid>
+      )}
+      {tabIdx === 'purchases' && purchases.length !== 0 && (
         <>
-          <Grid item xs={12} mx={1} pt={'2px !important'}>
-            <DataBox label='total' value={purchaseSum} />
+          <Grid item xs={12} mx={2} pt='2px !important'>
+            <DataBox label='invested' value={purchaseSum} />
           </Grid>
           <Grid item xs={12} mx={1} mb={10} pt={'0 !important'}>
             <PurchasesStack assetId={asset.asset_id} />
           </Grid>
         </>
       )}
-      {tabIdx === 1 && sales.length !== 0 && (
+      {tabIdx === 'sales' && sales.length !== 0 && (
         <>
-          <Grid item xs={12} mx={1} pt={'0 !important'}>
-            <DataBox label='total' value={saleSum} />
+          <Grid item xs={12} mx={1} pt={'2px !important'}>
+            {sales.length > 1 && (
+              <Grid item xs={12} mx={1} pt='2px !important'>
+                <BoxFlexCenter>
+                  <Typography variant='h5' color='text.secondary'>
+                    $
+                  </Typography>
+                  <Typography variant='h5' color='white' fontWeight='bold'>
+                    {_numberToCurrency.format(saleSum)}
+                  </Typography>
+                </BoxFlexCenter>
+              </Grid>
+            )}
           </Grid>
           <Grid item xs={12} mx={1} mb={10} pt={'2px !important'}>
             <SalesStack assetId={asset.asset_id} />
           </Grid>
         </>
       )}
-      {tabIdx === 2 && (
+      {tabIdx === 'history' && (
         <Grid item xs={12} mx={1} pt={'2px !important'}>
           <AssetChart asset={asset} />
         </Grid>

@@ -125,7 +125,7 @@ export default function CurrentNetworth(props) {
       )}
       {showItems && (
         <Grid item xs={12} mx={1} pt={'2px !important'}>
-          <Card raised sx={{ width: '100%', borderRadius: '10px' }}>
+          <Card raised sx={{ width: '100%' }}>
             <Stack
               spacing={'4px'}
               direction='column'

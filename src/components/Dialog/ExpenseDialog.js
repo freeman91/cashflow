@@ -108,7 +108,12 @@ function ExpenseDialog() {
   }, [attrs]);
 
   const handleChange = (e) => {
-    setExpense({ ...expense, [e.target.id]: e.target.value });
+    console.log('e.target.id: ', e.target.id);
+    console.log('e.target.value: ', e.target.value);
+    setExpense((prevExpense) => ({
+      ...prevExpense,
+      [e.target.id]: e.target.value,
+    }));
   };
 
   const handleSubmit = (e) => {

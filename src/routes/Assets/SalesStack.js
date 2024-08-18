@@ -4,8 +4,10 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { _numberToCurrency } from '../../helpers/currency';
@@ -16,7 +18,6 @@ import dayjs from 'dayjs';
 
 const SaleBox = (props) => {
   const { sale } = props;
-  const theme = useTheme();
   const dispatch = useDispatch();
 
   const handleClick = () => {
@@ -34,16 +35,10 @@ const SaleBox = (props) => {
     <Box
       onClick={handleClick}
       sx={{
-        position: 'relative',
-        background: `linear-gradient(0deg, ${theme.palette.surface[200]}, ${theme.palette.surface[250]})`,
-        zIndex: 1,
-        borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
-        p: '4px',
-        mt: 1,
-        pr: 2,
-        border: `2px solid ${theme.palette.surface[500]}`,
+        px: 2,
+        cursor: 'pointer',
       }}
     >
       <Box
@@ -52,27 +47,25 @@ const SaleBox = (props) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          ml: 2,
         }}
       >
         <BoxFlexColumn alignItems='space-between'>
           <BoxFlexCenter>
-            <Typography variant='h6' color='grey.0'>
+            <Typography variant='h6' color='text.secondary'>
               $
             </Typography>
-            <Typography variant='h6' color='grey.0' fontWeight='bold'>
-              {/* {_numberToCurrency.format(sale.price)} */}
-              {sale.price}
+            <Typography variant='h6' fontWeight='bold'>
+              {_numberToCurrency.format(sale.price)}
             </Typography>
           </BoxFlexCenter>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body2' color='text.secondary'>
             price
           </Typography>
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
           <Typography
             variant='h6'
-            color='grey.0'
+            fontWeight='bold'
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -83,19 +76,19 @@ const SaleBox = (props) => {
           >
             {sale.shares}
           </Typography>
-          <Typography variant='body2' color='grey.0'>
+          <Typography variant='body2' color='text.secondary'>
             shares
           </Typography>
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
-          <Typography align='right' variant='body2' color='grey.0'>
+          <Typography align='right' variant='body2' color='text.secondary'>
             {dayjs(sale.date).format('MMM D')}
           </Typography>
           <BoxFlexCenter>
-            <Typography variant='h5' color='grey.10'>
+            <Typography variant='h5' color='text.secondary'>
               $
             </Typography>
-            <Typography variant='h5' color='white' fontWeight='bold'>
+            <Typography variant='h5' fontWeight='bold'>
               {_numberToCurrency.format(sale.amount)}
             </Typography>
           </BoxFlexCenter>
@@ -116,7 +109,20 @@ export default function SalesStack(props) {
     setTableData(sortBy(_sales, 'date').reverse());
   }, [allSales, assetId]);
 
-  return map(sales, (sale) => {
-    return <SaleBox key={sale.sale_id} sale={sale} />;
-  });
+  return (
+    <Card raised>
+      <Stack spacing={1} direction='column' pt={1} pb={1}>
+        {map(sales, (sale, idx) => {
+          return (
+            <React.Fragment key={sale.sale_id}>
+              <SaleBox sale={sale} />
+              {idx < sales.length - 1 && (
+                <Divider sx={{ mx: '8px !important' }} />
+              )}
+            </React.Fragment>
+          );
+        })}
+      </Stack>
+    </Card>
+  );
 }

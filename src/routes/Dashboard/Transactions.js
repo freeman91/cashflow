@@ -87,7 +87,7 @@ export default function Transactions() {
       </BoxFlexCenter>
       {transactions.length > 0 && (
         <Box sx={{ width: '100%' }}>
-          <Card raised sx={{ borderRadius: '10px' }}>
+          <Card raised>
             <Stack spacing={1} direction='column' pt={1} pb={1}>
               {map(transactions, (transaction, idx) => {
                 const key = findId(transaction);

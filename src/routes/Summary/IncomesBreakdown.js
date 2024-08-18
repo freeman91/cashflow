@@ -103,7 +103,7 @@ export default function IncomesBreakdown(props) {
         </IconButton>
       </Box>
 
-      <Card raised sx={{ width: '100%', borderRadius: '10px' }}>
+      <Card raised sx={{ width: '100%' }}>
         <DataBox label='take home' value={takeHome} />
         <DataBox label='retirement' value={retirement} />
         <DataBox label='benefits' value={benefits} />
@@ -142,7 +142,7 @@ export default function IncomesBreakdown(props) {
       )}
 
       {otherIncomes.length > 0 && (
-        <Card raised sx={{ width: '100%', borderRadius: '10px' }}>
+        <Card raised sx={{ width: '100%' }}>
           {otherIncomes.map((income) => (
             <DataBox
               key={income.category}
