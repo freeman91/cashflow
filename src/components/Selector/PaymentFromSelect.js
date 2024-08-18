@@ -6,7 +6,6 @@ import get from 'lodash/get';
 import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import ListSubheader from '@mui/material/ListSubheader';
 import MenuItem from '@mui/material/MenuItem';
 
 import Select from '@mui/material/Select';
@@ -64,11 +63,6 @@ function PaymentFromSelect(props) {
           None
         </MenuItem>
         <Divider sx={{ mx: 1 }} />
-        <ListSubheader
-          sx={{ bgcolor: 'unset', fontWeight: 800, textAlign: 'center' }}
-        >
-          debts
-        </ListSubheader>
         {debts.map((debt) => (
           <MenuItem
             key={debt.debt_id}
@@ -79,11 +73,6 @@ function PaymentFromSelect(props) {
           </MenuItem>
         ))}
         <Divider sx={{ mx: 1 }} />
-        <ListSubheader
-          sx={{ bgcolor: 'unset', fontWeight: 800, textAlign: 'center' }}
-        >
-          assets
-        </ListSubheader>
         {assets.map((asset) => (
           <MenuItem
             key={asset.asset_id}
