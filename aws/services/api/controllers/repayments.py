@@ -18,6 +18,7 @@ def _repayments(user_id: str):
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
         escrow = body.get("escrow")
+
         repayment = Repayment.create(
             user_id=user_id,
             _date=_date,
@@ -32,7 +33,15 @@ def _repayments(user_id: str):
             payment_from_id=body.get("payment_from_id"),
             pending=body.get("pending", True),
         )
-        return success_result(repayment.as_dict())
+
+        subaccount = None
+        if not repayment.pending and repayment.payment_from_id:
+            subaccount = repayment.update_subaccount()
+            subaccount = subaccount.as_dict()
+
+        return success_result(
+            {"repayment": repayment.as_dict(), "subaccount": subaccount}
+        )
 
     if request.method == "GET":
         return success_result(
@@ -57,6 +66,8 @@ def _repayment(user_id: str, repayment_id: str):
         repayment.date = datetime.strptime(
             request.json["date"][:19], "%Y-%m-%dT%H:%M:%S"
         )
+
+        prev_pending = repayment.pending
         escrow = request.json.get("escrow")
         repayment.principal = float(request.json.get("principal"))
         repayment.interest = float(request.json.get("interest"))
@@ -72,9 +83,16 @@ def _repayment(user_id: str, repayment_id: str):
             "pending",
         ]:
             setattr(repayment, attr, request.json.get(attr))
-
         repayment.save()
-        return success_result(repayment.as_dict())
+
+        subaccount = None
+        if prev_pending is True and repayment.pending is False:
+            subaccount = repayment.update_subaccount()
+            subaccount = subaccount.as_dict()
+
+        return success_result(
+            {"repayment": repayment.as_dict(), "subaccount": subaccount}
+        )
 
     if request.method == "DELETE":
         Repayment.get_(user_id=user_id, repayment_id=repayment_id).delete()

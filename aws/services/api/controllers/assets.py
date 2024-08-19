@@ -25,6 +25,8 @@ def _assets(user_id: str):
             value=float(body.get("value")),
             shares=float(body.get("shares") or 0),
             price=float(body.get("price") or 0),
+            can_deposit_to=body.get("can_deposit_to", False),
+            can_pay_from=body.get("can_pay_from", False),
         )
         return success_result(asset.as_dict())
 
@@ -48,7 +50,13 @@ def _asset(user_id: str, asset_id: str):
         asset.shares = float(request.json.get("shares") or 0)
         asset.price = float(request.json.get("price") or 0)
 
-        for attr in ["account_id", "name", "category"]:
+        for attr in [
+            "account_id",
+            "name",
+            "category",
+            "can_deposit_to",
+            "can_pay_from",
+        ]:
             setattr(asset, attr, request.json.get(attr))
 
         asset.save()

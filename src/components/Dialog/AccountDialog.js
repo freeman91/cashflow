@@ -5,17 +5,19 @@ import isEmpty from 'lodash/isEmpty';
 
 import DescriptionIcon from '@mui/icons-material/Description';
 import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import ListItem from '@mui/material/ListItem';
+import Select from '@mui/material/Select';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { deleteAccount, postAccount, putAccount } from '../../store/accounts';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
-import { FormControl, InputLabel, Select } from '@mui/material';
 
 export const CATEGORIES = ['bank', 'brokerage', 'property', 'credit'];
 
@@ -23,7 +25,7 @@ const defaultAccount = {
   account_id: '',
   name: '',
   url: '',
-  category: 'bank',
+  account_type: 'bank',
   _type: 'account',
   description: '',
 };
@@ -101,16 +103,18 @@ function AccountDialog() {
             value={account.url}
             onChange={handleChange}
           />
-          <ListItem key='category' disablePadding sx={{ pt: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel id='account-type-label'>category</InputLabel>
+          <ListItem disableGutters>
+            <FormControl variant='standard' fullWidth>
+              <InputLabel id='account_type-label'>account type</InputLabel>
               <Select
-                labelId='account-type-label'
-                variant='standard'
-                fullWidth
-                value={account?.category}
+                labelId='account_type-label'
+                id='account_type'
+                value={account.account_type}
                 onChange={(e) => {
-                  setAccount({ ...account, category: e.target.value });
+                  setAccount((prevAccount) => ({
+                    ...prevAccount,
+                    account_type: e.target.value,
+                  }));
                 }}
               >
                 {CATEGORIES.map((type) => (
@@ -124,7 +128,7 @@ function AccountDialog() {
           <TextFieldListItem
             id='description'
             label='description'
-            value={account.description}
+            value={account.description || ''}
             onChange={handleChange}
             InputProps={{
               endAdornment: (

@@ -8,7 +8,9 @@ import dayjs from 'dayjs';
 
 import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import {
   ComposedChart,
@@ -19,41 +21,7 @@ import {
 } from 'recharts';
 
 import { numberToCurrency } from '../../helpers/currency';
-
-const BoxMonthValue = (props) => {
-  const { label, value } = props;
-  const theme = useTheme();
-
-  return (
-    <Box
-      sx={{
-        background: theme.palette.surface[400],
-        px: 2,
-        pt: '4px',
-        borderRadius: '10px',
-        boxShadow: 4,
-      }}
-    >
-      <List disablePadding>
-        <ListItemText primary={label} />
-        <ListItemText primary={numberToCurrency.format(value)} />
-      </List>
-    </Box>
-  );
-};
-
-function ChartTooltip({ active, payload, label, ...props }) {
-  if (active && payload && payload.length) {
-    const value = payload[0].value;
-    return (
-      <BoxMonthValue
-        label={dayjs(Number(label)).format('MMMM YYYY')}
-        value={value}
-      />
-    );
-  }
-  return null;
-}
+import SubaccountHistoryTooltip from './SubaccountHistoryTooltip';
 
 export default function DebtChart(props) {
   const { debt } = props;
@@ -134,7 +102,7 @@ export default function DebtChart(props) {
           }}
           margin={{
             top: 0,
-            right: 10,
+            right: 15,
             left: 0,
             bottom: 0,
           }}
@@ -161,7 +129,7 @@ export default function DebtChart(props) {
               return dayjs(unixTime).format('YYYY MMM');
             }}
           />
-          <Tooltip content={<ChartTooltip />} />
+          <Tooltip content={<SubaccountHistoryTooltip />} />
           <Bar
             dot={false}
             type='monotone'
@@ -171,17 +139,21 @@ export default function DebtChart(props) {
         </ComposedChart>
       </ResponsiveContainer>
       {selected && (
-        <List>
-          <ListItemText
-            primary={dayjs(Number(selected.timestamp)).format('MMMM YYYY')}
-            primaryTypographyProps={{ fontWeight: 'bold' }}
-          />
-          <ListItemText primary={account?.name} secondary='account' />
-          <ListItemText
-            primary={numberToCurrency.format(selected.value)}
-            secondary='value'
-          />
-        </List>
+        <Card raised sx={{ pt: 1, mt: 1 }}>
+          <List disablePadding>
+            <ListItemText
+              primary={dayjs(Number(selected.timestamp)).format('MMMM YYYY')}
+              primaryTypographyProps={{ fontWeight: 'bold', align: 'center' }}
+            />
+            <ListItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <ListItemText primary={account?.name} secondary='account' />
+              <ListItemText
+                primary={numberToCurrency.format(selected.value)}
+                primaryTypographyProps={{ align: 'right' }}
+              />
+            </ListItem>
+          </List>
+        </Card>
       )}
     </Box>
   );

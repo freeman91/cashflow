@@ -4,18 +4,14 @@ import dayjs from 'dayjs';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
 import { findId } from '../../helpers/transactions';
+import { StyledTab, StyledTabs } from '../../components/StyledTabs';
 import TransactionBox from '../../components/TransactionBox';
-import BoxFlexCenter from '../../components/BoxFlexCenter';
 
 export default function Transactions() {
   const allExpenses = useSelector((state) => state.expenses.data);
@@ -23,7 +19,7 @@ export default function Transactions() {
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
-  const [tabIdx, setTabIdx] = useState(0);
+  const [tabIdx, setTabIdx] = useState('recent');
   const [recent, setRecent] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
 
@@ -61,32 +57,21 @@ export default function Transactions() {
     setUpcoming(pendingExpenses);
   }, [allExpenses, allRepayments]);
 
-  const handleChange = () => {
-    setTabIdx(tabIdx === 1 ? 0 : 1);
+  const handleChange = (e, newValue) => {
+    setTabIdx(newValue);
   };
 
-  const label = (() => {
-    if (tabIdx === 0) return 'recent';
-    if (tabIdx === 1) return 'upcoming';
-    return null;
-  })();
-  const transactions = tabIdx === 0 ? recent : upcoming;
+  const transactions = tabIdx === 'recent' ? recent : upcoming;
   return (
-    <Grid item xs={12} sx={{ mb: 10, mx: 1 }} pt={'0 !important'}>
-      <BoxFlexCenter
-        sx={{ flexDirection: 'row', justifyContent: 'space-between', mx: 2 }}
-      >
-        {label && (
-          <Typography variant='h5' fontWeight='bold' color='grey.0'>
-            {label + ' transactions'}
-          </Typography>
-        )}
-        <IconButton onClick={handleChange}>
-          <SwapHorizIcon fontSize='large' />
-        </IconButton>
-      </BoxFlexCenter>
-      {transactions.length > 0 && (
-        <Box sx={{ width: '100%' }}>
+    <>
+      <Grid item xs={12}>
+        <StyledTabs value={tabIdx} onChange={handleChange} centered>
+          <StyledTab label='recent' value='recent' />
+          <StyledTab label='upcoming' value='upcoming' />
+        </StyledTabs>
+      </Grid>
+      <Grid item xs={12} sx={{ mb: 10, mx: 1 }} pt={'2px !important'}>
+        {transactions.length > 0 && (
           <Card raised>
             <Stack spacing={1} direction='column' pt={1} pb={1}>
               {map(transactions, (transaction, idx) => {
@@ -102,8 +87,8 @@ export default function Transactions() {
               })}
             </Stack>
           </Card>
-        </Box>
-      )}
-    </Grid>
+        )}
+      </Grid>
+    </>
   );
 }

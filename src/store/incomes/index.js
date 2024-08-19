@@ -13,6 +13,7 @@ import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
 import { updateRange } from '../../helpers/dates';
 import { setSnackbar } from '../appSettings';
+import { updateAsset } from '../assets';
 
 const getIncomes = createAsyncThunk(
   'incomes/getIncomes',
@@ -63,13 +64,16 @@ const postIncome = createAsyncThunk(
     try {
       const { data: incomes } = getState().incomes;
       const { user_id } = getState().user.item;
-      const result = await postResourceAPI(user_id, newIncome);
+      const { income, asset } = await postResourceAPI(user_id, newIncome);
 
-      if (result) {
+      if (income) {
         dispatch(setSnackbar({ message: 'income created' }));
       }
+
+      dispatch(updateAsset(asset));
+
       return {
-        data: [result].concat(incomes),
+        data: [income].concat(incomes),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));

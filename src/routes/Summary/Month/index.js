@@ -158,8 +158,8 @@ export default function MonthSummary(props) {
 
       <Grid item xs={12} mx={1} sx={{ mb: 10, mt: 1 }}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>
-          <StyledTab label='incomes' sx={{ width: '40%' }} />
-          <StyledTab label='expenses' sx={{ width: '40%' }} />
+          <StyledTab label='incomes' />
+          <StyledTab label='expenses' />
         </StyledTabs>
         <Box>
           {tabIdx === 0 && <IncomesBreakdown incomes={incomes} />}

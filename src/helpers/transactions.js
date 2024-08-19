@@ -56,6 +56,7 @@ const findColor = (transaction) => {
   switch (transaction._type) {
     case 'repayment':
     case 'expense':
+      if (transaction.pending) return 'grey';
       return 'red';
     case 'paycheck':
     case 'income':

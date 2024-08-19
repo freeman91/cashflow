@@ -184,9 +184,9 @@ export default function YearSummary(props) {
 
       <Grid item xs={12} sx={{ mb: 10, mt: 1 }}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>
-          <StyledTab label='net' sx={{ width: '30%' }} />
-          <StyledTab label='incomes' sx={{ width: '30%' }} />
-          <StyledTab label='expenses' sx={{ width: '30%' }} />
+          <StyledTab label='net' />
+          <StyledTab label='incomes' />
+          <StyledTab label='expenses' />
         </StyledTabs>
         <Box sx={{ mt: '2px', px: 1 }}>
           {tabIdx === 0 && (

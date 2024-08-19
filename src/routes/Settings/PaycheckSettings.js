@@ -10,8 +10,10 @@ import ListItem from '@mui/material/ListItem';
 import { _numberToCurrency } from '../../helpers/currency';
 import { putUser } from '../../store/user';
 import TextFieldListItem from '../../components/List/TextFieldListItem';
+import DepositToSelect from '../../components/Selector/DepositToSelect';
 
 const formDataDefault = {
+  deposit_to_id: '',
   employer: '',
   take_home: '',
   taxes: '',
@@ -50,6 +52,7 @@ export default function PaycheckSettings(props) {
       putUser({
         ...user,
         paycheck_defaults: {
+          deposit_to_id: formData.deposit_to_id,
           employer: formData.employer,
           take_home: Number(formData.take_home),
           taxes: Number(formData.taxes),
@@ -64,6 +67,9 @@ export default function PaycheckSettings(props) {
   return (
     <form>
       <List sx={{ minWidth: 350, px: 1 }}>
+        <ListItem disableGutters>
+          <DepositToSelect resource={formData} setResource={setFormData} />
+        </ListItem>
         <TextFieldListItem
           id='employer'
           label='employer'

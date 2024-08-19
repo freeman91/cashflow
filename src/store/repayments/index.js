@@ -11,6 +11,8 @@ import {
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { setSnackbar } from '../appSettings';
+import { updateAsset } from '../assets';
+import { updateDebt } from '../debts';
 
 const getRepayments = createAsyncThunk(
   'repayments/getRepayments',
@@ -36,13 +38,23 @@ const postRepayment = createAsyncThunk(
     try {
       const { data: repayments } = getState().repayments;
       const { user_id } = getState().user.item;
-      const result = await postResourceAPI(user_id, newRepayment);
+      const { repayment, subaccount } = await postResourceAPI(
+        user_id,
+        newRepayment
+      );
 
-      if (result) {
+      if (repayment) {
         dispatch(setSnackbar({ message: 'repayment created' }));
       }
+
+      if (subaccount._type === 'asset') {
+        dispatch(updateAsset(subaccount));
+      } else if (subaccount._type === 'debt') {
+        dispatch(updateDebt(subaccount));
+      }
+
       return {
-        data: [result].concat(repayments),
+        data: [repayment].concat(repayments),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
@@ -53,18 +65,27 @@ const postRepayment = createAsyncThunk(
 const putRepayment = createAsyncThunk(
   'repayments/putRepayment',
   async (updatedRepayment, { dispatch, getState }) => {
+    const { data: repayments } = getState().repayments;
+
     try {
-      const result = await putResourceAPI(updatedRepayment);
-      const { data: repayments } = getState().repayments;
-      if (result) {
+      const { repayment, subaccount } = await putResourceAPI(updatedRepayment);
+
+      if (repayment) {
         dispatch(setSnackbar({ message: 'repayment updated' }));
       }
       let _repayments = [...repayments];
       remove(_repayments, {
-        repayment_id: get(result, 'repayment_id'),
+        repayment_id: get(repayment, 'repayment_id'),
       });
+
+      if (subaccount._type === 'asset') {
+        dispatch(updateAsset(subaccount));
+      } else if (subaccount._type === 'debt') {
+        dispatch(updateDebt(subaccount));
+      }
+
       return {
-        data: concat(_repayments, result),
+        data: concat(_repayments, repayment),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));

@@ -3,8 +3,9 @@
 
 import os
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 from uuid import uuid4
+from pydash import get
 from pynamodb.attributes import (
     BooleanAttribute,
     NumberAttribute,
@@ -12,6 +13,7 @@ from pynamodb.attributes import (
     UTCDateTimeAttribute,
 )
 
+from services import dynamo
 from .base import BaseModel
 
 TYPE = "repayment"
@@ -100,3 +102,19 @@ class Repayment(BaseModel):
                 filter_condition=cls.date.between(start, end),
             )
         )
+
+    def update_subaccount(self) -> Union[dynamo.Asset, dynamo.Debt]:
+        subaccount = None
+
+        total = self.principal + self.interest + get(self, "escrow", 0)
+        if self.payment_from_id.startswith("asset"):
+            subaccount = dynamo.Asset.get_(self.user_id, self.payment_from_id)
+            subaccount -= total
+            subaccount.save()
+        elif self.payment_from_id.startswith("debt"):
+            subaccount = dynamo.Debt.get_(self.user_id, self.payment_from_id)
+            subaccount.amount += total
+            subaccount.save()
+
+        subaccount.save()
+        return subaccount

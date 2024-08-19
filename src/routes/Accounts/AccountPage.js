@@ -67,13 +67,9 @@ export default function AccountPage(props) {
       {tabIdx !== null && (
         <Grid item xs={12}>
           <StyledTabs value={tabIdx} onChange={handleChange} centered>
-            {assets.length > 0 && (
-              <StyledTab label='assets' value='assets' sx={{ width: '25%' }} />
-            )}
-            {debts.length > 0 && (
-              <StyledTab label='debts' value='debts' sx={{ width: '25%' }} />
-            )}
-            <StyledTab label='history' value='history' sx={{ width: '25%' }} />
+            {assets.length > 0 && <StyledTab label='assets' value='assets' />}
+            {debts.length > 0 && <StyledTab label='debts' value='debts' />}
+            <StyledTab label='history' value='history' />
           </StyledTabs>
         </Grid>
       )}

@@ -99,13 +99,23 @@ const { reducer, actions } = createSlice({
     setAssets: (state, action) => {
       state.data = action.payload;
     },
+    updateAsset: (state, action) => {
+      const { data: assets } = state;
+      let _assets = [...assets];
+
+      const index = _assets.findIndex(
+        (asset) => asset.asset_id === action.payload.asset_id
+      );
+      _assets[index] = action.payload;
+      state.data = _assets;
+    },
   },
   extraReducers: (builder) => {
     buildAsyncReducers(builder, [getAssets, postAsset, putAsset, deleteAsset]);
   },
 });
 
-const { setAssets } = actions;
+const { setAssets, updateAsset } = actions;
 
-export { getAssets, putAsset, postAsset, deleteAsset, setAssets };
+export { getAssets, putAsset, postAsset, deleteAsset, setAssets, updateAsset };
 export default reducer;

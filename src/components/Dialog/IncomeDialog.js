@@ -20,6 +20,7 @@ import { deleteIncome, postIncome, putIncome } from '../../store/incomes';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
+import DepositToSelect from '../Selector/DepositToSelect';
 
 const defaultIncome = {
   income_id: '',
@@ -59,12 +60,19 @@ function IncomeDialog() {
 
   useEffect(() => {
     if (!isEmpty(attrs)) {
-      setIncome((e) => ({ ...e, ...attrs, date: dayjs(attrs.date) }));
+      setIncome((prevIncome) => ({
+        ...prevIncome,
+        ...attrs,
+        date: dayjs(attrs.date),
+      }));
     }
   }, [attrs]);
 
   const handleChange = (e) => {
-    setIncome({ ...income, [e.target.id]: e.target.value });
+    setIncome((prevIncome) => ({
+      ...prevIncome,
+      [e.target.id]: e.target.value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -105,6 +113,9 @@ function IncomeDialog() {
               }}
             />
           )} */}
+          <ListItem disableGutters>
+            <DepositToSelect resource={income} setResource={setIncome} />
+          </ListItem>
           <ListItem disableGutters>
             <DatePicker
               label='date'

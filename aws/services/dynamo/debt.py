@@ -5,7 +5,12 @@ import os
 from datetime import datetime, timezone
 from typing import Optional
 from uuid import uuid4
-from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
+from pynamodb.attributes import (
+    BooleanAttribute,
+    NumberAttribute,
+    UnicodeAttribute,
+    UTCDateTimeAttribute,
+)
 
 from .base import BaseModel
 
@@ -31,6 +36,7 @@ class Debt(BaseModel):
     category = UnicodeAttribute(default="")
     subcategory = UnicodeAttribute(default="")
     interest_rate = NumberAttribute(null=True)
+    can_pay_from = BooleanAttribute(default=False)
     last_update = UTCDateTimeAttribute()
 
     def __repr__(self):
@@ -46,6 +52,7 @@ class Debt(BaseModel):
         category: str,
         subcategory: str,
         interest_rate: float = None,
+        can_pay_from: bool = False,
     ) -> "Debt":
         debt = cls(
             user_id=user_id,
@@ -56,6 +63,7 @@ class Debt(BaseModel):
             category=category,
             subcategory=subcategory,
             interest_rate=interest_rate,
+            can_pay_from=can_pay_from,
             last_update=datetime.now(timezone.utc),
         )
         debt.save()

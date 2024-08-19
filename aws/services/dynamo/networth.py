@@ -23,18 +23,18 @@ APP_ID: str = os.getenv("APP_ID")
 
 class AssetMap(MapAttribute):
     asset_id = UnicodeAttribute()
+    account_id = UnicodeAttribute()
     name = UnicodeAttribute()
     value = NumberAttribute()
     category = UnicodeAttribute()
-    account_id = UnicodeAttribute()
 
 
 class DebtMap(MapAttribute):
     debt_id = UnicodeAttribute()
+    account_id = UnicodeAttribute()
     name = UnicodeAttribute()
     value = NumberAttribute()
     category = UnicodeAttribute()
-    account_id = UnicodeAttribute()
 
 
 class Networth(BaseModel):

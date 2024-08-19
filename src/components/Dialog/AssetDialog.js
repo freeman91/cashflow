@@ -7,9 +7,13 @@ import isEmpty from 'lodash/isEmpty';
 
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { deleteAsset, postAsset, putAsset } from '../../store/assets';
@@ -28,6 +32,8 @@ const defaultAsset = {
   category: '',
   shares: '',
   price: '',
+  can_deposit_to: false,
+  can_pay_from: false,
 };
 
 function AssetDialog() {
@@ -141,6 +147,50 @@ function AssetDialog() {
           {hasShares && (
             <DecimalFieldListItem id='price' item={asset} setItem={setAsset} />
           )}
+
+          <ListItem disableGutters disablePadding>
+            <ListItemButton
+              role={undefined}
+              onClick={() =>
+                setAsset((prevAsset) => ({
+                  ...prevAsset,
+                  can_deposit_to: !prevAsset.can_deposit_to,
+                }))
+              }
+              dense
+            >
+              <ListItemIcon>
+                <Checkbox
+                  edge='start'
+                  checked={asset.can_deposit_to}
+                  tabIndex={-1}
+                />
+              </ListItemIcon>
+              <ListItemText primary='can deposit to' />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disableGutters disablePadding>
+            <ListItemButton
+              role={undefined}
+              onClick={() =>
+                setAsset((prevAsset) => ({
+                  ...prevAsset,
+                  can_pay_from: !prevAsset.can_pay_from,
+                }))
+              }
+              dense
+            >
+              <ListItemIcon>
+                <Checkbox
+                  edge='start'
+                  checked={asset.can_pay_from}
+                  tabIndex={-1}
+                />
+              </ListItemIcon>
+              <ListItemText primary='can pay from' />
+            </ListItemButton>
+          </ListItem>
 
           <ListItem
             key='buttons'

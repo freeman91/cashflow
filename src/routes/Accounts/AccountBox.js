@@ -74,7 +74,7 @@ export default function AccountBox(props) {
             {account.name}
           </Typography>
           <Typography variant='body2' color='text.secondary'>
-            {account.category}
+            {account.account_type}
           </Typography>
         </BoxFlexColumn>
         <BoxFlexCenter>

@@ -4,49 +4,39 @@ import filter from 'lodash/filter';
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
 
-import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 
 import Select from '@mui/material/Select';
 
-function PaymentFromSelect(props) {
+function DepositToSelect(props) {
   const { resource, setResource } = props;
 
-  const allDebts = useSelector((state) => state.debts.data);
   const allAssets = useSelector((state) => state.assets.data);
   const [assets, setAssets] = useState([]);
-  const [debts, setDebts] = useState([]);
 
   useEffect(() => {
     let _assets = filter(allAssets, (asset) => {
-      return asset.can_pay_from;
+      return asset.can_deposit_to;
     });
     setAssets(sortBy(_assets, 'name'));
   }, [allAssets]);
 
-  useEffect(() => {
-    let _debts = filter(allDebts, (debt) => {
-      return debt.can_pay_from;
-    });
-    setDebts(sortBy(_debts, 'name'));
-  }, [allDebts]);
-
   const handleChangeDebt = (e) => {
     setResource((prevResource) => ({
       ...prevResource,
-      payment_from_id: e.target.value,
+      deposit_to_id: e.target.value,
     }));
   };
 
   return (
     <FormControl variant='standard' fullWidth>
-      <InputLabel id='payment_from-label'>payment from</InputLabel>
+      <InputLabel id='deposit_to-label'>deposit to</InputLabel>
       <Select
-        labelId='payment_from-label'
-        id='payment_from'
-        value={get(resource, 'payment_from_id', '')}
+        labelId='deposit_to-label'
+        id='deposit_to'
+        value={get(resource, 'deposit_to_id', '')}
         onChange={handleChangeDebt}
         label='Debt'
         sx={{
@@ -60,17 +50,6 @@ function PaymentFromSelect(props) {
         <MenuItem key='none' id='none-menu-item' value=''>
           None
         </MenuItem>
-        <Divider sx={{ mx: 1 }} />
-        {debts.map((debt) => (
-          <MenuItem
-            key={debt.debt_id}
-            id={`${debt.debt_id}-menu-item`}
-            value={debt.debt_id}
-          >
-            {debt.name}
-          </MenuItem>
-        ))}
-        <Divider sx={{ mx: 1 }} />
         {assets.map((asset) => (
           <MenuItem
             key={asset.asset_id}
@@ -85,4 +64,4 @@ function PaymentFromSelect(props) {
   );
 }
 
-export default PaymentFromSelect;
+export default DepositToSelect;

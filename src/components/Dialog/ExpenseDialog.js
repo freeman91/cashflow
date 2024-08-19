@@ -108,8 +108,6 @@ function ExpenseDialog() {
   }, [attrs]);
 
   const handleChange = (e) => {
-    console.log('e.target.id: ', e.target.id);
-    console.log('e.target.value: ', e.target.value);
     setExpense((prevExpense) => ({
       ...prevExpense,
       [e.target.id]: e.target.value,

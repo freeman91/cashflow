@@ -2,6 +2,7 @@
 """Cronjob controller"""
 
 import os
+import math
 from datetime import datetime, date, timedelta
 
 from pydash import filter_, map_, find
@@ -34,7 +35,12 @@ def get_crypto_prices(tickers: list):
 def get_stock_price(ticker: str):
     """get current stock prices"""
 
-    return stock_info.get_live_price(ticker.upper())
+    result = stock_info.get_data(ticker.upper())
+    value = result.close[-1]
+    if math.isnan(value):
+        value = result.close[-2]
+
+    return value
 
 
 @handle_exception

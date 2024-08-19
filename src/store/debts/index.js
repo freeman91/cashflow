@@ -99,13 +99,23 @@ const { reducer, actions } = createSlice({
     setDebts: (state, action) => {
       state.data = action.payload;
     },
+    updateDebt: (state, action) => {
+      const { data: debts } = state;
+      let _debts = [...debts];
+
+      const index = _debts.findIndex(
+        (debt) => debt.debt_id === action.payload.debt_id
+      );
+      _debts[index] = action.payload;
+      state.data = _debts;
+    },
   },
   extraReducers: (builder) => {
     buildAsyncReducers(builder, [getDebts, postDebt, putDebt, deleteDebt]);
   },
 });
 
-const { setDebts } = actions;
+const { setDebts, updateDebt } = actions;
 
-export { getDebts, postDebt, deleteDebt, putDebt, setDebts };
+export { getDebts, postDebt, deleteDebt, putDebt, setDebts, updateDebt };
 export default reducer;

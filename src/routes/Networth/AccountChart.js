@@ -11,7 +11,9 @@ import dayjs from 'dayjs';
 
 import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import {
   ComposedChart,
@@ -42,7 +44,7 @@ const BoxMonthValue = (props) => {
       <List disablePadding>
         <ListItemText
           primary={label}
-          primaryTypographyProps={{ fontWeight: 'bold' }}
+          primaryTypographyProps={{ fontWeight: 'bold', align: 'center' }}
         />
         {map(payload, (item) => {
           let itemState = {};
@@ -56,11 +58,19 @@ const BoxMonthValue = (props) => {
 
           let value = item.value * (negative ? -1 : 1);
           return (
-            <ListItemText
+            <ListItem
+              disablePadding
+              disableGutters
               key={item.name}
-              primary={itemState?.name || item.name}
-              secondary={numberToCurrency.format(value)}
-            />
+              sx={{ display: 'flex', justifyContent: 'space-between' }}
+            >
+              <ListItemText secondary={itemState?.name || item.name} />
+              <ListItemText
+                sx={{ pl: 1 }}
+                primary={numberToCurrency.format(value)}
+                primaryTypographyProps={{ align: 'right' }}
+              />
+            </ListItem>
           );
         })}
       </List>
@@ -234,35 +244,42 @@ export default function AccountChart(props) {
         </ComposedChart>
       </ResponsiveContainer>
       {selected && (
-        <List disablePadding>
-          <ListItemText
-            primary={dayjs(Number(selected.timestamp)).format('MMMM YYYY')}
-            primaryTypographyProps={{ fontWeight: 'bold' }}
-          />
-          {map(Object.keys(selected), (id) => {
-            if (id === 'timestamp') {
-              return null;
-            }
-            let negative = false;
+        <Card raised sx={{ pt: 1, mt: 1 }}>
+          <List disablePadding>
+            <ListItemText
+              primary={dayjs(Number(selected.timestamp)).format('MMMM YYYY')}
+              primaryTypographyProps={{ fontWeight: 'bold', align: 'center' }}
+            />
+            {map(Object.keys(selected), (id) => {
+              if (id === 'timestamp') {
+                return null;
+              }
+              let negative = false;
 
-            let itemState = {};
-            if (id.startsWith('asset')) {
-              itemState = find(assets, { asset_id: id });
-            } else if (id.startsWith('debt')) {
-              negative = true;
-              itemState = find(debts, { debt_id: id });
-            }
+              let itemState = {};
+              if (id.startsWith('asset')) {
+                itemState = find(assets, { asset_id: id });
+              } else if (id.startsWith('debt')) {
+                negative = true;
+                itemState = find(debts, { debt_id: id });
+              }
 
-            let value = selected[id] * (negative ? -1 : 1);
-            return (
-              <ListItemText
-                key={id}
-                primary={itemState?.name || id}
-                secondary={numberToCurrency.format(value)}
-              />
-            );
-          })}
-        </List>
+              let value = selected[id] * (negative ? -1 : 1);
+              return (
+                <ListItem
+                  key={id}
+                  sx={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <ListItemText secondary={itemState?.name || id} />
+                  <ListItemText
+                    primary={numberToCurrency.format(value)}
+                    primaryTypographyProps={{ align: 'right' }}
+                  />
+                </ListItem>
+              );
+            })}
+          </List>
+        </Card>
       )}
     </Box>
   );

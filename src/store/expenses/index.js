@@ -13,6 +13,8 @@ import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
 import { updateRange } from '../../helpers/dates';
 import { setSnackbar } from '../appSettings';
+import { updateAsset } from '../assets';
+import { updateDebt } from '../debts';
 
 const getExpenses = createAsyncThunk(
   'expenses/getExpenses',
@@ -63,13 +65,23 @@ const postExpense = createAsyncThunk(
     try {
       const { data: expenses } = getState().expenses;
       const { user_id } = getState().user.item;
-      const result = await postResourceAPI(user_id, newExpense);
+      const { expense, subaccount } = await postResourceAPI(
+        user_id,
+        newExpense
+      );
 
-      if (result) {
+      if (expense) {
         dispatch(setSnackbar({ message: 'expense created' }));
       }
+
+      if (subaccount._type === 'asset') {
+        dispatch(updateAsset(subaccount));
+      } else if (subaccount._type === 'debt') {
+        dispatch(updateDebt(subaccount));
+      }
+
       return {
-        data: [result].concat(expenses),
+        data: [expense].concat(expenses),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
@@ -80,18 +92,27 @@ const postExpense = createAsyncThunk(
 const putExpense = createAsyncThunk(
   'expenses/putExpense',
   async (updatedExpense, { dispatch, getState }) => {
+    const { data: expenses } = getState().expenses;
+
     try {
-      const result = await putResourceAPI(updatedExpense);
-      const { data: expenses } = getState().expenses;
-      if (result) {
+      const { expense, subaccount } = await putResourceAPI(updatedExpense);
+
+      if (expense) {
         dispatch(setSnackbar({ message: 'expense updated' }));
       }
       let _expenses = [...expenses];
       remove(_expenses, {
-        expense_id: get(result, 'expense_id'),
+        expense_id: get(expense, 'expense_id'),
       });
+
+      if (subaccount._type === 'asset') {
+        dispatch(updateAsset(subaccount));
+      } else if (subaccount._type === 'debt') {
+        dispatch(updateDebt(subaccount));
+      }
+
       return {
-        data: concat(_expenses, result),
+        data: concat(_expenses, expense),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));

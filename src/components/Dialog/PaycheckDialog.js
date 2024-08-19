@@ -22,6 +22,7 @@ import {
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
+import DepositToSelect from '../Selector/DepositToSelect';
 
 const defaultPaycheck = {
   paycheck_id: '',
@@ -97,6 +98,9 @@ function PaycheckDialog() {
     >
       <form style={{ width: '100%' }}>
         <List>
+          <ListItem disableGutters>
+            <DepositToSelect resource={paycheck} setResource={setPaycheck} />
+          </ListItem>
           <ListItem disableGutters>
             <DatePicker
               label='date'

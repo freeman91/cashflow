@@ -9,9 +9,13 @@ import map from 'lodash/map';
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import PercentIcon from '@mui/icons-material/Percent';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { deleteDebt, postDebt, putDebt } from '../../store/debts';
@@ -30,6 +34,7 @@ const defaultDebt = {
   category: '',
   subcategory: '',
   interest_rate: '',
+  can_pay_from: false,
 };
 
 function DebtDialog() {
@@ -155,6 +160,27 @@ function DebtDialog() {
             setItem={setDebt}
             startAdornment={<PercentIcon />}
           />
+          <ListItem disableGutters disablePadding>
+            <ListItemButton
+              role={undefined}
+              onClick={() =>
+                setDebt((prevDebt) => ({
+                  ...prevDebt,
+                  can_pay_from: !prevDebt.can_pay_from,
+                }))
+              }
+              dense
+            >
+              <ListItemIcon>
+                <Checkbox
+                  edge='start'
+                  checked={debt.can_pay_from}
+                  tabIndex={-1}
+                />
+              </ListItemIcon>
+              <ListItemText primary='can pay from' />
+            </ListItemButton>
+          </ListItem>
           <ListItem
             key='buttons'
             disableGutters

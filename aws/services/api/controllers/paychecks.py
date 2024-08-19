@@ -26,9 +26,16 @@ def _paychecks(user_id: str):
             retirement=float(body.get("retirement")),
             benefits=float(body.get("benefits")),
             other=float(body.get("other")),
+            deposit_to_id=body.get("deposit_to_id"),
             description=body.get("description"),
         )
-        return success_result(paycheck.as_dict())
+
+        asset = None
+        if paycheck.deposit_to_id:
+            asset = paycheck.update_asset()
+            asset = asset.as_dict()
+
+        return success_result({"paycheck": paycheck.as_dict(), "asset": asset})
 
     if request.method == "GET":
         start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
@@ -64,6 +71,7 @@ def _paycheck(user_id: str, paycheck_id: str):
         paycheck.benefits = float(request.json.get("benefits"))
         paycheck.other = float(request.json.get("other"))
         paycheck.description = request.json.get("description")
+        paycheck.deposit_to_id = request.json.get("deposit_to_id")
 
         paycheck.save()
         return success_result(paycheck.as_dict())

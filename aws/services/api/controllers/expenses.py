@@ -33,14 +33,12 @@ def _expenses(user_id: str):
             description=body.get("description"),
         )
 
+        subaccount = None
         if not expense.pending and expense.payment_from_id:
-            # TODO
-            # get asset/debt
-            # decrease or increase value
-            # return asset/debt
-            pass
+            subaccount = expense.update_subaccount()
+            subaccount = subaccount.as_dict()
 
-        return success_result(expense.as_dict())
+        return success_result({"expense": expense.as_dict(), "subaccount": subaccount})
 
     if request.method == "GET":
         start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
@@ -69,7 +67,7 @@ def _expense(user_id: str, expense_id: str):
         expense = Expense.get_(user_id=user_id, expense_id=expense_id)
         expense.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
 
-        expense.amount = float(request.json.get("amount"))
+        prev_pending = expense.pending
 
         for attr in [
             "vendor",
@@ -81,9 +79,14 @@ def _expense(user_id: str, expense_id: str):
             "description",
         ]:
             setattr(expense, attr, request.json.get(attr))
-
         expense.save()
-        return success_result(expense.as_dict())
+
+        subaccount = None
+        if prev_pending is True and expense.pending is False:
+            subaccount = expense.update_subaccount()
+            subaccount = subaccount.as_dict()
+
+        return success_result({"expense": expense.as_dict(), "subaccount": subaccount})
 
     if request.method == "DELETE":
         Expense.get_(user_id=user_id, expense_id=expense_id).delete()

@@ -27,6 +27,7 @@ class PaycheckDefaults(MapAttribute):
     retirement = NumberAttribute(null=True)
     benefits = NumberAttribute(null=True)
     other = NumberAttribute(null=True)
+    deposit_to_id = UnicodeAttribute(null=True)
 
 
 class User(BaseModel):
@@ -63,10 +64,7 @@ class User(BaseModel):
     def get_(cls, user_id: str) -> "User":
         return next(cls.query(user_id))
 
-    @classmethod
-    def update_(cls, user_id: str, body: dict) -> "User":
-        user = cls.get_(user_id=user_id)
-
+    def update_(self, body: dict) -> "User":
         paycheck_defaults = body.get("paycheck_defaults")
 
         for attr in [
@@ -76,8 +74,9 @@ class User(BaseModel):
             "retirement",
             "benefits",
             "other",
+            "deposit_to_id",
         ]:
-            setattr(user.paycheck_defaults, attr, paycheck_defaults.get(attr))
+            setattr(self.paycheck_defaults, attr, paycheck_defaults.get(attr))
 
-        user.save()
-        return user
+        self.save()
+        return self

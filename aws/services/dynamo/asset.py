@@ -5,7 +5,12 @@ import os
 from typing import Optional
 from uuid import uuid4
 from datetime import datetime, timezone
-from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
+from pynamodb.attributes import (
+    BooleanAttribute,
+    NumberAttribute,
+    UnicodeAttribute,
+    UTCDateTimeAttribute,
+)
 from .base import BaseModel
 
 
@@ -30,6 +35,8 @@ class Asset(BaseModel):
     category = UnicodeAttribute(default="")
     shares = NumberAttribute(null=True)
     price = NumberAttribute(null=True)
+    can_deposit_to = BooleanAttribute(default=False)
+    can_pay_from = BooleanAttribute(default=False)
     vendor = UnicodeAttribute(null=True)  # remove
     last_update = UTCDateTimeAttribute(default=datetime.now(timezone.utc))
 
@@ -46,6 +53,8 @@ class Asset(BaseModel):
         category: str,
         shares: float,
         price: float,
+        can_deposit_to: bool = False,
+        can_pay_from: bool = False,
     ):
         asset = cls(
             user_id=user_id,
@@ -56,6 +65,8 @@ class Asset(BaseModel):
             category=category,
             shares=shares,
             price=price,
+            can_deposit_to=can_deposit_to,
+            can_pay_from=can_pay_from,
             last_update=datetime.now(timezone.utc),
         )
         asset.save()

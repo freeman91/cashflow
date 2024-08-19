@@ -147,8 +147,8 @@ export default function SelectedNetworth(props) {
       />
       <Grid item xs={12} mt={3}>
         <StyledTabs value={tabIdx} onChange={handleChange} centered>
-          <StyledTab label='assets' sx={{ width: '35%' }} />
-          <StyledTab label='debts' sx={{ width: '35%' }} />
+          <StyledTab label='assets' />
+          <StyledTab label='debts' />
         </StyledTabs>
       </Grid>
       <Grid item xs={12} mx={1} pt={'2px !important'}>

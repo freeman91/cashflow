@@ -25,6 +25,7 @@ def _debts(user_id: str):
             category=body.get("category"),
             subcategory=body.get("subcategory"),
             interest_rate=float(interest_rate) if interest_rate else None,
+            can_pay_from=body.get("can_pay_from", False),
         )
         return success_result(debt.as_dict())
 
@@ -46,7 +47,7 @@ def _debt(user_id: str, debt_id: str):
         interest_rate = request.json.get("interest_rate")
         debt.interest_rate = float(interest_rate) if interest_rate else None
 
-        for attr in ["account_id", "name", "category", "subcategory"]:
+        for attr in ["account_id", "name", "category", "subcategory", "can_pay_from"]:
             setattr(debt, attr, request.json.get(attr))
 
         debt.save()

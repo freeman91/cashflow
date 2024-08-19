@@ -187,8 +187,8 @@ export default function Bills() {
   return (
     <Box>
       <StyledTabs value={tabIdx} onChange={handleChange} centered>
-        <StyledTab label='templates' sx={{ width: '35%' }} />
-        <StyledTab label='pending' sx={{ width: '35%' }} />
+        <StyledTab label='templates' />
+        <StyledTab label='pending' />
       </StyledTabs>
       <Box sx={{ pt: '2px' }}>
         <Card raised>

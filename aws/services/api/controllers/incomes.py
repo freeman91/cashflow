@@ -24,8 +24,15 @@ def _incomes(user_id: str):
             source=body.get("source"),
             description=body.get("description"),
             category=body.get("category"),
+            deposit_to_id=body.get("deposit_to_id"),
         )
-        return success_result(income.as_dict())
+
+        asset = None
+        if income.deposit_to_id:
+            asset = income.update_asset()
+            asset = asset.as_dict()
+
+        return success_result({"income": income.as_dict(), "asset": asset})
 
     if request.method == "GET":
         start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
@@ -54,7 +61,7 @@ def _income(user_id: str, income_id: str):
         income.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
         income.amount = float(request.json.get("amount"))
 
-        for attr in ["source", "category", "description"]:
+        for attr in ["source", "category", "deposit_to_id", "description"]:
             setattr(income, attr, request.json.get(attr))
 
         income.save()

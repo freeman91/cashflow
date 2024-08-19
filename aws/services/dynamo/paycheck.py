@@ -7,7 +7,9 @@ from typing import Optional
 from uuid import uuid4
 from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
 
+from services import dynamo
 from .base import BaseModel
+
 
 TYPE = "paycheck"
 ENV: str = os.getenv("ENV")
@@ -32,6 +34,7 @@ class Paycheck(BaseModel):
     retirement = NumberAttribute(null=True)
     benefits = NumberAttribute(null=True)
     other = NumberAttribute(null=True)
+    deposit_to_id = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
 
     def __repr__(self):
@@ -50,6 +53,7 @@ class Paycheck(BaseModel):
         retirement: float = None,
         benefits: float = None,
         other: float = None,
+        deposit_to_id: str = None,
         description: str = None,
     ) -> "Paycheck":
         paycheck = cls(
@@ -62,6 +66,7 @@ class Paycheck(BaseModel):
             retirement=retirement,
             benefits=benefits,
             other=other,
+            deposit_to_id=deposit_to_id,
             description=description,
         )
         paycheck.save()
@@ -86,3 +91,13 @@ class Paycheck(BaseModel):
                 filter_condition=cls.date.between(start, end),
             )
         )
+
+    def update_asset(self) -> dynamo.Asset:
+        asset = None
+        if self.deposit_to_id.startswith("asset"):
+            asset = dynamo.Asset.get_(self.user_id, self.deposit_to_id)
+            asset.value += self.take_home
+            asset.save()
+
+        asset.save()
+        return asset

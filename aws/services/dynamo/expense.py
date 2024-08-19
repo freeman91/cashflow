@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 from uuid import uuid4
 from pynamodb.attributes import (
     BooleanAttribute,
@@ -12,6 +12,7 @@ from pynamodb.attributes import (
     UTCDateTimeAttribute,
 )
 
+from services import dynamo
 from .base import BaseModel
 
 TYPE = "expense"
@@ -91,3 +92,17 @@ class Expense(BaseModel):
                 filter_condition=cls.date.between(start, end),
             )
         )
+
+    def update_subaccount(self) -> Union[dynamo.Asset, dynamo.Debt]:
+        subaccount = None
+        if self.payment_from_id.startswith("asset"):
+            subaccount = dynamo.Asset.get_(self.user_id, self.payment_from_id)
+            subaccount.value -= self.amount
+            subaccount.save()
+        elif self.payment_from_id.startswith("debt"):
+            subaccount = dynamo.Debt.get_(self.user_id, self.payment_from_id)
+            subaccount.amount += self.amount
+            subaccount.save()
+
+        subaccount.save()
+        return subaccount
