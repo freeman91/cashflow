@@ -65,8 +65,12 @@ export default function AccountPage(props) {
         </Card>
       </Grid>
       {tabIdx !== null && (
-        <Grid item xs={12}>
-          <StyledTabs value={tabIdx} onChange={handleChange} centered>
+        <Grid item xs={12} mx={2}>
+          <StyledTabs
+            value={tabIdx}
+            onChange={handleChange}
+            variant='fullWidth'
+          >
             {assets.length > 0 && <StyledTab label='assets' value='assets' />}
             {debts.length > 0 && <StyledTab label='debts' value='debts' />}
             <StyledTab label='history' value='history' />

@@ -64,8 +64,8 @@ export default function Transactions() {
   const transactions = tabIdx === 'recent' ? recent : upcoming;
   return (
     <>
-      <Grid item xs={12}>
-        <StyledTabs value={tabIdx} onChange={handleChange} centered>
+      <Grid item xs={12} mx={2}>
+        <StyledTabs value={tabIdx} onChange={handleChange} variant='fullWidth'>
           <StyledTab label='recent' value='recent' />
           <StyledTab label='upcoming' value='upcoming' />
         </StyledTabs>

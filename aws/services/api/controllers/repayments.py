@@ -86,12 +86,18 @@ def _repayment(user_id: str, repayment_id: str):
         repayment.save()
 
         subaccount = None
+        debt = None
         if prev_pending is True and repayment.pending is False:
+            # update payment subaccount
             subaccount = repayment.update_subaccount()
             subaccount = subaccount.as_dict()
 
+            # update debt principal
+            debt = repayment.update_debt_principal()
+            debt = debt.as_dict()
+
         return success_result(
-            {"repayment": repayment.as_dict(), "subaccount": subaccount}
+            {"repayment": repayment.as_dict(), "subaccount": subaccount, "debt": debt}
         )
 
     if request.method == "DELETE":

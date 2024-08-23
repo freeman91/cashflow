@@ -241,7 +241,7 @@ function RepaymentDialog() {
             item={repayment}
             setItem={setRepayment}
           />
-          {debt?.name === 'Mortgage' && (
+          {debt?.name.includes('Mortgage') && (
             <DecimalFieldListItem
               id='escrow'
               item={repayment}

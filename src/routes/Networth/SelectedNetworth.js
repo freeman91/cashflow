@@ -145,8 +145,8 @@ export default function SelectedNetworth(props) {
         month={networth.month}
         noTopPadding
       />
-      <Grid item xs={12} mt={3}>
-        <StyledTabs value={tabIdx} onChange={handleChange} centered>
+      <Grid item xs={12} mt={3} mx={2}>
+        <StyledTabs value={tabIdx} onChange={handleChange} variant='fullWidth'>
           <StyledTab label='assets' />
           <StyledTab label='debts' />
         </StyledTabs>

@@ -97,8 +97,12 @@ export default function AssetPage(props) {
         </Card>
       </Grid>
       {tabIdx !== null && (
-        <Grid item xs={12}>
-          <StyledTabs value={tabIdx} onChange={handleChange} centered>
+        <Grid item xs={12} mx={2}>
+          <StyledTabs
+            value={tabIdx}
+            onChange={handleChange}
+            variant='fullWidth'
+          >
             {purchases.length > 0 && (
               <StyledTab label='purchases' value='purchases' />
             )}

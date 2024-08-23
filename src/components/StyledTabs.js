@@ -18,8 +18,8 @@ const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
     color: '#fff',
     fontWeight: 'bold',
     backgroundColor: theme.palette.surface[250],
-    borderTopLeftRadius: '10px',
-    borderTopRightRadius: '10px',
+    borderTopLeftRadius: '5px',
+    borderTopRightRadius: '5px',
   },
   '&.Mui-focusVisible': {
     backgroundColor: 'rgba(100, 95, 228, 0.32)',

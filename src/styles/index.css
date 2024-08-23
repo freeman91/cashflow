@@ -7,3 +7,7 @@ body {
   display: flex;
   justify-content: center;
 }
+
+html {
+  overflow-x: hidden;
+}

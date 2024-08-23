@@ -9,6 +9,7 @@ import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -185,18 +186,20 @@ export default function Bills() {
           );
         });
   return (
-    <Box>
-      <StyledTabs value={tabIdx} onChange={handleChange} centered>
-        <StyledTab label='templates' />
-        <StyledTab label='pending' />
-      </StyledTabs>
-      <Box sx={{ pt: '2px' }}>
+    <Grid container>
+      <Grid item xs={12} mx={2}>
+        <StyledTabs value={tabIdx} onChange={handleChange} variant='fullWidth'>
+          <StyledTab label='templates' />
+          <StyledTab label='pending' />
+        </StyledTabs>
+      </Grid>
+      <Grid item xs={12} mt='2px'>
         <Card raised>
           <Stack spacing={1} direction='column' py={1}>
             {items}
           </Stack>
         </Card>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 }

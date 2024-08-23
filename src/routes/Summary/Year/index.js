@@ -181,14 +181,16 @@ export default function YearSummary(props) {
       <Grid item xs={12} pt={'0 !important'}>
         <Cashflow year={year} />
       </Grid>
-
-      <Grid item xs={12} sx={{ mb: 10, mt: 1 }}>
-        <StyledTabs value={tabIdx} onChange={handleChange} centered>
+      <Grid item xs={12} mx={2} sx={{ mt: 1 }}>
+        <StyledTabs value={tabIdx} onChange={handleChange} variant='fullWidth'>
           <StyledTab label='net' />
           <StyledTab label='incomes' />
           <StyledTab label='expenses' />
         </StyledTabs>
-        <Box sx={{ mt: '2px', px: 1 }}>
+      </Grid>
+
+      <Grid item xs={12} mx={1} mb={10} pt='2px !important'>
+        <Box>
           {tabIdx === 0 && (
             <MonthlyBreakdown
               year={year}

@@ -68,6 +68,7 @@ def _expense(user_id: str, expense_id: str):
         expense.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
 
         prev_pending = expense.pending
+        expense.amount = float(request.json.get("amount"))
 
         for attr in [
             "vendor",

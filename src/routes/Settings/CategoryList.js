@@ -6,6 +6,7 @@ import findIndex from 'lodash/findIndex';
 import sortBy from 'lodash/sortBy';
 import reduce from 'lodash/reduce';
 
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -120,9 +121,23 @@ export default function CategoryList(props) {
     setEditing((e) => ({ ...e, value }));
   };
 
+  const handleAddSubcategory = () => {
+    setCategories((c) => {
+      let _categories = cloneDeep(c);
+      let categoryIdx = findIndex(_categories, { name: openedCategory });
+      _categories[categoryIdx].subcategories.push('');
+      return _categories;
+    });
+    setEditing({
+      type: 'subcategory',
+      name: '',
+      value: '',
+    });
+  };
+
   return (
     <List disablePadding>
-      {sortBy(categories, 'name')?.map((category) => {
+      {sortBy(categories, 'name')?.map((category, idx) => {
         return (
           <React.Fragment key={category.name + '-edit'}>
             {editing.type === 'category' && editing.name === category.name ? (
@@ -156,16 +171,23 @@ export default function CategoryList(props) {
             ) : (
               <ListItem disableGutters sx={{ minWidth: 350 }}>
                 <ListItemButton
-                  onClick={() =>
-                    setEditing({
-                      type: 'category',
-                      name: category.name,
-                      value: category.name,
-                    })
+                  onClick={
+                    openedCategory === category.name
+                      ? handleAddSubcategory
+                      : () =>
+                          setEditing({
+                            type: 'category',
+                            name: category.name,
+                            value: category.name,
+                          })
                   }
                   sx={{ justifyContent: 'left' }}
                 >
-                  {<EditIcon />}
+                  {openedCategory === category.name ? (
+                    <AddCircleOutlineIcon />
+                  ) : (
+                    <EditIcon />
+                  )}
                 </ListItemButton>
                 <ListItemText
                   primary={category.name}
@@ -193,7 +215,9 @@ export default function CategoryList(props) {
                 </ListItemButton>
               </ListItem>
             )}
-            <Divider sx={{ mx: 1 }} />
+            {/*  /> */}
+            {(categories.length - 1 !== idx ||
+              openedCategory === category.name) && <Divider sx={{ mx: 1 }} />}
             <Collapse
               in={openedCategory === category.name}
               timeout='auto'
@@ -211,7 +235,7 @@ export default function CategoryList(props) {
                           fullWidth
                           variant='standard'
                           sx={{ px: 2 }}
-                          placeholder={placeholder}
+                          placeholder='subcategory'
                           key={subcategory}
                           id={subcategory}
                           value={editing.value || ''}
@@ -246,7 +270,7 @@ export default function CategoryList(props) {
                   </ListItem>
                 );
               })}
-              <Divider sx={{ mx: 1 }} />
+              {categories.length - 1 !== idx && <Divider sx={{ mx: 1 }} />}
             </Collapse>
           </React.Fragment>
         );

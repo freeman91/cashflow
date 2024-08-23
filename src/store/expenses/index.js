@@ -74,9 +74,9 @@ const postExpense = createAsyncThunk(
         dispatch(setSnackbar({ message: 'expense created' }));
       }
 
-      if (subaccount._type === 'asset') {
+      if (subaccount?._type === 'asset') {
         dispatch(updateAsset(subaccount));
-      } else if (subaccount._type === 'debt') {
+      } else if (subaccount?._type === 'debt') {
         dispatch(updateDebt(subaccount));
       }
 
@@ -105,9 +105,9 @@ const putExpense = createAsyncThunk(
         expense_id: get(expense, 'expense_id'),
       });
 
-      if (subaccount._type === 'asset') {
+      if (subaccount?._type === 'asset') {
         dispatch(updateAsset(subaccount));
-      } else if (subaccount._type === 'debt') {
+      } else if (subaccount?._type === 'debt') {
         dispatch(updateDebt(subaccount));
       }
 

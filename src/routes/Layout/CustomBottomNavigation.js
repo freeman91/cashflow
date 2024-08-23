@@ -117,7 +117,6 @@ function CustomBottomNavigation(props) {
         px: 2,
         background: (theme) => theme.palette.surface[200],
         zIndex: 1,
-        borderTop: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >
       <BottomNavigation

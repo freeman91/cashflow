@@ -156,8 +156,8 @@ export default function MonthSummary(props) {
         <Cashflow year={year} month={month} />
       </Grid>
 
-      <Grid item xs={12} mx={1} sx={{ mb: 10, mt: 1 }}>
-        <StyledTabs value={tabIdx} onChange={handleChange} centered>
+      <Grid item xs={12} mx={2} sx={{ mb: 10, mt: 1 }}>
+        <StyledTabs value={tabIdx} onChange={handleChange} variant='fullWidth'>
           <StyledTab label='incomes' />
           <StyledTab label='expenses' />
         </StyledTabs>

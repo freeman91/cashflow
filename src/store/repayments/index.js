@@ -47,9 +47,9 @@ const postRepayment = createAsyncThunk(
         dispatch(setSnackbar({ message: 'repayment created' }));
       }
 
-      if (subaccount._type === 'asset') {
+      if (subaccount?._type === 'asset') {
         dispatch(updateAsset(subaccount));
-      } else if (subaccount._type === 'debt') {
+      } else if (subaccount?._type === 'debt') {
         dispatch(updateDebt(subaccount));
       }
 
@@ -78,9 +78,9 @@ const putRepayment = createAsyncThunk(
         repayment_id: get(repayment, 'repayment_id'),
       });
 
-      if (subaccount._type === 'asset') {
+      if (subaccount?._type === 'asset') {
         dispatch(updateAsset(subaccount));
-      } else if (subaccount._type === 'debt') {
+      } else if (subaccount?._type === 'debt') {
         dispatch(updateDebt(subaccount));
       }
 

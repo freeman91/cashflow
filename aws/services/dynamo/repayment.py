@@ -109,7 +109,7 @@ class Repayment(BaseModel):
         total = self.principal + self.interest + get(self, "escrow", 0)
         if self.payment_from_id.startswith("asset"):
             subaccount = dynamo.Asset.get_(self.user_id, self.payment_from_id)
-            subaccount -= total
+            subaccount.value -= total
             subaccount.save()
         elif self.payment_from_id.startswith("debt"):
             subaccount = dynamo.Debt.get_(self.user_id, self.payment_from_id)
@@ -118,3 +118,9 @@ class Repayment(BaseModel):
 
         subaccount.save()
         return subaccount
+
+    def update_debt_principal(self) -> dynamo.Debt:
+        debt = dynamo.Debt.get_(self.user_id, self.debt_id)
+        debt.amount -= self.principal
+        debt.save()
+        return debt
