@@ -13,6 +13,7 @@ export const muiTheme = createTheme({
     mode: 'dark',
     surface: {
       100: '#121212',
+      150: '#202020',
       200: '#282828',
       250: '#2b2b2b',
       300: '#3f3f3f',

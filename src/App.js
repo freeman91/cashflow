@@ -14,15 +14,11 @@ import _package from '../package.json';
 import { history, store } from './store/createStore';
 
 import Layout from './routes/Layout';
-import Accounts from './routes/Accounts';
-import Dashboard from './routes/Dashboard';
-import Summary from './routes/Summary';
-import Networth from './routes/Networth';
-import Search from './routes/Search';
-import Settings from './routes/Settings';
-import Assets from './routes/Assets';
-import Debts from './routes/Debts';
 import Calendar from './routes/Calendar';
+import Dashboard from './routes/Dashboard';
+import Settings from './routes/Settings';
+import Search from './routes/Search';
+import Year from './routes/Year';
 import './styles/index.css';
 
 console.log('_package.version: ', _package.version);
@@ -40,20 +36,14 @@ const AppRoutes = () => {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/summary' element={<Summary />} />
-        <Route path='/summary/:year' element={<Summary />} />
-        <Route path='/summary/:year/:month' element={<Summary />} />
-        <Route path='/networth' element={<Networth />} />
+        <Route path='/dashboard/:tab' element={<Dashboard />} />
+        <Route path='/dashboard/:tab/:subtab' element={<Dashboard />} />
+        <Route path='/year' element={<Year />} />
+        <Route path='/year/:tab' element={<Year />} />
         <Route path='/search' element={<Search />} />
         <Route path='/search/:type' element={<Search />} />
         <Route path='/settings' element={<Settings />} />
-        <Route path='/settings/:option' element={<Settings />} />
-        <Route path='/accounts' element={<Accounts />} />
-        <Route path='/accounts/:accountId' element={<Accounts />} />
-        <Route path='/assets' element={<Assets />} />
-        <Route path='/assets/:assetId' element={<Assets />} />
-        <Route path='/debts' element={<Debts />} />
-        <Route path='/debts/:debtId' element={<Debts />} />
+        <Route path='/settings/:type' element={<Settings />} />
         <Route path='/calendar' element={<Calendar />} />
         <Route path='/calendar/:year/:month' element={<Calendar />} />
       </Route>

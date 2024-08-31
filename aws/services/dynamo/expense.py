@@ -95,6 +95,9 @@ class Expense(BaseModel):
 
     def update_subaccount(self) -> Union[dynamo.Asset, dynamo.Debt]:
         subaccount = None
+        if self.payment_from_id is None:
+            return subaccount
+
         if self.payment_from_id.startswith("asset"):
             subaccount = dynamo.Asset.get_(self.user_id, self.payment_from_id)
             subaccount.value -= self.amount

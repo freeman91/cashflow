@@ -1,16 +1,22 @@
 import React from 'react';
+import dayjs from 'dayjs';
 
-import { useTheme } from '@emotion/react';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import { _numberToCurrency } from '../helpers/currency';
-import BoxFlexCenter from './BoxFlexCenter';
-import BoxFlexColumn from './BoxFlexColumn';
-import CustomIconButton from './CustomIconButton';
+import { _numberToCurrency } from '../../../helpers/currency';
+import { useTheme } from '@emotion/react';
+import BoxFlexCenter from '../../../components/BoxFlexCenter';
+import CustomIconButton from '../../../components/CustomIconButton';
+import BoxFlexColumn from '../../../components/BoxFlexColumn';
+
+const numberToRoundedCurrency = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
 
 const BoxCurrencyDisplay = (props) => {
   const { value, label, color, icon, orientation } = props;
@@ -30,6 +36,7 @@ const BoxCurrencyDisplay = (props) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         p: 1,
+        mt: 1,
       }}
     >
       {orientation === 'right' && (
@@ -39,15 +46,15 @@ const BoxCurrencyDisplay = (props) => {
       <BoxFlexColumn
         alignItems={orientation === 'left' ? 'flex-start' : 'flex-end'}
       >
-        <Typography variant='body1' color='text.secondary'>
+        <Typography variant='body2' color='grey.0'>
           {label}
         </Typography>
         <BoxFlexCenter>
-          <Typography variant='h5' color='text.secondary'>
+          <Typography variant='h5' color='grey.10'>
             $
           </Typography>
           <Typography variant='h5' color='white' fontWeight='bold'>
-            {_numberToCurrency.format(value)}
+            {numberToRoundedCurrency.format(value)}
           </Typography>
         </BoxFlexCenter>
       </BoxFlexColumn>
@@ -58,13 +65,13 @@ const BoxCurrencyDisplay = (props) => {
   );
 };
 
-export default function CashflowContainer(props) {
-  const { incomeSum, expenseSum } = props;
+export default function NetworthContainer(props) {
+  const { assetSum, debtSum, year, month, subtitle = null } = props;
   const theme = useTheme();
 
-  const net = incomeSum - expenseSum;
+  const net = assetSum - debtSum;
   return (
-    <Grid item xs={12} mx={1} pt={'0px !important'} mb={-1}>
+    <Grid item xs={12} mx={1} sx={{ pt: '0 !important' }} mb={-1}>
       <Box sx={{ mb: 6 }}>
         <BoxFlexCenter>
           <Typography variant='h4' color='text.secondary'>
@@ -74,8 +81,13 @@ export default function CashflowContainer(props) {
             {_numberToCurrency.format(net)}
           </Typography>
         </BoxFlexCenter>
-        <Typography variant='body1' align='center' color='text.secondary'>
-          cashflow
+        <Typography variant='body2' align='center' color='text.secondary'>
+          {subtitle
+            ? subtitle
+            : dayjs()
+                .year(year)
+                .month(month - 1)
+                .format('MMMM YYYY')}
         </Typography>
       </Box>
       <Box
@@ -100,14 +112,14 @@ export default function CashflowContainer(props) {
           height: 50,
           width: 50,
           top: -140,
-          left: '70%',
+          left: '72%',
           borderWidth: '2px',
           borderTopStyle: 'dashed',
           borderRightStyle: 'dashed',
           borderTopColor: theme.palette.red[300],
           borderRightColor: theme.palette.red[300],
           borderTopRightRadius: '15px',
-          mb: '-135px',
+          mb: '-145px',
           zIndex: 0,
         }}
       />
@@ -120,17 +132,17 @@ export default function CashflowContainer(props) {
         }}
       >
         <BoxCurrencyDisplay
-          value={incomeSum}
-          label='incomes'
+          value={assetSum}
+          label='assets'
           color={theme.palette.green}
-          icon={<TrendingUpIcon />}
+          icon={<AccountBalanceWalletIcon />}
           orientation='left'
         />
         <BoxCurrencyDisplay
-          value={expenseSum}
-          label='expenses'
+          value={debtSum}
+          label='debts'
           color={theme.palette.red}
-          icon={<TrendingDownIcon />}
+          icon={<CreditCardIcon />}
           orientation='right'
         />
       </Box>

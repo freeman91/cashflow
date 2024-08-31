@@ -21,8 +21,8 @@ import TransactionsDialog from '../../components/Dialog/TransactionsDialog';
 
 import { getUser } from '../../store/user';
 import CustomBottomNavigation from './CustomBottomNavigation';
-import CustomAppBar from './CustomAppBar';
 import CustomSnackbar from './CustomSnackbar';
+import FloatingActionButton from './FloatingActionButton';
 
 const USER_ID = process.env.REACT_APP_USER_ID;
 
@@ -40,14 +40,13 @@ function Layout() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        maxWidth: 700,
         width: '100%',
         height: '100vh',
       }}
     >
       <CssBaseline />
-      <CustomAppBar />
       <Outlet />
+      <FloatingActionButton />
       <CustomBottomNavigation />
       <AccountDialog />
       <AssetDialog />

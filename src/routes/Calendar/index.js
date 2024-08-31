@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { push } from 'redux-first-history';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
-import get from 'lodash/get';
 
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import MonthContent from './MonthContent';
 import SelectedTransactionsStack from './SelectedTransactionsStack';
-import { setAppBar } from '../../store/appSettings';
-import { BackButton, SettingsButton } from '../Layout/CustomAppBar';
-import { push } from 'redux-first-history';
+import CustomAppBar from '../../components/CustomAppBar';
 
 export default function Calendar() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const toolbarRef = useRef(null);
+  const today = dayjs();
+
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
-  const [date, selectedDate] = useState(null);
+  const [month, setMonth] = useState(dayjs());
   const [days, setDays] = useState([]);
   const [monthExpenses, setMonthExpenses] = useState([]);
   const [monthIncomes, setMonthIncomes] = useState([]);
@@ -34,36 +34,21 @@ export default function Calendar() {
   const [showWeights] = useState(true);
 
   useEffect(() => {
-    dispatch(
-      setAppBar({
-        leftAction: <BackButton />,
-        rightAction: <SettingsButton />,
-      })
-    );
-  }, [dispatch]);
+    if (location?.state?.month) {
+      setMonth(dayjs(location?.state?.month['$d']));
+    }
+  }, [location.state]);
 
   useEffect(() => {
-    const today = dayjs();
-    const year = get(location.pathname.split('/'), '2', today.year());
-    const month = get(location.pathname.split('/'), '3', today.month() + 1);
-
-    selectedDate(
-      dayjs()
-        .year(year)
-        .month(month - 1)
-    );
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (!date) return;
-    let firstDayOfMonth = date.date(1).hour(12).minute(0).second(0);
+    if (!month) return;
+    let firstDayOfMonth = month.date(1).hour(12).minute(0).second(0);
     let firstDayOfWeek = firstDayOfMonth.day(0).hour(12).minute(0).second(0);
 
     const filterRecords = (records) => {
       return filter(records, (record) => {
         const expDay = dayjs(record.date);
         const BOM = firstDayOfWeek.hour(0);
-        const EOM = date.endOf('month').day(6).hour(23);
+        const EOM = month.endOf('month').day(6).hour(23);
         return (
           (expDay.isAfter(BOM, 'day') || expDay.isSame(BOM, 'day')) &&
           (expDay.isBefore(EOM, 'day') || expDay.isSame(EOM, 'day'))
@@ -94,55 +79,65 @@ export default function Calendar() {
     }
 
     setDays(_days);
-  }, [date, allExpenses, allIncomes, allRepayments, allPaychecks]);
+  }, [month, allExpenses, allIncomes, allRepayments, allPaychecks]);
 
   useEffect(() => {
     let expenses = filter(monthExpenses, (expense) => {
-      return dayjs(expense.date).isSame(date, 'day');
+      return dayjs(expense.date).isSame(month, 'day');
     });
     let incomes = filter(monthIncomes, (income) => {
-      return dayjs(income.date).isSame(date, 'day');
+      return dayjs(income.date).isSame(month, 'day');
     });
     setSelectedTransactions([...expenses, ...incomes]);
-  }, [date, monthExpenses, monthIncomes]);
+  }, [month, monthExpenses, monthIncomes]);
 
-  const handlePreviousMonth = () => {
-    const previousMonth = date?.subtract(1, 'month');
+  const handlePrevMonth = () => {
+    const previousMonth = month?.subtract(1, 'month');
     dispatch(
       push(`/calendar/${previousMonth.year()}/${previousMonth.month() + 1}`)
     );
   };
 
   const handleNextMonth = () => {
-    const nextMonth = date?.add(1, 'month');
+    const nextMonth = month?.add(1, 'month');
     dispatch(push(`/calendar/${nextMonth.year()}/${nextMonth.month() + 1}`));
   };
 
+  const marginTop = toolbarRef?.current?.offsetHeight || 90;
+  const diff = today.diff(month, 'month');
+  const format = diff > 10 ? 'MMMM YYYY' : 'MMMM';
+  const nextDisabled = today.isSameOrBefore(month, 'month');
+
   return (
-    <Box
-      sx={{
-        overflowY: 'scroll',
-        height: '100%',
-        WebkitOverflowScrolling: 'touch',
-      }}
-    >
-      <Stack
-        direction='row'
-        justifyContent='space-between'
-        alignItems='center'
-        sx={{ px: 2, pb: 1 }}
-      >
-        <IconButton onClick={() => handlePreviousMonth()}>
-          <ArrowBackIosIcon />
-        </IconButton>
-        <Typography variant='h6'>{date?.format('MMMM YYYY')}</Typography>
-        <IconButton onClick={() => handleNextMonth()}>
-          <ArrowForwardIosIcon />
-        </IconButton>
-      </Stack>
+    <Box sx={{ height: '100%', width: '100%' }}>
+      <CustomAppBar
+        ref={toolbarRef}
+        title={
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <IconButton size='large' onClick={handlePrevMonth}>
+              <ChevronLeftIcon />
+            </IconButton>
+            <Typography variant='h6'>{month?.format(format)}</Typography>
+            <IconButton
+              size='large'
+              onClick={handleNextMonth}
+              disabled={nextDisabled}
+            >
+              <ChevronRightIcon />
+            </IconButton>
+          </Box>
+        }
+      />
+      <Box sx={{ height: marginTop + 'px', pt: 1 }} />
       <MonthContent
-        selectedDate={date}
-        setSelectedDate={selectedDate}
+        selectedDate={month}
+        setSelectedDate={setMonth}
         days={days}
         monthExpenses={monthExpenses}
         monthIncomes={monthIncomes}

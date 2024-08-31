@@ -1,13 +1,15 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
+import { useLocation } from 'react-router-dom';
+import get from 'lodash/get';
 
 import { useTheme } from '@emotion/react';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { _numberToCurrency } from '../helpers/currency';
@@ -21,19 +23,9 @@ export default function ItemBox(props) {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const item_id = item[`${item._type}_id`];
+  const itemId = item[`${item._type}_id`];
 
-  const handleClick = (e, item) => {
-    const path = `/${item._type}s/` + item_id;
-    if (location.pathname === path) {
-      handleEditClick(e);
-    } else {
-      dispatch(push(`/${item._type}s/` + item_id));
-    }
-  };
-
-  const handleEditClick = (e) => {
-    e.stopPropagation();
+  const openItemDialog = () => {
     dispatch(
       openDialog({
         type: item._type,
@@ -41,6 +33,30 @@ export default function ItemBox(props) {
         id: item[`${item._type}_id`],
       })
     );
+  };
+
+  const handleClick = (e, item) => {
+    const id = item._type + 'Id';
+    const types = item._type + 's';
+
+    const stateId = get(location, `state.${id}`);
+    if (
+      location.pathname === `/dashboard/accounts/${types}` &&
+      stateId === itemId
+    ) {
+      openItemDialog();
+    } else {
+      dispatch(
+        push(`/dashboard/accounts/${types}`, {
+          [id]: itemId,
+        })
+      );
+    }
+  };
+
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    openItemDialog();
   };
 
   const amount = 'amount' in item ? item.amount : item.value;
@@ -59,18 +75,20 @@ export default function ItemBox(props) {
         cursor: 'pointer',
       }}
     >
-      <IconButton
-        onClick={(e) => handleEditClick(e)}
-        sx={{
-          background: `linear-gradient(45deg, ${theme.palette.surface[200]}, ${theme.palette.surface[300]})`,
-          boxShadow: 6,
-          borderRadius: '50%',
-          p: '4px',
-          color,
-        }}
-      >
-        <Icon />
-      </IconButton>
+      <Tooltip placement='top' title='edit'>
+        <IconButton
+          onClick={(e) => handleEditClick(e)}
+          sx={{
+            background: `linear-gradient(45deg, ${theme.palette.surface[200]}, ${theme.palette.surface[300]})`,
+            boxShadow: 6,
+            borderRadius: '50%',
+            p: '4px',
+            color,
+          }}
+        >
+          <Icon />
+        </IconButton>
+      </Tooltip>
       <Box
         sx={{
           display: 'flex',

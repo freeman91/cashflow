@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import find from 'lodash/find';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -23,6 +24,7 @@ import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import DepositToSelect from '../Selector/DepositToSelect';
+import AutocompleteListItem from '../List/AutocompleteListItem';
 
 const defaultPaycheck = {
   paycheck_id: '',
@@ -41,9 +43,12 @@ const defaultPaycheck = {
 function PaycheckDialog() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.item);
+  const optionLists = useSelector((state) => state.optionLists.data);
   const paychecks = useSelector((state) => state.paychecks.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.paycheck);
   const [paycheck, setPaycheck] = useState(defaultPaycheck);
+
+  const incomeSources = find(optionLists, { option_type: 'income_source' });
 
   useEffect(() => {
     if (id) {
@@ -119,10 +124,11 @@ function PaycheckDialog() {
               }}
             />
           </ListItem>
-          <TextFieldListItem
+          <AutocompleteListItem
             id='employer'
             label='employer'
             value={paycheck.employer}
+            options={get(incomeSources, 'options', [])}
             onChange={handleChange}
           />
           {['take_home', 'taxes', 'retirement', 'benefits', 'other'].map(

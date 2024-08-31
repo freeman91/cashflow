@@ -105,6 +105,8 @@ class Repayment(BaseModel):
 
     def update_subaccount(self) -> Union[dynamo.Asset, dynamo.Debt]:
         subaccount = None
+        if self.payment_from_id is None:
+            return subaccount
 
         total = self.principal + self.interest + get(self, "escrow", 0)
         if self.payment_from_id.startswith("asset"):
