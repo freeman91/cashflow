@@ -8,10 +8,11 @@ import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import toLower from 'lodash/toLower';
 
+import FilterListIcon from '@mui/icons-material/FilterList';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
 import { findId } from '../../../helpers/transactions';
@@ -24,8 +25,7 @@ import IncomesSummary from './IncomesSummary';
 import FilterDialog from './FilterDialog';
 import TransactionBox from '../../../components/TransactionBox';
 
-export default function Incomes(props) {
-  const { trigger, toggleTrigger } = props;
+export default function Incomes() {
   const dispatch = useDispatch();
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
@@ -47,6 +47,7 @@ export default function Incomes(props) {
 
     // filter by date
     _incomes = filter(_incomes, (income) => {
+      if (!income.date) return false;
       return dayjs(income.date).isBetween(range.start, range.end);
     });
 
@@ -113,21 +114,22 @@ export default function Incomes(props) {
     dispatch(getPaychecks({ range }));
   }, [range, dispatch]);
 
-  // handleFilterClick
-  useEffect(() => {
-    if (trigger) {
-      setOpen(true);
-      toggleTrigger();
-    }
-  }, [trigger, toggleTrigger]);
-
   return (
     <>
       <Box sx={{ px: 1, mb: 1 }}>
-        <Card raised>
-          <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
-            <RangeSelect range={range} setRange={setRange} />
-          </CardContent>
+        <Card
+          raised
+          sx={{
+            p: 0.5,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <RangeSelect range={range} setRange={setRange} />
+          <IconButton onClick={() => setOpen(true)}>
+            <FilterListIcon />
+          </IconButton>
         </Card>
         <IncomesSummary incomes={filteredIncomes} />
       </Box>

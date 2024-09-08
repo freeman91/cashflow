@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import reduce from 'lodash/reduce';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import MenuIcon from '@mui/icons-material/Menu';
 import Card from '@mui/material/Card';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
@@ -10,9 +12,11 @@ import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import { numberToCurrency } from '../../helpers/currency';
+import { openDialog } from '../../store/dialogs';
 import { StyledSubtab, StyledSubtabs } from '../StyledSubtabs';
 
 const REPAYMENT_TOTALS = 'repayment totals';
@@ -21,12 +25,21 @@ const TABS = [REPAYMENT_TOTALS, EXPENSE_CATEGORY_TOTALS];
 
 export default function ExpenseTotals(props) {
   const { expenses, groupedExpenses } = props;
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(null);
   const [tab, setTab] = useState(REPAYMENT_TOTALS);
+  const [repayments, setRepayments] = useState([]);
   const [principal, setPrincipal] = useState(0);
   const [interest, setInterest] = useState(0);
   const [escrow, setEscrow] = useState(0);
+
+  useEffect(() => {
+    const _repayments = expenses.filter(
+      (expense) => expense._type === 'repayment'
+    );
+    setRepayments(_repayments);
+  }, [expenses]);
 
   useEffect(() => {
     const _principal = reduce(
@@ -83,6 +96,15 @@ export default function ExpenseTotals(props) {
     });
   };
 
+  const openTransactionsDialog = (expenses) => {
+    dispatch(
+      openDialog({
+        type: 'transactions',
+        attrs: expenses,
+      })
+    );
+  };
+
   return (
     <>
       <Grid item xs={12} mx={1}>
@@ -101,7 +123,13 @@ export default function ExpenseTotals(props) {
       <Grid item xs={12} mx={1} pt='0px !important'>
         <Card raised>
           {tab === REPAYMENT_TOTALS && (
-            <List disablePadding>
+            <List
+              disablePadding
+              onClick={() => {
+                openTransactionsDialog(repayments);
+              }}
+              sx={{ cursor: 'pointer' }}
+            >
               <ListItem>
                 <ListItemText secondary='principal' />
                 <ListItemText
@@ -145,6 +173,15 @@ export default function ExpenseTotals(props) {
                         handleOpen(group.name);
                       }}
                     >
+                      <ListItemIcon
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          openTransactionsDialog(group.expenses);
+                        }}
+                      >
+                        <MenuIcon />
+                      </ListItemIcon>
+
                       <ListItemText secondary={group.name} />
                       <ListItemText
                         primary={numberToCurrency.format(group.value)}
@@ -152,8 +189,9 @@ export default function ExpenseTotals(props) {
                           fontWeight: 'bold',
                           align: 'right',
                         }}
-                        sx={{ mr: 1 }}
+                        sx={{ mr: 2 }}
                       />
+
                       {open === group.name ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse
@@ -165,10 +203,15 @@ export default function ExpenseTotals(props) {
                       <List component='div' disablePadding>
                         {group.subcategories.map((subgroup) => {
                           return (
-                            <ListItem key={subgroup.name}>
+                            <ListItemButton
+                              key={subgroup.name}
+                              onClick={() => {
+                                openTransactionsDialog(subgroup.expenses);
+                              }}
+                            >
                               <ListItemText
                                 secondary={subgroup.name}
-                                sx={{ ml: 4 }}
+                                sx={{ ml: 2 }}
                               />
                               <ListItemText
                                 primary={numberToCurrency.format(
@@ -180,7 +223,7 @@ export default function ExpenseTotals(props) {
                                 }}
                                 sx={{ mr: 2 }}
                               />
-                            </ListItem>
+                            </ListItemButton>
                           );
                         })}
                       </List>

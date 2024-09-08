@@ -12,6 +12,7 @@ import AssetPage from './Assets/AssetPage';
 import AssetsStack from './Assets/AssetsStack';
 import DebtsStack from './Debts/DebtsStack';
 import DebtPage from './Debts/DebtPage';
+import FloatingActionButton from '../../../components/FloatingActionButton';
 
 const ACCOUNTS = 'accounts';
 const ASSETS = 'assets';
@@ -99,6 +100,11 @@ export default function Accounts() {
       {selectedAccount && <AccountPage account={selectedAccount} />}
       {selectedAsset && <AssetPage asset={selectedAsset} />}
       {selectedDebt && <DebtPage debt={selectedDebt} />}
+      {noSelection && (
+        <FloatingActionButton
+          createTypes={[subtab.substring(0, subtab.length - 1)]}
+        />
+      )}
     </>
   );
 }

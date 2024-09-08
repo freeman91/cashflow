@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import CloseIcon from '@mui/icons-material/Close';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import Stack from '@mui/material/Stack';
@@ -30,13 +29,11 @@ function DialogTitleOptions(props) {
         right: 8,
       }}
     >
-      {mode === 'edit' && children ? (
+      {mode === 'edit' && children && (
         <>
-          <Card raised>
-            <IconButton onClick={handleMenuClick}>
-              <MoreVertIcon />
-            </IconButton>
-          </Card>
+          <IconButton onClick={handleMenuClick}>
+            <MoreVertIcon />
+          </IconButton>
           <Menu
             id='settings-menu'
             anchorEl={menuAnchor}
@@ -47,13 +44,11 @@ function DialogTitleOptions(props) {
             {children}
           </Menu>
         </>
-      ) : null}
+      )}
 
-      <Card raised>
-        <IconButton onClick={handleClose}>
-          <CloseIcon />
-        </IconButton>
-      </Card>
+      <IconButton onClick={handleClose}>
+        <CloseIcon />
+      </IconButton>
     </Stack>
   );
 }

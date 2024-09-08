@@ -5,7 +5,6 @@ import os
 from datetime import datetime
 from typing import Optional, Union
 from uuid import uuid4
-from pydash import get
 from pynamodb.attributes import (
     BooleanAttribute,
     NumberAttribute,
@@ -108,7 +107,7 @@ class Repayment(BaseModel):
         if self.payment_from_id is None:
             return subaccount
 
-        total = self.principal + self.interest + get(self, "escrow", 0)
+        total = self.principal + self.interest + (self.escrow or 0)
         if self.payment_from_id.startswith("asset"):
             subaccount = dynamo.Asset.get_(self.user_id, self.payment_from_id)
             subaccount.value -= total

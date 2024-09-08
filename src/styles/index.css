@@ -6,7 +6,6 @@ body {
 .App {
   display: flex;
   justify-content: center;
-  max-width: 450px;
 }
 
 html {

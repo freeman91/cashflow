@@ -10,8 +10,12 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import CustomAppBar from '../../components/CustomAppBar';
+import Expenses from './Expenses';
+import Incomes from './Incomes';
 
-const OPTIONS = ['expenses', 'incomes'];
+const EXPENSES = 'expenses';
+const INCOMES = 'incomes';
+const OPTIONS = [EXPENSES, INCOMES];
 
 export default function Search() {
   const location = useLocation();
@@ -31,11 +35,18 @@ export default function Search() {
 
   const marginTop = toolbarRef?.current?.offsetHeight || 90;
   return (
-    <Box sx={{ height: '100%', width: '100%' }}>
+    <Box sx={{ height: '100%', width: '100%', mb: 18 }}>
       <CustomAppBar
         ref={toolbarRef}
         title={
-          <Typography variant='h6' fontWeight='bold'>
+          <Typography
+            variant='h6'
+            fontWeight='bold'
+            onClick={() => {
+              dispatch(push('/search'));
+            }}
+            sx={{ cursor: 'pointer', '&:hover': { color: 'primary.main' } }}
+          >
             search
           </Typography>
         }
@@ -70,6 +81,8 @@ export default function Search() {
           {lowerCase(selected)}
         </Typography>
       )}
+      {selected === EXPENSES && <Expenses />}
+      {selected === INCOMES && <Incomes />}
     </Box>
   );
 }

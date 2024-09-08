@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import filter from 'lodash/filter';
 import sortBy from 'lodash/sortBy';
 import map from 'lodash/map';
 
@@ -9,18 +8,15 @@ import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { openDialog } from '../../../store/dialogs';
-import { findIcon, findId } from '../../../helpers/transactions';
-import { _numberToCurrency } from '../../../helpers/currency';
-import { StyledTab, StyledTabs } from '../../../components/StyledTabs';
-import BoxFlexColumn from '../../../components/BoxFlexColumn';
-import BoxFlexCenter from '../../../components/BoxFlexCenter';
-import CustomIconButton from '../../../components/CustomIconButton';
-import TransactionBox from '../../../components/TransactionBox';
+import { openDialog } from '../../store/dialogs';
+import { findIcon } from '../../helpers/transactions';
+import { _numberToCurrency } from '../../helpers/currency';
+import BoxFlexColumn from '../../components/BoxFlexColumn';
+import BoxFlexCenter from '../../components/BoxFlexCenter';
+import CustomIconButton from '../../components/CustomIconButton';
 
 function getNextBillDate(day, months) {
   const today = dayjs();
@@ -131,14 +127,10 @@ const BillBox = (props) => {
   );
 };
 
-export default function Bills() {
+export default function BillTemplates() {
   const allBills = useSelector((state) => state.bills.data);
-  const allExpenses = useSelector((state) => state.expenses.data);
-  const allRepayments = useSelector((state) => state.repayments.data);
 
-  const [tabIdx, setTabIdx] = useState(0);
   const [bills, setBills] = useState([]);
-  const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
     let _bills = map(allBills, (bill) => {
@@ -148,58 +140,18 @@ export default function Bills() {
     setBills(sortBy(_bills, 'day'));
   }, [allBills]);
 
-  useEffect(() => {
-    let _expenses = [
-      ...filter(allExpenses, (expense) => expense.bill_id && expense.pending),
-      ...filter(
-        allRepayments,
-        (repayment) => repayment.bill_id && repayment.pending
-      ),
-    ];
-
-    setExpenses(sortBy(_expenses, 'date'));
-  }, [allExpenses, allRepayments]);
-
-  const handleChange = (event, newValue) => {
-    setTabIdx(newValue);
-  };
-
-  const items =
-    tabIdx === 0
-      ? map(bills, (bill, idx) => {
+  return (
+    <Card raised>
+      <Stack spacing={1} direction='column' py={1}>
+        {map(bills, (bill, idx) => {
           return (
             <React.Fragment key={bill.bill_id}>
               <BillBox bill={bill} icon={findIcon(bill)} />
               {idx < bills.length - 1 && <Divider />}
             </React.Fragment>
           );
-        })
-      : map(expenses, (expense, idx) => {
-          const key = findId(expense);
-          return (
-            <React.Fragment key={key}>
-              <TransactionBox transaction={expense} />
-              {idx < expenses.length - 1 && (
-                <Divider sx={{ mx: '8px !important' }} />
-              )}
-            </React.Fragment>
-          );
-        });
-  return (
-    <Grid container>
-      <Grid item xs={12} mx={2}>
-        <StyledTabs value={tabIdx} onChange={handleChange} variant='fullWidth'>
-          <StyledTab label='templates' />
-          <StyledTab label='pending' />
-        </StyledTabs>
-      </Grid>
-      <Grid item xs={12} mt='2px'>
-        <Card raised>
-          <Stack spacing={1} direction='column' py={1}>
-            {items}
-          </Stack>
-        </Card>
-      </Grid>
-    </Grid>
+        })}
+      </Stack>
+    </Card>
   );
 }

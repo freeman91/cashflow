@@ -4,6 +4,7 @@ import { cloneDeep, concat, get, remove, sortBy } from 'lodash';
 
 import {
   deleteResourceAPI,
+  getResourcesAPI,
   getResourcesInRangeAPI,
   postResourceAPI,
   putResourceAPI,
@@ -57,6 +58,27 @@ const getPaychecks = createAsyncThunk(
   }
 );
 
+const getPaycheckTemplates = createAsyncThunk(
+  'paychecks/getPaychecks',
+  async ({ user_id }, { dispatch, getState }) => {
+    let allPaychecks = cloneDeep(getState().paychecks.data);
+    let user = getState().user.item;
+    if (!user_id) {
+      user_id = user.user_id;
+    }
+
+    try {
+      dispatch(showLoading());
+      const templates = await getResourcesAPI(user_id, 'paycheck-templates');
+      return { data: concat(allPaychecks, templates) };
+    } catch (err) {
+      dispatch(setSnackbar({ message: `error: ${err}` }));
+    } finally {
+      dispatch(hideLoading());
+    }
+  }
+);
+
 const postPaycheck = createAsyncThunk(
   'paychecks/postPaycheck',
   async (newPaycheck, { dispatch, getState }) => {
@@ -69,7 +91,9 @@ const postPaycheck = createAsyncThunk(
         dispatch(setSnackbar({ message: 'paycheck created' }));
       }
 
-      dispatch(updateAsset(asset));
+      if (asset) {
+        dispatch(updateAsset(asset));
+      }
 
       return {
         data: [paycheck].concat(paychecks),
@@ -115,9 +139,7 @@ const deletePaycheck = createAsyncThunk(
       }
       let _paychecks = [...paychecks];
       remove(_paychecks, { paycheck_id: id });
-      return {
-        data: _paychecks,
-      };
+      return { data: _paychecks };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     }
@@ -147,6 +169,7 @@ const { setPaychecks } = actions;
 export {
   postPaycheck,
   getPaychecks,
+  getPaycheckTemplates,
   putPaycheck,
   deletePaycheck,
   setPaychecks,

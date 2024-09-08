@@ -85,7 +85,8 @@ def _expense(user_id: str, expense_id: str):
         subaccount = None
         if prev_pending is True and expense.pending is False:
             subaccount = expense.update_subaccount()
-            subaccount = subaccount.as_dict()
+            if subaccount:
+                subaccount = subaccount.as_dict()
 
         return success_result({"expense": expense.as_dict(), "subaccount": subaccount})
 

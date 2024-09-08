@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import reduce from 'lodash/reduce';
 
 import Grid from '@mui/material/Grid';
 
+import { saveNetworth } from '../../../store/networths';
 import NetworthContainer from './NetworthContainer';
 import NetworthChart from './NetworthChart';
 import SelectedNetworth from './SelectedNetworth';
 import CurrentNetworth from './CurrentNetworth';
+import SaveFloatingActionButton from '../../../components/SaveFloatingActionButton';
 
 export default function Networth() {
+  const dispatch = useDispatch();
   const today = dayjs();
   const allAssets = useSelector((state) => state.assets.data);
   const allDebts = useSelector((state) => state.debts.data);
@@ -67,6 +70,10 @@ export default function Networth() {
     setSelectedId(networth.networth_id);
   };
 
+  const handleSave = () => {
+    dispatch(saveNetworth());
+  };
+
   const subtitle = selectedNetworth
     ? `${dayjs(selectedNetworth.date).format('MMMM YYYY')}`
     : 'current';
@@ -92,6 +99,7 @@ export default function Networth() {
           handleSelectPreviousMonth={handleSelectPreviousMonth}
         />
       )}
+      {!selectedId && <SaveFloatingActionButton onSave={handleSave} />}
     </>
   );
 }

@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from pydash import sort_by
 
 from services.dynamo import Categories
 from services.api.controllers.__util__ import (
@@ -46,7 +47,9 @@ def _category_data(user_id: str, category_type: str):
 
     if request.method == "PUT":
         category_data = Categories.get_(user_id=user_id, category_type=category_type)
-        category_data.categories = request.json.get("categories")
+
+        updated_categories = sort_by(request.json.get("categories"), "name")
+        category_data.categories = updated_categories
         category_data.save()
 
         return success_result(category_data.as_dict())

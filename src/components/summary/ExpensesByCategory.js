@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
 
 import { Cell, PieChart, Pie, ResponsiveContainer } from 'recharts';
 import { numberToCurrency } from '../../helpers/currency';
@@ -23,6 +24,23 @@ export default function ExpensesByCategory(props) {
     );
   };
 
+  if (groupedExpenses.length === 0) {
+    return (
+      <Grid
+        item
+        xs={12}
+        pt={'0 !important'}
+        height={125}
+        display='flex'
+        alignItems='center'
+        justifyContent='center'
+      >
+        <Typography align='center' color='text.secondary'>
+          no data
+        </Typography>
+      </Grid>
+    );
+  }
   return (
     <Grid item xs={12} pt={'0 !important'}>
       <Box sx={{ height: 125 }}>

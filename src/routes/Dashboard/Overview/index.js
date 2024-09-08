@@ -9,6 +9,7 @@ import Cashflow from './Cashflow';
 import Networth from './Networth';
 import TransactionsGridStack from '../../../components/TransactionsGridStack';
 import { StyledSubtab, StyledSubtabs } from '../../../components/StyledSubtabs';
+import FloatingActionButton from '../../../components/FloatingActionButton';
 
 const RECENT = 'recent';
 const UPCOMING = 'upcoming';
@@ -34,6 +35,7 @@ export default function Overview(props) {
       ...allIncomes,
       ...allPaychecks,
     ].filter((transaction) => {
+      if (!transaction.date) return false;
       const eDate = dayjs(transaction.date);
       if (
         (transaction._type === 'expense' ||
@@ -81,6 +83,7 @@ export default function Overview(props) {
       </Grid>
       {tab === RECENT && <TransactionsGridStack transactions={recent} />}
       {tab === UPCOMING && <TransactionsGridStack transactions={upcoming} />}
+      <FloatingActionButton createTypes={['expense', 'income', 'paycheck']} />
     </>
   );
 }

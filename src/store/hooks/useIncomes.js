@@ -36,6 +36,7 @@ export const useIncomes = (year, month) => {
 
   useEffect(() => {
     let _incomes = filter([...allIncomes, ...allPaychecks], (income) => {
+      if (!income.date) return false;
       const incomeDate = dayjs(income.date);
       return (
         incomeDate.year() === year &&

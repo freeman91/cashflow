@@ -37,7 +37,8 @@ def _repayments(user_id: str):
         subaccount = None
         if not repayment.pending and repayment.payment_from_id:
             subaccount = repayment.update_subaccount()
-            subaccount = subaccount.as_dict()
+            if subaccount:
+                subaccount = subaccount.as_dict()
 
         return success_result(
             {"repayment": repayment.as_dict(), "subaccount": subaccount}

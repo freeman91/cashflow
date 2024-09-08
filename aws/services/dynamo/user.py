@@ -2,14 +2,9 @@
 """User pynamodb model"""
 
 import os
-import bcrypt
 from uuid import uuid4
-from pynamodb.attributes import (
-    BinaryAttribute,
-    MapAttribute,
-    NumberAttribute,
-    UnicodeAttribute,
-)
+import bcrypt
+from pynamodb.attributes import BinaryAttribute, UnicodeAttribute
 
 from .base import BaseModel
 
@@ -18,16 +13,6 @@ TYPE = "user"
 ENV: str = os.getenv("ENV")
 REGION: str = os.getenv("REGION")
 APP_ID: str = os.getenv("APP_ID")
-
-
-class PaycheckDefaults(MapAttribute):
-    employer = UnicodeAttribute(null=True)
-    take_home = NumberAttribute(null=True)
-    taxes = NumberAttribute(null=True)
-    retirement = NumberAttribute(null=True)
-    benefits = NumberAttribute(null=True)
-    other = NumberAttribute(null=True)
-    deposit_to_id = UnicodeAttribute(null=True)
 
 
 class User(BaseModel):
@@ -41,7 +26,6 @@ class User(BaseModel):
 
     name = UnicodeAttribute()
     password = BinaryAttribute()
-    paycheck_defaults = PaycheckDefaults(default={})
 
     def __repr__(self):
         return f"User<{self.user_id}, {self.email}, {self.name}>"
@@ -65,18 +49,6 @@ class User(BaseModel):
         return next(cls.query(user_id))
 
     def update_(self, body: dict) -> "User":
-        paycheck_defaults = body.get("paycheck_defaults")
 
-        for attr in [
-            "employer",
-            "take_home",
-            "taxes",
-            "retirement",
-            "benefits",
-            "other",
-            "deposit_to_id",
-        ]:
-            setattr(self.paycheck_defaults, attr, paycheck_defaults.get(attr))
-
-        self.save()
+        # self.save()
         return self

@@ -12,28 +12,58 @@ paychecks = Blueprint("paychecks", __name__)
 
 
 @handle_exception
+@paychecks.route("/paycheck-templates/<user_id>", methods=["GET"])
+def _paycheck_templates(user_id: str):
+    if request.method == "GET":
+        templates = list(
+            Paycheck.query(
+                user_id, Paycheck.paycheck_id.startswith("paycheck:template")
+            )
+        )
+        return success_result([paycheck.as_dict() for paycheck in templates])
+    return failure_result()
+
+
+@handle_exception
 @paychecks.route("/paychecks/<user_id>", methods=["POST", "GET"])
 def _paychecks(user_id: str):
     if request.method == "POST":
         body = request.json
-        _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
-        paycheck = Paycheck.create(
-            user_id=user_id,
-            _date=_date,
-            employer=body.get("employer"),
-            take_home=float(body.get("take_home")),
-            taxes=float(body.get("taxes")),
-            retirement=float(body.get("retirement")),
-            benefits=float(body.get("benefits")),
-            other=float(body.get("other")),
-            deposit_to_id=body.get("deposit_to_id"),
-            description=body.get("description"),
-        )
-
+        paycheck = None
         asset = None
-        if paycheck.deposit_to_id:
-            asset = paycheck.update_asset()
-            asset = asset.as_dict()
+
+        if body.get("paycheck_id").startswith("paycheck:template"):
+            paycheck = Paycheck.create_template(
+                user_id=user_id,
+                paycheck_id=body.get("paycheck_id"),
+                employer=body.get("employer"),
+                take_home=float(body.get("take_home")),
+                taxes=float(body.get("taxes")),
+                retirement=float(body.get("retirement")),
+                benefits=float(body.get("benefits")),
+                other=float(body.get("other")),
+                deposit_to_id=body.get("deposit_to_id"),
+                description=body.get("description"),
+            )
+
+        else:
+            _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
+            paycheck = Paycheck.create(
+                user_id=user_id,
+                _date=_date,
+                employer=body.get("employer"),
+                take_home=float(body.get("take_home")),
+                taxes=float(body.get("taxes")),
+                retirement=float(body.get("retirement")),
+                benefits=float(body.get("benefits")),
+                other=float(body.get("other")),
+                deposit_to_id=body.get("deposit_to_id"),
+                description=body.get("description"),
+            )
+
+            if paycheck.deposit_to_id:
+                asset = paycheck.update_asset()
+                asset = asset.as_dict()
 
         return success_result({"paycheck": paycheck.as_dict(), "asset": asset})
 
@@ -61,9 +91,11 @@ def _paycheck(user_id: str, paycheck_id: str):
 
     if request.method == "PUT":
         paycheck = Paycheck.get_(user_id=user_id, paycheck_id=paycheck_id)
-        paycheck.date = datetime.strptime(
-            request.json["date"][:19], "%Y-%m-%dT%H:%M:%S"
-        )
+        if not paycheck.paycheck_id.startswith("paycheck:template"):
+            paycheck.date = datetime.strptime(
+                request.json["date"][:19], "%Y-%m-%dT%H:%M:%S"
+            )
+
         paycheck.employer = request.json.get("employer")
         paycheck.take_home = float(request.json.get("take_home"))
         paycheck.taxes = float(request.json.get("taxes"))

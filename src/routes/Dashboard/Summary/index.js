@@ -16,14 +16,19 @@ export default function Summary(props) {
   const { date } = props;
   const theme = useTheme();
 
-  const [year] = useState(dayjs(date).year());
-  const [month] = useState(dayjs(date).month() + 1);
+  const [year, setYear] = useState(dayjs(date).year());
+  const [month, setMonth] = useState(dayjs(date).month());
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
   const [monthExpenses, setMonthExpenses] = useState([]);
   const [groupedExpenses, setGroupedExpenses] = useState([]);
   const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    setYear(dayjs(date).year());
+    setMonth(dayjs(date).month());
+  }, [date]);
 
   useEffect(() => {
     if (selected === null && groupedExpenses.length > 0) {
@@ -35,9 +40,7 @@ export default function Summary(props) {
     let _monthRepayments = filter(allRepayments, (repayment) => {
       const tDate = dayjs(repayment.date);
       return (
-        tDate.year() === year &&
-        tDate.month() === month - 1 &&
-        !repayment.pending
+        tDate.year() === year && tDate.month() === month && !repayment.pending
       );
     });
 
@@ -45,7 +48,7 @@ export default function Summary(props) {
       const tDate = dayjs(expense.date);
       return (
         tDate.year() === Number(year) &&
-        tDate.month() === month - 1 &&
+        tDate.month() === month &&
         !expense.pending
       );
     });
@@ -63,6 +66,7 @@ export default function Summary(props) {
         const subcategoryExpenses = groupedBySubcategory[key];
         return {
           name: key,
+          expenses: subcategoryExpenses,
           value: reduce(
             subcategoryExpenses,
             (sum, item) => sum + findAmount(item),
@@ -77,6 +81,7 @@ export default function Summary(props) {
         name: key,
         category: key,
         color,
+        expenses: groupExpenses,
         value: reduce(groupExpenses, (sum, item) => sum + findAmount(item), 0),
         subcategories: groupedBySubcategory,
       };

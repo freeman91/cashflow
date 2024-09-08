@@ -13,7 +13,7 @@ import { getDebts } from '../debts';
 import { getExpenses } from '../expenses';
 import { getIncomes } from '../incomes';
 import { getNetworths } from '../networths';
-import { getPaychecks } from '../paychecks';
+import { getPaychecks, getPaycheckTemplates } from '../paychecks';
 import { getPurchases } from '../purchases';
 import { getRepayments } from '../repayments';
 import { getSales } from '../sales';
@@ -48,12 +48,13 @@ const getUser = createAsyncThunk(
       dispatch(getExpenses({ user_id, range: { start, end } }));
       dispatch(getIncomes({ user_id, range: { start, end } }));
       dispatch(getNetworths(user_id));
-      dispatch(getPaychecks({ user_id, range: { start, end } }));
       dispatch(getPurchases(user_id));
       dispatch(getRepayments(user_id));
       dispatch(getSales(user_id));
       dispatch(getOptionLists(user_id));
       dispatch(getCategories(user_id));
+      await dispatch(getPaychecks({ user_id, range: { start, end } }));
+      dispatch(getPaycheckTemplates({ user_id }));
 
       return { item: user };
     } catch (err) {

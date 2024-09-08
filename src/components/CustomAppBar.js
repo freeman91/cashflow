@@ -28,7 +28,7 @@ const CustomAppBar = forwardRef((props, ref) => {
 
   const bgcolor = theme.palette.surface[150];
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar
         ref={ref}
         position='fixed'
@@ -36,6 +36,10 @@ const CustomAppBar = forwardRef((props, ref) => {
           boxShadow: 'unset',
           backgroundColor: 'unset',
           backgroundImage: 'unset',
+          width: '100%',
+          top: 0,
+          left: 0,
+          right: 0,
         }}
       >
         <Toolbar

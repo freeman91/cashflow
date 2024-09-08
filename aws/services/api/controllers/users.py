@@ -18,7 +18,7 @@ def user_route(user_id: str):
 
     if request.method == "PUT":
         user = User.get_(user_id)
-        user = user.update_(request.json)
+        # user = user.update_(request.json)
         user_dict = user.as_dict()
         del user_dict["password"]
 

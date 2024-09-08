@@ -10,15 +10,27 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import CustomAppBar from '../../components/CustomAppBar';
+import BillTemplates from './BillTemplates';
+import PaycheckSettings from './PaycheckSettings';
+import OptionsList from './OptionsList';
+import CategoryList from './CategoryList';
+
+const EXPENSE_VENDORS = 'expense-vendors';
+const EXPENSE_CATEGORIES = 'expense-categories';
+const INCOME_SOURCES = 'income-sources';
+const INCOME_CATEGORIES = 'income-categories';
+const ASSET_CATEGORIES = 'asset-categories';
+const PAYCHECK_TEMPLATES = 'paycheck-templates';
+const BILL_TEMPLATES = 'bill-templates';
 
 const OPTIONS = [
-  'expense-vendors',
-  'expense-categories',
-  'income-sources',
-  'income-categories',
-  'asset-categories',
-  'paycheck-defaults',
-  'bill-templates',
+  EXPENSE_VENDORS,
+  EXPENSE_CATEGORIES,
+  INCOME_SOURCES,
+  INCOME_CATEGORIES,
+  ASSET_CATEGORIES,
+  PAYCHECK_TEMPLATES,
+  BILL_TEMPLATES,
 ];
 
 export default function Settings() {
@@ -39,11 +51,18 @@ export default function Settings() {
 
   const marginTop = toolbarRef?.current?.offsetHeight || 90;
   return (
-    <Box sx={{ height: '100%', width: '100%' }}>
+    <Box sx={{ height: '100%', width: '100%', mb: 18 }}>
       <CustomAppBar
         ref={toolbarRef}
         title={
-          <Typography variant='h6' fontWeight='bold'>
+          <Typography
+            variant='h6'
+            fontWeight='bold'
+            onClick={() => {
+              dispatch(push('/settings'));
+            }}
+            sx={{ cursor: 'pointer', '&:hover': { color: 'primary.main' } }}
+          >
             settings
           </Typography>
         }
@@ -59,7 +78,10 @@ export default function Settings() {
                   m: 1,
                   p: 1,
                   cursor: 'pointer',
-                  '&:hover': { backgroundColor: 'surface.250' },
+                  '&:hover': {
+                    backgroundColor: 'surface.250',
+                    color: 'primary.main',
+                  },
                   backgroundColor: 'surface.300',
                   borderRadius: '5px',
                 }}
@@ -78,6 +100,23 @@ export default function Settings() {
           {lowerCase(selected)}
         </Typography>
       )}
+      {selected === EXPENSE_VENDORS && (
+        <OptionsList optionType='expense_vendor' placeholder='vendor' />
+      )}
+      {selected === EXPENSE_CATEGORIES && (
+        <CategoryList categoryType='expense' placeholder='category' />
+      )}
+      {selected === INCOME_SOURCES && (
+        <OptionsList optionType='income_source' placeholder='source' />
+      )}
+      {selected === INCOME_CATEGORIES && (
+        <OptionsList optionType='income_category' placeholder='category' />
+      )}
+      {selected === ASSET_CATEGORIES && (
+        <OptionsList optionType='asset_category' placeholder='category' />
+      )}
+      {selected === PAYCHECK_TEMPLATES && <PaycheckSettings />}
+      {selected === BILL_TEMPLATES && <BillTemplates />}
     </Box>
   );
 }

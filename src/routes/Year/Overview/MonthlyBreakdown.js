@@ -27,7 +27,7 @@ const MonthBox = (props) => {
   const date = dayjs().year(year).month(month);
 
   const handleClick = () => {
-    dispatch(push(`/summary/${year}/${month + 1}`));
+    dispatch(push('/dashboard/overview', { year, month }));
   };
 
   const net = incomeSum - expenseSum;

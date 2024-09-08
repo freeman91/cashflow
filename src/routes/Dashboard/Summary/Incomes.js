@@ -26,7 +26,7 @@ export default function Incomes(props) {
     let _monthIncomes = filter(allIncomes, (income) => {
       const incomeDate = dayjs(income.date);
       return incomeDate.year() === year && month
-        ? incomeDate.month() === month - 1
+        ? incomeDate.month() === month
         : true;
     });
     setMonthIncomes(_monthIncomes);
@@ -36,7 +36,7 @@ export default function Incomes(props) {
     let _monthPaychecks = filter(allPaychecks, (paycheck) => {
       const paycheckDate = dayjs(paycheck.date);
       return paycheckDate.year() === year && month
-        ? paycheckDate.month() === month - 1
+        ? paycheckDate.month() === month
         : true;
     });
     setMonthPaychecks(_monthPaychecks);

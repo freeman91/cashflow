@@ -41,6 +41,14 @@ export default function Dashboard() {
   const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
 
   useEffect(() => {
+    const _year = location?.state?.year;
+    const _month = location?.state?.month;
+    if (_year && _month) {
+      setMonth(dayjs(`${_year}-${_month + 1}-15`));
+    }
+  }, [location.state]);
+
+  useEffect(() => {
     const pathParts = location.pathname.split('/');
     const tab = pathParts[2];
     const subtab = pathParts[3];
@@ -89,9 +97,7 @@ export default function Dashboard() {
     <Box
       sx={{
         overflowY: 'scroll',
-        height: '100%',
         WebkitOverflowScrolling: 'touch',
-        width: '100%',
       }}
     >
       <CustomAppBar

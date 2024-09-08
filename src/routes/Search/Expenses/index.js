@@ -7,10 +7,11 @@ import includes from 'lodash/includes';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
+import FilterListIcon from '@mui/icons-material/FilterList';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
 import { findId } from '../../../helpers/transactions';
@@ -22,8 +23,7 @@ import FilterDialog from './FilterDialog';
 import ExpensesSummary from './ExpensesSummary';
 import TransactionBox from '../../../components/TransactionBox';
 
-export default function Expenses(props) {
-  const { trigger, toggleTrigger } = props;
+export default function Expenses() {
   const dispatch = useDispatch();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
@@ -145,21 +145,22 @@ export default function Expenses(props) {
     dispatch(getExpenses({ range }));
   }, [range, dispatch]);
 
-  // handleFilterClick
-  useEffect(() => {
-    if (trigger) {
-      toggleTrigger();
-      setOpen(true);
-    }
-  }, [trigger, toggleTrigger]);
-
   return (
     <>
       <Box sx={{ px: 1, mb: 1 }}>
-        <Card raised>
-          <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
-            <RangeSelect range={range} setRange={setRange} />
-          </CardContent>
+        <Card
+          raised
+          sx={{
+            p: 0.5,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <RangeSelect range={range} setRange={setRange} />
+          <IconButton onClick={() => setOpen(true)}>
+            <FilterListIcon />
+          </IconButton>
         </Card>
         <ExpensesSummary expenses={filteredExpenses} />
       </Box>

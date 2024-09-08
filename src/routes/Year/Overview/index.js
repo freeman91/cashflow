@@ -41,10 +41,10 @@ export default function YearOverview(props) {
   }, [year, dispatch]);
 
   useEffect(() => {
-    let yearIncomes = filter(
-      [...allIncomes, ...allPaychecks],
-      (income) => dayjs(income.date).year() === year
-    );
+    let yearIncomes = filter([...allIncomes, ...allPaychecks], (income) => {
+      if (!income.date) return false;
+      return dayjs(income.date).year() === year;
+    });
 
     const yearSum = reduce(
       yearIncomes,
@@ -56,10 +56,10 @@ export default function YearOverview(props) {
     setIncomeSum(yearSum);
 
     let _months = map(MONTHS, (month) => {
-      let _incomes = filter(
-        yearIncomes,
-        (income) => dayjs(income.date).month() === month
-      );
+      let _incomes = filter(yearIncomes, (income) => {
+        if (!income.date) return false;
+        return dayjs(income.date).month() === month;
+      });
       return reduce(_incomes, (sum, income) => sum + findAmount(income), 0);
     });
     setIncomeSumByMonth(_months);

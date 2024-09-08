@@ -4,12 +4,13 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -75,7 +76,9 @@ export default function SubAccountBreakdown(props) {
             {groupedItems.map((group, groupIdx) => {
               return (
                 <React.Fragment key={group + groupIdx}>
-                  <ListItem>
+                  <ListItemButton
+                    onClick={() => setExpanded(expanded ? '' : group.group)}
+                  >
                     <ListItemText secondary={group.group} />
                     <ListItemText
                       primary={numberToCurrency.format(group.sum)}
@@ -83,31 +86,36 @@ export default function SubAccountBreakdown(props) {
                         fontWeight: 'bold',
                         align: 'right',
                       }}
+                      sx={{ mr: 2 }}
                     />
-                    <ListItemIcon
-                      sx={{ minWidth: 'unset' }}
-                      onClick={() => setExpanded(expanded ? '' : group.group)}
-                    >
-                      <IconButton size='small'>
-                        {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                      </IconButton>
-                    </ListItemIcon>
-                  </ListItem>
-                  {expanded === group.group &&
-                    group.items.map((item, idx) => {
+                    {expanded === group.group ? (
+                      <ExpandLessIcon />
+                    ) : (
+                      <ExpandMoreIcon />
+                    )}
+                  </ListItemButton>
+                  <Collapse
+                    in={expanded === group.group}
+                    timeout='auto'
+                    unmountOnExit
+                  >
+                    <Divider />
+                    {group.items.map((item, idx) => {
                       const value = item?.value || item?.amount;
                       return (
                         <React.Fragment key={item.name + value}>
-                          <ItemBox item={item} />
+                          <Box sx={{ m: 0.5 }}>
+                            <ItemBox item={item} />
+                          </Box>
+
                           {idx < group.items.length - 1 && (
                             <Divider sx={{ mx: '8px !important' }} />
                           )}
                         </React.Fragment>
                       );
                     })}
-                  {groupIdx < groupedItems.length - 1 && (
-                    <Divider sx={{ mx: '8px !important' }} />
-                  )}
+                    <Divider />
+                  </Collapse>
                 </React.Fragment>
               );
             })}

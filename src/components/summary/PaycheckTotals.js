@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import reduce from 'lodash/reduce';
 
 import Card from '@mui/material/Card';
@@ -6,11 +7,14 @@ import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
+import { openDialog } from '../../store/dialogs';
 
 export default function PaycheckTotals(props) {
   const { paychecks } = props;
+  const dispatch = useDispatch();
 
   const [takeHome, setTakeHome] = useState(0);
   const [retirement, setRetirement] = useState(0);
@@ -90,45 +94,67 @@ export default function PaycheckTotals(props) {
 
   return (
     <Grid item xs={12} mx={1} pt='0px !important'>
-      <Card raised>
-        <List disablePadding>
-          <ListItem>
-            <ListItemText secondary='take home' />
-            <ListItemText
-              primary={numberToCurrency.format(takeHome)}
-              primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-            />
-          </ListItem>
-          <ListItem sx={{ pl: 4, pr: 4 }}>
-            <ListItemText secondary='retirement' />
-            <ListItemText
-              primary={numberToCurrency.format(retirement)}
-              primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-            />
-          </ListItem>
-          <ListItem sx={{ pl: 4, pr: 4 }}>
-            <ListItemText secondary='benefits' />
-            <ListItemText
-              primary={numberToCurrency.format(benefits)}
-              primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-            />
-          </ListItem>
-          <ListItem sx={{ pl: 4, pr: 4 }}>
-            <ListItemText secondary='taxes' />
-            <ListItemText
-              primary={numberToCurrency.format(taxes)}
-              primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-            />
-          </ListItem>
-          <ListItem sx={{ pl: 4, pr: 4 }}>
-            <ListItemText secondary='other' />
-            <ListItemText
-              primary={numberToCurrency.format(other)}
-              primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-            />
-          </ListItem>
-        </List>
-      </Card>
+      {paychecks.length === 0 ? (
+        <Typography
+          variant='body1'
+          color='text.secondary'
+          align='center'
+          mt={1}
+        >
+          none
+        </Typography>
+      ) : (
+        <Card raised>
+          <List
+            disablePadding
+            onClick={() => {
+              dispatch(
+                openDialog({
+                  type: 'transactions',
+                  attrs: paychecks,
+                })
+              );
+            }}
+            sx={{ cursor: 'pointer' }}
+          >
+            <ListItem>
+              <ListItemText secondary='take home' />
+              <ListItemText
+                primary={numberToCurrency.format(takeHome)}
+                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
+              />
+            </ListItem>
+            <ListItem sx={{ pl: 4, pr: 4 }}>
+              <ListItemText secondary='retirement' />
+              <ListItemText
+                primary={numberToCurrency.format(retirement)}
+                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
+              />
+            </ListItem>
+            <ListItem sx={{ pl: 4, pr: 4 }}>
+              <ListItemText secondary='benefits' />
+              <ListItemText
+                primary={numberToCurrency.format(benefits)}
+                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
+              />
+            </ListItem>
+            <ListItem sx={{ pl: 4, pr: 4 }}>
+              <ListItemText secondary='taxes' />
+              <ListItemText
+                primary={numberToCurrency.format(taxes)}
+                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
+              />
+            </ListItem>
+            <ListItem sx={{ pl: 4, pr: 4 }}>
+              <ListItemText secondary='other' />
+              <ListItemText
+                primary={numberToCurrency.format(other)}
+                primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
+              />
+            </ListItem>
+          </List>
+        </Card>
+      )}
     </Grid>
   );
 }

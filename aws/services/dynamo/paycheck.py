@@ -26,7 +26,7 @@ class Paycheck(BaseModel):
     paycheck_id = UnicodeAttribute(range_key=True)
     _type = UnicodeAttribute(default=TYPE)
 
-    date = UTCDateTimeAttribute()
+    date = UTCDateTimeAttribute(null=True)
     employer = UnicodeAttribute()
 
     take_home = NumberAttribute()
@@ -60,6 +60,35 @@ class Paycheck(BaseModel):
             user_id=user_id,
             paycheck_id=f"paycheck:{uuid4()}",
             date=_date,
+            employer=employer,
+            take_home=take_home,
+            taxes=taxes,
+            retirement=retirement,
+            benefits=benefits,
+            other=other,
+            deposit_to_id=deposit_to_id,
+            description=description,
+        )
+        paycheck.save()
+        return paycheck
+
+    @classmethod
+    def create_template(
+        cls,
+        user_id: str,
+        paycheck_id: str,
+        employer: str,
+        take_home: float,
+        taxes: float = None,
+        retirement: float = None,
+        benefits: float = None,
+        other: float = None,
+        deposit_to_id: str = None,
+        description: str = None,
+    ) -> "Paycheck":
+        paycheck = cls(
+            user_id=user_id,
+            paycheck_id=paycheck_id,
             employer=employer,
             take_home=take_home,
             taxes=taxes,

@@ -43,7 +43,7 @@ export default function CurrentNetworth(props) {
   return (
     <SubAccountBreakdown
       tab={tab}
-      changeTab={changeTab}
+      handleChange={changeTab}
       groupedItems={groupedItems}
       handleSelectPreviousMonth={handleSelectPreviousMonth}
     />

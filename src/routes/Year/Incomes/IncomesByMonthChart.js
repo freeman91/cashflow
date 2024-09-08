@@ -94,11 +94,10 @@ export default function IncomesByMonthChart(props) {
 
   useEffect(() => {
     let _months = MONTH_NAMES.map((month, idx) => {
-      let _incomes = filter(
-        yearIncomes,
-        (income) =>
-          dayjs(income.date).month() === idx && income._type === 'income'
-      );
+      let _incomes = filter(yearIncomes, (income) => {
+        if (!income.date) return false;
+        return dayjs(income.date).month() === idx && income._type === 'income';
+      });
       let _paychecks = filter(
         yearIncomes,
         (paycheck) =>
