@@ -119,12 +119,7 @@ export default function MonthlyLineChart(props) {
             width={width}
             height={height}
             data={chartData}
-            margin={{
-              top: 5,
-              right: 5,
-              bottom: 5,
-              left: 5,
-            }}
+            margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
           >
             <XAxis dataKey='name' axisLine={false} tickLine={false} />
             <YAxis hide />
@@ -136,7 +131,7 @@ export default function MonthlyLineChart(props) {
             <Bar
               stackId='a'
               dataKey='net'
-              fill='#0763c2'
+              fill={theme.palette.primary.main}
               barSize={5}
               maxBarSize={15}
             />

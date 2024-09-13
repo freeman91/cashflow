@@ -133,12 +133,19 @@ function ExpenseDialog() {
     setSubcategories([]);
   };
 
+  const titleOptions = [
+    mode === 'edit' && (
+      <MenuItem key='delete' onClick={handleDelete}>
+        delete
+      </MenuItem>
+    ),
+  ].filter(Boolean);
   return (
     <BaseDialog
       type={defaultExpense._type}
       title={`${mode} ${defaultExpense._type}`}
       handleClose={handleClose}
-      titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
+      titleOptions={titleOptions}
     >
       <form style={{ width: '100%' }}>
         <List>

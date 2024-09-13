@@ -93,12 +93,19 @@ function IncomeDialog() {
     setIncome(defaultIncome);
   };
 
+  const titleOptions = [
+    mode === 'edit' && (
+      <MenuItem key='delete' onClick={handleDelete}>
+        delete
+      </MenuItem>
+    ),
+  ].filter(Boolean);
   return (
     <BaseDialog
       type={defaultIncome._type}
       title={`${mode} ${defaultIncome._type}`}
       handleClose={handleClose}
-      titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
+      titleOptions={titleOptions}
     >
       <form style={{ width: '100%' }}>
         <List>

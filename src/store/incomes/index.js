@@ -70,7 +70,9 @@ const postIncome = createAsyncThunk(
         dispatch(setSnackbar({ message: 'income created' }));
       }
 
-      dispatch(updateAsset(asset));
+      if (asset) {
+        dispatch(updateAsset(asset));
+      }
 
       return {
         data: [income].concat(incomes),

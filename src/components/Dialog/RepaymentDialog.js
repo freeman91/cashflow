@@ -170,12 +170,19 @@ function RepaymentDialog() {
     return _total;
   })();
 
+  const titleOptions = [
+    mode === 'edit' && (
+      <MenuItem key='delete' onClick={handleDelete}>
+        delete
+      </MenuItem>
+    ),
+  ].filter(Boolean);
   return (
     <BaseDialog
       type={defaultRepayment._type}
       title={`${mode} ${defaultRepayment._type}`}
       handleClose={handleClose}
-      titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
+      titleOptions={titleOptions}
     >
       <form style={{ width: '100%' }}>
         <List>

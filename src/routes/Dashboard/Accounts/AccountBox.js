@@ -3,14 +3,16 @@ import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
 import { useTheme } from '@emotion/react';
-import Box from '@mui/material/Box';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LaunchIcon from '@mui/icons-material/Launch';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import { _numberToCurrency } from '../../../helpers/currency';
 import BoxFlexColumn from '../../../components/BoxFlexColumn';
 import BoxFlexCenter from '../../../components/BoxFlexCenter';
+import { openDialog } from '../../../store/dialogs';
 
 export default function AccountBox(props) {
   const { account } = props;
@@ -21,9 +23,20 @@ export default function AccountBox(props) {
     dispatch(push('/dashboard/accounts', { accountId: account.account_id }));
   };
 
-  const handleLinkClick = (e, account) => {
+  const handleLinkClick = (e) => {
     e.stopPropagation();
-    window.open(account?.url, '_blank');
+    window.open(account.url, '_blank');
+  };
+
+  const openAccountDialog = (e) => {
+    e.stopPropagation();
+    dispatch(
+      openDialog({
+        type: 'account',
+        mode: 'edit',
+        id: account.account_id,
+      })
+    );
   };
 
   return (
@@ -39,16 +52,16 @@ export default function AccountBox(props) {
       }}
     >
       <IconButton
-        color='primary'
-        onClick={(e) => handleLinkClick(e, account)}
+        onClick={openAccountDialog}
         sx={{
           background: `linear-gradient(45deg, ${theme.palette.surface[200]}, ${theme.palette.surface[300]})`,
           boxShadow: 6,
           borderRadius: '50%',
           p: '4px',
+          color: 'grey',
         }}
       >
-        <LaunchIcon />
+        <AccountBalanceIcon />
       </IconButton>
       <Box
         sx={{
@@ -86,6 +99,14 @@ export default function AccountBox(props) {
           </Typography>
         </BoxFlexCenter>
       </Box>
+      <IconButton
+        color='primary'
+        onClick={handleLinkClick}
+        disabled={!account.url}
+        sx={{ p: '4px', ml: 2 }}
+      >
+        <LaunchIcon />
+      </IconButton>
     </Box>
   );
 }

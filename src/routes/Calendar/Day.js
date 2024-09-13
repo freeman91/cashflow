@@ -117,6 +117,8 @@ export default function Day({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
+        padding: 0.5,
+        cursor: 'pointer',
       }}
       onClick={onClick}
     >

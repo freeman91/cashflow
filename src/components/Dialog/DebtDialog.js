@@ -108,16 +108,29 @@ function DebtDialog() {
     setDebt(defaultDebt);
   };
 
+  const titleOptions = [
+    mode === 'edit' && (
+      <MenuItem key='borrow' onClick={() => {}}>
+        borrow
+      </MenuItem>
+    ),
+    mode === 'edit' && (
+      <MenuItem key='repayment' onClick={() => {}}>
+        repayment
+      </MenuItem>
+    ),
+    mode === 'edit' && (
+      <MenuItem key='delete' onClick={handleDelete}>
+        delete
+      </MenuItem>
+    ),
+  ].filter(Boolean);
   return (
     <BaseDialog
       type={defaultDebt._type}
       title={`${mode} ${defaultDebt._type}`}
       handleClose={handleClose}
-      titleOptions={
-        <MenuItem key='delete' onClick={handleDelete}>
-          delete
-        </MenuItem>
-      }
+      titleOptions={titleOptions}
     >
       <form style={{ width: '100%' }}>
         <List>

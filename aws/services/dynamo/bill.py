@@ -97,6 +97,7 @@ class Bill(BaseModel):
         if self.debt_id:
             debt = dynamo.Debt.get_(user_id=USER_ID, debt_id=self.debt_id)
             interest = debt.amount * (debt.interest_rate / 12)
+            interest = interest
             principal = self.amount - interest
             escrow = None
 
@@ -108,9 +109,9 @@ class Bill(BaseModel):
             return dynamo.Repayment.create(
                 user_id=debt.user_id,
                 _date=datetime(year, month, self.day, 12, 0),
-                principal=principal,
-                interest=interest,
-                escrow=escrow,
+                principal=round(principal, 2),
+                interest=round(interest, 2),
+                escrow=round(escrow, 2),
                 lender=self.vendor,
                 category=self.category,
                 subcategory=self.subcategory,

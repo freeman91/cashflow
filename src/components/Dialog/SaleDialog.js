@@ -99,12 +99,19 @@ function SaleDialog() {
     setSale(defaultSale);
   };
 
+  const titleOptions = [
+    mode === 'edit' && (
+      <MenuItem key='delete' onClick={handleDelete}>
+        delete
+      </MenuItem>
+    ),
+  ].filter(Boolean);
   return (
     <BaseDialog
       type={defaultSale._type}
       title={`${mode} ${defaultSale._type}`}
       handleClose={handleClose}
-      titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
+      titleOptions={titleOptions}
     >
       <form style={{ width: '100%' }}>
         <List>

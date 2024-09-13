@@ -71,12 +71,19 @@ function AccountDialog() {
     setAccount(defaultAccount);
   };
 
+  const titleOptions = [
+    mode === 'edit' && (
+      <MenuItem key='delete' onClick={handleDelete}>
+        delete
+      </MenuItem>
+    ),
+  ].filter(Boolean);
   return (
     <BaseDialog
       type={defaultAccount._type}
       title={`${mode} ${defaultAccount._type}`}
       handleClose={handleClose}
-      titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
+      titleOptions={titleOptions}
     >
       <form style={{ width: '100%' }}>
         <List>

@@ -177,19 +177,24 @@ function BillDialog() {
     );
   };
 
+  const titleOptions = [
+    mode === 'edit' && (
+      <MenuItem key='generate' onClick={handleGenerateExpense}>
+        generate expense
+      </MenuItem>
+    ),
+    mode === 'edit' && (
+      <MenuItem key='delete' onClick={handleDelete}>
+        delete
+      </MenuItem>
+    ),
+  ].filter(Boolean);
   return (
     <BaseDialog
       type={defaultBill._type}
       title={`${mode} ${defaultBill._type}`}
       handleClose={handleClose}
-      titleOptions={[
-        <MenuItem key='delete-menu-item' onClick={handleDelete}>
-          delete
-        </MenuItem>,
-        <MenuItem key='generate-menu-item' onClick={handleGenerateExpense}>
-          generate expense
-        </MenuItem>,
-      ]}
+      titleOptions={titleOptions}
     >
       <form style={{ width: '100%' }}>
         <List>

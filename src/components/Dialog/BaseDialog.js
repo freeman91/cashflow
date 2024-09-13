@@ -14,16 +14,16 @@ function BaseDialog(props) {
   const {
     type,
     title,
-    titleOptions,
-    children,
+    titleOptions = null,
     handleClose = null,
     disableGutters = false,
+    children,
   } = props;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
 
-  const { open, mode } = useSelector((state) => state.dialogs[type]);
+  const { open } = useSelector((state) => state.dialogs[type]);
 
   const handleCloseBase = () => {
     dispatch(closeDialog(type));
@@ -44,7 +44,7 @@ function BaseDialog(props) {
     >
       <DialogTitle sx={{ pb: 0 }}>
         {title}
-        <DialogTitleOptions mode={mode} handleClose={handleCloseBase}>
+        <DialogTitleOptions handleClose={handleCloseBase}>
           {titleOptions}
         </DialogTitleOptions>
       </DialogTitle>

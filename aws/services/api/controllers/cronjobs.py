@@ -6,7 +6,7 @@ import math
 from datetime import datetime, date, timedelta
 
 from pydash import filter_, map_, find
-from flask import request, Blueprint
+from flask import request, Blueprint, current_app
 from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
 
@@ -36,9 +36,9 @@ def get_stock_price(ticker: str):
     """get current stock prices"""
 
     result = stock_info.get_data(ticker.upper())
-    value = result.close[-1]
+    value = result.close.iloc[-1]
     if math.isnan(value):
-        value = result.close[-2]
+        value = result.close.iloc[-2]
 
     return value
 
@@ -59,10 +59,11 @@ def update_crypto_prices():
         prices = get_crypto_prices(tickers)
 
         for asset in crypto_assets:
-            asset.price = prices[f"{asset.name.upper()}"]["USD"]
-            asset.value = asset.price * asset.shares
+            price = prices[f"{asset.name.upper()}"]["USD"]
+            asset.price = round(price, 2)
+            asset.value = round(asset.price * asset.shares, 2)
 
-            print(f"{asset.name}: {asset.price}")
+            current_app.logger.info("%s: %s", asset.name, asset.price)
             asset.save()
 
         return success_result("assets updated")
@@ -85,10 +86,10 @@ def update_stock_prices():
         tickers = map_(stock_assets, lambda asset: asset.name.upper())
         for ticker in tickers:
             asset = find(stock_assets, lambda asset: asset.name == ticker)
-            asset.price = float(get_stock_price(ticker.upper()))
-            asset.value = asset.price * asset.shares
+            asset.price = round(float(get_stock_price(ticker.upper())), 2)
+            asset.value = round(asset.price * asset.shares, 2)
 
-            print(f"{asset.name}: {asset.price}")
+            current_app.logger.info("%s: %s", asset.name, asset.price)
             asset.save()
 
         return success_result("assets updated")
@@ -160,14 +161,14 @@ def networth_snapshot():
                 assets=assets,
                 debts=debts,
             )
-            print("Networth created")
+            current_app.logger.info("Networth created")
 
         else:
             networth.date = _date
             networth.assets = assets
             networth.debts = debts
             networth.save()
-            print("Networth updated")
+            current_app.logger.info("Networth updated")
 
         return success_result("Success")
 
@@ -186,7 +187,7 @@ def generate_bill_expenses():
         for bill in Bill.list():
             if _date.day == bill.day and _date.month in bill.months:
                 expense = bill.generate(year=_date.year, month=_date.month)
-                print(f"{bill.name} - {expense}")
+                current_app.logger.info("%s - %s", bill.name, expense)
                 count += 1
 
         return success_result(f"{_date} :: {count} expenses generated")

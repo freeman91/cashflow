@@ -122,13 +122,20 @@ function PaycheckDialog() {
     setAnchorEl(null);
   };
 
+  const titleOptions = [
+    mode === 'edit' && (
+      <MenuItem key='delete' onClick={handleDelete}>
+        delete
+      </MenuItem>
+    ),
+  ].filter(Boolean);
   const open = Boolean(anchorEl);
   return (
     <BaseDialog
       type={defaultPaycheck._type}
       title={`${mode} ${defaultPaycheck._type}`}
       handleClose={handleClose}
-      titleOptions={<MenuItem onClick={handleDelete}>delete</MenuItem>}
+      titleOptions={titleOptions}
     >
       <form style={{ width: '100%' }}>
         <List>

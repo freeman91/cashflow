@@ -91,22 +91,29 @@ function AssetDialog() {
     setAsset(defaultAsset);
   };
 
+  const titleOptions = [
+    mode === 'edit' && (
+      <MenuItem key='purchase' onClick={() => {}}>
+        purchase
+      </MenuItem>
+    ),
+    mode === 'edit' && (
+      <MenuItem key='sale' onClick={() => {}}>
+        sale
+      </MenuItem>
+    ),
+    mode === 'edit' && (
+      <MenuItem key='delete' onClick={handleDelete}>
+        delete
+      </MenuItem>
+    ),
+  ].filter(Boolean);
   return (
     <BaseDialog
       type={defaultAsset._type}
       title={`${mode} ${defaultAsset._type}`}
       handleClose={handleClose}
-      titleOptions={[
-        <MenuItem key='purchase' onClick={() => {}}>
-          purchase
-        </MenuItem>,
-        <MenuItem key='sale' onClick={() => {}}>
-          sale
-        </MenuItem>,
-        <MenuItem key='delete' onClick={handleDelete}>
-          delete
-        </MenuItem>,
-      ]}
+      titleOptions={titleOptions}
     >
       <form style={{ width: '100%' }}>
         <List>

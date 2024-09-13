@@ -12,14 +12,7 @@ from dotenv import load_dotenv
 
 def load_env_vars(quiet=False):
     load_dotenv()
-    variable_names = [
-        "REACT_APP_API_URL",
-        "HOST",
-        "PORT",
-        "APP_ID",
-        "ENV",
-        "REGION",
-    ]
+    variable_names = ["REACT_APP_API_URL", "HOST", "PORT", "APP_ID", "ENV", "REGION"]
 
     if not quiet:
         for name in variable_names:

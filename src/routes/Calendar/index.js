@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { push } from 'redux-first-history';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
 
@@ -14,22 +12,23 @@ import Typography from '@mui/material/Typography';
 import MonthContent from './MonthContent';
 import SelectedTransactionsStack from './SelectedTransactionsStack';
 import CustomAppBar from '../../components/CustomAppBar';
+import useExpenses from '../../store/hooks/useExpenses';
+import useIncomes from '../../store/hooks/useIncomes';
 
 export default function Calendar() {
-  const dispatch = useDispatch();
   const location = useLocation();
   const toolbarRef = useRef(null);
   const today = dayjs();
 
-  const allExpenses = useSelector((state) => state.expenses.data);
-  const allRepayments = useSelector((state) => state.repayments.data);
-  const allIncomes = useSelector((state) => state.incomes.data);
-  const allPaychecks = useSelector((state) => state.paychecks.data);
-
   const [month, setMonth] = useState(dayjs());
   const [days, setDays] = useState([]);
-  const [monthExpenses, setMonthExpenses] = useState([]);
-  const [monthIncomes, setMonthIncomes] = useState([]);
+
+  const { expenses, pendingExpenses } = useExpenses(
+    month.year(),
+    month.month()
+  );
+  const { incomes } = useIncomes(month.year(), month.month());
+
   const [selectedTransactions, setSelectedTransactions] = useState([]);
   const [showWeights] = useState(true);
 
@@ -40,24 +39,8 @@ export default function Calendar() {
   }, [location.state]);
 
   useEffect(() => {
-    if (!month) return;
     let firstDayOfMonth = month.date(1).hour(12).minute(0).second(0);
     let firstDayOfWeek = firstDayOfMonth.day(0).hour(12).minute(0).second(0);
-
-    const filterRecords = (records) => {
-      return filter(records, (record) => {
-        const expDay = dayjs(record.date);
-        const BOM = firstDayOfWeek.hour(0);
-        const EOM = month.endOf('month').day(6).hour(23);
-        return (
-          (expDay.isAfter(BOM, 'day') || expDay.isSame(BOM, 'day')) &&
-          (expDay.isBefore(EOM, 'day') || expDay.isSame(EOM, 'day'))
-        );
-      });
-    };
-
-    setMonthExpenses(filterRecords([...allExpenses, ...allRepayments]));
-    setMonthIncomes(filterRecords([...allIncomes, ...allPaychecks]));
 
     let _days = [];
     let currentDay = firstDayOfWeek;
@@ -79,28 +62,26 @@ export default function Calendar() {
     }
 
     setDays(_days);
-  }, [month, allExpenses, allIncomes, allRepayments, allPaychecks]);
+  }, [month]);
 
   useEffect(() => {
-    let expenses = filter(monthExpenses, (expense) => {
-      return dayjs(expense.date).isSame(month, 'day');
-    });
-    let incomes = filter(monthIncomes, (income) => {
-      return dayjs(income.date).isSame(month, 'day');
-    });
-    setSelectedTransactions([...expenses, ...incomes]);
-  }, [month, monthExpenses, monthIncomes]);
+    let transactions = filter(
+      [...expenses, ...pendingExpenses, ...incomes],
+      (transaction) => {
+        return dayjs(transaction.date).isSame(month, 'day');
+      }
+    );
+    setSelectedTransactions(transactions);
+  }, [month, expenses, pendingExpenses, incomes]);
 
   const handlePrevMonth = () => {
     const previousMonth = month?.subtract(1, 'month');
-    dispatch(
-      push(`/calendar/${previousMonth.year()}/${previousMonth.month() + 1}`)
-    );
+    setMonth(previousMonth);
   };
 
   const handleNextMonth = () => {
     const nextMonth = month?.add(1, 'month');
-    dispatch(push(`/calendar/${nextMonth.year()}/${nextMonth.month() + 1}`));
+    setMonth(nextMonth);
   };
 
   const marginTop = toolbarRef?.current?.offsetHeight || 90;
@@ -139,8 +120,8 @@ export default function Calendar() {
         selectedDate={month}
         setSelectedDate={setMonth}
         days={days}
-        monthExpenses={monthExpenses}
-        monthIncomes={monthIncomes}
+        monthExpenses={[...expenses, ...pendingExpenses]}
+        monthIncomes={incomes}
         showWeights={showWeights}
       />
       <SelectedTransactionsStack transactions={selectedTransactions} />

@@ -13,6 +13,7 @@ export const useExpenses = (year, month) => {
   const allRepayments = useSelector((state) => state.repayments.data);
 
   const [expenses, setExpenses] = useState([]);
+  const [pendingExpenses, setPendingExpenses] = useState([]);
   const [sum, setSum] = useState(0);
 
   useEffect(() => {
@@ -53,7 +54,19 @@ export const useExpenses = (year, month) => {
     setExpenses(_expenses);
   }, [year, month, allExpenses, allRepayments]);
 
-  return { expenses, sum };
+  useEffect(() => {
+    let _expenses = filter([...allExpenses, ...allRepayments], (expense) => {
+      const expenseDate = dayjs(expense.date);
+      return (
+        expense.pending &&
+        expenseDate.year() === year &&
+        (month ? expenseDate.month() === month : true)
+      );
+    });
+    setPendingExpenses(_expenses);
+  }, [year, month, allExpenses, allRepayments]);
+
+  return { expenses, pendingExpenses, sum };
 };
 
 export default useExpenses;
