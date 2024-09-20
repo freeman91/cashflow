@@ -7,14 +7,11 @@ import isEmpty from 'lodash/isEmpty';
 
 import DescriptionIcon from '@mui/icons-material/Description';
 import Button from '@mui/material/Button';
-import Backdrop from '@mui/material/Backdrop';
 import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
 import TextFieldListItem from '../List/TextFieldListItem';
-import Typography from '@mui/material/Typography';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
@@ -55,7 +52,6 @@ function PaycheckDialog() {
   });
   const { mode, id, attrs } = useSelector((state) => state.dialogs.paycheck);
 
-  const [anchorEl, setAnchorEl] = useState(null);
   const [paycheck, setPaycheck] = useState(defaultPaycheck);
 
   const incomeSources = find(optionLists, { option_type: 'income_source' });
@@ -111,15 +107,6 @@ function PaycheckDialog() {
       other: template.other,
       description: template.description,
     }));
-    handleCloseMenu();
-  };
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
   };
 
   const titleOptions = [
@@ -128,8 +115,15 @@ function PaycheckDialog() {
         delete
       </MenuItem>
     ),
+    ...templates.map((template) => (
+      <MenuItem
+        key={template.paycheck_id}
+        onClick={(e) => handleTemplateClick(e, template)}
+      >
+        {template.employer}
+      </MenuItem>
+    )),
   ].filter(Boolean);
-  const open = Boolean(anchorEl);
   return (
     <BaseDialog
       type={defaultPaycheck._type}
@@ -204,14 +198,6 @@ function PaycheckDialog() {
               cancel
             </Button>
             <Button
-              onClick={handleClick}
-              variant='outlined'
-              color='info'
-              sx={{ width: '30%' }}
-            >
-              auto fill
-            </Button>
-            <Button
               type='submit'
               id='submit'
               variant='contained'
@@ -224,55 +210,6 @@ function PaycheckDialog() {
           </ListItem>
         </List>
       </form>
-      <Backdrop open={open}>
-        <Menu
-          anchorEl={anchorEl}
-          id='template-menu'
-          open={open}
-          onClose={handleCloseMenu}
-          onClick={handleCloseMenu}
-          MenuListProps={{ sx: { p: 0 } }}
-          transformOrigin={{ horizontal: 'center', vertical: 'top' }}
-          anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
-          sx={{
-            left: -75,
-            top: -75,
-            '& .MuiMenu-paper': {
-              backgroundColor: 'unset',
-              backgroundImage: 'unset',
-              boxShadow: 'unset',
-            },
-          }}
-        >
-          {templates.map((template) => {
-            return (
-              <MenuItem
-                key={template.paycheck_id}
-                onClick={(e) => handleTemplateClick(e, template)}
-                sx={{
-                  my: 1,
-                  p: '12px',
-                  borderRadius: 1,
-                  backgroundColor: 'primary.main',
-                  color: 'primary.contrastText',
-                  '&:hover': {
-                    backgroundColor: 'primary.dark',
-                  },
-                }}
-              >
-                <Typography
-                  variant='h5'
-                  align='center'
-                  sx={{ width: '100%' }}
-                  fontWeight='bold'
-                >
-                  {template.employer}
-                </Typography>
-              </MenuItem>
-            );
-          })}
-        </Menu>
-      </Backdrop>
     </BaseDialog>
   );
 }
