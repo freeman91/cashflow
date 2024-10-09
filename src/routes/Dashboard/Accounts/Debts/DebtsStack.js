@@ -20,8 +20,16 @@ export default function DebtsStack() {
   }, [allDebts]);
 
   return (
-    <Grid item xs={12} mx={1} mb={1} pt='0px !important'>
-      <Card raised>
+    <Grid
+      item
+      xs={12}
+      mx={1}
+      mb={1}
+      pt='0px !important'
+      display='flex'
+      justifyContent='center'
+    >
+      <Card raised sx={{ maxWidth: 500, width: '100%' }}>
         <Stack spacing={1} direction='column' pt={1} pb={1}>
           {map(debts, (debt, idx) => {
             return (

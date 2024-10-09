@@ -12,8 +12,14 @@ import TransactionBox from './TransactionBox';
 const TransactionsGridStack = (props) => {
   const { transactions } = props;
   return (
-    <Grid item xs={12} mx={1} pt='0 !important'>
-      <Card raised>
+    <Grid
+      item
+      xs={12}
+      mx={1}
+      pt='0 !important'
+      sx={{ display: 'flex', justifyContent: 'center' }}
+    >
+      <Card raised sx={{ maxWidth: 650, width: '100%' }}>
         <Stack spacing={1} direction='column' pt={1} pb={1}>
           {map(transactions, (transaction, idx) => {
             const key = findId(transaction);

@@ -1,139 +1,154 @@
 import React from 'react';
 
-import { useTheme } from '@emotion/react';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { _numberToCurrency } from '../helpers/currency';
 import BoxFlexCenter from './BoxFlexCenter';
-import BoxFlexColumn from './BoxFlexColumn';
-import CustomIconButton from './CustomIconButton';
-
-const BoxCurrencyDisplay = (props) => {
-  const { value, label, color, icon, orientation } = props;
-
-  const deg = orientation === 'right' ? '90deg' : '-90deg';
-  return (
-    <Box
-      sx={{
-        position: 'relative',
-        width: 175,
-        height: 75,
-        background: `linear-gradient(${deg}, ${color[200]}, ${color[400]})`,
-        boxShadow: 6,
-        zIndex: 1,
-        borderRadius: '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        p: 1,
-      }}
-    >
-      {orientation === 'right' && (
-        <CustomIconButton color={color}>{icon}</CustomIconButton>
-      )}
-
-      <BoxFlexColumn
-        alignItems={orientation === 'left' ? 'flex-start' : 'flex-end'}
-      >
-        <Typography variant='body1' color='text.secondary'>
-          {label}
-        </Typography>
-        <BoxFlexCenter>
-          <Typography variant='h5' color='text.secondary'>
-            $
-          </Typography>
-          <Typography variant='h5' color='white' fontWeight='bold'>
-            {_numberToCurrency.format(value)}
-          </Typography>
-        </BoxFlexCenter>
-      </BoxFlexColumn>
-      {orientation === 'left' && (
-        <CustomIconButton color={color}>{icon}</CustomIconButton>
-      )}
-    </Box>
-  );
-};
 
 export default function CashflowContainer(props) {
-  const { incomeSum, expenseSum } = props;
+  const { incomeSum, expenseSum, principalSum } = props;
   const theme = useTheme();
 
   const net = incomeSum - expenseSum;
+  const nonPrincipalSum = expenseSum - principalSum;
+  const max = Math.max(incomeSum, expenseSum, 8000);
+  const incomePercent = (incomeSum / max) * 100;
+  const expensePercent = (expenseSum / max) * 100;
   return (
-    <Grid item xs={12} mx={1} pt={'0px !important'} mb={-1}>
-      <Box sx={{ mb: 6 }}>
-        <BoxFlexCenter>
-          <Typography variant='h4' color='text.secondary'>
-            $
-          </Typography>
-          <Typography variant='h4' color='white' fontWeight='bold'>
-            {_numberToCurrency.format(net)}
-          </Typography>
-        </BoxFlexCenter>
-        <Typography variant='body1' align='center' color='text.secondary'>
-          cashflow
-        </Typography>
-      </Box>
-      <Box
+    <Grid
+      item
+      xs={12}
+      md={6}
+      mx={1}
+      pt={'0px !important'}
+      mb={-1}
+      sx={{ maxWidth: '400px !important' }}
+    >
+      <Card
+        raised
         sx={{
-          position: 'relative',
-          height: 50,
-          width: 50,
-          top: -90,
-          left: '15%',
-          borderWidth: '2px',
-          borderTopStyle: 'dashed',
-          borderLeftStyle: 'dashed',
-          borderTopColor: theme.palette.green[400],
-          borderLeftColor: theme.palette.green[400],
-          borderTopLeftRadius: '15px',
-          zIndex: 0,
-        }}
-      />
-      <Box
-        sx={{
-          position: 'relative',
-          height: 50,
-          width: 50,
-          top: -140,
-          left: '70%',
-          borderWidth: '2px',
-          borderTopStyle: 'dashed',
-          borderRightStyle: 'dashed',
-          borderTopColor: theme.palette.red[300],
-          borderRightColor: theme.palette.red[300],
-          borderTopRightRadius: '15px',
-          mb: '-135px',
-          zIndex: 0,
-        }}
-      />
-      <Box
-        sx={{
+          borderRadius: '5px',
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          position: 'relative',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          mt: 1,
+          py: 1,
+          px: 2,
         }}
       >
-        <BoxCurrencyDisplay
-          value={incomeSum}
-          label='incomes'
-          color={theme.palette.green}
-          icon={<TrendingUpIcon />}
-          orientation='left'
-        />
-        <BoxCurrencyDisplay
-          value={expenseSum}
-          label='expenses'
-          color={theme.palette.red}
-          icon={<TrendingDownIcon />}
-          orientation='right'
-        />
-      </Box>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant='body2' color='text.secondary'>
+            cashflow
+          </Typography>
+          <BoxFlexCenter>
+            <Typography variant='h6' color='text.secondary'>
+              $
+            </Typography>
+            <Typography variant='h6' color='white' fontWeight='bold'>
+              {_numberToCurrency.format(net)}
+            </Typography>
+          </BoxFlexCenter>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          <Box sx={{ width: '100%', mr: 2 }}>
+            <Typography
+              variant='body1'
+              color='text.secondary'
+              fontWeight='bold'
+            >
+              earned
+            </Typography>
+            <Box
+              sx={{
+                width: `${incomePercent}%`,
+                borderRadius: '5px',
+                backgroundColor: theme.palette.green[400],
+                height: '10px',
+              }}
+            />
+          </Box>
+          <BoxFlexCenter sx={{ pt: 2 }}>
+            <Typography variant='h6' color='text.secondary'>
+              $
+            </Typography>
+            <Typography variant='h6' color='white' fontWeight='bold'>
+              {_numberToCurrency.format(incomeSum)}
+            </Typography>
+          </BoxFlexCenter>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          <Box sx={{ width: '100%', mr: 2 }}>
+            <Typography
+              variant='body1'
+              color='text.secondary'
+              fontWeight='bold'
+            >
+              spent
+            </Typography>
+            <Box
+              sx={{
+                width: `${expensePercent}%`,
+                height: '10px',
+                display: 'flex',
+              }}
+            >
+              <Box
+                sx={{
+                  width: `${(nonPrincipalSum / expenseSum) * 100}%`,
+                  backgroundColor: theme.palette.red[600],
+                  height: '10px',
+                  borderTopLeftRadius: '5px',
+                  borderBottomLeftRadius: '5px',
+                  borderTopRightRadius: principalSum === 0 ? '5px' : '0px',
+                  borderBottomRightRadius: principalSum === 0 ? '5px' : '0px',
+                }}
+              />
+              <Box
+                sx={{
+                  width: `${(principalSum / expenseSum) * 100}%`,
+                  backgroundColor: theme.palette.red[400],
+                  height: '10px',
+                  borderTopRightRadius: '5px',
+                  borderBottomRightRadius: '5px',
+                }}
+              />
+            </Box>
+          </Box>
+          <BoxFlexCenter sx={{ pt: 2 }}>
+            <Typography variant='h6' color='text.secondary'>
+              $
+            </Typography>
+            <Typography variant='h6' color='white' fontWeight='bold'>
+              {_numberToCurrency.format(expenseSum)}
+            </Typography>
+          </BoxFlexCenter>
+        </Box>
+      </Card>
     </Grid>
   );
 }

@@ -8,7 +8,7 @@ import useIncomes from '../../../store/hooks/useIncomes';
 export default function Cashflow(props) {
   const { year, month } = props;
 
-  const { sum: expenseSum } = useExpenses(year, month);
+  const { sum: expenseSum, principalSum } = useExpenses(year, month);
   const { sum: incomeSum } = useIncomes(year, month);
 
   const date = dayjs().set('year', year).set('month', month);
@@ -17,6 +17,7 @@ export default function Cashflow(props) {
       dateStr={date.format('MMMM')}
       incomeSum={incomeSum}
       expenseSum={expenseSum}
+      principalSum={principalSum}
     />
   );
 }

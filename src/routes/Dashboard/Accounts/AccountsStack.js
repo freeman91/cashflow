@@ -45,8 +45,14 @@ export default function AccountsStack() {
   }, [allAccounts, allAssets, allDebts]);
 
   return (
-    <Grid item xs={12} mx={1} pt='0px !important'>
-      <Card raised>
+    <Grid
+      item
+      xs={12}
+      mx={1}
+      pt='0px !important'
+      sx={{ display: 'flex', justifyContent: 'center' }}
+    >
+      <Card raised sx={{ maxWidth: 500, width: '100%' }}>
         <Stack spacing={1} direction='column' pt={1} pb={1}>
           {map(accounts, (account, idx) => {
             return (

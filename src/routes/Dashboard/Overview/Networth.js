@@ -73,7 +73,7 @@ export default function Networth() {
   })();
 
   return (
-    <Grid item xs={12} mx={1}>
+    <Grid item xs={12} md={6} mx={1} sx={{ maxWidth: '400px !important' }}>
       <Card
         raised
         onClick={() => dispatch(push('/dashboard/networth'))}

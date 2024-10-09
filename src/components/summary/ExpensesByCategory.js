@@ -42,8 +42,15 @@ export default function ExpensesByCategory(props) {
     );
   }
   return (
-    <Grid item xs={12} pt={'0 !important'}>
-      <Box sx={{ height: 125 }}>
+    <Grid
+      item
+      xs={12}
+      mt={2}
+      pt='0 !important'
+      display='flex'
+      justifyContent='space-between'
+    >
+      <Box sx={{ height: 125, width: '100%', maxWidth: 450 }}>
         <ResponsiveContainer width='100%' height='100%'>
           <PieChart width={400} height={125}>
             <Pie

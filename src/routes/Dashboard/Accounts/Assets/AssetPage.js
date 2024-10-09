@@ -106,13 +106,30 @@ export default function AssetPage(props) {
 
   return (
     <>
-      <Grid item xs={12} mx={1} pt='0 !important'>
-        <Card raised sx={{ borderRadius: '10px', py: 1 }}>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        pt='0 !important'
+        display='flex'
+        justifyContent='center'
+      >
+        <Card
+          raised
+          sx={{ borderRadius: '10px', py: 1, maxWidth: 500, width: '100%' }}
+        >
           <ItemBox item={asset} />
         </Card>
       </Grid>
       {tab !== null && (
-        <Grid item xs={12} mx={1} pt='12px !important'>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='12px !important'
+          display='flex'
+          justifyContent='center'
+        >
           {tabs.length === 1 ? (
             <Typography variant='body1' align='center'>
               {tabs[0]}
@@ -122,6 +139,7 @@ export default function AssetPage(props) {
               value={tab}
               onChange={handleChange}
               variant='fullWidth'
+              sx={{ maxWidth: 400, width: '100%' }}
             >
               {tabs.map((tab) => (
                 <StyledSubtab key={tab} label={tab} value={tab} />
@@ -132,10 +150,24 @@ export default function AssetPage(props) {
       )}
       {tab === PURCHASES && purchases.length !== 0 && (
         <>
-          <Grid item xs={12} mx={2} pt='0px !important'>
+          <Grid
+            item
+            xs={12}
+            mx={2}
+            pt='0px !important'
+            display='flex'
+            justifyContent='center'
+          >
             <DataBox label='total invested' value={purchaseSum} />
           </Grid>
-          <Grid item xs={12} mx={1} pt={'0 !important'}>
+          <Grid
+            item
+            xs={12}
+            mx={1}
+            pt={'0 !important'}
+            display='flex'
+            justifyContent='center'
+          >
             <PurchasesStack assetId={asset.asset_id} />
           </Grid>
         </>
@@ -143,7 +175,14 @@ export default function AssetPage(props) {
       {tab === SALES && sales.length !== 0 && (
         <>
           {sales.length > 1 && (
-            <Grid item xs={12} mx={1} pt='0px !important'>
+            <Grid
+              item
+              xs={12}
+              mx={1}
+              pt='0px !important'
+              display='flex'
+              justifyContent='center'
+            >
               <BoxFlexCenter>
                 <Typography variant='h5' color='text.secondary'>
                   $
@@ -154,14 +193,28 @@ export default function AssetPage(props) {
               </BoxFlexCenter>
             </Grid>
           )}
-          <Grid item xs={12} mx={1} pt={'2px !important'}>
+          <Grid
+            item
+            xs={12}
+            mx={1}
+            pt={'2px !important'}
+            display='flex'
+            justifyContent='center'
+          >
             <SalesStack assetId={asset.asset_id} />
           </Grid>
         </>
       )}
       {tab === TRANSACTIONS && transactions.length !== 0 && (
-        <Grid item xs={12} mx={1} pt='0px !important'>
-          <Card raised>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='0px !important'
+          display='flex'
+          justifyContent='center'
+        >
+          <Card raised sx={{ maxWidth: 500, width: '100%' }}>
             <Stack spacing={1} direction='column' pt={1} pb={1}>
               {map(transactions, (transaction, idx) => {
                 const key = findId(transaction);
@@ -179,7 +232,14 @@ export default function AssetPage(props) {
         </Grid>
       )}
       {tab === HISTORY && (
-        <Grid item xs={12} mx={1} pt='0px !important'>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='0px !important'
+          display='flex'
+          justifyContent='center'
+        >
           <AssetChart asset={asset} />
         </Grid>
       )}

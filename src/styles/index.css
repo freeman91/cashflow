@@ -10,4 +10,5 @@ body {
 
 html {
   overflow-x: hidden;
+  scrollbar-width: none;
 }

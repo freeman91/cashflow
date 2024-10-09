@@ -83,7 +83,7 @@ export default function AssetChart(props) {
   }, [selected, allAccounts]);
 
   return (
-    <Box sx={{ p: 1 }}>
+    <Box sx={{ p: 1, maxWidth: 500, width: '100%' }}>
       <ResponsiveContainer
         width='100%'
         height={200}

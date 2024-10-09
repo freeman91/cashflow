@@ -51,7 +51,8 @@ const RepaymentBox = (props) => {
       >
         <BoxFlexColumn alignItems='space-between'>
           <Typography align='left' variant='body2' color='text.secondary'>
-            {dayjs(repayment.date).format('MMM D, YYYY')}
+            {dayjs(repayment.date).format('MMM D, YYYY')}{' '}
+            {repayment.pending && '(pending)'}
           </Typography>
           <BoxFlexCenter justifyContent='flex-start'>
             <Typography variant='h5' color='text.secondary'>
@@ -104,12 +105,15 @@ export default function RepaymentsStack(props) {
   const [repayments, setRepayment] = useState([]);
 
   useEffect(() => {
-    let _repayments = filter(allRepayments, { debt_id: debtId });
+    let _repayments = filter(allRepayments, {
+      debt_id: debtId,
+      pending: false,
+    });
     setRepayment(sortBy(_repayments, 'date').reverse());
   }, [allRepayments, debtId]);
 
   return (
-    <Card raised>
+    <Card raised sx={{ maxWidth: 500, width: '100%' }}>
       <Stack spacing={1} direction='column' pt={1} pb={1}>
         {map(repayments, (repayment, idx) => {
           return (

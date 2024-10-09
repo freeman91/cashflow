@@ -95,7 +95,7 @@ export default function BorrowsStack(props) {
   }, [allBorrows, debtId]);
 
   return (
-    <Card raised>
+    <Card raised sx={{ maxWidth: 500, width: '100%' }}>
       <Stack spacing={1} direction='column' pt={1} pb={1}>
         {map(borrows, (borrow, idx) => {
           return (

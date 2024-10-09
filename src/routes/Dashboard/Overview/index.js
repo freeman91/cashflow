@@ -69,10 +69,15 @@ export default function Overview(props) {
     <>
       <Cashflow year={month.year()} month={month.month()} />
       <Networth />
-      <Grid item xs={12} mx={1}>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      >
         <StyledSubtabs
           variant='fullWidth'
-          sx={{ pb: 1 }}
+          sx={{ pb: 1, maxWidth: 400, width: '100%' }}
           value={tab}
           onChange={changeTab}
         >

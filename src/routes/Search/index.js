@@ -35,7 +35,7 @@ export default function Search() {
 
   const marginTop = toolbarRef?.current?.offsetHeight || 90;
   return (
-    <Box sx={{ height: '100%', width: '100%', mb: 18 }}>
+    <Box sx={{ height: '100%', width: '100%', mb: 18, maxWidth: 500 }}>
       <CustomAppBar
         ref={toolbarRef}
         title={
@@ -62,7 +62,10 @@ export default function Search() {
                   m: 1,
                   p: 1,
                   cursor: 'pointer',
-                  '&:hover': { backgroundColor: 'surface.250' },
+                  '&:hover': {
+                    backgroundColor: 'surface.250',
+                    color: 'primary.main',
+                  },
                   backgroundColor: 'surface.300',
                   borderRadius: '5px',
                 }}

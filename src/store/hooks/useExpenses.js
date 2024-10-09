@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
+import get from 'lodash/get';
 import reduce from 'lodash/reduce';
 
 import { findAmount } from '../../helpers/transactions';
@@ -15,6 +16,7 @@ export const useExpenses = (year, month) => {
   const [expenses, setExpenses] = useState([]);
   const [pendingExpenses, setPendingExpenses] = useState([]);
   const [sum, setSum] = useState(0);
+  const [principalSum, setPrincipalSum] = useState(0);
 
   useEffect(() => {
     let start = null;
@@ -51,6 +53,15 @@ export const useExpenses = (year, month) => {
         0
       )
     );
+    setPrincipalSum(
+      reduce(
+        _expenses,
+        (acc, expense) => {
+          return acc + get(expense, 'principal', 0);
+        },
+        0
+      )
+    );
     setExpenses(_expenses);
   }, [year, month, allExpenses, allRepayments]);
 
@@ -66,7 +77,7 @@ export const useExpenses = (year, month) => {
     setPendingExpenses(_expenses);
   }, [year, month, allExpenses, allRepayments]);
 
-  return { expenses, pendingExpenses, sum };
+  return { expenses, pendingExpenses, sum, principalSum };
 };
 
 export default useExpenses;

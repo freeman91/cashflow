@@ -38,12 +38,15 @@ export default function SubAccountBreakdown(props) {
         xs={12}
         mx={2}
         sx={{ position: 'relative', top: -140, height: 0 }}
+        display='flex'
+        justifyContent='center'
       >
         <Stack
           direction='row'
           justifyContent='space-between'
           alignItems='center'
           mx={1}
+          sx={{ maxWidth: 500, width: '100%' }}
         >
           <IconButton
             onClick={handleSelectPreviousMonth}
@@ -59,19 +62,33 @@ export default function SubAccountBreakdown(props) {
           </IconButton>
         </Stack>
       </Grid>
-      <Grid item xs={12} mx={1} pt='0 !important'>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        pt='0 !important'
+        display='flex'
+        justifyContent='center'
+      >
         <StyledSubtabs
           value={tab}
           onChange={handleChange}
           variant='fullWidth'
-          sx={{ pb: 1 }}
+          sx={{ pb: 1, maxWidth: 400, width: '100%' }}
         >
           <StyledSubtab label={ASSETS} value={ASSETS} />
           <StyledSubtab label={DEBTS} value={DEBTS} />
         </StyledSubtabs>
       </Grid>
-      <Grid item xs={12} mx={1} pt={'0px !important'}>
-        <Card raised>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        pt={'0px !important'}
+        display='flex'
+        justifyContent='center'
+      >
+        <Card raised sx={{ maxWidth: 500, width: '100%' }}>
           <List disablePadding>
             {groupedItems.map((group, groupIdx) => {
               return (

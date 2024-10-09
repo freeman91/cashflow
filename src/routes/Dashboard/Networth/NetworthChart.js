@@ -114,7 +114,7 @@ export default function NetworthChart(props) {
   }, [allNetworths]);
 
   return (
-    <Box sx={{ p: 1 }}>
+    <Box sx={{ p: 1, maxWidth: 600, width: '100%' }}>
       <ResponsiveContainer
         width='100%'
         height={200}

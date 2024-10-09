@@ -125,7 +125,7 @@ export default function PurchasesStack(props) {
   }, [allPurchases, assetId]);
 
   return (
-    <Card raised>
+    <Card raised sx={{ maxWidth: 500, width: '100%' }}>
       <Stack spacing={1} direction='column' pt={1} pb={1}>
         {map(purchases, (purchase, idx) => {
           return (

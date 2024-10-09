@@ -30,6 +30,7 @@ export default function Dashboard() {
   const toolbarRef = useRef(null);
   const today = dayjs();
 
+  const [marginTop, setMarginTop] = useState(90);
   const [showMonthSelect, setShowMonthSelect] = useState(true);
   const [month, setMonth] = useState(dayjs());
   const [tab, setTab] = useState(TABS[0]);
@@ -39,6 +40,10 @@ export default function Dashboard() {
   };
 
   const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
+
+  useEffect(() => {
+    setMarginTop(toolbarRef?.current?.offsetHeight || 90);
+  }, [toolbarRef?.current?.offset]);
 
   useEffect(() => {
     const _year = location?.state?.year;
@@ -88,18 +93,11 @@ export default function Dashboard() {
     dispatch(push('/calendar', { month }));
   };
 
-  const marginTop = toolbarRef?.current?.offsetHeight || 90;
   const diff = today.diff(month, 'month');
   const format = diff > 10 ? 'MMMM YYYY' : 'MMMM';
   const nextDisabled = today.isSameOrBefore(month, 'month');
-
   return (
-    <Box
-      sx={{
-        overflowY: 'scroll',
-        WebkitOverflowScrolling: 'touch',
-      }}
-    >
+    <Box sx={{ WebkitOverflowScrolling: 'touch' }}>
       <CustomAppBar
         ref={toolbarRef}
         title={
@@ -139,7 +137,7 @@ export default function Dashboard() {
         container
         spacing={2}
         justifyContent='center'
-        alignItems='flex-start'
+        alignItems='center'
         sx={{ pt: 1, mt: marginTop + 'px' }}
       >
         {(isRefreshing || pullPosition > 100) && (

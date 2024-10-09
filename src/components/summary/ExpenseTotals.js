@@ -107,10 +107,15 @@ export default function ExpenseTotals(props) {
 
   return (
     <>
-      <Grid item xs={12} mx={1}>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      >
         <StyledSubtabs
           variant='fullWidth'
-          sx={{ pb: 1 }}
+          sx={{ pb: 1, maxWidth: 400, width: '100%' }}
           value={tab}
           onChange={changeTab}
         >
@@ -120,8 +125,14 @@ export default function ExpenseTotals(props) {
         </StyledSubtabs>
       </Grid>
 
-      <Grid item xs={12} mx={1} pt='0px !important'>
-        <Card raised>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        pt='0px !important'
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      >
+        <Card raised sx={{ maxWidth: 400, width: '100%' }}>
           {tab === REPAYMENT_TOTALS && (
             <List
               disablePadding

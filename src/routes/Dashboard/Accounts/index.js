@@ -81,8 +81,18 @@ export default function Accounts() {
   const noSelection = !selectedAccount && !selectedAsset && !selectedDebt;
   return (
     <>
-      <Grid item xs={12} mx={1} pt='0 !important'>
-        <StyledSubtabs variant='fullWidth' sx={{ pb: 1 }} value={subtab}>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        pt='0 !important'
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      >
+        <StyledSubtabs
+          variant='fullWidth'
+          sx={{ pb: 1, maxWidth: 500, width: '100%' }}
+          value={subtab}
+        >
           {SUBTABS.map((_tab) => (
             <StyledSubtab
               key={_tab}

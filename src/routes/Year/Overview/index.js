@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
+import get from 'lodash/get';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 
@@ -29,6 +30,7 @@ export default function YearOverview(props) {
   const [incomeSumByMonth, setIncomeSumByMonth] = useState([]);
   const [expenseSumByMonth, setExpenseSumByMonth] = useState([]);
   const [incomeSum, setIncomeSum] = useState(0);
+  const [principalSum, setPrincipalSum] = useState(0);
   const [expenseSum, setExpenseSum] = useState(0);
 
   useEffect(() => {
@@ -78,6 +80,14 @@ export default function YearOverview(props) {
       },
       0
     );
+    const _principalSum = reduce(
+      yearExpenses,
+      (acc, expense) => {
+        return acc + get(expense, 'principal', 0);
+      },
+      0
+    );
+    setPrincipalSum(_principalSum);
     setExpenseSum(yearSum);
 
     let _months = map(MONTHS, (month) => {
@@ -97,12 +107,18 @@ export default function YearOverview(props) {
         dateStr={year}
         incomeSum={incomeSum}
         expenseSum={expenseSum}
+        principalSum={principalSum}
       />
       <MonthlyLineChart
         incomeSumByMonth={incomeSumByMonth}
         expenseSumByMonth={expenseSumByMonth}
       />
-      <Grid item xs={12} mx={1}>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      >
         <MonthlyBreakdown
           year={year}
           incomeSumByMonth={incomeSumByMonth}

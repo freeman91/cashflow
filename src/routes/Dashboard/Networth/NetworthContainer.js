@@ -71,7 +71,13 @@ export default function NetworthContainer(props) {
 
   const net = assetSum - debtSum;
   return (
-    <Grid item xs={12} mx={1} sx={{ pt: '0 !important' }} mb={-1}>
+    <Grid
+      item
+      xs={12}
+      mx={1}
+      sx={{ pt: '0 !important', maxWidth: '400px !important' }}
+      mb={-1}
+    >
       <Box sx={{ mb: 6 }}>
         <BoxFlexCenter>
           <Typography variant='h4' color='text.secondary'>

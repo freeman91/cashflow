@@ -34,6 +34,7 @@ export default function Incomes(props) {
 
   useEffect(() => {
     let _monthPaychecks = filter(allPaychecks, (paycheck) => {
+      if (!paycheck?.date) return false;
       const paycheckDate = dayjs(paycheck.date);
       return paycheckDate.year() === year && month
         ? paycheckDate.month() === month
@@ -48,10 +49,15 @@ export default function Incomes(props) {
 
   return (
     <>
-      <Grid item xs={12} mx={1}>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      >
         <StyledSubtabs
           variant='fullWidth'
-          sx={{ pb: 1 }}
+          sx={{ pb: 1, maxWidth: 400, width: '100%' }}
           value={tab}
           onChange={changeTab}
         >

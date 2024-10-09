@@ -97,7 +97,7 @@ export default function MonthlyBreakdown(props) {
   const { year, incomeSumByMonth, expenseSumByMonth } = props;
 
   return (
-    <Card raised>
+    <Card raised sx={{ maxWidth: 650, width: '100%' }}>
       <Stack spacing={1} direction='column' pt={1} pb={1}>
         {map(MONTH_NAMES, (_, month) => {
           const incomeSum = incomeSumByMonth[month];

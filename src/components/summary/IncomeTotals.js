@@ -37,7 +37,13 @@ export default function IncomeTotals(props) {
   }, [incomes]);
 
   return (
-    <Grid item xs={12} mx={1} pt='0px !important'>
+    <Grid
+      item
+      xs={12}
+      mx={1}
+      pt='0px !important'
+      sx={{ display: 'flex', justifyContent: 'center' }}
+    >
       {incomes.length === 0 ? (
         <Typography
           variant='body1'
@@ -48,7 +54,7 @@ export default function IncomeTotals(props) {
           none
         </Typography>
       ) : (
-        <Card raised>
+        <Card raised sx={{ maxWidth: 400, width: '100%' }}>
           <List disablePadding>
             {groupedIncomes.map((group) => (
               <ListItemButton

@@ -51,7 +51,7 @@ export default function Settings() {
 
   const marginTop = toolbarRef?.current?.offsetHeight || 90;
   return (
-    <Box sx={{ height: '100%', width: '100%', mb: 18 }}>
+    <Box sx={{ height: '100%', width: '100%', mb: 18, maxWidth: 500 }}>
       <CustomAppBar
         ref={toolbarRef}
         title={

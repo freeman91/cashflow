@@ -67,11 +67,13 @@ export default function DebtPage(props) {
   }, [allBorrows, debt.debt_id]);
 
   useEffect(() => {
-    let debtRepayments = filter(allRepayments, { debt_id: debt.debt_id });
+    let debtRepayments = filter(allRepayments, {
+      debt_id: debt.debt_id,
+      pending: false,
+    });
     const sums = reduce(
       debtRepayments,
       (acc, repayment) => {
-        if (repayment.pending) return acc;
         return {
           principal: acc.principal + get(repayment, 'principal', 0),
           interest: acc.interest + get(repayment, 'interest', 0),
@@ -112,13 +114,27 @@ export default function DebtPage(props) {
 
   return (
     <>
-      <Grid item xs={12} mx={1} pt='0 !important'>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        pt='0 !important'
+        display='flex'
+        justifyContent='center'
+      >
         <Card raised sx={{ borderRadius: '10px', py: 1 }}>
           <ItemBox item={debt} />
         </Card>
       </Grid>
       {tab !== null && (
-        <Grid item xs={12} mx={1} pt='12px !important'>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='12px !important'
+          display='flex'
+          justifyContent='center'
+        >
           {tabs.length === 1 ? (
             <Typography variant='body1' align='center'>
               {tabs[0]}
@@ -128,6 +144,7 @@ export default function DebtPage(props) {
               value={tab}
               onChange={handleChange}
               variant='fullWidth'
+              sx={{ maxWidth: 450, width: '100%' }}
             >
               {tabs.map((tab) => (
                 <StyledSubtab key={tab} label={tab} value={tab} />
@@ -138,7 +155,14 @@ export default function DebtPage(props) {
       )}
       {tab === BORROWS && borrows.length !== 0 && (
         <>
-          <Grid item xs={12} mx={1} pt='0px !important'>
+          <Grid
+            item
+            xs={12}
+            mx={1}
+            pt='0px !important'
+            display='flex'
+            justifyContent='center'
+          >
             {borrows.length > 1 && (
               <BoxFlexCenter>
                 <Typography variant='h5' color='text.secondary'>
@@ -151,33 +175,75 @@ export default function DebtPage(props) {
             )}
           </Grid>
 
-          <Grid item xs={12} mx={1} pt={'0 !important'}>
+          <Grid
+            item
+            xs={12}
+            mx={1}
+            pt={'0 !important'}
+            display='flex'
+            justifyContent='center'
+          >
             <BorrowsStack debtId={debt.debt_id} />
           </Grid>
         </>
       )}
       {tab === REPAYMENTS && repayments.length !== 0 && (
         <>
-          <Grid item xs={12} mx={2} pt='0px !important'>
+          <Grid
+            item
+            xs={12}
+            mx={2}
+            pt='0px !important'
+            display='flex'
+            justifyContent='center'
+          >
             <DataBox label='principal' value={principalSum} />
           </Grid>
-          <Grid item xs={12} mx={2} pt='2px !important'>
+          <Grid
+            item
+            xs={12}
+            mx={2}
+            pt='2px !important'
+            display='flex'
+            justifyContent='center'
+          >
             <DataBox label='interest' value={interestSum} />
           </Grid>
           {escrowSum > 0 && (
-            <Grid item xs={12} mx={2} pt={'4px !important'}>
+            <Grid
+              item
+              xs={12}
+              mx={2}
+              pt={'4px !important'}
+              display='flex'
+              justifyContent='center'
+            >
               <DataBox label='escrow' value={escrowSum} />
             </Grid>
           )}
-          <Grid item xs={12} mx={1} pt={'0 !important'}>
+          <Grid
+            item
+            xs={12}
+            mx={1}
+            pt={'0 !important'}
+            display='flex'
+            justifyContent='center'
+          >
             <RepaymentsStack debtId={debt.debt_id} />
           </Grid>
         </>
       )}
 
       {tab === TRANSACTIONS && transactions.length !== 0 && (
-        <Grid item xs={12} mx={1} pt='0px !important'>
-          <Card raised>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='0px !important'
+          display='flex'
+          justifyContent='center'
+        >
+          <Card raised sx={{ maxWidth: 500, width: '100%' }}>
             <Stack spacing={1} direction='column' pt={1} pb={1}>
               {map(transactions, (transaction, idx) => {
                 const key = findId(transaction);
@@ -195,7 +261,14 @@ export default function DebtPage(props) {
         </Grid>
       )}
       {tab === HISTORY && (
-        <Grid item xs={12} mx={1} pt='0px !important'>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='0px !important'
+          display='flex'
+          justifyContent='center'
+        >
           <DebtChart debt={debt} />
         </Grid>
       )}

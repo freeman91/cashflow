@@ -17,6 +17,7 @@ export default function DataBox(props) {
         alignItems: 'center',
         justifyContent: 'center',
         py: '4px',
+        maxWidth: 450,
         width: '100%',
         px: 1,
         cursor: onClick ? 'pointer' : 'unset',

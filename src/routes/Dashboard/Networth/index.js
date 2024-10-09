@@ -79,7 +79,13 @@ export default function Networth() {
     : 'current';
   return (
     <>
-      <Grid item xs={12} pt='0 !important'>
+      <Grid
+        item
+        xs={12}
+        pt='0 !important'
+        display='flex'
+        justifyContent='center'
+      >
         <NetworthChart selectedId={selectedId} setSelectedId={setSelectedId} />
       </Grid>
       <NetworthContainer

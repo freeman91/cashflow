@@ -110,7 +110,7 @@ export default function SalesStack(props) {
   }, [allSales, assetId]);
 
   return (
-    <Card raised>
+    <Card raised sx={{ maxWidth: 500, width: '100%' }}>
       <Stack spacing={1} direction='column' pt={1} pb={1}>
         {map(sales, (sale, idx) => {
           return (

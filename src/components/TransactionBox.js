@@ -39,6 +39,7 @@ const TransactionBox = (props) => {
   const amount = findAmount(transaction);
   const source = findSource(transaction, bills);
   const category = findCategory(transaction);
+  const subcategory = transaction?.subcategory;
   const color = findColor(transaction);
   const icon = findIcon(transaction);
 
@@ -75,7 +76,7 @@ const TransactionBox = (props) => {
             {source}
           </Typography>
           <Typography variant='body1' color='text.secondary'>
-            {category}
+            {category} {subcategory ? `- ${subcategory}` : ''}
           </Typography>
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>

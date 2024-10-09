@@ -117,8 +117,11 @@ export default function IncomesByMonthChart(props) {
   }, [yearIncomes]);
 
   return (
-    <Grid item xs={12}>
-      <Box ref={componentRef} sx={{ height: 200 }}>
+    <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Box
+        ref={componentRef}
+        sx={{ height: 200, maxWidth: 650, width: '100%' }}
+      >
         <ResponsiveContainer width='100%' height='100%'>
           <BarChart
             width={width}

@@ -93,7 +93,13 @@ export default function PaycheckTotals(props) {
   }, [paychecks]);
 
   return (
-    <Grid item xs={12} mx={1} pt='0px !important'>
+    <Grid
+      item
+      xs={12}
+      mx={1}
+      pt='0px !important'
+      sx={{ display: 'flex', justifyContent: 'center' }}
+    >
       {paychecks.length === 0 ? (
         <Typography
           variant='body1'
@@ -104,7 +110,7 @@ export default function PaycheckTotals(props) {
           none
         </Typography>
       ) : (
-        <Card raised>
+        <Card raised sx={{ maxWidth: 400, width: '100%' }}>
           <List
             disablePadding
             onClick={() => {
@@ -124,28 +130,28 @@ export default function PaycheckTotals(props) {
                 primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
               />
             </ListItem>
-            <ListItem sx={{ pl: 4, pr: 4 }}>
+            <ListItem sx={{ pl: 4 }}>
               <ListItemText secondary='retirement' />
               <ListItemText
                 primary={numberToCurrency.format(retirement)}
                 primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
               />
             </ListItem>
-            <ListItem sx={{ pl: 4, pr: 4 }}>
+            <ListItem sx={{ pl: 4 }}>
               <ListItemText secondary='benefits' />
               <ListItemText
                 primary={numberToCurrency.format(benefits)}
                 primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
               />
             </ListItem>
-            <ListItem sx={{ pl: 4, pr: 4 }}>
+            <ListItem sx={{ pl: 4 }}>
               <ListItemText secondary='taxes' />
               <ListItemText
                 primary={numberToCurrency.format(taxes)}
                 primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
               />
             </ListItem>
-            <ListItem sx={{ pl: 4, pr: 4 }}>
+            <ListItem sx={{ pl: 4 }}>
               <ListItemText secondary='other' />
               <ListItemText
                 primary={numberToCurrency.format(other)}

@@ -90,7 +90,7 @@ export default function Calendar() {
   const nextDisabled = today.isSameOrBefore(month, 'month');
 
   return (
-    <Box sx={{ height: '100%', width: '100%', mb: 8 }}>
+    <Box sx={{ height: '100%', width: '100%', mb: 8, maxWidth: 600 }}>
       <CustomAppBar
         ref={toolbarRef}
         title={

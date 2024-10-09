@@ -63,17 +63,32 @@ export default function AccountPage(props) {
 
   return (
     <>
-      <Grid item xs={12} mx={1} pt='0 !important'>
-        <Card raised sx={{ py: 1 }}>
+      <Grid
+        item
+        xs={12}
+        mx={1}
+        pt='0 !important'
+        display='flex'
+        justifyContent='center'
+      >
+        <Card raised sx={{ py: 1, maxWidth: 500, width: '100%' }}>
           <AccountBox account={{ ...account, net: assetSum - debtSum }} />
         </Card>
       </Grid>
       {tab !== null && (
-        <Grid item xs={12} mx={1} pt='12px !important'>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='12px !important'
+          display='flex'
+          justifyContent='center'
+        >
           <StyledSubtabs
             value={tab}
             onChange={handleChange}
             variant='fullWidth'
+            sx={{ maxWidth: 450, width: '100%' }}
           >
             {assets.length > 0 && (
               <StyledSubtab label={ASSETS} value={ASSETS} />
@@ -85,7 +100,16 @@ export default function AccountPage(props) {
       )}
 
       {tab === ASSETS && assets.length !== 0 && (
-        <Grid item xs={12} mx={1} pt='0px !important'>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='0px !important'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          flexDirection='column'
+        >
           {assets.length > 1 && debts.length > 0 && (
             <BoxFlexCenter>
               <Typography variant='h5' color='text.secondary'>
@@ -96,7 +120,7 @@ export default function AccountPage(props) {
               </Typography>
             </BoxFlexCenter>
           )}
-          <Card raised>
+          <Card raised sx={{ maxWidth: 500, width: '100%' }}>
             <Stack spacing={1} direction='column' py={1}>
               {map(assets, (asset, idx) => {
                 return (
@@ -113,7 +137,16 @@ export default function AccountPage(props) {
         </Grid>
       )}
       {tab === DEBTS && debts.length !== 0 && (
-        <Grid item xs={12} mx={1} pt='0px !important'>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='0px !important'
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          flexDirection='column'
+        >
           {debts.length > 1 && assets.length > 0 && (
             <BoxFlexCenter>
               <Typography variant='h5' color='text.secondary'>
@@ -124,7 +157,7 @@ export default function AccountPage(props) {
               </Typography>
             </BoxFlexCenter>
           )}
-          <Card raised>
+          <Card raised sx={{ maxWidth: 500, width: '100%' }}>
             <Stack spacing={1} direction='column' py={1}>
               {map(debts, (debt, idx) => {
                 return (
@@ -141,7 +174,14 @@ export default function AccountPage(props) {
         </Grid>
       )}
       {tab === HISTORY && (
-        <Grid item xs={12} mx={1} pt='0px !important'>
+        <Grid
+          item
+          xs={12}
+          mx={1}
+          pt='0px !important'
+          display='flex'
+          justifyContent='center'
+        >
           <AccountChart account={account} />
         </Grid>
       )}
