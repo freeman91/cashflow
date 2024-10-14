@@ -73,6 +73,7 @@ export default function ItemBox(props) {
         alignItems: 'center',
         px: 1,
         cursor: 'pointer',
+        width: '100%',
       }}
     >
       <Tooltip placement='top' title='edit'>

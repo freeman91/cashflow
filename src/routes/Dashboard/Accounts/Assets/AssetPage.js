@@ -86,7 +86,11 @@ export default function AssetPage(props) {
 
     if (asset.can_deposit_to) {
       const incomes = filter(allIncomes, { deposit_to_id: asset.asset_id });
-      const paychecks = filter(allPaychecks, { deposit_to_id: asset.asset_id });
+      const paychecks = filter(allPaychecks, (paycheck) => {
+        return (
+          paycheck.deposit_to_id === asset.asset_id && paycheck.date != null
+        );
+      });
       _transactions = [..._transactions, ...incomes, ...paychecks];
     }
 

@@ -122,7 +122,10 @@ export default function DebtPage(props) {
         display='flex'
         justifyContent='center'
       >
-        <Card raised sx={{ borderRadius: '10px', py: 1 }}>
+        <Card
+          raised
+          sx={{ borderRadius: '10px', py: 1, maxWidth: 500, width: '100%' }}
+        >
           <ItemBox item={debt} />
         </Card>
       </Grid>

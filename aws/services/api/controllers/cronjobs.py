@@ -107,70 +107,70 @@ def networth_snapshot():
 
     0 22 28 * * curl -X POST localhost:9000/cronjobs/networth_snapshot > /dev/null
     """
+    if request.method != "POST":
+        return failure_result("Invalid method")
 
-    if request.method == "POST":
-        _date = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
+    _date = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
 
-        assets = []
-        debts = []
+    assets, debts = [], []
+    accounts = Account.list(user_id=USER_ID)
+    allAssets = Asset.list(user_id=USER_ID)
+    allDebts = Debt.list(user_id=USER_ID)
 
-        accounts = Account.list(user_id=USER_ID)
-        allAssets = Asset.list(user_id=USER_ID)
-        allDebts = Debt.list(user_id=USER_ID)
-
-        for account in accounts:
-            account_assets = filter_(
-                allAssets, lambda asset: asset.account_id == account.account_id
-            )
-            for asset in account_assets:
-                if asset.value > 0:
-                    assets.append(
-                        {
-                            "asset_id": asset.asset_id,
-                            "account_id": account.account_id,
-                            "name": asset.name,
-                            "value": asset.value,
-                            "category": asset.category,
-                        }
-                    )
-
-            account_debts = filter_(
-                allDebts, lambda debt: debt.account_id == account.account_id
-            )
-            for debt in account_debts:
-                if debt.amount > 0:
-                    debts.append(
-                        {
-                            "debt_id": debt.debt_id,
-                            "account_id": account.account_id,
-                            "name": debt.name,
-                            "value": debt.amount,
-                            "category": debt.category,
-                        }
-                    )
-
-        networth = Networth.get_month(
-            user_id=USER_ID, year=_date.year, month=_date.month
+    for account in accounts:
+        assets.extend(
+            [
+                {
+                    "asset_id": asset.asset_id,
+                    "account_id": account.account_id,
+                    "name": asset.name,
+                    "value": asset.value,
+                    "category": asset.category,
+                }
+                for asset in filter_(
+                    allAssets,
+                    lambda a: a.account_id == account.account_id and a.value > 0,
+                )
+            ]
         )
-        if not networth:
-            Networth.create(
-                user_id=USER_ID,
-                _date=_date,
-                year=_date.year,
-                month=_date.month,
-                assets=assets,
-                debts=debts,
-            )
-            current_app.logger.info("Networth created")
 
-        else:
-            networth.date = _date
-            networth.assets = assets
-            networth.debts = debts
-            networth.save()
-            current_app.logger.info("Networth updated")
+        debts.extend(
+            [
+                {
+                    "debt_id": debt.debt_id,
+                    "account_id": account.account_id,
+                    "name": debt.name,
+                    "value": debt.amount,
+                    "category": debt.category,
+                }
+                for debt in filter_(
+                    allDebts,
+                    lambda d: d.account_id == account.account_id and d.amount > 0,
+                )
+            ]
+        )
 
-        return success_result("Success")
+    networth = Networth.get_month(user_id=USER_ID, year=_date.year, month=_date.month)
+
+    networth_data = {
+        "user_id": USER_ID,
+        "_date": _date,
+        "year": _date.year,
+        "month": _date.month,
+        "assets": assets,
+        "debts": debts,
+    }
+
+    if not networth:
+        Networth.create(**networth_data)
+        current_app.logger.info("Networth created")
+    else:
+        for key, value in networth_data.items():
+            setattr(networth, key, value)
+        networth.save()
+        current_app.logger.info("Networth updated")
+
+    return success_result("Networth snapshot created/updated successfully")
 
 
 @handle_exception

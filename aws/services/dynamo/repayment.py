@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from typing import Optional, Union
+from typing import List, Optional, Union
 from uuid import uuid4
 from pynamodb.attributes import (
     BooleanAttribute,
@@ -89,7 +89,7 @@ class Repayment(BaseModel):
     @classmethod
     def list(
         cls, user_id: Optional[str] = None, repayment_id: Optional[str] = None
-    ) -> list["Repayment"]:
+    ) -> List["Repayment"]:
         return super().list(user_id, repayment_id)
 
     @classmethod
@@ -111,13 +111,14 @@ class Repayment(BaseModel):
         if self.payment_from_id.startswith("asset"):
             subaccount = dynamo.Asset.get_(self.user_id, self.payment_from_id)
             subaccount.value -= total
+            subaccount.value = round(subaccount.value, 2)
             subaccount.save()
         elif self.payment_from_id.startswith("debt"):
             subaccount = dynamo.Debt.get_(self.user_id, self.payment_from_id)
             subaccount.amount += total
+            subaccount.amount = round(subaccount.amount, 2)
             subaccount.save()
 
-        subaccount.save()
         return subaccount
 
     def update_debt_principal(self) -> dynamo.Debt:
