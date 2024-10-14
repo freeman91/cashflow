@@ -49,12 +49,7 @@ export default function Incomes(props) {
 
   return (
     <>
-      <Grid
-        item
-        xs={12}
-        mx={1}
-        sx={{ display: 'flex', justifyContent: 'center' }}
-      >
+      <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
         <StyledSubtabs
           variant='fullWidth'
           sx={{ pb: 1, maxWidth: 400, width: '100%' }}

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import sortBy from 'lodash/sortBy';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid';
 
 import Cashflow from './Cashflow';
@@ -17,6 +18,7 @@ const TABS = [RECENT, UPCOMING];
 
 export default function Overview(props) {
   const { month } = props;
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
   const allIncomes = useSelector((state) => state.incomes.data);
@@ -73,7 +75,9 @@ export default function Overview(props) {
         item
         xs={12}
         mx={1}
-        sx={{ display: 'flex', justifyContent: 'center' }}
+        mt={isMobile ? 0 : 1}
+        display='flex'
+        justifyContent='center'
       >
         <StyledSubtabs
           variant='fullWidth'

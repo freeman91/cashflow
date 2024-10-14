@@ -45,59 +45,57 @@ export default function ExpensesByCategory(props) {
     <Grid
       item
       xs={12}
-      mt={2}
-      pt='0 !important'
       display='flex'
       justifyContent='space-between'
+      sx={{ width: '100%', maxWidth: '400px !important' }}
     >
-      <Box sx={{ height: 125, width: '100%', maxWidth: 450 }}>
-        <ResponsiveContainer width='100%' height='100%'>
-          <PieChart width={400} height={125}>
-            <Pie
-              data={groupedExpenses}
-              dataKey='value'
-              fill={theme.palette.green[400]}
-              minAngle={4}
-              outerRadius={60}
-              labelLine
-              cx='70%'
-              cy='50%'
-            >
-              {groupedExpenses.map((expenseGroup, idx) => {
-                return (
-                  <Cell
-                    key={`cell-${idx}`}
-                    fill={expenseGroup.color}
-                    // stroke={theme.palette.surface[150]}
-                    stroke={expenseGroup.color}
-                    onMouseEnter={selectCategory}
-                    onClick={selectCategory}
-                  />
-                );
-              })}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
-      </Box>
+      <ResponsiveContainer width={300} height={125}>
+        <PieChart width={400} height={125}>
+          <Pie
+            data={groupedExpenses}
+            dataKey='value'
+            fill={theme.palette.green[400]}
+            minAngle={4}
+            outerRadius={60}
+            labelLine
+            cx='35%'
+            cy='50%'
+          >
+            {groupedExpenses.map((expenseGroup, idx) => {
+              return (
+                <Cell
+                  key={`cell-${idx}`}
+                  fill={expenseGroup.color}
+                  stroke={expenseGroup.color}
+                  onMouseEnter={selectCategory}
+                  onClick={selectCategory}
+                />
+              );
+            })}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
       {selected && (
         <Box
           sx={{
             position: 'relative',
             zIndex: 1,
-            top: -90,
-            right: -30,
-            width: 'fit-content',
-            mb: -7,
+            top: 80,
+            left: -25,
+            transform: 'translate(-40%, -40%)',
+            width: '100%',
+            maxWidth: '150px',
           }}
         >
           <Card raised>
-            <ListItem disablePadding sx={{ px: 2 }}>
-              <ListItemIcon sx={{ minWidth: 'unset', pr: 2 }}>
+            <ListItem disablePadding sx={{ pl: 1, pr: 2 }}>
+              <ListItemIcon sx={{ minWidth: 'unset', pr: 1 }}>
                 <Box
                   sx={{
                     width: 20,
                     height: 20,
                     backgroundColor: selected.color,
+                    borderRadius: '5px',
                   }}
                 />
               </ListItemIcon>

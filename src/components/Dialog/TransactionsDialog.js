@@ -50,7 +50,9 @@ function TransactionsDialog() {
       handleClose={handleClose}
       disableGutters
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+      <Box
+        sx={{ display: 'flex', flexDirection: 'column', width: '100%', pb: 1 }}
+      >
         <Stack spacing={1} width='100%'>
           <SortMenuButton selected={sortAmount} setSelected={setSortAmount} />
         </Stack>

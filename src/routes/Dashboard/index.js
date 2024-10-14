@@ -135,7 +135,7 @@ export default function Dashboard() {
       <Grid
         ref={ref}
         container
-        spacing={2}
+        spacing={1}
         justifyContent='center'
         alignItems='center'
         sx={{ pt: 1, mt: marginTop + 'px' }}

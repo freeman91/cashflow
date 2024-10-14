@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import find from 'lodash/find';
 import reduce from 'lodash/reduce';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -15,6 +16,7 @@ import BoxFlexColumn from '../../../components/BoxFlexColumn';
 
 export default function Networth() {
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const networths = useSelector((state) => state.networths.data);
   const assets = useSelector((state) => state.assets.data);
@@ -72,8 +74,15 @@ export default function Networth() {
     return (difference / networth) * 100;
   })();
 
+  const maxWidth = isMobile ? '400px' : '350px';
   return (
-    <Grid item xs={12} md={6} mx={1} sx={{ maxWidth: '400px !important' }}>
+    <Grid
+      item
+      xs={12}
+      md={6}
+      mx={1}
+      sx={{ maxWidth: `${maxWidth} !important` }}
+    >
       <Card
         raised
         onClick={() => dispatch(push('/dashboard/networth'))}
@@ -88,7 +97,7 @@ export default function Networth() {
         }}
       >
         <BoxFlexColumn alignItems='flex-start'>
-          <Typography variant='body2' color='text.secondary'>
+          <Typography variant='body1' color='text.secondary'>
             networth
           </Typography>
           <BoxFlexCenter>
