@@ -17,6 +17,7 @@ import { _numberToCurrency } from '../../helpers/currency';
 import BoxFlexColumn from '../../components/BoxFlexColumn';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
 import CustomIconButton from '../../components/CustomIconButton';
+import FloatingActionButton from '../../components/FloatingActionButton';
 
 function getNextBillDate(day, months) {
   const today = dayjs();
@@ -152,6 +153,7 @@ export default function BillTemplates() {
           );
         })}
       </Stack>
+      <FloatingActionButton createTypes={['bill']} />
     </Card>
   );
 }

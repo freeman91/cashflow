@@ -17,7 +17,11 @@ export default function FloatingActionButton(props) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    if (createTypes.length === 1) {
+      dispatch(openDialog({ type: createTypes[0], mode: 'create' }));
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
   };
 
   const handleClose = () => {
