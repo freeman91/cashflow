@@ -87,8 +87,6 @@ export default function Calendar() {
   const marginTop = toolbarRef?.current?.offsetHeight || 90;
   const diff = today.diff(month, 'month');
   const format = diff > 10 ? 'MMMM YYYY' : 'MMMM';
-  const nextDisabled = today.isSameOrBefore(month, 'month');
-
   return (
     <Box sx={{ height: '100%', width: '100%', mb: 8, maxWidth: 600 }}>
       <CustomAppBar
@@ -105,11 +103,7 @@ export default function Calendar() {
               <ChevronLeftIcon />
             </IconButton>
             <Typography variant='h6'>{month?.format(format)}</Typography>
-            <IconButton
-              size='large'
-              onClick={handleNextMonth}
-              disabled={nextDisabled}
-            >
+            <IconButton size='large' onClick={handleNextMonth}>
               <ChevronRightIcon />
             </IconButton>
           </Box>
