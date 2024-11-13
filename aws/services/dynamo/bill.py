@@ -5,6 +5,8 @@ import os
 from typing import List, Optional
 from uuid import uuid4
 from datetime import datetime, timezone
+
+from flask import current_app
 from pynamodb.attributes import (
     NumberAttribute,
     ListAttribute,
@@ -97,7 +99,6 @@ class Bill(BaseModel):
         if self.debt_id:
             debt = dynamo.Debt.get_(user_id=USER_ID, debt_id=self.debt_id)
             interest = debt.amount * (debt.interest_rate / 12)
-            interest = interest
             principal = self.amount - interest
             escrow = None
 
@@ -105,6 +106,13 @@ class Bill(BaseModel):
                 # TODO: ?
                 escrow = 320.81
                 principal -= escrow
+
+            principal = round(principal, 2)
+            interest = round(interest, 2)
+
+            current_app.logger.info(
+                f"Generating repayment for {self.name} with principal {principal} and interest {interest}"
+            )
 
             return dynamo.Repayment.create(
                 user_id=debt.user_id,
