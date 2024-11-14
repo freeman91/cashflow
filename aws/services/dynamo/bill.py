@@ -119,7 +119,7 @@ class Bill(BaseModel):
                 _date=datetime(year, month, self.day, 12, 0),
                 principal=round(principal, 2),
                 interest=round(interest, 2),
-                escrow=round(escrow, 2),
+                escrow=round(escrow, 2) if escrow else None,
                 lender=self.vendor,
                 category=self.category,
                 subcategory=self.subcategory,
