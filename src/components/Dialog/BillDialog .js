@@ -26,6 +26,7 @@ import BaseDialog from './BaseDialog';
 import DebtSelect from '../Selector/DebtSelect';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import PaymentFromSelect from '../Selector/PaymentFromSelect';
+import SelectOption from '../Selector/SelectOption';
 
 const defaultBill = {
   bill_id: '',
@@ -229,14 +230,14 @@ function BillDialog() {
             options={get(expenseVendors, 'options', [])}
             onChange={handleChange}
           />
-          <AutocompleteListItem
+          <SelectOption
             id='category'
             label='category'
             value={bill.category}
             options={categories}
             onChange={handleChange}
           />
-          <AutocompleteListItem
+          <SelectOption
             id='subcategory'
             label='subcategory'
             value={bill.subcategory}

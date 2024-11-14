@@ -5,7 +5,6 @@ import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 
-import AutocompleteListItem from '../List/AutocompleteListItem';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
@@ -21,6 +20,7 @@ import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import AccountSelect from '../Selector/AccountSelect';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
+import SelectOption from '../Selector/SelectOption';
 
 const defaultAsset = {
   asset_id: '',
@@ -136,7 +136,7 @@ function AssetDialog() {
             onChange={handleChange}
           />
           <DecimalFieldListItem id='value' item={asset} setItem={setAsset} />
-          <AutocompleteListItem
+          <SelectOption
             id='category'
             label='category'
             value={asset.category}

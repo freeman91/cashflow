@@ -6,7 +6,6 @@ import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 
-import AutocompleteListItem from '../List/AutocompleteListItem';
 import PercentIcon from '@mui/icons-material/Percent';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -23,6 +22,7 @@ import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import AccountSelect from '../Selector/AccountSelect';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
+import SelectOption from '../Selector/SelectOption';
 
 const defaultDebt = {
   debt_id: '',
@@ -153,14 +153,14 @@ function DebtDialog() {
             onChange={handleChange}
           />
           <DecimalFieldListItem id='amount' item={debt} setItem={setDebt} />
-          <AutocompleteListItem
+          <SelectOption
             id='category'
             label='category'
             value={debt.category}
             options={categories}
             onChange={handleChange}
           />
-          <AutocompleteListItem
+          <SelectOption
             id='subcategory'
             label='subcategory'
             value={debt.subcategory || ''}

@@ -31,9 +31,9 @@ import {
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DebtSelect from '../Selector/DebtSelect';
-import AutocompleteListItem from '../List/AutocompleteListItem';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import PaymentFromSelect from '../Selector/PaymentFromSelect';
+import SelectOption from '../Selector/SelectOption';
 
 const defaultRepayment = {
   repayment_id: '',
@@ -261,14 +261,14 @@ function RepaymentDialog() {
             value={repayment.lender}
             onChange={handleChange}
           />
-          <AutocompleteListItem
+          <SelectOption
             id='category'
             label='category'
             value={repayment.category}
             options={categories}
             onChange={handleChange}
           />
-          <AutocompleteListItem
+          <SelectOption
             id='subcategory'
             label='subcategory'
             value={repayment.subcategory}

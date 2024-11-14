@@ -26,7 +26,7 @@ import BaseDialog from './BaseDialog';
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import PaymentFromSelect from '../Selector/PaymentFromSelect';
-
+import SelectOption from '../Selector/SelectOption';
 const defaultExpense = {
   expense_id: '',
   date: dayjs().hour(12).minute(0).second(0),
@@ -200,14 +200,14 @@ function ExpenseDialog() {
             options={get(expenseVendors, 'options', [])}
             onChange={handleChange}
           />
-          <AutocompleteListItem
+          <SelectOption
             id='category'
             label='category'
             value={expense.category}
             options={categories}
             onChange={handleChange}
           />
-          <AutocompleteListItem
+          <SelectOption
             id='subcategory'
             label='subcategory'
             value={expense.subcategory}

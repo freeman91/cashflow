@@ -6,7 +6,6 @@ import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 
 import DescriptionIcon from '@mui/icons-material/Description';
-import AutocompleteListItem from '../List/AutocompleteListItem';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
@@ -20,7 +19,9 @@ import { deleteIncome, postIncome, putIncome } from '../../store/incomes';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
+import AutocompleteListItem from '../List/AutocompleteListItem';
 import DepositToSelect from '../Selector/DepositToSelect';
+import SelectOption from '../Selector/SelectOption';
 
 const defaultIncome = {
   income_id: '',
@@ -149,7 +150,7 @@ function IncomeDialog() {
             options={get(incomeSources, 'options', [])}
             onChange={handleChange}
           />
-          <AutocompleteListItem
+          <SelectOption
             id='category'
             label='category'
             value={income.category}
