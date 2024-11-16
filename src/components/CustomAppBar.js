@@ -68,7 +68,10 @@ const CustomAppBar = forwardRef((props, ref) => {
             variant='fullWidth'
             sx={{ pb: 1, background: bgcolor }}
             value={tab}
-            onChange={changeTab}
+            onChange={(event, value) => {
+              console.log(event, value);
+              changeTab(event, value);
+            }}
           >
             {tabs.map((_tab) => (
               <StyledTab key={_tab} label={_tab} value={_tab} />

@@ -75,9 +75,8 @@ export default function Dashboard() {
     }
   }, [location.pathname]);
 
-  const changeTab = (e, newTab) => {
-    console.log('newTab: ', newTab);
-    dispatch(push(`/dashboard/${newTab}`));
+  const changeTab = (event, value) => {
+    dispatch(push(`/dashboard/${value}`));
   };
 
   const handleNextMonth = () => {
