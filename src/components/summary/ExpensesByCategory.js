@@ -1,4 +1,5 @@
 import React from 'react';
+import map from 'lodash';
 
 import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
@@ -61,13 +62,26 @@ export default function ExpensesByCategory(props) {
             cx='35%'
             cy='50%'
           >
-            {groupedExpenses.map((expenseGroup, idx) => {
+            {/* {groupedExpenses.map((expenseGroup, idx) => {
               return (
                 <Cell
                   key={`cell-${idx}`}
                   fill={expenseGroup.color}
                   stroke={expenseGroup.color}
                   onMouseEnter={selectCategory}
+                  onClick={selectCategory}
+                />
+              );
+            })} */}
+            {map(groupedExpenses, (group, idx) => {
+              console.log('group: ', group);
+              console.log('idx: ', idx);
+              return (
+                <Cell
+                  key={`cell-${idx}`}
+                  fill={group.color}
+                  stroke={group.color}
+                  // onMouseEnter={selectCategory}
                   onClick={selectCategory}
                 />
               );
