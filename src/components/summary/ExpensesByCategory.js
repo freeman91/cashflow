@@ -9,7 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { Cell, PieChart, Pie, ResponsiveContainer } from 'recharts';
+import { Cell, PieChart, Pie } from 'recharts';
 import { numberToCurrency } from '../../helpers/currency';
 
 export default function ExpensesByCategory(props) {
@@ -49,7 +49,7 @@ export default function ExpensesByCategory(props) {
       justifyContent='space-between'
       sx={{ width: '100%', maxWidth: '400px !important' }}
     >
-      <ResponsiveContainer width={300} height={125}>
+      <Box width={300} height={125}>
         <PieChart width={400} height={125}>
           <Pie
             data={groupedExpenses}
@@ -74,7 +74,7 @@ export default function ExpensesByCategory(props) {
             })}
           </Pie>
         </PieChart>
-      </ResponsiveContainer>
+      </Box>
       {selected && (
         <Box
           sx={{

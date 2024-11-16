@@ -223,6 +223,14 @@ function BillDialog() {
             onChange={handleChange}
           />
           <DecimalFieldListItem id='amount' item={bill} setItem={setBill} />
+          {bill.subcategory === 'mortgage' && (
+            <DecimalFieldListItem
+              id='escrow'
+              item={bill}
+              setItem={setBill}
+              label='escrow'
+            />
+          )}
           <AutocompleteListItem
             id='vendor'
             label='vendor'

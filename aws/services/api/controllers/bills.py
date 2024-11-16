@@ -20,6 +20,7 @@ def _bills(user_id: str):
             user_id=user_id,
             name=body.get("name"),
             amount=float(body.get("amount")),
+            escrow=float(body.get("escrow")),
             category=body.get("category"),
             subcategory=body.get("subcategory"),
             vendor=body.get("vendor"),
@@ -43,7 +44,11 @@ def _bill(user_id: str, bill_id: str):
 
     if request.method == "PUT":
         bill = Bill.get_(user_id=user_id, bill_id=bill_id)
-        bill.amount = float(request.json.get("amount"))
+
+        payload = request.json
+        bill.amount = float(payload.get("amount"))
+        if hasattr(bill, "escrow"):
+            bill.escrow = float(payload.get("escrow"))
 
         for attr in [
             "name",
@@ -55,7 +60,7 @@ def _bill(user_id: str, bill_id: str):
             "debt_id",
             "payment_from_id",
         ]:
-            setattr(bill, attr, request.json.get(attr))
+            setattr(bill, attr, payload.get(attr))
 
         bill.save()
         return success_result(bill.as_dict())

@@ -35,6 +35,7 @@ class Bill(BaseModel):
 
     name = UnicodeAttribute()
     amount = NumberAttribute()
+    escrow = NumberAttribute(null=True)
     category = UnicodeAttribute()
     subcategory = UnicodeAttribute()
     vendor = UnicodeAttribute()
@@ -102,10 +103,8 @@ class Bill(BaseModel):
             principal = self.amount - interest
             escrow = None
 
-            if self.subcategory == "mortgage":
-                # TODO: ?
-                escrow = 320.81
-                principal -= escrow
+            if hasattr(self, "escrow"):
+                principal -= self.escrow
 
             principal = round(principal, 2)
             interest = round(interest, 2)

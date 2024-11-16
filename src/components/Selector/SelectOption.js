@@ -1,4 +1,5 @@
 import React from 'react';
+import cloneDeep from 'lodash/cloneDeep';
 
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -11,6 +12,7 @@ const SelectOption = ({ value, onChange, options, label }) => {
     onChange({ target: { id: label, value: e.target.value } });
   };
 
+  const sortedOptions = cloneDeep(options).sort();
   return (
     <ListItem disableGutters>
       <FormControl variant='standard' fullWidth>
@@ -31,7 +33,7 @@ const SelectOption = ({ value, onChange, options, label }) => {
           }}
         >
           <MenuItem value=''>none</MenuItem>
-          {options.map((option) => (
+          {sortedOptions.map((option) => (
             <MenuItem key={option} value={option}>
               {option}
             </MenuItem>
