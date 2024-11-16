@@ -69,7 +69,6 @@ const CustomAppBar = forwardRef((props, ref) => {
             sx={{ pb: 1, background: bgcolor }}
             value={tab}
             onChange={(event, value) => {
-              console.log(event, value);
               changeTab(event, value);
             }}
           >

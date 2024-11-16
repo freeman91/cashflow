@@ -26,17 +26,20 @@ export default function Summary(props) {
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
+    console.log('date useEffect');
     setYear(dayjs(date).year());
     setMonth(dayjs(date).month());
   }, [date]);
 
   useEffect(() => {
+    console.log('selected useEffect');
     if (selected === null && groupedExpenses.length > 0) {
       setSelected(groupedExpenses[0]);
     }
   }, [groupedExpenses, selected]);
 
   useEffect(() => {
+    console.log('monthExpenses useEffect');
     let _monthRepayments = filter(allRepayments, (repayment) => {
       const tDate = dayjs(repayment.date);
       return (
@@ -56,6 +59,7 @@ export default function Summary(props) {
   }, [year, month, allExpenses, allRepayments, theme]);
 
   useEffect(() => {
+    console.log('groupedExpenses useEffect');
     let _groupedExpenses = groupBy(monthExpenses, 'category');
     _groupedExpenses = Object.keys(_groupedExpenses).map((key) => {
       const color = theme.chartColors[key] || theme.palette.red[600];
