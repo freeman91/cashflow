@@ -17,14 +17,6 @@ export default function ExpensesByCategory(props) {
   const { groupedExpenses, selected, setSelected } = props;
   const theme = useTheme();
 
-  const selectCategory = (event) => {
-    setSelected(
-      groupedExpenses.find(
-        (expenseGroup) => expenseGroup.id === event.target.id
-      )
-    );
-  };
-
   if (groupedExpenses.length === 0) {
     return (
       <Grid
@@ -70,8 +62,8 @@ export default function ExpensesByCategory(props) {
                   key={`cell-${idx}`}
                   fill={group.color}
                   stroke={group.color}
-                  // onMouseEnter={selectCategory}
-                  onClick={selectCategory}
+                  onPointerDown={() => setSelected(group)}
+                  onPointerEnter={() => setSelected(group)}
                 />
               );
             })}
