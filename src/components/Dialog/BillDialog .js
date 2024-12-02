@@ -135,6 +135,7 @@ function BillDialog() {
       subcategory: bill.subcategory,
       pending: true,
       date: bill.nextBillDate,
+      payment_from_id: bill.payment_from_id,
     };
 
     if (type === 'repayment') {
@@ -143,12 +144,15 @@ function BillDialog() {
         escrow = null;
       const debt = find(debts, { debt_id: bill.debt_id });
 
-      interest = debt.amount * (debt.interest_rate / 12);
-      principal = bill.amount - interest;
+      interest = parseFloat(
+        (debt.amount * (debt.interest_rate / 12)).toFixed(2)
+      );
+      principal = parseFloat((bill.amount - interest).toFixed(2));
 
-      if (bill.subcategory === 'mortgage') {
-        escrow = 320.81;
+      if (bill?.escrow) {
+        escrow = bill.escrow;
         principal -= escrow;
+        principal = parseFloat(principal.toFixed(2));
       }
 
       attrs = {

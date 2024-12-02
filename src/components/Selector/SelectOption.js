@@ -23,7 +23,12 @@ const SelectOption = ({ value, onChange, options, label }) => {
           value={value}
           onChange={handleChange}
           label={label}
-          MenuProps={{ MenuListProps: { disablePadding: true } }}
+          MenuProps={{
+            MenuListProps: {
+              disablePadding: true,
+              sx: { bgcolor: 'surface.200' },
+            },
+          }}
           sx={{
             backgroundColor: 'unset',
             '& .MuiSelect-select': {

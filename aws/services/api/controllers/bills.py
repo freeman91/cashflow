@@ -47,7 +47,8 @@ def _bill(user_id: str, bill_id: str):
 
         payload = request.json
         bill.amount = float(payload.get("amount"))
-        if hasattr(bill, "escrow"):
+
+        if hasattr(payload, "escrow"):
             bill.escrow = float(payload.get("escrow"))
 
         for attr in [

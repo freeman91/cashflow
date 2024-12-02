@@ -6,7 +6,6 @@ from typing import List, Optional
 from uuid import uuid4
 from datetime import datetime, timezone
 
-from flask import current_app
 from pynamodb.attributes import (
     NumberAttribute,
     ListAttribute,
@@ -105,13 +104,7 @@ class Bill(BaseModel):
 
             if hasattr(self, "escrow"):
                 principal -= self.escrow
-
-            principal = round(principal, 2)
-            interest = round(interest, 2)
-
-            current_app.logger.info(
-                f"Generating repayment for {self.name} with principal {principal} and interest {interest}"
-            )
+                escrow = self.escrow
 
             return dynamo.Repayment.create(
                 user_id=debt.user_id,

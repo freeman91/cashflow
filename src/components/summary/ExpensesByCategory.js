@@ -35,7 +35,6 @@ export default function ExpensesByCategory(props) {
     );
   }
 
-  console.log('groupedExpenses: ', groupedExpenses);
   return (
     <Grid
       item

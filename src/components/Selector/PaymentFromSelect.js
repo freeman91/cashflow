@@ -55,7 +55,12 @@ function PaymentFromSelect(props) {
             alignItems: 'center',
           },
         }}
-        MenuProps={{ MenuListProps: { disablePadding: true } }}
+        MenuProps={{
+          MenuListProps: {
+            disablePadding: true,
+            sx: { bgcolor: 'surface.200' },
+          },
+        }}
       >
         <MenuItem key='none' id='none-menu-item' value=''>
           None
