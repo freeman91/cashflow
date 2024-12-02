@@ -102,7 +102,7 @@ class Bill(BaseModel):
             principal = self.amount - interest
             escrow = None
 
-            if hasattr(self, "escrow"):
+            if hasattr(self, "escrow") and self.escrow:
                 principal -= self.escrow
                 escrow = self.escrow
 
