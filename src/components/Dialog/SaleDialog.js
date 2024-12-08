@@ -16,9 +16,12 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { deleteSale, postSale, putSale } from '../../store/sales';
 import { closeDialog } from '../../store/dialogs';
+import { defaultAsset } from './AssetDialog';
 import BaseDialog from './BaseDialog';
 import AssetSelect from '../Selector/AssetSelect';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
+import SharesFieldListItem from '../List/SharesFieldListItem';
+import DepositToSelect from '../Selector/DepositToSelect';
 
 const defaultSale = {
   sale_id: '',
@@ -26,9 +29,11 @@ const defaultSale = {
   asset_id: '',
   date: dayjs().hour(12).minute(0).second(0),
   amount: '',
-  purchaser: '',
+  vendor: '',
   shares: '',
   price: '',
+  deposit_to_id: '',
+  fee: '',
 };
 
 function SaleDialog() {
@@ -41,15 +46,19 @@ function SaleDialog() {
   const { mode, id, attrs } = useSelector((state) => state.dialogs.sale);
 
   const [sale, setSale] = useState(defaultSale);
+  const [asset, setAsset] = useState(defaultAsset);
 
   useEffect(() => {
     let _vendor = '';
+    let _price = '';
     if (sale.asset_id) {
-      const asset = find(assets, { asset_id: sale.asset_id });
-      const account = find(accounts, { account_id: asset?.account_id });
+      const _asset = find(assets, { asset_id: sale.asset_id });
+      const account = find(accounts, { account_id: _asset?.account_id });
       _vendor = get(account, 'name', '');
+      _price = get(_asset, 'price', '');
+      setAsset(_asset);
     }
-    setSale((e) => ({ ...e, vendor: _vendor }));
+    setSale((e) => ({ ...e, vendor: _vendor, price: _price }));
   }, [sale.asset_id, accounts, assets]);
 
   useEffect(() => {
@@ -146,19 +155,24 @@ function SaleDialog() {
             />
           </ListItem>
           <DecimalFieldListItem id='amount' item={sale} setItem={setSale} />
-          <DecimalFieldListItem
+          <DecimalFieldListItem id='fee' item={sale} setItem={setSale} />
+          <DecimalFieldListItem id='price' item={sale} setItem={setSale} />
+          <SharesFieldListItem
             id='shares'
             item={sale}
             setItem={setSale}
-            startAdornment={null}
+            shares={asset?.shares}
           />
-          <DecimalFieldListItem id='price' item={sale} setItem={setSale} />
+
           <TextFieldListItem
             id='vendor'
             label='vendor'
             value={sale.vendor}
             onChange={handleChange}
           />
+          <ListItem disableGutters>
+            <DepositToSelect resource={sale} setResource={setSale} />
+          </ListItem>
           <ListItem
             key='buttons'
             disableGutters

@@ -10,7 +10,7 @@ export default function CustomIconButton(props) {
   return (
     <IconButton
       sx={{
-        color: color[400],
+        color: color,
         background: `linear-gradient(${deg}, ${theme.palette.surface[200]}, ${theme.palette.surface[300]})`,
         boxShadow: 6,
         borderRadius: '50%',

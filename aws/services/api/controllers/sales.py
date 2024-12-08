@@ -24,9 +24,26 @@ def _sales(user_id: str):
             shares=float(body.get("shares")),
             price=float(body.get("price")),
             asset_id=body.get("asset_id"),
-            purchaser=body.get("purchaser"),
+            vendor=body.get("vendor"),
+            fee=float(body.get("fee")),
+            deposit_to_id=body.get("deposit_to_id"),
         )
-        return success_result(sale.as_dict())
+
+        if sale.asset_id:
+            withdraw_asset = sale.withdraw()
+            withdraw_asset = withdraw_asset.as_dict()
+
+        if sale.deposit_to_id:
+            deposit_asset = sale.deposit()
+            deposit_asset = deposit_asset.as_dict()
+
+        return success_result(
+            {
+                "sale": sale.as_dict(),
+                "deposit_asset": deposit_asset,
+                "withdraw_asset": withdraw_asset,
+            }
+        )
 
     if request.method == "GET":
         return success_result([sale.as_dict() for sale in Sale.list(user_id=user_id)])
@@ -45,8 +62,9 @@ def _sale(user_id: str, sale_id: str):
         sale.amount = float(request.json.get("amount"))
         sale.shares = float(request.json.get("shares"))
         sale.price = float(request.json.get("price"))
+        sale.fee = float(request.json.get("fee"))
 
-        for attr in ["asset_id", "purchaser"]:
+        for attr in ["asset_id", "vendor", "deposit_to_id"]:
             setattr(sale, attr, request.json.get(attr))
 
         sale.save()

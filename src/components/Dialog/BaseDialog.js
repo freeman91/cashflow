@@ -37,7 +37,7 @@ function BaseDialog(props) {
       onClose={handleClose}
       sx={{
         '& .MuiDialog-paperFullScreen': {
-          backgroundColor: '#202020',
+          backgroundColor: '#1b1b1b',
           backgroundImage: 'unset',
         },
       }}

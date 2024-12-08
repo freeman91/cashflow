@@ -3,10 +3,10 @@ import { useLocation } from 'react-router-dom';
 import { push } from 'redux-first-history';
 import { useDispatch } from 'react-redux';
 
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import SearchIcon from '@mui/icons-material/Search';
-import MenuIcon from '@mui/icons-material/Menu';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalanceOutlined';
+import AssessmentIcon from '@mui/icons-material/AssessmentOutlined';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonthOutlined';
+import HomeIcon from '@mui/icons-material/HomeOutlined';
 
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -31,10 +31,13 @@ function CustomBottomNavigation() {
         bottom: 0,
         left: 0,
         right: 0,
-        pb: 2,
+        pt: 0.5,
+        pb: 1,
         px: 2,
         background: (theme) => theme.palette.surface[150],
         zIndex: 1,
+        borderTop: '1px solid',
+        borderColor: (theme) => theme.palette.surface[200],
       }}
     >
       <BottomNavigation
@@ -46,25 +49,21 @@ function CustomBottomNavigation() {
         }}
         showLabels
       >
+        <BottomNavigationAction label='home' value='home' icon={<HomeIcon />} />
         <BottomNavigationAction
-          label='dashboard'
-          value='dashboard'
-          icon={<DashboardIcon />}
+          label='accounts'
+          value='accounts'
+          icon={<AccountBalanceIcon />}
         />
         <BottomNavigationAction
-          label='year'
-          value='year'
-          icon={<CalendarTodayIcon />}
+          label='calendar'
+          value='calendar'
+          icon={<CalendarMonthIcon />}
         />
         <BottomNavigationAction
-          label='search'
-          value='search'
-          icon={<SearchIcon />}
-        />
-        <BottomNavigationAction
-          label='settings'
-          value='settings'
-          icon={<MenuIcon />}
+          label='summary'
+          value='summary'
+          icon={<AssessmentIcon />}
         />
       </BottomNavigation>
     </Box>

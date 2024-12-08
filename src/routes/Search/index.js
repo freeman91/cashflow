@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { push } from 'redux-first-history';
 import { useDispatch } from 'react-redux';
@@ -9,9 +9,9 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import CustomAppBar from '../../components/CustomAppBar';
 import Expenses from './Expenses';
 import Incomes from './Incomes';
+import CustomAppBar from '../../components/CustomAppBar';
 
 const EXPENSES = 'expenses';
 const INCOMES = 'incomes';
@@ -20,7 +20,6 @@ const OPTIONS = [EXPENSES, INCOMES];
 export default function Search() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const toolbarRef = useRef(null);
 
   const [selected, setSelected] = useState(null);
 
@@ -33,25 +32,16 @@ export default function Search() {
     dispatch(push(`/search/${type}`));
   };
 
-  const marginTop = toolbarRef?.current?.offsetHeight || 90;
   return (
-    <Box sx={{ height: '100%', width: '100%', mb: 18, maxWidth: 500 }}>
+    <Box sx={{ height: '100%', width: '100%' }}>
       <CustomAppBar
-        ref={toolbarRef}
-        title={
-          <Typography
-            variant='h6'
-            fontWeight='bold'
-            onClick={() => {
-              dispatch(push('/search'));
-            }}
-            sx={{ cursor: 'pointer', '&:hover': { color: 'primary.main' } }}
-          >
-            search
+        middle={
+          <Typography variant='h6' fontWeight='bold'>
+            {selected ? lowerCase(selected) : 'search'}
           </Typography>
         }
       />
-      <Box sx={{ height: marginTop + 'px', pt: 1 }} />
+      <Box sx={{ height: '46px' }} />
       {!selected && (
         <Stack orientation='column'>
           {OPTIONS.map((option) => {
@@ -63,10 +53,10 @@ export default function Search() {
                   p: 1,
                   cursor: 'pointer',
                   '&:hover': {
-                    backgroundColor: 'surface.250',
+                    backgroundColor: 'surface.200',
                     color: 'primary.main',
                   },
-                  backgroundColor: 'surface.300',
+                  backgroundColor: 'surface.250',
                   borderRadius: '5px',
                 }}
                 onClick={() => handleClick(option)}

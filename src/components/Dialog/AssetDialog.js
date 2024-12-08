@@ -16,13 +16,13 @@ import ListItemText from '@mui/material/ListItemText';
 import TextFieldListItem from '../List/TextFieldListItem';
 
 import { deleteAsset, postAsset, putAsset } from '../../store/assets';
-import { closeDialog } from '../../store/dialogs';
+import { closeDialog, openDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import AccountSelect from '../Selector/AccountSelect';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import SelectOption from '../Selector/SelectOption';
 
-const defaultAsset = {
+export const defaultAsset = {
   asset_id: '',
   date: dayjs().hour(12).minute(0).second(0),
   account_id: '',
@@ -91,6 +91,17 @@ function AssetDialog() {
     setAsset(defaultAsset);
   };
 
+  const handleCreateSale = () => {
+    dispatch(closeDialog('asset'));
+    dispatch(
+      openDialog({
+        type: 'sale',
+        mode: 'create',
+        attrs: { asset_id: asset.asset_id },
+      })
+    );
+  };
+
   const titleOptions = [
     mode === 'edit' && (
       <MenuItem key='purchase' onClick={() => {}}>
@@ -98,7 +109,7 @@ function AssetDialog() {
       </MenuItem>
     ),
     mode === 'edit' && (
-      <MenuItem key='sale' onClick={() => {}}>
+      <MenuItem key='sale' onClick={handleCreateSale}>
         sale
       </MenuItem>
     ),

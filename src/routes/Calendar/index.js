@@ -1,24 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
 
+import { alpha } from '@mui/material/styles';
+import useTheme from '@mui/material/styles/useTheme';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import MonthContent from './MonthContent';
 import SelectedTransactionsStack from './SelectedTransactionsStack';
-import CustomAppBar from '../../components/CustomAppBar';
 import useExpenses from '../../store/hooks/useExpenses';
 import useIncomes from '../../store/hooks/useIncomes';
+import CustomAppBar from '../../components/CustomAppBar';
 
 export default function Calendar() {
   const location = useLocation();
-  const toolbarRef = useRef(null);
   const today = dayjs();
+  const theme = useTheme();
 
   const [month, setMonth] = useState(dayjs());
   const [days, setDays] = useState([]);
@@ -84,32 +87,54 @@ export default function Calendar() {
     setMonth(nextMonth);
   };
 
-  const marginTop = toolbarRef?.current?.offsetHeight || 90;
   const diff = today.diff(month, 'month');
   const format = diff > 10 ? 'MMMM YYYY' : 'MMMM';
+  const lightColor = alpha(theme.palette.primary.main, 0.2);
   return (
-    <Box sx={{ height: '100%', width: '100%', mb: 8, maxWidth: 600 }}>
+    <Box sx={{ height: '100%', width: '100%', mb: 8 }}>
       <CustomAppBar
-        ref={toolbarRef}
-        title={
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            <IconButton size='large' onClick={handlePrevMonth}>
-              <ChevronLeftIcon />
-            </IconButton>
-            <Typography variant='h6'>{month?.format(format)}</Typography>
-            <IconButton size='large' onClick={handleNextMonth}>
-              <ChevronRightIcon />
-            </IconButton>
-          </Box>
+        right={
+          <IconButton size='medium'>
+            <FilterAltIcon sx={{ color: 'button' }} />
+          </IconButton>
         }
       />
-      <Box sx={{ height: marginTop + 'px', pt: 1 }} />
+      <Box sx={{ height: '42px', pt: 1 }} />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          width: '100%',
+          py: 2,
+        }}
+      >
+        <Box
+          sx={{
+            borderRadius: '50%',
+            backgroundColor: lightColor,
+          }}
+        >
+          <IconButton size='large' onClick={handlePrevMonth} sx={{ p: 0.75 }}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </Box>
+        <Typography variant='h5' fontWeight='bold' color='primary'>
+          {month?.format(format)}
+        </Typography>
+        <Box
+          sx={{
+            borderRadius: '50%',
+            backgroundColor: lightColor,
+          }}
+        >
+          <IconButton size='large' onClick={handleNextMonth} sx={{ p: 0.75 }}>
+            <ChevronRightIcon />
+          </IconButton>
+        </Box>
+      </Box>
+
       <MonthContent
         selectedDate={month}
         setSelectedDate={setMonth}

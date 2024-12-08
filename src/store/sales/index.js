@@ -11,6 +11,7 @@ import {
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { setSnackbar } from '../appSettings';
+import { updateAsset } from '../assets';
 
 const getSales = createAsyncThunk(
   'sales/getSales',
@@ -34,14 +35,23 @@ const postSale = createAsyncThunk(
     try {
       const { data: sales } = getState().sales;
       const { user_id } = getState().user.item;
-      const result = await postResourceAPI(user_id, newSale);
+      const { sale, deposit_asset, withdraw_asset } = await postResourceAPI(
+        user_id,
+        newSale
+      );
 
-      if (result) {
+      if (sale) {
         dispatch(setSnackbar({ message: 'sale created' }));
       }
-      return {
-        data: [result].concat(sales),
-      };
+
+      if (deposit_asset) {
+        await dispatch(updateAsset(deposit_asset));
+      }
+      if (withdraw_asset) {
+        await dispatch(updateAsset(withdraw_asset));
+      }
+
+      return { data: [sale].concat(sales) };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     }

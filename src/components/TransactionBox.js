@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
-import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -21,7 +20,6 @@ import CustomIconButton from './CustomIconButton';
 
 const TransactionBox = (props) => {
   const { transaction } = props;
-  const theme = useTheme();
   const dispatch = useDispatch();
   const bills = useSelector((state) => state.bills.data);
 
@@ -64,7 +62,7 @@ const TransactionBox = (props) => {
       >
         <BoxFlexColumn alignItems='space-between'>
           <Typography
-            variant='h6'
+            variant='body1'
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -84,7 +82,7 @@ const TransactionBox = (props) => {
             {dayjs(transaction.date).format('MMM D')}
           </Typography>
           <BoxFlexCenter>
-            <Typography variant='h5' color='text.secondary'>
+            <Typography variant='h6' color='text.secondary'>
               $
             </Typography>
             <Typography variant='h5' color='white' fontWeight='bold'>
@@ -93,7 +91,7 @@ const TransactionBox = (props) => {
           </BoxFlexCenter>
         </BoxFlexColumn>
       </Box>
-      <CustomIconButton color={theme.palette[color]}>{icon}</CustomIconButton>
+      <CustomIconButton color={color}>{icon}</CustomIconButton>
     </Box>
   );
 };

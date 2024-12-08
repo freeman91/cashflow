@@ -13,7 +13,7 @@ export const muiTheme = createTheme({
     mode: 'dark',
     surface: {
       100: '#121212',
-      150: '#202020',
+      150: '#1b1b1b',
       200: '#282828',
       250: '#2b2b2b',
       300: '#3f3f3f',
@@ -21,7 +21,7 @@ export const muiTheme = createTheme({
       500: '#717171',
       600: '#8b8b8b',
     },
-    primary: { main: '#3d99f8' },
+    primary: { main: '#7373ff' },
     secondary: { main: '#3caa57' },
     green: {
       100: '#d9ebdd',
@@ -59,6 +59,7 @@ export const muiTheme = createTheme({
     success: { main: '#3caa57' },
     warning: { main: '#d4952e' },
     info: { main: '#5c98fb' },
+    button: 'rgba(255, 255, 255, 0.7)',
   },
   typography: {
     fontFamily: '"Arial", "Helvetica", sans-serif',

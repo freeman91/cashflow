@@ -1,8 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
-import { useLocation } from 'react-router-dom';
-import get from 'lodash/get';
 
 import { useTheme } from '@emotion/react';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
@@ -21,7 +19,6 @@ export default function ItemBox(props) {
   const { item } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
-  const location = useLocation();
 
   const itemId = item[`${item._type}_id`];
 
@@ -37,21 +34,7 @@ export default function ItemBox(props) {
 
   const handleClick = (e, item) => {
     const id = item._type + 'Id';
-    const types = item._type + 's';
-
-    const stateId = get(location, `state.${id}`);
-    if (
-      location.pathname === `/dashboard/accounts/${types}` &&
-      stateId === itemId
-    ) {
-      openItemDialog();
-    } else {
-      dispatch(
-        push(`/dashboard/accounts/${types}`, {
-          [id]: itemId,
-        })
-      );
-    }
+    dispatch(push(`/${item._type}`, { [id]: itemId }));
   };
 
   const handleEditClick = (e) => {
@@ -101,7 +84,7 @@ export default function ItemBox(props) {
       >
         <BoxFlexColumn alignItems='space-between'>
           <Typography
-            variant='h6'
+            variant='body1'
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -112,12 +95,9 @@ export default function ItemBox(props) {
           >
             {item.name}
           </Typography>
-          <Typography variant='body2' color='text.secondary'>
-            {item.category}
-          </Typography>
         </BoxFlexColumn>
         <BoxFlexCenter>
-          <Typography variant='h5' color='text.secondary'>
+          <Typography variant='h6' color='text.secondary'>
             $
           </Typography>
           <Typography variant='h5' color='white' fontWeight='bold'>

@@ -7,6 +7,7 @@ from typing import Optional
 from uuid import uuid4
 from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
 
+from services import dynamo
 from .base import BaseModel
 
 TYPE = "sale"
@@ -26,10 +27,12 @@ class Sale(BaseModel):
 
     date = UTCDateTimeAttribute()
     amount = NumberAttribute()
-    purchaser = UnicodeAttribute()
+    vendor = UnicodeAttribute()
     asset_id = UnicodeAttribute(null=True)
     shares = NumberAttribute(null=True)
     price = NumberAttribute(null=True)
+    fee = NumberAttribute(null=True)
+    deposit_to_id = UnicodeAttribute(null=True)
 
     def __repr__(self):
         return f"Sale<{self.user_id}, {self.asset_id}, {self.date}, {self.amount}>"
@@ -43,17 +46,21 @@ class Sale(BaseModel):
         asset_id: str,
         shares: float,
         price: float,
-        purchaser: str,
+        vendor: str,
+        fee: float,
+        deposit_to_id: str,
     ) -> "Sale":
         sale = cls(
             user_id=user_id,
             sale_id=f"sale:{uuid4()}",
             date=_date,
             amount=amount,
-            purchaser=purchaser,
+            vendor=vendor,
             asset_id=asset_id,
             shares=shares,
             price=price,
+            fee=fee,
+            deposit_to_id=deposit_to_id,
         )
         sale.save()
         return sale
@@ -77,3 +84,23 @@ class Sale(BaseModel):
                 filter_condition=cls.date.between(start, end),
             )
         )
+
+    def withdraw(self) -> dynamo.Asset:
+        asset = None
+        if self.asset_id.startswith("asset"):
+            asset = dynamo.Asset.get_(self.user_id, self.asset_id)
+            asset.shares -= self.shares
+            asset.value = asset.shares * self.price
+            asset.save()
+
+        return asset
+
+    def deposit(self) -> dynamo.Asset:
+        asset = None
+        if self.deposit_to_id.startswith("asset"):
+            asset = dynamo.Asset.get_(self.user_id, self.deposit_to_id)
+            asset.value += self.amount
+            asset.save()
+
+        asset.save()
+        return asset
