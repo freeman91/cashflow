@@ -5,23 +5,23 @@ import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 
-import useTheme from '@mui/material/styles/useTheme';
 import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
 import ClearIcon from '@mui/icons-material/Clear';
 import SaveIcon from '@mui/icons-material/Save';
 import SearchIcon from '@mui/icons-material/Search';
-import Box from '@mui/material/Box';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Divider from '@mui/material/Divider';
+import UndoIcon from '@mui/icons-material/Undo';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import InputBase from '@mui/material/InputBase';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import TextField from '@mui/material/TextField';
-// import TextFieldListItem from '../../components/List/TextFieldListItem';
+
 import { putOptionList } from '../../store/optionLists';
 
 const TextFieldListItem = (props) => {
@@ -34,7 +34,6 @@ const TextFieldListItem = (props) => {
 
 export default function OptionsList(props) {
   const { optionType, placeholder } = props;
-  const theme = useTheme();
   const dispatch = useDispatch();
   const stateOptions = useSelector((state) => {
     return find(state.optionLists.data, { option_type: optionType });
@@ -84,97 +83,105 @@ export default function OptionsList(props) {
   );
 
   return (
-    <ClickAwayListener
-      onClickAway={() => {
-        let _options = get(stateOptions, 'options', []);
-        setSelectedIdx(null);
-        setSelectedOption('');
-        setOptions(_options);
-      }}
-    >
-      <Box
-        sx={{
-          border: `1px solid ${theme.palette.surface[300]}`,
-          mt: 1,
-          borderRadius: '5px',
-        }}
-      >
-        <List disablePadding>
-          <ListItem>
-            <TextField
-              fullWidth
-              variant='standard'
-              placeholder='search'
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              InputProps={{
-                disableUnderline: true,
-                startAdornment: (
-                  <InputAdornment position='start' sx={{ mr: 4 }}>
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <IconButton onClick={() => setSearchText('')}>
-                      <ClearIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </ListItem>
-          <ListItemButton onClick={handleCreateClick}>
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
-            <ListItemText primary='create' />
-          </ListItemButton>
-          <Divider />
-          {filteredOptions.map((option) => {
-            const idx = findIndex(options, (o) => o === option);
-            if (selectedIdx === idx) {
-              return (
-                <form key={option} onSubmit={handleSave}>
-                  <TextFieldListItem
-                    placeholder={placeholder}
-                    key={option}
-                    id={option}
-                    value={selectedOption || ''}
-                    onChange={(e) => handleChange(e.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='end'>
-                          <IconButton
-                            onClick={handleSave}
-                            disabled={selectedOption === option}
-                          >
-                            <SaveIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </form>
-              );
-            }
+    <>
+      <Grid item xs={12} mx={1} display='flex' gap={1} justifyContent='center'>
+        <Button
+          variant='contained'
+          endIcon={<AddIcon />}
+          onClick={handleCreateClick}
+        >
+          create
+        </Button>
+        <Button
+          variant='outlined'
+          endIcon={<UndoIcon />}
+          sx={{ color: 'button', borderColor: 'button' }}
+          onClick={() => {
+            setSelectedIdx(null);
+            setSelectedOption('');
+            setOptions(get(stateOptions, 'options', []));
+          }}
+        >
+          reset
+        </Button>
+      </Grid>
 
-            return (
-              <React.Fragment key={option}>
-                <ListItemButton
-                  onClick={() => {
-                    setSelectedIdx(idx);
-                    setSelectedOption(option);
-                  }}
-                  sx={{ justifyContent: 'left' }}
-                >
-                  {option}
-                </ListItemButton>
-              </React.Fragment>
-            );
-          })}
-        </List>
-      </Box>
-    </ClickAwayListener>
+      <Grid item xs={12} mx={1}>
+        <Paper
+          component='form'
+          sx={{
+            p: '0px 2px',
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          <IconButton sx={{ px: '10px', color: 'button' }}>
+            <SearchIcon />
+          </IconButton>
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder='search'
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <IconButton
+            sx={{ color: 'button' }}
+            onClick={() => setSearchText('')}
+          >
+            <ClearIcon />
+          </IconButton>
+        </Paper>
+      </Grid>
+
+      <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+        <Card sx={{ width: '100%' }}>
+          <List disablePadding>
+            {filteredOptions.map((option) => {
+              const idx = findIndex(options, (o) => o === option);
+              if (selectedIdx === idx) {
+                return (
+                  <form key={option} onSubmit={handleSave}>
+                    <TextFieldListItem
+                      placeholder={placeholder}
+                      key={option}
+                      id={option}
+                      value={selectedOption || ''}
+                      onChange={(e) => handleChange(e.target.value)}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position='end'>
+                            <IconButton
+                              onClick={handleSave}
+                              disabled={selectedOption === option}
+                            >
+                              <SaveIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </form>
+                );
+              }
+
+              return (
+                <React.Fragment key={option}>
+                  <ListItemButton
+                    onClick={() => {
+                      setSelectedIdx(idx);
+                      setSelectedOption(option);
+                    }}
+                    sx={{ justifyContent: 'left' }}
+                  >
+                    {option}
+                  </ListItemButton>
+                </React.Fragment>
+              );
+            })}
+          </List>
+        </Card>
+      </Grid>
+    </>
   );
 }

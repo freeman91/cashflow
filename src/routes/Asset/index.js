@@ -4,34 +4,31 @@ import { useLocation } from 'react-router-dom';
 
 import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
-
+import sortBy from 'lodash/sortBy';
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 
-import { refresh } from '../../store/user';
+import { refreshAll } from '../../store/user';
 import { openDialog } from '../../store/dialogs';
-import usePullToRefresh from '../../store/hooks/usePullToRefresh';
 import { _numberToCurrency, numberToCurrency } from '../../helpers/currency';
 import AllocationChart from '../Account/AllocationChart';
 import PurchasesStack from './PurchasesStack';
 import SalesStack from './SalesStack';
 import AssetChart from './AssetChart';
-import CustomAppBar from '../../components/CustomAppBar';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
+import CustomToggleButton from '../../components/CustomToggleButton';
+import CustomAppBar from '../../components/CustomAppBar';
 import EditButton from '../../components/CustomAppBar/EditButton';
+import PullToRefresh from '../../components/PullToRefresh';
+import TransactionsStack from '../../components/TransactionsStack';
 
 const PURCHASES = 'purchases';
 const SALES = 'sales';
+const TRANSACTIONS = 'transactions';
 const HISTORY = 'history';
-
-const CustomToggleButton = (props) => {
-  return <ToggleButton {...props} sx={{ py: 0.5, color: 'text.secondary' }} />;
-};
 
 export default function Asset() {
   const dispatch = useDispatch();
@@ -40,25 +37,41 @@ export default function Asset() {
   const assets = useSelector((state) => state.assets.data);
   const allPurchases = useSelector((state) => state.purchases.data);
   const allSales = useSelector((state) => state.sales.data);
+  const allExpenses = useSelector((state) => state.expenses.data);
+  const allRepayments = useSelector((state) => state.repayments.data);
+  const allIncomes = useSelector((state) => state.incomes.data);
+  const allPaychecks = useSelector((state) => state.paychecks.data);
 
   const [asset, setAsset] = useState(null);
   const [purchases, setPurchases] = useState([]);
   const [purchaseSum, setPurchaseSum] = useState(0);
   const [sales, setSales] = useState([]);
   const [saleSum, setSaleSum] = useState(0);
+  const [transactions, setTransactions] = useState([]);
 
   const [tab, setTab] = useState(PURCHASES);
 
   const onRefresh = async () => {
-    dispatch(refresh());
+    dispatch(refreshAll());
   };
-  const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
 
   useEffect(() => {
     if (location.state?.assetId) {
       setAsset(assets.find((a) => a.asset_id === location.state.assetId));
     }
   }, [location.state?.assetId, assets]);
+
+  useEffect(() => {
+    if (purchases.length > 0) {
+      setTab(PURCHASES);
+    } else if (sales.length > 0) {
+      setTab(SALES);
+    } else if (transactions.length > 0) {
+      setTab(TRANSACTIONS);
+    } else {
+      setTab(HISTORY);
+    }
+  }, [purchases.length, sales.length, transactions.length]);
 
   useEffect(() => {
     const purchases = filter(allPurchases, { asset_id: asset?.asset_id });
@@ -72,12 +85,27 @@ export default function Asset() {
   }, [allPurchases, allSales, asset?.asset_id]);
 
   useEffect(() => {
-    if (purchases.length === 0 && sales.length > 0) {
-      setTab(SALES);
-    } else if (purchases.length === 0 && sales.length === 0) {
-      setTab(HISTORY);
+    let _transactions = [];
+    if (asset?.can_pay_from) {
+      const expenses = filter(allExpenses, { payment_from_id: asset.asset_id });
+      const repayments = filter(allRepayments, {
+        payment_from_id: asset.asset_id,
+      });
+      _transactions = [...expenses, ...repayments];
     }
-  }, [purchases, sales]);
+
+    if (asset?.can_deposit_to) {
+      const incomes = filter(allIncomes, { deposit_to_id: asset.asset_id });
+      const paychecks = filter(allPaychecks, (paycheck) => {
+        return (
+          paycheck.deposit_to_id === asset.asset_id && paycheck.date != null
+        );
+      });
+      _transactions = [..._transactions, ...incomes, ...paychecks];
+    }
+
+    setTransactions(sortBy(_transactions, 'date').reverse());
+  }, [asset, allExpenses, allRepayments, allIncomes, allPaychecks]);
 
   const handleChangeTab = (event, newTab) => {
     setTab(newTab);
@@ -106,13 +134,9 @@ export default function Asset() {
         spacing={1}
         justifyContent='center'
         alignItems='flex-start'
-        sx={{ mt: '42px' }}
+        sx={{ mt: (theme) => theme.appBar.mobile.height }}
       >
-        {(isRefreshing || pullPosition > 100) && (
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress sx={{ mt: 1 }} />
-          </Grid>
-        )}
+        <PullToRefresh onRefresh={onRefresh} />
         <Grid item xs={12} display='flex' justifyContent='center'>
           <Box sx={{ width: '100%', mx: 1 }}>
             <Grid container>
@@ -198,13 +222,21 @@ export default function Asset() {
             {sales.length > 0 && (
               <CustomToggleButton value={SALES}>{SALES}</CustomToggleButton>
             )}
+            {transactions.length > 0 && (
+              <CustomToggleButton value={TRANSACTIONS}>
+                {TRANSACTIONS}
+              </CustomToggleButton>
+            )}
             <CustomToggleButton value={HISTORY}>{HISTORY}</CustomToggleButton>
           </ToggleButtonGroup>
         </Grid>
 
         <Grid item xs={12} display='flex' justifyContent='center'>
-          {tab === PURCHASES && <PurchasesStack assetId={asset?.asset_id} />}
-          {tab === SALES && <SalesStack assetId={asset?.asset_id} />}
+          {tab === PURCHASES && <PurchasesStack purchases={purchases} />}
+          {tab === SALES && <SalesStack sales={sales} />}
+          {tab === TRANSACTIONS && (
+            <TransactionsStack transactions={transactions} />
+          )}
           {tab === HISTORY && <AssetChart asset={asset} />}
         </Grid>
         <Grid item xs={12} mb={10} />

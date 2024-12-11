@@ -36,7 +36,8 @@ const CustomAppBar = (props) => {
             width: '100%',
             display: 'flex',
             justifyContent: 'space-between',
-            minHeight: '42px',
+            minHeight: (theme) => theme.appBar.mobile.height + ' !important',
+            height: (theme) => theme.appBar.mobile.height,
             background: (theme) => theme.palette.surface[150],
           }}
         >

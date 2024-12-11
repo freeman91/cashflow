@@ -149,17 +149,6 @@ function ExpenseDialog() {
     >
       <form style={{ width: '100%' }}>
         <List>
-          {/* {mode !== 'create' && (
-            <TextFieldListItem
-              id='expense_id'
-              label='expense_id'
-              value={expense.expense_id}
-              InputProps={{
-                readOnly: true,
-                disableUnderline: true,
-              }}
-            />
-          )} */}
           {bill.name && (
             <TextFieldListItem
               label='bill'

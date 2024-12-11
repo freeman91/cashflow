@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import find from 'lodash/find';
-import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 
 import { _numberToCurrency } from '../../../helpers/currency';
 import BoxFlexColumn from '../../../components/BoxFlexColumn';
 import BoxFlexCenter from '../../../components/BoxFlexCenter';
-
-const ONE_YEAR = '1Y';
-const TWO_YEARS = '2Y';
-const FIVE_YEARS = '5Y';
-const TEN_YEARS = '10Y';
-const ALL_TIME = 'ALL';
+import SelectRangeChipStack from '../../../components/SelectRangeChipStack';
 
 const BoxMonthValue = (props) => {
   const { label, value } = props;
@@ -29,11 +21,9 @@ const BoxMonthValue = (props) => {
   return (
     <Box
       sx={{
-        background: theme.palette.surface[300],
-        px: 1,
-        pt: '4px',
-        borderRadius: '3px',
-        boxShadow: 4,
+        background: theme.palette.surface[200],
+        p: 1,
+        borderRadius: 1,
       }}
     >
       <BoxFlexColumn alignItems='center'>
@@ -66,69 +56,17 @@ function ChartTooltip({ active, payload, label }) {
   return null;
 }
 
-export default function NetworthChart() {
+export default function NetworthChart(props) {
+  const { setSelected = null } = props;
   const theme = useTheme();
   const allNetworths = useSelector((state) => state.networths.data);
 
+  const [activeIndex, setActiveIndex] = useState(0);
   const [chartData, setChartData] = useState([]);
-  const [rangeLabel, setRangeLabel] = useState(FIVE_YEARS);
   const [range, setRange] = useState({
     start: { month: 10, year: 2018 },
     end: { month: 1, year: 2030 },
   });
-
-  useEffect(() => {
-    const end = dayjs();
-
-    let _range = {
-      start: {},
-      end: {
-        year: end.year(),
-        month: end.month(),
-      },
-    };
-
-    if (rangeLabel === ONE_YEAR) {
-      const start = end.subtract(1, 'year');
-      _range.start = {
-        year: start.year(),
-        month: start.month(),
-      };
-    }
-
-    if (rangeLabel === TWO_YEARS) {
-      const start = end.subtract(2, 'year');
-      _range.start = {
-        year: start.year(),
-        month: start.month(),
-      };
-    }
-
-    if (rangeLabel === FIVE_YEARS) {
-      const start = end.subtract(5, 'year');
-      _range.start = {
-        year: start.year(),
-        month: start.month(),
-      };
-    }
-
-    if (rangeLabel === TEN_YEARS) {
-      const start = end.subtract(10, 'year');
-      _range.start = {
-        year: start.year(),
-        month: start.month(),
-      };
-    }
-
-    if (rangeLabel === ALL_TIME) {
-      _range.start = {
-        year: 2010,
-        month: 1,
-      };
-    }
-
-    setRange(_range);
-  }, [rangeLabel]);
 
   useEffect(() => {
     let _data = reduce(
@@ -167,7 +105,15 @@ export default function NetworthChart() {
     );
     _data = sortBy(_data, 'timestamp');
     setChartData(_data);
+    setActiveIndex(_data.length - 1);
   }, [allNetworths, range]);
+
+  useEffect(() => {
+    if (setSelected) {
+      const _selected = chartData[activeIndex];
+      setSelected(_selected);
+    }
+  }, [activeIndex, chartData, setSelected]);
 
   const gradientOffset = () => {
     const dataMax = Math.max(...chartData.map((i) => i.networth));
@@ -202,6 +148,9 @@ export default function NetworthChart() {
             left: 0,
             bottom: 0,
           }}
+          onClick={({ activeTooltipIndex }) => {
+            setActiveIndex(activeTooltipIndex);
+          }}
         >
           <XAxis
             hide
@@ -209,18 +158,7 @@ export default function NetworthChart() {
             tickLine={false}
             type='number'
             dataKey='timestamp'
-            domain={[
-              dayjs()
-                .year(range.start.year)
-                .month(range.start.month)
-                .date(1)
-                .unix(),
-              dayjs()
-                .year(range.end.year)
-                .month(range.end.month)
-                .date(1)
-                .unix(),
-            ]}
+            domain={['dataMin', 'dataMax']}
           />
 
           <Tooltip content={<ChartTooltip />} />
@@ -258,10 +196,7 @@ export default function NetworthChart() {
           />
         </AreaChart>
       </ResponsiveContainer>
-      <Stack direction='row' spacing={1} display='flex' justifyContent='center'>
-        <Chip label='1 Y' />
-        <Chip label='Chip Outlined' variant='outlined' />
-      </Stack>
+      <SelectRangeChipStack setRange={setRange} />
     </Box>
   );
 }

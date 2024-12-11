@@ -53,7 +53,14 @@ export default function AccountsStack() {
     const sortedAccounts = sortBy(accounts, 'net').reverse();
     const accountType = sortedAccounts[0].account_type;
     return (
-      <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+      <Grid
+        key={accountType}
+        item
+        xs={12}
+        mx={1}
+        display='flex'
+        justifyContent='center'
+      >
         <Card sx={{ width: '100%' }}>
           <Stack spacing={1} direction='column' pt={1} pb={1}>
             <Typography
@@ -64,16 +71,14 @@ export default function AccountsStack() {
             >
               {accountType}
             </Typography>
-            <React.Fragment key={accountType}>
-              {map(sortedAccounts, (account, idx) => {
-                return (
-                  <>
-                    <Divider sx={{ mx: '8px !important' }} />
-                    <AccountBox account={account} />
-                  </>
-                );
-              })}
-            </React.Fragment>
+            {map(sortedAccounts, (account, idx) => {
+              return (
+                <React.Fragment key={`${accountType}-${idx}`}>
+                  <Divider sx={{ mx: '8px !important' }} />
+                  <AccountBox account={account} />
+                </React.Fragment>
+              );
+            })}
           </Stack>
         </Card>
       </Grid>

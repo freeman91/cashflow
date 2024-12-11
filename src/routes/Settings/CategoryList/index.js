@@ -5,9 +5,9 @@ import find from 'lodash/find';
 import sortBy from 'lodash/sortBy';
 
 import AddIcon from '@mui/icons-material/Add';
-import Card from '@mui/material/Card';
-import Fab from '@mui/material/Fab';
-import List from '@mui/material/List';
+import UndoIcon from '@mui/icons-material/Undo';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 
 import { putCategories } from '../../../store/categories';
 import Category from './Category';
@@ -42,30 +42,39 @@ export default function CategoryList(props) {
   };
 
   return (
-    <Card raised sx={{ px: 1 }}>
-      <Fab
-        color='primary'
-        sx={{ position: 'fixed', right: 15, top: 50 }}
-        onClick={handleCreateClick}
-      >
-        <AddIcon />
-      </Fab>
-      <List disablePadding>
-        {sortBy(categories, 'name')?.map((category, idx) => (
-          <Category
-            key={category.name + idx}
-            idx={idx}
-            placeholder={placeholder}
-            category={category}
-            setCategories={setCategories}
-            expandedCategory={expandedCategory}
-            setExpandedCategory={setExpandedCategory}
-            handleSaveCategory={handleSaveCategory}
-            deleteCategory={deleteCategory}
-            categoriesLength={categories.length}
-          />
-        ))}
-      </List>
-    </Card>
+    <>
+      <Grid item xs={12} mx={1} gap={1} display='flex' justifyContent='center'>
+        <Button
+          variant='contained'
+          endIcon={<AddIcon />}
+          onClick={handleCreateClick}
+        >
+          create
+        </Button>
+        <Button
+          variant='outlined'
+          endIcon={<UndoIcon />}
+          sx={{ color: 'button', borderColor: 'button' }}
+          onClick={() => {
+            setCategories(categoriesItem?.categories || []);
+          }}
+        >
+          reset
+        </Button>
+      </Grid>
+      {sortBy(categories, 'name')?.map((category, idx) => (
+        <Category
+          key={category.name + idx}
+          idx={idx}
+          placeholder={placeholder}
+          category={category}
+          setCategories={setCategories}
+          expandedCategory={expandedCategory}
+          setExpandedCategory={setExpandedCategory}
+          handleSaveCategory={handleSaveCategory}
+          deleteCategory={deleteCategory}
+        />
+      ))}
+    </>
   );
 }

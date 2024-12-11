@@ -2,12 +2,8 @@ import React, { useState } from 'react';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
 import TextField from '@mui/material/TextField';
 
 export default function Subcategory(props) {
@@ -30,56 +26,41 @@ export default function Subcategory(props) {
     setSelectedSubcategory(null);
   };
 
+  const selected = selectedSubcategory === subcategory;
   return (
     <>
-      {selectedSubcategory === subcategory ? (
-        <form key={subcategory} onSubmit={onSave}>
-          <ClickAwayListener
-            onClickAway={() => {
-              setSelectedSubcategory(null);
-              setSubcategoryText(subcategory);
-            }}
-          >
-            <ListItem sx={{ pl: 4, pr: 0 }}>
-              <ListItemButton
-                onClick={() => deleteSubcategory(subcategory)}
-                sx={{ justifyContent: 'left' }}
-              >
-                <DeleteIcon />
-              </ListItemButton>
-              <TextField
-                fullWidth
-                variant='standard'
-                sx={{ px: 2 }}
-                placeholder='subcategory'
-                key={subcategory}
-                id='subcategory'
-                value={subcategoryText}
-                onChange={(e) => handleChange(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton onClick={onSave}>
-                        <SaveIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </ListItem>
-          </ClickAwayListener>
-        </form>
-      ) : (
-        <ListItem key={subcategory} dense>
-          <ListItemButton
-            sx={{ pl: 4 }}
-            onClick={() => setSelectedSubcategory(subcategory)}
-          >
-            {subcategory}
-          </ListItemButton>
-        </ListItem>
-      )}
-      <Divider sx={{ mx: 1 }} />
+      <form key={subcategory} onSubmit={onSave}>
+        <TextField
+          fullWidth
+          variant='standard'
+          sx={{ px: 2, py: 1, cursor: selected ? 'default' : 'pointer' }}
+          placeholder='subcategory'
+          key={subcategory}
+          id='subcategory'
+          value={subcategoryText}
+          onChange={(e) => handleChange(e.target.value)}
+          onClick={() => {
+            if (!selected) {
+              setSelectedSubcategory(subcategory);
+            }
+          }}
+          InputProps={{
+            disableUnderline: !selected,
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  onClick={
+                    selected ? onSave : () => deleteSubcategory(subcategory)
+                  }
+                  sx={{ color: 'button' }}
+                >
+                  {selected ? <SaveIcon /> : <DeleteIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </form>
     </>
   );
 }

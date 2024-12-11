@@ -5,17 +5,13 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { ACCOUNTS, ASSETS, DEBTS } from '..';
 import CurrentNetworth from '../../Home/CurrentNetworth';
 import NetworthChart from './NetworthChart';
 import SubAccountPieChart from './SubAccountPieChart';
-
-const CustomToggleButton = (props) => {
-  return <ToggleButton {...props} sx={{ py: 0.5, color: 'text.secondary' }} />;
-};
+import CustomToggleButton from '../../../components/CustomToggleButton';
 
 export default function AccountsNetworth(props) {
   const { tab, handleChangeTab } = props;

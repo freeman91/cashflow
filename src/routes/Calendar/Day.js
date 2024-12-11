@@ -130,10 +130,17 @@ export default function Day({
           height: '30px',
           width: '30px',
           color: dateNumberColor,
-          backgroundColor: isSameDayAsSelected ? 'white' : 'transparent',
+          backgroundColor: isSameDayAsSelected
+            ? 'white'
+            : isToday
+            ? 'surface.250'
+            : 'transparent',
           borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
-        fontWeight={isSameDayAsSelected ? 'bold' : 'regular'}
+        fontWeight={isToday ? 'bold' : 'regular'}
       >
         {date.date()}
       </Typography>

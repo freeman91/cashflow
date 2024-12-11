@@ -7,31 +7,25 @@ import includes from 'lodash/includes';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import FilterListIcon from '@mui/icons-material/FilterList';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 
 import { findId } from '../../../helpers/transactions';
 import { getExpenses } from '../../../store/expenses';
-import RangeSelect, {
-  RANGE_OPTIONS,
-} from '../../../components/Selector/RangeSelect';
 import FilterDialog from './FilterDialog';
 import ExpensesSummary from './ExpensesSummary';
 import TransactionBox from '../../../components/TransactionBox';
 
-export default function Expenses() {
+export default function Expenses(props) {
+  const { range, mainFilter, filterDialogOpen, setFilterDialogOpen } = props;
+
   const dispatch = useDispatch();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
-  const [open, setOpen] = useState(false);
-  const [range, setRange] = useState(RANGE_OPTIONS[0]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
-
   const [typeFilter, setTypeFilter] = useState(['expense', 'repayment']);
   const [amountFilter, setAmountFilter] = useState({
     comparator: '',
@@ -98,6 +92,20 @@ export default function Expenses() {
       });
     }
 
+    // filter by main filter
+    if (mainFilter) {
+      _expenses = filter(_expenses, (expense) => {
+        return (
+          expense.vendor?.toLowerCase().includes(mainFilter.toLowerCase()) ||
+          expense.category?.toLowerCase().includes(mainFilter.toLowerCase()) ||
+          expense.subcategory
+            ?.toLowerCase()
+            .includes(mainFilter.toLowerCase()) ||
+          expense.description?.toLowerCase().includes(mainFilter.toLowerCase())
+        );
+      });
+    }
+
     // filter by category
     if (categoryFilter) {
       _expenses = filter(_expenses, (expense) => {
@@ -139,6 +147,7 @@ export default function Expenses() {
     vendorFilter,
     billFilter,
     pendingFilter,
+    mainFilter,
   ]);
 
   useEffect(() => {
@@ -147,43 +156,33 @@ export default function Expenses() {
 
   return (
     <>
-      <Box sx={{ px: 1, mb: 1 }}>
-        <Card
-          raised
-          sx={{
-            p: 0.5,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <RangeSelect range={range} setRange={setRange} />
-          <IconButton onClick={() => setOpen(true)}>
-            <FilterListIcon />
-          </IconButton>
-        </Card>
+      <Grid item xs={12} mx={1}>
         <ExpensesSummary expenses={filteredExpenses} />
-      </Box>
+      </Grid>
 
-      <Card raised>
-        <Stack spacing={1} direction='column' py={1}>
-          {map(filteredExpenses, (expense, idx) => {
-            const key = findId(expense);
-            return (
-              <React.Fragment key={key}>
-                <TransactionBox transaction={expense} />
-                {idx < filteredExpenses.length - 1 && (
-                  <Divider sx={{ mx: '8px !important' }} />
-                )}
-              </React.Fragment>
-            );
-          })}
-        </Stack>
-      </Card>
+      {filteredExpenses.length > 0 && (
+        <Grid item xs={12} mx={1}>
+          <Card>
+            <Stack spacing={1} direction='column' py={1}>
+              {map(filteredExpenses, (expense, idx) => {
+                const key = findId(expense);
+                return (
+                  <React.Fragment key={key}>
+                    <TransactionBox transaction={expense} />
+                    {idx < filteredExpenses.length - 1 && (
+                      <Divider sx={{ mx: '8px !important' }} />
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </Stack>
+          </Card>
+        </Grid>
+      )}
       <FilterDialog
         title='filter options'
-        open={open}
-        setOpen={setOpen}
+        open={filterDialogOpen}
+        setOpen={setFilterDialogOpen}
         typeFilter={typeFilter}
         setTypeFilter={setTypeFilter}
         pendingFilter={pendingFilter}

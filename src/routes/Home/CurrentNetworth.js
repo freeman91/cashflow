@@ -13,7 +13,7 @@ import BoxFlexCenter from '../../components/BoxFlexCenter';
 import { _numberToCurrency } from '../../helpers/currency';
 
 export default function CurrentNetworth(props) {
-  const { textSize = 'large', align = 'center' } = props;
+  const { textSize = 'large', align = 'center', title = 'networth' } = props;
 
   const dispatch = useDispatch();
   const networths = useSelector((state) => state.networths.data);
@@ -90,7 +90,7 @@ export default function CurrentNetworth(props) {
         sx={{ cursor: 'pointer' }}
       >
         <Typography variant={textVariant1} color='text.secondary' align={align}>
-          networth
+          {title}
         </Typography>
         <BoxFlexCenter sx={{ justifyContent }}>
           <Typography variant={textVariant2} color='text.secondary'>

@@ -8,32 +8,26 @@ import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import toLower from 'lodash/toLower';
 
-import FilterListIcon from '@mui/icons-material/FilterList';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 
 import { findId } from '../../../helpers/transactions';
 import { getIncomes } from '../../../store/incomes';
 import { getPaychecks } from '../../../store/paychecks';
-import RangeSelect, {
-  RANGE_OPTIONS,
-} from '../../../components/Selector/RangeSelect';
 import IncomesSummary from './IncomesSummary';
 import FilterDialog from './FilterDialog';
 import TransactionBox from '../../../components/TransactionBox';
 
-export default function Incomes() {
+export default function Incomes(props) {
+  const { range, mainFilter, filterDialogOpen, setFilterDialogOpen } = props;
+
   const dispatch = useDispatch();
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
-  const [open, setOpen] = useState(false);
-  const [range, setRange] = useState(RANGE_OPTIONS[0]);
   const [filteredIncomes, setFilteredIncomes] = useState([]);
-
   const [typeFilter, setTypeFilter] = useState(['income', 'paycheck']);
   const [amountFilter, setAmountFilter] = useState({
     comparator: '',
@@ -80,6 +74,16 @@ export default function Incomes() {
       });
     }
 
+    // filter by main filter
+    if (mainFilter) {
+      _incomes = filter(_incomes, (income) => {
+        return (
+          income.source?.toLowerCase().includes(mainFilter.toLowerCase()) ||
+          income.category?.toLowerCase().includes(mainFilter.toLowerCase())
+        );
+      });
+    }
+
     // filter by category
     if (categoryFilter) {
       _incomes = filter(_incomes, (income) => {
@@ -107,6 +111,7 @@ export default function Incomes() {
     amountFilter,
     categoryFilter,
     sourceFilter,
+    mainFilter,
   ]);
 
   useEffect(() => {
@@ -116,44 +121,33 @@ export default function Incomes() {
 
   return (
     <>
-      <Box sx={{ px: 1, mb: 1 }}>
-        <Card
-          raised
-          sx={{
-            p: 0.5,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <RangeSelect range={range} setRange={setRange} />
-          <IconButton onClick={() => setOpen(true)}>
-            <FilterListIcon />
-          </IconButton>
-        </Card>
+      <Grid item xs={12} mx={1}>
         <IncomesSummary incomes={filteredIncomes} />
-      </Box>
-      <Card raised>
-        <Stack spacing={1} direction='column' py={1}>
-          {map(filteredIncomes, (income, idx) => {
-            const key = findId(income);
-            return (
-              <React.Fragment key={key}>
-                <TransactionBox transaction={income} />
-                {idx < filteredIncomes.length - 1 && (
-                  <Divider sx={{ mx: '8px !important' }} />
-                )}
-              </React.Fragment>
-            );
-          })}
-        </Stack>
-      </Card>
+      </Grid>
+
+      {filteredIncomes.length > 0 && (
+        <Grid item xs={12} mx={1}>
+          <Card>
+            <Stack spacing={1} direction='column' py={1}>
+              {map(filteredIncomes, (income, idx) => {
+                const key = findId(income);
+                return (
+                  <React.Fragment key={key}>
+                    <TransactionBox transaction={income} />
+                    {idx < filteredIncomes.length - 1 && (
+                      <Divider sx={{ mx: '8px !important' }} />
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </Stack>
+          </Card>
+        </Grid>
+      )}
       <FilterDialog
         title='filter options'
-        open={open}
-        setOpen={setOpen}
-        range={range}
-        setRange={setRange}
+        open={filterDialogOpen}
+        setOpen={setFilterDialogOpen}
         typeFilter={typeFilter}
         setTypeFilter={setTypeFilter}
         amountFilter={amountFilter}

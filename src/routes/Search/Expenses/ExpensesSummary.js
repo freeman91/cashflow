@@ -38,7 +38,7 @@ export default function ExpensesSummary(props) {
   }, [expenses]);
 
   return (
-    <Card raised sx={{ mt: 1, p: 1 }}>
+    <Card sx={{ px: 1 }}>
       <Stack
         spacing={1}
         direction='row'

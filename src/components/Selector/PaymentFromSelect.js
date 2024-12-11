@@ -58,7 +58,7 @@ function PaymentFromSelect(props) {
         MenuProps={{
           MenuListProps: {
             disablePadding: true,
-            sx: { bgcolor: 'surface.200' },
+            sx: { bgcolor: 'surface.300' },
           },
         }}
       >

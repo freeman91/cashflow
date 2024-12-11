@@ -65,8 +65,8 @@ const getUser = createAsyncThunk(
   }
 );
 
-const refresh = createAsyncThunk(
-  'user/refresh',
+const refreshAll = createAsyncThunk(
+  'user/refreshAll',
   async (_, { dispatch, getState, requestId }) => {
     const { item: user, currentRequestId } = getState().user;
 
@@ -127,9 +127,9 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    buildAsyncReducers(builder, [getUser, refresh, putUser]);
+    buildAsyncReducers(builder, [getUser, refreshAll, putUser]);
   },
 });
 
-export { getUser, refresh, putUser };
+export { getUser, refreshAll, putUser };
 export default reducer;

@@ -74,16 +74,24 @@ export const muiTheme = createTheme({
     maxWidth: 1000,
   },
   drawerWidth: 175,
-  chartColors: {
-    housing: '#006633',
-    utility: '#CCCC33',
-    food: '#00CC66',
-    transportation: '#CC6600',
-    health: '#0099FF',
-    entertainment: '#666666',
-    project: '#FF6633',
-    shopping: '#FFFF00',
-    travel: '#6633FF',
-    other: ' 	#808080',
+  appBar: {
+    mobile: {
+      height: '42px',
+    },
+    desktop: {
+      height: '56px',
+    },
   },
+  chartColors: [
+    '#006633',
+    '#CCCC33',
+    '#00CC66',
+    '#CC6600',
+    '#0099FF',
+    '#666666',
+    '#FF6633',
+    '#FFFF00',
+    '#6633FF',
+    '#808080',
+  ],
 });

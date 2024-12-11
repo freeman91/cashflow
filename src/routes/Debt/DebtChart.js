@@ -15,7 +15,8 @@ import ListItemText from '@mui/material/ListItemText';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 
 import { numberToCurrency } from '../../helpers/currency';
-import SubaccountHistoryTooltip from '../Home/Accounts/SubaccountHistoryTooltip';
+import SubaccountHistoryTooltip from '../../components/SubaccountHistoryTooltip';
+import SelectRangeChipStack from '../../components/SelectRangeChipStack';
 
 export default function DebtChart(props) {
   const { debt } = props;
@@ -27,7 +28,7 @@ export default function DebtChart(props) {
   const [account, setAccount] = useState(null);
   const [selected, setSelected] = useState(null);
   const [chartData, setChartData] = useState([]);
-  const [range] = useState({
+  const [range, setRange] = useState({
     start: { month: today.month(), year: today.subtract(2, 'year').year() },
     end: {
       month: today.month(),
@@ -122,18 +123,7 @@ export default function DebtChart(props) {
             tickLine={false}
             type='number'
             dataKey='timestamp'
-            domain={[
-              dayjs()
-                .year(range.start.year)
-                .month(range.start.month)
-                .date(1)
-                .unix(),
-              dayjs()
-                .year(range.end.year)
-                .month(range.end.month)
-                .date(1)
-                .unix(),
-            ]}
+            domain={['dataMin', 'dataMax']}
           />
           <Tooltip content={<SubaccountHistoryTooltip />} />
           <defs>
@@ -141,12 +131,12 @@ export default function DebtChart(props) {
               <stop
                 offset={off}
                 stopColor={theme.palette.error.main}
-                stopOpacity={0.3}
+                stopOpacity={0}
               />
               <stop
                 offset='100%'
                 stopColor={theme.palette.error.main}
-                stopOpacity={1}
+                stopOpacity={0.8}
               />
             </linearGradient>
           </defs>
@@ -154,12 +144,13 @@ export default function DebtChart(props) {
             dot={false}
             type='monotone'
             dataKey='value'
-            stroke='url(#splitColor)'
+            stroke={theme.palette.error.main}
             fill='url(#splitColor)'
             strokeWidth={2}
           />
         </AreaChart>
       </ResponsiveContainer>
+      <SelectRangeChipStack setRange={setRange} />
       {selected && (
         <Card sx={{ mt: 1 }}>
           <List disablePadding>

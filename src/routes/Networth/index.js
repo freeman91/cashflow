@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -6,25 +6,28 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import { refresh } from '../../store/user';
+import { refreshAll } from '../../store/user';
 import usePullToRefresh from '../../store/hooks/usePullToRefresh';
 import CustomAppBar from '../../components/CustomAppBar';
 import SaveButton from '../../components/CustomAppBar/SaveButton';
+import NetworthChart from '../Accounts/Networth/NetworthChart';
+import CurrentNetworth from '../Home/CurrentNetworth';
+import NetworthContainer from './NetworthContainer';
+import SelectedNetworth from './SelectedNetworth';
+
+export const ASSETS = 'assets';
+export const DEBTS = 'debts';
 
 export default function Networth() {
   const dispatch = useDispatch();
 
-  // const [tab, setTab] = useState('accounts');
+  const [selected, setSelected] = useState(null);
+  const [tab, setTab] = useState(ASSETS);
 
   const onRefresh = async () => {
-    dispatch(refresh());
+    dispatch(refreshAll());
   };
   const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
-
-  // const handleChangeTab = (event, newTab) => {
-  //   setTab(newTab);
-  // };
-
   return (
     <Box sx={{ WebkitOverflowScrolling: 'touch', width: '100%' }}>
       <CustomAppBar
@@ -48,7 +51,24 @@ export default function Networth() {
           </Grid>
         )}
 
-        {/* <Grid item xs={12} mb={10} /> */}
+        <CurrentNetworth title='current networth' />
+
+        <Grid item xs={12} display='flex' justifyContent='center'>
+          <Box sx={{ width: '100%', px: 1 }}>
+            <NetworthChart setSelected={setSelected} />
+          </Box>
+        </Grid>
+
+        {selected && (
+          <NetworthContainer
+            networthId={selected.id}
+            setNetworthId={selected.id}
+            tab={tab}
+            setTab={setTab}
+          />
+        )}
+        {selected && <SelectedNetworth networthId={selected.id} tab={tab} />}
+        <Grid item xs={12} mb={10} />
       </Grid>
     </Box>
   );

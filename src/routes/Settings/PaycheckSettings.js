@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddIcon from '@mui/icons-material/Add';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 import InputAdornment from '@mui/material/InputAdornment';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Stack from '@mui/material/Stack';
 
 import { _numberToCurrency } from '../../helpers/currency';
 import TextFieldListItem from '../../components/List/TextFieldListItem';
@@ -96,161 +96,157 @@ export default function PaycheckSettings(props) {
   };
 
   return (
-    <Box sx={{ mx: 1, mt: 1 }}>
-      <Stack direction='row' spacing={1} alignItems='center'>
-        <IconButton sx={{ width: 50, height: 50 }} onClick={handleCreateClick}>
-          <AddCircleOutlineIcon fontSize='large' />
-        </IconButton>
-        <Card raised sx={{ width: '100%', p: 1 }}>
+    <>
+      <Grid item xs={12} mx={1} gap={1} display='flex' justifyContent='center'>
+        <Button
+          variant='contained'
+          endIcon={<AddIcon />}
+          onClick={handleCreateClick}
+        >
+          create
+        </Button>
+        {template?.paycheck_id && (
+          <Button
+            variant='outlined'
+            endIcon={<SaveIcon />}
+            color='primary'
+            onClick={handleSubmit}
+          >
+            save
+          </Button>
+        )}
+        {template?.paycheck_id && !isNewTemplate && (
+          <Button
+            variant='outlined'
+            endIcon={<DeleteIcon />}
+            color='error'
+            onClick={handleDelete}
+          >
+            delete
+          </Button>
+        )}
+      </Grid>
+      <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+        <Card sx={{ p: 1, width: '100%' }}>
           <PaycheckTemplateSelect
             selected={template}
             handleSelect={handleSelect}
           />
         </Card>
-      </Stack>
+      </Grid>
       {template?.paycheck_id && (
-        <Card raised sx={{ mt: 1 }}>
-          <form>
-            <List sx={{ px: 1 }}>
-              <ListItem disableGutters>
-                <DepositToSelect
-                  resource={template}
-                  setResource={setTemplate}
+        <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+          <Card sx={{ width: '100%' }}>
+            <form>
+              <List sx={{ px: 1 }}>
+                <ListItem disableGutters>
+                  <DepositToSelect
+                    resource={template}
+                    setResource={setTemplate}
+                  />
+                </ListItem>
+                <TextFieldListItem
+                  id='employer'
+                  label='employer'
+                  value={template.employer}
+                  onChange={handleChange}
                 />
-              </ListItem>
-              <TextFieldListItem
-                id='employer'
-                label='employer'
-                value={template.employer}
-                onChange={handleChange}
-              />
-              <TextFieldListItem
-                id='gross'
-                label='gross'
-                placeholder='0.00'
-                value={_numberToCurrency.format(
-                  Number(template.take_home) +
-                    Number(template.taxes) +
-                    Number(template.retirement) +
-                    Number(template.benefits) +
-                    Number(template.other)
-                )}
-                InputProps={{
-                  readOnly: true,
-                  disableUnderline: true,
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <AttachMoneyIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextFieldListItem
-                id='take_home'
-                label='take home'
-                placeholder='0.00'
-                value={template.take_home}
-                onChange={handleChangeNumber}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <AttachMoneyIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextFieldListItem
-                id='taxes'
-                label='taxes'
-                placeholder='0.00'
-                value={template.taxes}
-                onChange={handleChangeNumber}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <AttachMoneyIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextFieldListItem
-                id='retirement'
-                label='retirement'
-                placeholder='0.00'
-                value={template.retirement}
-                onChange={handleChangeNumber}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <AttachMoneyIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextFieldListItem
-                id='benefits'
-                label='benefits'
-                placeholder='0.00'
-                value={template.benefits}
-                onChange={handleChangeNumber}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <AttachMoneyIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextFieldListItem
-                id='other'
-                label='other'
-                placeholder='0.00'
-                value={template.other}
-                onChange={handleChangeNumber}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <AttachMoneyIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <ListItem
-                sx={{
-                  display: 'flex',
-                  justifyContent: !isNewTemplate ? 'space-between' : 'center',
-                }}
-              >
-                {!isNewTemplate && (
-                  <Button
-                    fullWidth
-                    type='submit'
-                    id='submit'
-                    variant='outlined'
-                    color='error'
-                    onClick={handleDelete}
-                    sx={{ maxWidth: 150, mr: 1 }}
-                  >
-                    delete
-                  </Button>
-                )}
-
-                <Button
-                  fullWidth
-                  type='submit'
-                  id='submit'
-                  variant='contained'
-                  color='primary'
-                  onClick={handleSubmit}
-                  sx={{ maxWidth: 150 }}
-                >
-                  {isNewTemplate ? 'create' : 'update'}
-                </Button>
-              </ListItem>
-            </List>
-          </form>
-        </Card>
+                <TextFieldListItem
+                  id='gross'
+                  label='gross'
+                  placeholder='0.00'
+                  value={_numberToCurrency.format(
+                    Number(template.take_home) +
+                      Number(template.taxes) +
+                      Number(template.retirement) +
+                      Number(template.benefits) +
+                      Number(template.other)
+                  )}
+                  InputProps={{
+                    readOnly: true,
+                    disableUnderline: true,
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <AttachMoneyIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <TextFieldListItem
+                  id='take_home'
+                  label='take home'
+                  placeholder='0.00'
+                  value={template.take_home}
+                  onChange={handleChangeNumber}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <AttachMoneyIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <TextFieldListItem
+                  id='taxes'
+                  label='taxes'
+                  placeholder='0.00'
+                  value={template.taxes}
+                  onChange={handleChangeNumber}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <AttachMoneyIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <TextFieldListItem
+                  id='retirement'
+                  label='retirement'
+                  placeholder='0.00'
+                  value={template.retirement}
+                  onChange={handleChangeNumber}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <AttachMoneyIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <TextFieldListItem
+                  id='benefits'
+                  label='benefits'
+                  placeholder='0.00'
+                  value={template.benefits}
+                  onChange={handleChangeNumber}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <AttachMoneyIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <TextFieldListItem
+                  id='other'
+                  label='other'
+                  placeholder='0.00'
+                  value={template.other}
+                  onChange={handleChangeNumber}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <AttachMoneyIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </List>
+            </form>
+          </Card>
+        </Grid>
       )}
-    </Box>
+    </>
   );
 }

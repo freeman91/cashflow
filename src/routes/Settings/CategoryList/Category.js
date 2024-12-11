@@ -3,21 +3,31 @@ import cloneDeep from 'lodash/cloneDeep';
 import findIndex from 'lodash/findIndex';
 import sortBy from 'lodash/sortBy';
 
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import useTheme from '@mui/material/styles/useTheme';
+import AddIcon from '@mui/icons-material/Add';
+import ColorLensIcon from '@mui/icons-material/ColorLens';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UndoIcon from '@mui/icons-material/Undo';
+
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import Popover from '@mui/material/Popover';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+
 import Subcategory from './Subcategory';
 
 export default function Category(props) {
@@ -30,9 +40,10 @@ export default function Category(props) {
     setExpandedCategory,
     handleSaveCategory,
     deleteCategory,
-    categoriesLength,
   } = props;
+  const theme = useTheme();
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [edit, setEdit] = useState(false);
   const [categoryName, setCategoryName] = useState(category.name);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
@@ -69,13 +80,23 @@ export default function Category(props) {
       (item) => item !== subcategory
     );
     handleSaveCategory(idx, _category);
+    setSelectedSubcategory(null);
   };
 
+  const setColor = (color) => {
+    let _category = cloneDeep(category);
+    _category.color = color;
+    handleSaveCategory(idx, _category);
+  };
+
+  const color = category?.color;
+  const open = Boolean(anchorEl);
+  const id = open ? 'color-picker-popover' : undefined;
   return (
-    <React.Fragment key={category.name + '-edit'}>
-      {edit ? (
-        <ClickAwayListener onClickAway={() => setEdit(false)}>
-          <ListItem disableGutters>
+    <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+      <Card sx={{ p: 1, width: '100%' }}>
+        {edit ? (
+          <ClickAwayListener onClickAway={() => setEdit(false)}>
             <TextField
               fullWidth
               variant='standard'
@@ -95,82 +116,128 @@ export default function Category(props) {
                 ),
               }}
             />
-          </ListItem>
-        </ClickAwayListener>
-      ) : (
-        <ListItem disableGutters sx={{ minWidth: 350 }}>
-          {expandedCategory === category.name && (
-            <ListItemButton
-              onClick={() => deleteCategory(category.name)}
-              sx={{ justifyContent: 'left' }}
-            >
-              <DeleteIcon />
-            </ListItemButton>
-          )}
-
-          <ListItemText
-            primary={category.name}
-            primaryTypographyProps={{
-              align: 'center',
-              fontWeight: 'bold',
-            }}
-            sx={{ width: '75%' }}
-          />
-
-          {expandedCategory === category.name ? (
-            <ListItemButton
-              onClick={() => handleCreateSubcategory()}
-              sx={{ justifyContent: 'right' }}
-            >
-              <AddCircleOutlineIcon />
-            </ListItemButton>
-          ) : (
-            <ListItemButton
-              onClick={() => setEdit(true)}
-              sx={{ justifyContent: 'right' }}
-            >
-              <EditIcon />
-            </ListItemButton>
-          )}
-
+          </ClickAwayListener>
+        ) : (
           <ListItemButton
+            sx={{ p: 0 }}
             onClick={() => {
               if (expandedCategory === category.name) {
                 setExpandedCategory(null);
+                setSelectedSubcategory(null);
               } else {
                 setExpandedCategory(category.name);
               }
             }}
-            sx={{ justifyContent: 'right' }}
           >
-            {expandedCategory === category.name ? (
-              <ExpandLess />
-            ) : (
-              <ExpandMore />
-            )}
+            <ListItemText
+              primary={category.name}
+              primaryTypographyProps={{
+                align: 'left',
+                fontWeight: 'bold',
+              }}
+              sx={{ width: '75%', ml: 1 }}
+            />
+            <IconButton sx={{ color: 'button', p: 0.5 }}>
+              {expandedCategory === category.name ? (
+                <ExpandLess />
+              ) : (
+                <ExpandMore />
+              )}
+            </IconButton>
           </ListItemButton>
-        </ListItem>
-      )}
-      {(categoriesLength - 1 !== idx || expandedCategory === category.name) && (
-        <Divider sx={{ mx: 1 }} />
-      )}
-      <Collapse
-        in={expandedCategory === category.name}
-        timeout='auto'
-        unmountOnExit
+        )}
+        <Collapse
+          in={expandedCategory === category.name}
+          timeout='auto'
+          unmountOnExit
+        >
+          <Stack
+            direction='row'
+            gap={1}
+            justifyContent='center'
+            alignItems='center'
+          >
+            <Tooltip placement='top' title='create'>
+              <IconButton
+                sx={{ color: 'button' }}
+                onClick={handleCreateSubcategory}
+              >
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement='top' title='edit'>
+              <IconButton
+                sx={{ color: 'button' }}
+                onClick={() => setEdit(true)}
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <IconButton
+              sx={{ color: color || 'button' }}
+              onClick={(event) => {
+                setAnchorEl(event.currentTarget);
+              }}
+            >
+              <ColorLensIcon />
+            </IconButton>
+            <Tooltip placement='top' title='undo'>
+              <IconButton sx={{ color: 'button' }} onClick={() => {}}>
+                <UndoIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement='top' title='delete'>
+              <IconButton sx={{ color: 'button' }} onClick={deleteCategory}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+          <Divider sx={{ mx: 1 }} />
+          {sortBy(category.subcategories).map((subcategory, idx) => (
+            <Subcategory
+              key={subcategory + idx}
+              subcategory={subcategory}
+              selectedSubcategory={selectedSubcategory}
+              setSelectedSubcategory={setSelectedSubcategory}
+              updateSubactegory={updateSubactegory}
+              deleteSubcategory={deleteSubcategory}
+              subcategoriesLength={category.subcategories.length}
+            />
+          ))}
+        </Collapse>
+      </Card>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={() => {
+          setAnchorEl(null);
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
       >
-        {sortBy(category.subcategories).map((subcategory, idx) => (
-          <Subcategory
-            key={subcategory + idx}
-            subcategory={subcategory}
-            selectedSubcategory={selectedSubcategory}
-            setSelectedSubcategory={setSelectedSubcategory}
-            updateSubactegory={updateSubactegory}
-            deleteSubcategory={deleteSubcategory}
-            subcategoriesLength={category.subcategories.length}
-          />
-        ))}
-      </Collapse>
-    </React.Fragment>
+        <Grid container>
+          {theme.chartColors.map((color) => (
+            <Grid item key={color} xs={1}>
+              <IconButton
+                sx={{ color: color }}
+                onClick={() => {
+                  setColor(color);
+                  setAnchorEl(null);
+                }}
+              >
+                <Box sx={{ width: 20, height: 20, backgroundColor: color }} />
+              </IconButton>
+            </Grid>
+          ))}
+        </Grid>
+      </Popover>
+    </Grid>
   );
 }

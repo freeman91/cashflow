@@ -1,21 +1,82 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import map from 'lodash/map';
 
-import { useTheme } from '@emotion/react';
+import { alpha } from '@mui/material/styles';
+import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { Cell, PieChart, Pie } from 'recharts';
-import { numberToCurrency } from '../../helpers/currency';
+import { Cell, PieChart, Pie, Sector } from 'recharts';
+
+import { openDialog } from '../../store/dialogs';
+import { _numberToCurrency } from '../../helpers/currency';
+import BoxFlexCenter from '../BoxFlexCenter';
+
+const renderActiveShape = (props) => {
+  const {
+    cx,
+    cy,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    selectedFill,
+    percent,
+  } = props;
+
+  return (
+    <g>
+      <text
+        x={cx}
+        y={cy}
+        dy={5}
+        textAnchor='middle'
+        fill={selectedFill}
+        fontSize={16}
+        fontWeight={700}
+      >
+        {`${(percent * 100).toFixed(2)}%`}
+      </text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={selectedFill}
+        cornerRadius={5}
+      />
+    </g>
+  );
+};
 
 export default function ExpensesByCategory(props) {
-  const { groupedExpenses, selected, setSelected } = props;
-  const theme = useTheme();
+  const { groupedExpenses } = props;
+  const dispatch = useDispatch();
+
+  const [selected, setSelected] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const _selected = groupedExpenses[activeIndex];
+    setSelected(_selected);
+  }, [activeIndex, groupedExpenses, setSelected]);
+
+  const openTransactionsDialog = (category, transactions) => {
+    dispatch(
+      openDialog({
+        type: 'transactions',
+        id: category,
+        attrs: transactions,
+      })
+    );
+  };
 
   if (groupedExpenses.length === 0) {
     return (
@@ -43,26 +104,34 @@ export default function ExpensesByCategory(props) {
       justifyContent='space-between'
       sx={{ width: '100%', maxWidth: '400px !important' }}
     >
-      <Box width={300} height={125}>
-        <PieChart width={400} height={125}>
+      <Box width={300} height={155}>
+        <PieChart width={300} height={155}>
           <Pie
             data={groupedExpenses}
             dataKey='value'
-            fill={theme.palette.green[400]}
-            minAngle={4}
-            outerRadius={60}
-            labelLine
-            cx='35%'
+            paddingAngle={2}
+            minAngle={10}
+            innerRadius={50}
+            outerRadius={70}
+            cornerRadius={5}
+            cx='40%'
             cy='50%'
+            startAngle={360}
+            endAngle={0}
+            activeIndex={activeIndex}
+            activeShape={renderActiveShape}
+            onPointerOver={(_, index) => {
+              setActiveIndex(index);
+            }}
           >
             {map(groupedExpenses, (group, idx) => {
+              const lightColor = alpha(group.color, 0.5);
               return (
                 <Cell
                   key={`cell-${idx}`}
-                  fill={group.color}
-                  stroke={group.color}
-                  onPointerDown={() => setSelected(group)}
-                  onPointerEnter={() => setSelected(group)}
+                  selectedFill={group.color}
+                  fill={lightColor}
+                  stroke={lightColor}
                 />
               );
             })}
@@ -74,31 +143,55 @@ export default function ExpensesByCategory(props) {
           sx={{
             position: 'relative',
             zIndex: 1,
-            top: 80,
+            top: 110,
             left: -25,
             transform: 'translate(-40%, -40%)',
-            width: '100%',
-            maxWidth: '150px',
           }}
         >
-          <Card raised>
-            <ListItem disablePadding sx={{ pl: 1, pr: 2 }}>
-              <ListItemIcon sx={{ minWidth: 'unset', pr: 1 }}>
-                <Box
-                  sx={{
-                    width: 20,
-                    height: 20,
-                    backgroundColor: selected.color,
-                    borderRadius: '5px',
-                  }}
-                />
-              </ListItemIcon>
-              <ListItemText
-                primary={numberToCurrency.format(selected.value)}
-                secondary={selected.name}
+          <ListItem
+            disablePadding
+            sx={{ cursor: 'pointer' }}
+            onClick={() =>
+              openTransactionsDialog(selected.name, selected.expenses)
+            }
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 'unset',
+                mr: 2,
+                backgroundColor: selected.color,
+                borderRadius: '5px',
+                width: 30,
+                height: 30,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <MenuIcon
+                sx={{
+                  width: 20,
+                  height: 20,
+                  color: 'surface.100',
+                }}
               />
-            </ListItem>
-          </Card>
+            </ListItemIcon>
+            <ListItemText
+              sx={{ width: '100px' }}
+              primary={
+                <BoxFlexCenter sx={{ justifyContent: 'flex-start' }}>
+                  <Typography variant='body2' color='text.secondary'>
+                    $
+                  </Typography>
+                  <Typography variant='body1' color='white' fontWeight='bold'>
+                    {_numberToCurrency.format(selected.value)}
+                  </Typography>
+                </BoxFlexCenter>
+              }
+              secondary={selected.name}
+              secondaryTypographyProps={{ align: 'left' }}
+            />
+          </ListItem>
         </Box>
       )}
     </Grid>

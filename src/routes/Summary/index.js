@@ -1,53 +1,35 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import dayjs from 'dayjs';
 
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-
-import { refresh } from '../../store/user';
-import usePullToRefresh from '../../store/hooks/usePullToRefresh';
-import CustomAppBar from '../../components/CustomAppBar';
+import MonthSummary from './Month';
+import YearSummary from './Year';
 
 export default function Summary() {
-  const dispatch = useDispatch();
+  const location = useLocation();
 
-  // const [tab, setTab] = useState('accounts');
+  const [month, setMonth] = useState(null);
+  const [year, setYear] = useState(null);
 
-  const onRefresh = async () => {
-    dispatch(refresh());
-  };
-  const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
+  useEffect(() => {
+    const today = dayjs();
+    const _year = location.pathname.split('/')[2];
+    const _month = location.pathname.split('/')[3];
 
-  // const handleChangeTab = (event, newTab) => {
-  //   setTab(newTab);
-  // };
+    if (!_year && !_month) {
+      setYear(today.year());
+      setMonth(today.month() + 1);
+    } else {
+      setYear(_year);
+      setMonth(_month);
+    }
+  }, [location]);
 
-  return (
-    <Box sx={{ WebkitOverflowScrolling: 'touch', width: '100%' }}>
-      <CustomAppBar
-        middle={
-          <Typography variant='h6' fontWeight='bold'>
-            summary
-          </Typography>
-        }
-      />
-      <Grid
-        container
-        spacing={1}
-        justifyContent='center'
-        alignItems='flex-start'
-        sx={{ pt: 1, mt: '42px' }}
-      >
-        {(isRefreshing || pullPosition > 100) && (
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress sx={{ mt: 1 }} />
-          </Grid>
-        )}
-
-        {/* <Grid item xs={12} mb={10} /> */}
-      </Grid>
-    </Box>
-  );
+  if (year && month) {
+    return <MonthSummary year={year} month={month} />;
+  } else if (year) {
+    return <YearSummary year={year} />;
+  } else {
+    return <div>Loading...</div>;
+  }
 }

@@ -146,7 +146,7 @@ export default function SubAccountPieChart(props) {
           }}
         >
           {chartData.map((entry, index) => {
-            const selectedColor = Object.values(theme.chartColors)[index];
+            const selectedColor = theme.chartColors[index];
             return (
               <Cell
                 key={`cell-${index}`}

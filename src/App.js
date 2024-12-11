@@ -44,6 +44,7 @@ const AppRoutes = () => {
         <Route path='/account' element={<Account />} />
         <Route path='/accounts' element={<Accounts />} />
         <Route path='/asset' element={<Asset />} />
+        <Route path='/budgets' element={<></>} />
         <Route path='/calendar' element={<Calendar />} />
         <Route path='/calendar/:year/:month' element={<Calendar />} />
         <Route path='/debt' element={<Debt />} />
@@ -55,6 +56,7 @@ const AppRoutes = () => {
         <Route path='/search/:type' element={<Search />} />
         <Route path='/settings' element={<Settings />} />
         <Route path='/settings/:type' element={<Settings />} />
+        <Route path='/user' element={<></>} />
       </Route>
       <Route path='*'>
         <Route index element={<Navigate to='/home' />} />

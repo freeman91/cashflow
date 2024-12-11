@@ -5,25 +5,18 @@ import remove from 'lodash/remove';
 import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
-import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import { refresh } from '../../store/user';
-import usePullToRefresh from '../../store/hooks/usePullToRefresh';
+import { refreshAll } from '../../store/user';
 
 import HomeButtons from './HomeButtons';
 import CurrentCashflow from './CurrentCashflow';
 import CurrentNetworth from './CurrentNetworth';
 import CustomAppBar from '../../components/CustomAppBar';
+import CustomToggleButton from '../../components/CustomToggleButton';
+import PullToRefresh from '../../components/PullToRefresh';
 import TransactionsGridStack from '../../components/TransactionsGridStack';
-import SearchButton from '../../components/CustomAppBar/SearchButton';
-import SettingsButton from '../../components/CustomAppBar/SettingsButton';
-
-const CustomToggleButton = (props) => {
-  return <ToggleButton {...props} sx={{ py: 0.5, color: 'text.secondary' }} />;
-};
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -40,9 +33,8 @@ export default function Home() {
   const [transactions, setTransactions] = useState([]);
 
   const onRefresh = async () => {
-    dispatch(refresh());
+    dispatch(refreshAll());
   };
-  const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
 
   useEffect(() => {
     const today = dayjs();
@@ -111,30 +103,25 @@ export default function Home() {
 
   return (
     <Box sx={{ WebkitOverflowScrolling: 'touch', width: '100%' }}>
-      <CustomAppBar left={<SearchButton />} right={<SettingsButton />} />
+      <CustomAppBar left={<Box width={35} />} />
       <Grid
         container
         spacing={1}
         justifyContent='center'
         alignItems='flex-start'
-        sx={{ pt: 1, mt: '42px' }}
+        sx={{ mt: (theme) => theme.appBar.mobile.height }}
       >
-        {(isRefreshing || pullPosition > 100) && (
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress sx={{ mt: 1 }} />
-          </Grid>
-        )}
+        <PullToRefresh onRefresh={onRefresh} />
         <CurrentCashflow />
         <CurrentNetworth />
         <HomeButtons />
-        <Grid item xs={12} display='flex' justifyContent='center'>
+        <Grid item xs={12} display='flex' justifyContent='center' mx={1} mt={1}>
           <ToggleButtonGroup
             fullWidth
             color='primary'
             value={tab}
             exclusive
             onChange={handleChangeTab}
-            sx={{ mt: 2, px: 1 }}
           >
             {recent.length > 0 && (
               <CustomToggleButton value='recent'>recent</CustomToggleButton>

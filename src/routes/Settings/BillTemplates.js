@@ -4,10 +4,12 @@ import dayjs from 'dayjs';
 import sortBy from 'lodash/sortBy';
 import map from 'lodash/map';
 
-import { useTheme } from '@emotion/react';
+import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -17,7 +19,6 @@ import { _numberToCurrency } from '../../helpers/currency';
 import BoxFlexColumn from '../../components/BoxFlexColumn';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
 import CustomIconButton from '../../components/CustomIconButton';
-import FloatingActionButton from '../../components/FloatingActionButton';
 
 function getNextBillDate(day, months) {
   const today = dayjs();
@@ -57,7 +58,6 @@ function getNextBillDate(day, months) {
 
 const BillBox = (props) => {
   const { bill, icon } = props;
-  const theme = useTheme();
   const dispatch = useDispatch();
 
   const handleClick = (bill) => {
@@ -83,7 +83,7 @@ const BillBox = (props) => {
         cursor: 'pointer',
       }}
     >
-      <CustomIconButton color={theme.palette.red}>{icon}</CustomIconButton>
+      <CustomIconButton color='error.main'>{icon}</CustomIconButton>
       <Box
         sx={{
           display: 'flex',
@@ -129,6 +129,7 @@ const BillBox = (props) => {
 };
 
 export default function BillTemplates() {
+  const dispatch = useDispatch();
   const allBills = useSelector((state) => state.bills.data);
 
   const [bills, setBills] = useState([]);
@@ -141,19 +142,35 @@ export default function BillTemplates() {
     setBills(sortBy(_bills, 'day'));
   }, [allBills]);
 
+  const handleCreateClick = () => {
+    dispatch(openDialog({ type: 'bill', mode: 'create' }));
+  };
+
   return (
-    <Card raised>
-      <Stack spacing={1} direction='column' py={1}>
-        {map(bills, (bill, idx) => {
-          return (
-            <React.Fragment key={bill.bill_id}>
-              <BillBox bill={bill} icon={findIcon(bill)} />
-              {idx < bills.length - 1 && <Divider />}
-            </React.Fragment>
-          );
-        })}
-      </Stack>
-      <FloatingActionButton createTypes={['bill']} />
-    </Card>
+    <>
+      <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+        <Button
+          variant='contained'
+          endIcon={<AddIcon />}
+          onClick={handleCreateClick}
+        >
+          create
+        </Button>
+      </Grid>
+      <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+        <Card>
+          <Stack spacing={1} direction='column' py={1}>
+            {map(bills, (bill, idx) => {
+              return (
+                <React.Fragment key={bill.bill_id}>
+                  <BillBox bill={bill} icon={findIcon(bill)} />
+                  {idx < bills.length - 1 && <Divider />}
+                </React.Fragment>
+              );
+            })}
+          </Stack>
+        </Card>
+      </Grid>
+    </>
   );
 }

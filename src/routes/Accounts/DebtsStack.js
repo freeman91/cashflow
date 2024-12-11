@@ -39,7 +39,14 @@ export default function DebtsStack(props) {
     const sortedDebts = sortBy(debts, 'amount').reverse();
     const category = sortedDebts[0].category;
     return (
-      <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+      <Grid
+        key={category}
+        item
+        xs={12}
+        mx={1}
+        display='flex'
+        justifyContent='center'
+      >
         <Card sx={{ width: '100%' }}>
           <Stack spacing={1} direction='column' pt={1} pb={1}>
             <Typography
@@ -50,16 +57,14 @@ export default function DebtsStack(props) {
             >
               {category}
             </Typography>
-            <React.Fragment key={category}>
-              {map(sortedDebts, (debt, idx) => {
-                return (
-                  <>
-                    <Divider sx={{ mx: '8px !important' }} />
-                    <ItemBox item={debt} />
-                  </>
-                );
-              })}
-            </React.Fragment>
+            {map(sortedDebts, (debt, idx) => {
+              return (
+                <React.Fragment key={`${category}-${idx}`}>
+                  <Divider sx={{ mx: '8px !important' }} />
+                  <ItemBox item={debt} />
+                </React.Fragment>
+              );
+            })}
           </Stack>
         </Card>
       </Grid>

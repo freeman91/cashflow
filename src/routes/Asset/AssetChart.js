@@ -15,7 +15,8 @@ import ListItemText from '@mui/material/ListItemText';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 
 import { numberToCurrency } from '../../helpers/currency';
-import SubaccountHistoryTooltip from '../Home/Accounts/SubaccountHistoryTooltip';
+import SubaccountHistoryTooltip from '../../components/SubaccountHistoryTooltip';
+import SelectRangeChipStack from '../../components/SelectRangeChipStack';
 
 export default function AssetChart(props) {
   const { asset } = props;
@@ -27,7 +28,7 @@ export default function AssetChart(props) {
   const [account, setAccount] = useState(null);
   const [selected, setSelected] = useState(null);
   const [chartData, setChartData] = useState([]);
-  const [range] = useState({
+  const [range, setRange] = useState({
     start: { month: today.month(), year: today.subtract(2, 'year').year() },
     end: {
       month: today.month(),
@@ -118,18 +119,7 @@ export default function AssetChart(props) {
             tickLine={false}
             type='number'
             dataKey='timestamp'
-            domain={[
-              dayjs()
-                .year(range.start.year)
-                .month(range.start.month)
-                .date(1)
-                .unix(),
-              dayjs()
-                .year(range.end.year)
-                .month(range.end.month)
-                .date(1)
-                .unix(),
-            ]}
+            domain={['dataMin', 'dataMax']}
           />
           <Tooltip content={<SubaccountHistoryTooltip />} />
           <defs>
@@ -137,12 +127,12 @@ export default function AssetChart(props) {
               <stop
                 offset='0%'
                 stopColor={theme.palette.success.main}
-                stopOpacity={1}
+                stopOpacity={0.8}
               />
               <stop
                 offset={off}
                 stopColor={theme.palette.success.main}
-                stopOpacity={0.3}
+                stopOpacity={0}
               />
             </linearGradient>
           </defs>
@@ -150,12 +140,13 @@ export default function AssetChart(props) {
             dot={false}
             type='monotone'
             dataKey='value'
-            stroke='url(#splitColor)'
+            stroke={theme.palette.success.main}
             fill='url(#splitColor)'
             strokeWidth={2}
           />
         </AreaChart>
       </ResponsiveContainer>
+      <SelectRangeChipStack setRange={setRange} />
       {selected && (
         <Card sx={{ mt: 1 }}>
           <List disablePadding>

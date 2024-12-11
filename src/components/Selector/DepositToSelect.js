@@ -45,7 +45,12 @@ function DepositToSelect(props) {
             alignItems: 'center',
           },
         }}
-        MenuProps={{ MenuListProps: { disablePadding: true } }}
+        MenuProps={{
+          MenuListProps: {
+            disablePadding: true,
+            sx: { bgcolor: 'surface.300' },
+          },
+        }}
       >
         <MenuItem key='none' id='none-menu-item' value=''>
           None

@@ -7,10 +7,9 @@ import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 
-import { findAmount, findId } from '../../helpers/transactions';
+import { findId } from '../../helpers/transactions';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
-import SortMenuButton from './options/SortMenuButton';
 import TransactionBox from '../TransactionBox';
 
 function TransactionsDialog() {
@@ -18,26 +17,10 @@ function TransactionsDialog() {
   const { id, attrs } = useSelector((state) => state.dialogs.transactions);
 
   const [transactions, setTransactions] = useState([]);
-  const [sortAmount, setSortAmount] = useState('');
 
   useEffect(() => {
-    if (sortAmount === '') {
-      setTransactions(map(attrs, (transaction) => transaction));
-    }
-    if (sortAmount === 'asc') {
-      setTransactions(
-        map(attrs, (transaction) => transaction).sort(
-          (a, b) => findAmount(a) - findAmount(b)
-        )
-      );
-    } else if (sortAmount === 'desc') {
-      setTransactions(
-        map(attrs, (transaction) => transaction).sort(
-          (a, b) => findAmount(b) - findAmount(a)
-        )
-      );
-    }
-  }, [attrs, sortAmount]);
+    setTransactions(map(attrs, (transaction) => transaction));
+  }, [attrs]);
 
   const handleClose = () => {
     dispatch(closeDialog('transactions'));
@@ -51,12 +34,15 @@ function TransactionsDialog() {
       disableGutters
     >
       <Box
-        sx={{ display: 'flex', flexDirection: 'column', width: '100%', pb: 1 }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          pb: 2,
+          mt: 1,
+        }}
       >
-        <Stack spacing={1} width='100%'>
-          <SortMenuButton selected={sortAmount} setSelected={setSortAmount} />
-        </Stack>
-        <Card raised>
+        <Card sx={{ width: '100%' }}>
           <Stack spacing={1} direction='column' width='100%' py={1}>
             {map(transactions, (transaction, idx) => {
               const key = findId(transaction);

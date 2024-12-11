@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import filter from 'lodash/filter';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import dayjs from 'dayjs';
 import map from 'lodash/map';
-import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -10,11 +9,26 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { _numberToCurrency } from '../../helpers/currency';
 import { openDialog } from '../../store/dialogs';
 import BoxFlexColumn from '../../components/BoxFlexColumn';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
-import dayjs from 'dayjs';
+
+const numberToCurrency = (value) => {
+  if (value < 1)
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 6,
+    }).format(value);
+  else if (value < 100)
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(value);
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+};
 
 const SaleBox = (props) => {
   const { sale } = props;
@@ -37,7 +51,7 @@ const SaleBox = (props) => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        px: 2,
+        px: 1,
         cursor: 'pointer',
       }}
     >
@@ -50,12 +64,25 @@ const SaleBox = (props) => {
         }}
       >
         <BoxFlexColumn alignItems='space-between'>
-          <BoxFlexCenter>
+          <Typography variant='body2' color='text.secondary'>
+            {dayjs(sale.date).format('MMM D, YYYY')}
+          </Typography>
+          <BoxFlexCenter justifyContent='flex-start'>
             <Typography variant='h6' color='text.secondary'>
               $
             </Typography>
-            <Typography variant='h6' fontWeight='bold'>
-              {_numberToCurrency.format(sale.price)}
+            <Typography variant='h5' fontWeight='bold'>
+              {numberToCurrency(sale.amount + sale.fee)}
+            </Typography>
+          </BoxFlexCenter>
+        </BoxFlexColumn>
+        <BoxFlexColumn alignItems='space-between'>
+          <BoxFlexCenter>
+            <Typography variant='body2' color='text.secondary'>
+              $
+            </Typography>
+            <Typography variant='body1' fontWeight='bold'>
+              {numberToCurrency(sale.price)}
             </Typography>
           </BoxFlexCenter>
           <Typography variant='body2' color='text.secondary'>
@@ -64,7 +91,7 @@ const SaleBox = (props) => {
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='space-between'>
           <Typography
-            variant='h6'
+            variant='body1'
             fontWeight='bold'
             sx={{
               overflow: 'hidden',
@@ -74,24 +101,11 @@ const SaleBox = (props) => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {sale.shares}
+            {numberToCurrency(sale.shares)}
           </Typography>
           <Typography variant='body2' color='text.secondary'>
             shares
           </Typography>
-        </BoxFlexColumn>
-        <BoxFlexColumn alignItems='space-between'>
-          <Typography align='right' variant='body2' color='text.secondary'>
-            {dayjs(sale.date).format('MMM D')}
-          </Typography>
-          <BoxFlexCenter>
-            <Typography variant='h5' color='text.secondary'>
-              $
-            </Typography>
-            <Typography variant='h5' fontWeight='bold'>
-              {_numberToCurrency.format(sale.amount + sale.fee)}
-            </Typography>
-          </BoxFlexCenter>
         </BoxFlexColumn>
       </Box>
     </Box>
@@ -99,15 +113,7 @@ const SaleBox = (props) => {
 };
 
 export default function SalesStack(props) {
-  const { assetId } = props;
-  const allSales = useSelector((state) => state.sales.data);
-
-  const [sales, setTableData] = useState([]);
-
-  useEffect(() => {
-    let _sales = filter(allSales, { asset_id: assetId });
-    setTableData(sortBy(_sales, 'date').reverse());
-  }, [allSales, assetId]);
+  const { sales } = props;
 
   return (
     <Card sx={{ width: '100%', mx: 1 }}>

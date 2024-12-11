@@ -1135,18 +1135,6 @@ files = [
 ]
 
 [[package]]
-name = "nulltype"
-version = "2.3.1"
-description = "Null values and sentinels like (but not) None, False & True"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "nulltype-2.3.1-py2.py3-none-any.whl", hash = "sha256:16ae565745118e37e0558441f5821c76351d8c3a789640b5bca277cf65b2271b"},
-    {file = "nulltype-2.3.1.zip", hash = "sha256:64aa3cb2ab5e904d1b37175b9b922bea268c13f9ce32e3d373313150ab5ef272"},
-]
-
-[[package]]
 name = "numpy"
 version = "1.26.4"
 description = "Fundamental package for array computing in Python"
@@ -1321,22 +1309,6 @@ files = [
     {file = "pathspec-0.11.2-py3-none-any.whl", hash = "sha256:1d6ed233af05e679efb96b1851550ea95bbb64b7c490b0f5aa52996c11e92a20"},
     {file = "pathspec-0.11.2.tar.gz", hash = "sha256:e0d8d0ac2f12da61956eb2306b69f9469b42f4deb0f3cb6ed47b9cce9996ced3"},
 ]
-
-[[package]]
-name = "plaid-python"
-version = "21.1.0"
-description = "Python client library for the Plaid API and Link"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "plaid-python-21.1.0.tar.gz", hash = "sha256:29919fafad117253cc8acdf2fd73d8f95310af423119733023bb4fc4d3a59a18"},
-]
-
-[package.dependencies]
-nulltype = "*"
-python-dateutil = "*"
-urllib3 = ">=1.25.3"
 
 [[package]]
 name = "platformdirs"
@@ -2044,4 +2016,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a7bdc09bc9f62a53385d92f3018432651562457e718dc931c8cb82570bfe39f1"
+content-hash = "257d000548948007e39f163c78cca6e7d03dd314f7231c96408be33acd2dc49d"

@@ -16,11 +16,11 @@ import BoxFlexColumn from './BoxFlexColumn';
 import BoxFlexCenter from './BoxFlexCenter';
 
 export default function ItemBox(props) {
-  const { item } = props;
+  const { item, edit = true } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const itemId = item[`${item._type}_id`];
+  const itemId = item?.asset_id || item?.debt_id;
 
   const openItemDialog = () => {
     dispatch(
@@ -33,8 +33,8 @@ export default function ItemBox(props) {
   };
 
   const handleClick = (e, item) => {
-    const id = item._type + 'Id';
-    dispatch(push(`/${item._type}`, { [id]: itemId }));
+    const type = itemId.split(':')[0];
+    dispatch(push(`/${type}`, { [`${type}Id`]: itemId }));
   };
 
   const handleEditClick = (e) => {
@@ -59,9 +59,9 @@ export default function ItemBox(props) {
         width: '100%',
       }}
     >
-      <Tooltip placement='top' title='edit'>
+      <Tooltip placement='top' title={edit ? 'edit' : null}>
         <IconButton
-          onClick={(e) => handleEditClick(e)}
+          onClick={(e) => (edit ? handleEditClick(e) : null)}
           sx={{
             background: `linear-gradient(45deg, ${theme.palette.surface[200]}, ${theme.palette.surface[300]})`,
             boxShadow: 6,
@@ -97,10 +97,10 @@ export default function ItemBox(props) {
           </Typography>
         </BoxFlexColumn>
         <BoxFlexCenter>
-          <Typography variant='h6' color='text.secondary'>
+          <Typography variant='body1' color='text.secondary'>
             $
           </Typography>
-          <Typography variant='h5' color='white' fontWeight='bold'>
+          <Typography variant='h6' color='white' fontWeight='bold'>
             {_numberToCurrency.format(amount)}
           </Typography>
         </BoxFlexCenter>

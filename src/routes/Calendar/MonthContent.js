@@ -6,6 +6,7 @@ import map from 'lodash/map';
 import range from 'lodash/range';
 
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -29,26 +30,27 @@ export default function MonthContent(props) {
 
     let week = 1;
     weeks.push(
-      <Stack
-        direction='row'
-        justifyContent='space-between'
-        alignItems='center'
-        key='week-day-letter'
-        spacing={1}
-      >
-        {map(range(7), (idx) => {
-          return (
-            <Typography
-              key={idx}
-              align='center'
-              sx={{ width: '14%' }}
-              variant='body2'
-            >
-              {daysOfWeek[idx]}
-            </Typography>
-          );
-        })}
-      </Stack>
+      <Grid key='week-day-letter' item xs={12} mx={1}>
+        <Stack
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
+          spacing={1}
+        >
+          {map(range(7), (idx) => {
+            return (
+              <Typography
+                key={idx}
+                align='center'
+                sx={{ width: '14%' }}
+                variant='body2'
+              >
+                {daysOfWeek[idx]}
+              </Typography>
+            );
+          })}
+        </Stack>
+      </Grid>
     );
 
     while (_days.length > 0) {
@@ -59,38 +61,40 @@ export default function MonthContent(props) {
         />
       );
       weeks.push(
-        <Stack
-          key={`week-stack-${week}`}
-          direction='row'
-          justifyContent='space-between'
-          alignItems='center'
-          spacing={1}
-          pt={0.5}
-          pb={0.5}
-        >
-          {map(range(7), (idx) => {
-            let _day = _days.shift();
+        <Grid key={`week-stack-${week}`} item xs={12} mx={1}>
+          <Stack
+            key={`week-stack-${week}`}
+            direction='row'
+            justifyContent='space-between'
+            alignItems='center'
+            spacing={1}
+            pt={0.5}
+            pb={0.5}
+          >
+            {map(range(7), (idx) => {
+              let _day = _days.shift();
 
-            let expenses = filter(monthExpenses, (expense) => {
-              return dayjs(expense.date).isSame(_day, 'day');
-            });
-            let incomes = filter(monthIncomes, (income) => {
-              return dayjs(income.date).isSame(_day, 'day');
-            });
+              let expenses = filter(monthExpenses, (expense) => {
+                return dayjs(expense.date).isSame(_day, 'day');
+              });
+              let incomes = filter(monthIncomes, (income) => {
+                return dayjs(income.date).isSame(_day, 'day');
+              });
 
-            return (
-              <Day
-                key={`day-${_day.format('YYYY-MM-DD')}`}
-                date={_day}
-                selectedDate={selectedDate}
-                expenses={expenses}
-                incomes={incomes}
-                onClick={() => setSelectedDate(_day)}
-                showWeights={showWeights}
-              />
-            );
-          })}
-        </Stack>
+              return (
+                <Day
+                  key={`day-${_day.format('YYYY-MM-DD')}`}
+                  date={_day}
+                  selectedDate={selectedDate}
+                  expenses={expenses}
+                  incomes={incomes}
+                  onClick={() => setSelectedDate(_day)}
+                  showWeights={showWeights}
+                />
+              );
+            })}
+          </Stack>
+        </Grid>
       );
       week = week + 1;
     }

@@ -4,34 +4,32 @@ import { useLocation } from 'react-router-dom';
 
 import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
+import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 
-import { refresh } from '../../store/user';
+import { refreshAll } from '../../store/user';
 import { openDialog } from '../../store/dialogs';
-import usePullToRefresh from '../../store/hooks/usePullToRefresh';
 import { _numberToCurrency, numberToCurrency } from '../../helpers/currency';
 import AllocationChart from '../Account/AllocationChart';
 import BorrowsStack from './BorrowsStack';
 import RepaymentsStack from './RepaymentsStack';
 import DebtChart from './DebtChart';
-import CustomAppBar from '../../components/CustomAppBar';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
+import PullToRefresh from '../../components/PullToRefresh';
+import CustomAppBar from '../../components/CustomAppBar';
+import CustomToggleButton from '../../components/CustomToggleButton';
 import EditButton from '../../components/CustomAppBar/EditButton';
+import TransactionsStack from '../../components/TransactionsStack';
 
 const BORROWS = 'borrows';
 const REPAYMENTS = 'repayments';
+const EXPENSES = 'expenses';
 const HISTORY = 'history';
-
-const CustomToggleButton = (props) => {
-  return <ToggleButton {...props} sx={{ py: 0.5, color: 'text.secondary' }} />;
-};
 
 export default function Debt() {
   const dispatch = useDispatch();
@@ -40,7 +38,9 @@ export default function Debt() {
   const debts = useSelector((state) => state.debts.data);
   const allBorrows = useSelector((state) => state.borrows.data);
   const allRepayments = useSelector((state) => state.repayments.data);
+  const allExpenses = useSelector((state) => state.expenses.data);
 
+  const [tab, setTab] = useState(BORROWS);
   const [debt, setDebt] = useState(null);
   const [borrows, setBorrows] = useState([]);
   const [borrowSum, setBorrowSum] = useState(0);
@@ -48,19 +48,29 @@ export default function Debt() {
   const [principalSum, setPrincipalSum] = useState(0);
   const [interestSum, setInterestSum] = useState(0);
   const [escrowSum, setEscrowSum] = useState(0);
-
-  const [tab, setTab] = useState(BORROWS);
+  const [expenses, setExpenses] = useState([]);
 
   const onRefresh = async () => {
-    dispatch(refresh());
+    dispatch(refreshAll());
   };
-  const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
 
   useEffect(() => {
     if (location.state?.debtId) {
       setDebt(debts.find((a) => a.debt_id === location.state.debtId));
     }
   }, [location.state?.debtId, debts]);
+
+  useEffect(() => {
+    if (borrows.length > 0) {
+      setTab(BORROWS);
+    } else if (repayments.length > 0) {
+      setTab(REPAYMENTS);
+    } else if (expenses.length > 0) {
+      setTab(EXPENSES);
+    } else {
+      setTab(HISTORY);
+    }
+  }, [borrows.length, repayments.length, expenses.length]);
 
   useEffect(() => {
     const borrows = filter(allBorrows, { debt_id: debt?.debt_id });
@@ -92,12 +102,12 @@ export default function Debt() {
   }, [allBorrows, allRepayments, debt?.debt_id]);
 
   useEffect(() => {
-    if (borrows.length === 0 && repayments.length > 0) {
-      setTab(REPAYMENTS);
-    } else if (borrows.length === 0 && repayments.length === 0) {
-      setTab(HISTORY);
+    let _expenses = [];
+    if (debt?.can_pay_from) {
+      _expenses = filter(allExpenses, { payment_from_id: debt.debt_id });
     }
-  }, [borrows, repayments]);
+    setExpenses(sortBy(_expenses, 'date').reverse());
+  }, [debt, allExpenses]);
 
   const handleChangeTab = (event, newTab) => {
     setTab(newTab);
@@ -124,13 +134,9 @@ export default function Debt() {
         spacing={1}
         justifyContent='center'
         alignItems='flex-start'
-        sx={{ mt: '42px' }}
+        sx={{ mt: (theme) => theme.appBar.mobile.height }}
       >
-        {(isRefreshing || pullPosition > 100) && (
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress sx={{ mt: 1 }} />
-          </Grid>
-        )}
+        <PullToRefresh onRefresh={onRefresh} />
         <Grid item xs={12} display='flex' justifyContent='center'>
           <Box sx={{ width: '100%', mx: 1 }}>
             <Grid container>
@@ -141,7 +147,7 @@ export default function Debt() {
                     color='text.secondary'
                     align='center'
                   >
-                    amount
+                    balance
                   </Typography>
                   <BoxFlexCenter sx={{ justifyContent: 'center' }}>
                     <Typography variant='h6' color='text.secondary'>
@@ -227,6 +233,11 @@ export default function Debt() {
                 {REPAYMENTS}
               </CustomToggleButton>
             )}
+            {expenses.length > 0 && (
+              <CustomToggleButton value={EXPENSES}>
+                {EXPENSES}
+              </CustomToggleButton>
+            )}
             <CustomToggleButton value={HISTORY}>{HISTORY}</CustomToggleButton>
           </ToggleButtonGroup>
         </Grid>
@@ -234,6 +245,7 @@ export default function Debt() {
         <Grid item xs={12} display='flex' justifyContent='center'>
           {tab === BORROWS && <BorrowsStack debtId={debt?.debt_id} />}
           {tab === REPAYMENTS && <RepaymentsStack debtId={debt?.debt_id} />}
+          {tab === EXPENSES && <TransactionsStack transactions={expenses} />}
           {tab === HISTORY && <DebtChart debt={debt} />}
         </Grid>
         <Grid item xs={12} mb={10} />

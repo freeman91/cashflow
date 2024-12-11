@@ -7,15 +7,12 @@ import reduce from 'lodash/reduce';
 import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 
-import { refresh } from '../../store/user';
-import usePullToRefresh from '../../store/hooks/usePullToRefresh';
+import { refreshAll } from '../../store/user';
 import { _numberToCurrency, numberToCurrency } from '../../helpers/currency';
 import AssetsStack from '../Accounts/AssetsStack';
 import DebtsStack from '../Accounts/DebtsStack';
@@ -23,15 +20,13 @@ import BoxFlexCenter from '../../components/BoxFlexCenter';
 import AccountChart from '../Accounts/AccountChart';
 import AllocationChart from './AllocationChart';
 import CustomAppBar from '../../components/CustomAppBar';
+import PullToRefresh from '../../components/PullToRefresh';
+import CustomToggleButton from '../../components/CustomToggleButton';
 import AccountPageButton from '../../components/CustomAppBar/AccountPageButton';
 
 const ASSETS = 'assets';
 const DEBTS = 'debts';
 const HISTORY = 'history';
-
-const CustomToggleButton = (props) => {
-  return <ToggleButton {...props} sx={{ py: 0.5, color: 'text.secondary' }} />;
-};
 
 export default function Account() {
   const dispatch = useDispatch();
@@ -50,9 +45,8 @@ export default function Account() {
   const [tab, setTab] = useState(ASSETS);
 
   const onRefresh = async () => {
-    dispatch(refresh());
+    dispatch(refreshAll());
   };
-  const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
 
   useEffect(() => {
     if (location.state?.accountId) {
@@ -102,13 +96,9 @@ export default function Account() {
         spacing={1}
         justifyContent='center'
         alignItems='flex-start'
-        sx={{ mt: '42px' }}
+        sx={{ mt: (theme) => theme.appBar.mobile.height }}
       >
-        {(isRefreshing || pullPosition > 100) && (
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress sx={{ mt: 1 }} />
-          </Grid>
-        )}
+        <PullToRefresh onRefresh={onRefresh} />
         <Grid item xs={12} display='flex' justifyContent='center'>
           <Typography
             variant='body1'

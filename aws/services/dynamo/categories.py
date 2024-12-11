@@ -16,6 +16,7 @@ APP_ID: str = os.getenv("APP_ID")
 class Category(MapAttribute):
     name = UnicodeAttribute()
     subcategories = ListAttribute(of=UnicodeAttribute)
+    color = UnicodeAttribute(null=True)
 
 
 class Categories(BaseModel):

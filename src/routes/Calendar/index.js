@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
@@ -7,21 +8,41 @@ import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
+import { refreshAll } from '../../store/user';
 import MonthContent from './MonthContent';
 import SelectedTransactionsStack from './SelectedTransactionsStack';
 import useExpenses from '../../store/hooks/useExpenses';
 import useIncomes from '../../store/hooks/useIncomes';
 import CustomAppBar from '../../components/CustomAppBar';
+import PullToRefresh from '../../components/PullToRefresh';
+
+export const MonthSelectButton = (props) => {
+  const { Icon, onClick } = props;
+  const theme = useTheme();
+  const lightColor = alpha(theme.palette.primary.main, 0.2);
+  return (
+    <Box
+      sx={{
+        borderRadius: '50%',
+        backgroundColor: lightColor,
+      }}
+    >
+      <IconButton size='large' onClick={onClick} sx={{ p: 0.75 }}>
+        <Icon />
+      </IconButton>
+    </Box>
+  );
+};
 
 export default function Calendar() {
   const location = useLocation();
+  const dispatch = useDispatch();
   const today = dayjs();
-  const theme = useTheme();
 
   const [month, setMonth] = useState(dayjs());
   const [days, setDays] = useState([]);
@@ -34,6 +55,10 @@ export default function Calendar() {
 
   const [selectedTransactions, setSelectedTransactions] = useState([]);
   const [showWeights] = useState(true);
+
+  const onRefresh = async () => {
+    dispatch(refreshAll());
+  };
 
   useEffect(() => {
     if (location?.state?.month) {
@@ -74,6 +99,7 @@ export default function Calendar() {
         return dayjs(transaction.date).isSame(month, 'day');
       }
     );
+
     setSelectedTransactions(transactions);
   }, [month, expenses, pendingExpenses, incomes]);
 
@@ -89,61 +115,56 @@ export default function Calendar() {
 
   const diff = today.diff(month, 'month');
   const format = diff > 10 ? 'MMMM YYYY' : 'MMMM';
-  const lightColor = alpha(theme.palette.primary.main, 0.2);
-  return (
-    <Box sx={{ height: '100%', width: '100%', mb: 8 }}>
-      <CustomAppBar
-        right={
-          <IconButton size='medium'>
-            <FilterAltIcon sx={{ color: 'button' }} />
-          </IconButton>
-        }
-      />
-      <Box sx={{ height: '42px', pt: 1 }} />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          width: '100%',
-          py: 2,
-        }}
-      >
-        <Box
-          sx={{
-            borderRadius: '50%',
-            backgroundColor: lightColor,
-          }}
-        >
-          <IconButton size='large' onClick={handlePrevMonth} sx={{ p: 0.75 }}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </Box>
-        <Typography variant='h5' fontWeight='bold' color='primary'>
-          {month?.format(format)}
-        </Typography>
-        <Box
-          sx={{
-            borderRadius: '50%',
-            backgroundColor: lightColor,
-          }}
-        >
-          <IconButton size='large' onClick={handleNextMonth} sx={{ p: 0.75 }}>
-            <ChevronRightIcon />
-          </IconButton>
-        </Box>
-      </Box>
 
-      <MonthContent
-        selectedDate={month}
-        setSelectedDate={setMonth}
-        days={days}
-        monthExpenses={[...expenses, ...pendingExpenses]}
-        monthIncomes={incomes}
-        showWeights={showWeights}
-      />
-      <SelectedTransactionsStack transactions={selectedTransactions} />
-    </Box>
+  return (
+    <>
+      <Box sx={{ WebkitOverflowScrolling: 'touch', width: '100%' }}>
+        <CustomAppBar />
+        <Grid
+          container
+          spacing={1}
+          justifyContent='center'
+          alignItems='flex-start'
+          sx={{ mt: (theme) => theme.appBar.mobile.height }}
+        >
+          <PullToRefresh onRefresh={onRefresh} />
+          <Grid item xs={12} display='flex' justifyContent='center'>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                width: '100%',
+                py: 1,
+              }}
+            >
+              <MonthSelectButton
+                Icon={ChevronLeftIcon}
+                onClick={handlePrevMonth}
+              />
+              <Typography variant='h5' fontWeight='bold'>
+                {month?.format(format)}
+              </Typography>
+              <MonthSelectButton
+                Icon={ChevronRightIcon}
+                onClick={handleNextMonth}
+              />
+            </Box>
+          </Grid>
+
+          <MonthContent
+            selectedDate={month}
+            setSelectedDate={setMonth}
+            days={days}
+            monthExpenses={[...expenses, ...pendingExpenses]}
+            monthIncomes={incomes}
+            showWeights={showWeights}
+          />
+          <SelectedTransactionsStack transactions={selectedTransactions} />
+          <Grid item xs={12} mb={10} />
+        </Grid>
+      </Box>
+    </>
   );
 }

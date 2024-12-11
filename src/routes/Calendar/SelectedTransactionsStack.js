@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import map from 'lodash/map';
 
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 
 import { findId } from '../../helpers/transactions';
@@ -75,7 +75,7 @@ export default function SelectedTransactionsStack(props) {
 
   if (!transactions.length) return null;
   return (
-    <Box sx={{ width: '100%', pb: 1, mt: 1, mb: 9, px: 1 }}>
+    <Grid item xs={12} mx={1}>
       <Card>
         <Stack spacing={1} direction='column' py={1}>
           {map(tableData, (transaction, idx) => {
@@ -91,6 +91,6 @@ export default function SelectedTransactionsStack(props) {
           })}
         </Stack>
       </Card>
-    </Box>
+    </Grid>
   );
 }

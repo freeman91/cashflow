@@ -4,9 +4,17 @@ import { push } from 'redux-first-history';
 import { useDispatch } from 'react-redux';
 import get from 'lodash/get';
 import lowerCase from 'lodash/lowerCase';
+import map from 'lodash/map';
 
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
 import BillTemplates from './BillTemplates';
@@ -23,15 +31,35 @@ const ASSET_CATEGORIES = 'asset-categories';
 const PAYCHECK_TEMPLATES = 'paycheck-templates';
 const BILL_TEMPLATES = 'bill-templates';
 
-const OPTIONS = [
+const DETAILS = [
   EXPENSE_VENDORS,
   EXPENSE_CATEGORIES,
   INCOME_SOURCES,
   INCOME_CATEGORIES,
   ASSET_CATEGORIES,
-  PAYCHECK_TEMPLATES,
-  BILL_TEMPLATES,
 ];
+const TEMPLATES = [PAYCHECK_TEMPLATES, BILL_TEMPLATES];
+
+const CustomListItemButton = (props) => {
+  const { option, handleClick } = props;
+  return (
+    <ListItemButton
+      onClick={() => handleClick(option)}
+      sx={{
+        py: 1,
+        cursor: 'pointer',
+      }}
+    >
+      <ListItemText
+        primary={lowerCase(option)}
+        primaryTypographyProps={{ align: 'left' }}
+      />
+      <ListItemIcon sx={{ minWidth: 'unset' }}>
+        <ChevronRightIcon />
+      </ListItemIcon>
+    </ListItemButton>
+  );
+};
 
 export default function Settings() {
   const location = useLocation();
@@ -56,56 +84,78 @@ export default function Settings() {
           </Typography>
         }
       />
-      <Box sx={{ height: '46px' }} />
-      {!selected && (
-        <Stack orientation='column'>
-          {OPTIONS.map((option) => {
-            return (
-              <Box
-                key={option}
-                sx={{
-                  m: 1,
-                  p: 1,
-                  cursor: 'pointer',
-                  '&:hover': {
-                    backgroundColor: 'surface.200',
-                    color: 'primary.main',
-                  },
-                  backgroundColor: 'surface.250',
-                  borderRadius: '5px',
-                }}
-                onClick={() => handleClick(option)}
-              >
-                <Typography variant='body1' align='center'>
-                  {lowerCase(option)}
-                </Typography>
-              </Box>
-            );
-          })}
-        </Stack>
-      )}
-      {selected && (
-        <Typography variant='h6' align='center' fontWeight='bold'>
-          {lowerCase(selected)}
-        </Typography>
-      )}
-      {selected === EXPENSE_VENDORS && (
-        <OptionsList optionType='expense_vendor' placeholder='vendor' />
-      )}
-      {selected === EXPENSE_CATEGORIES && (
-        <CategoryList categoryType='expense' placeholder='category' />
-      )}
-      {selected === INCOME_SOURCES && (
-        <OptionsList optionType='income_source' placeholder='source' />
-      )}
-      {selected === INCOME_CATEGORIES && (
-        <OptionsList optionType='income_category' placeholder='category' />
-      )}
-      {selected === ASSET_CATEGORIES && (
-        <OptionsList optionType='asset_category' placeholder='category' />
-      )}
-      {selected === PAYCHECK_TEMPLATES && <PaycheckSettings />}
-      {selected === BILL_TEMPLATES && <BillTemplates />}
+      <Grid
+        container
+        spacing={1}
+        justifyContent='center'
+        alignItems='center'
+        sx={{ mt: (theme) => theme.appBar.mobile.height }}
+      >
+        {!selected && (
+          <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+            <Card sx={{ width: '100%' }}>
+              <List disablePadding sx={{ px: 1, py: 1, bgcolor: 'unset' }}>
+                <ListItemText
+                  primary='details'
+                  sx={{ ml: 2 }}
+                  primaryTypographyProps={{ color: 'text.secondary' }}
+                />
+                <Divider sx={{ mx: '8px !important' }} />
+                {map(DETAILS, (option, idx) => {
+                  return (
+                    <CustomListItemButton
+                      key={`${option}-${idx}`}
+                      option={option}
+                      handleClick={handleClick}
+                    />
+                  );
+                })}
+              </List>
+            </Card>
+          </Grid>
+        )}
+        {!selected && (
+          <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+            <Card sx={{ width: '100%' }}>
+              <List disablePadding sx={{ px: 1, py: 1, bgcolor: 'unset' }}>
+                <ListItemText
+                  primary='templates'
+                  sx={{ ml: 2 }}
+                  primaryTypographyProps={{ color: 'text.secondary' }}
+                />
+                <Divider sx={{ mx: '8px !important' }} />
+                {map(TEMPLATES, (option, idx) => {
+                  return (
+                    <CustomListItemButton
+                      key={`${option}-${idx}`}
+                      option={option}
+                      handleClick={handleClick}
+                    />
+                  );
+                })}
+              </List>
+            </Card>
+          </Grid>
+        )}
+        {selected === EXPENSE_VENDORS && (
+          <OptionsList optionType='expense_vendor' placeholder='vendor' />
+        )}
+        {selected === EXPENSE_CATEGORIES && (
+          <CategoryList categoryType='expense' placeholder='category' />
+        )}
+        {selected === INCOME_SOURCES && (
+          <OptionsList optionType='income_source' placeholder='source' />
+        )}
+        {selected === INCOME_CATEGORIES && (
+          <OptionsList optionType='income_category' placeholder='category' />
+        )}
+        {selected === ASSET_CATEGORIES && (
+          <OptionsList optionType='asset_category' placeholder='category' />
+        )}
+        {selected === PAYCHECK_TEMPLATES && <PaycheckSettings />}
+        {selected === BILL_TEMPLATES && <BillTemplates />}
+      </Grid>
+      <Grid item xs={12} mb={12} />
     </Box>
   );
 }

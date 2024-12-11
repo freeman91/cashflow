@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import filter from 'lodash/filter';
 import map from 'lodash/map';
-import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -115,14 +113,7 @@ const PurchaseBox = (props) => {
 };
 
 export default function PurchasesStack(props) {
-  const { assetId } = props;
-  const allPurchases = useSelector((state) => state.purchases.data);
-  const [purchases, setPurchases] = useState([]);
-
-  useEffect(() => {
-    let _purchases = filter(allPurchases, { asset_id: assetId });
-    setPurchases(sortBy(_purchases, 'date').reverse());
-  }, [allPurchases, assetId]);
+  const { purchases } = props;
 
   return (
     <Card sx={{ width: '100%', mx: 1 }}>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import get from 'lodash/get';
 
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
@@ -49,47 +48,45 @@ export default function IncomesSummary(props) {
   }, [incomes]);
 
   return (
-    <Card raised sx={{ mt: 1 }}>
-      <CardContent sx={{ p: 1, pt: 0, pb: '0 !important' }}>
-        <Stack
-          spacing={1}
-          direction='row'
-          justifyContent='space-between'
-          sx={{ alignItems: 'flex-start' }}
-        >
-          <List disablePadding sx={{ width: '100%' }}>
-            <ListItemValue
-              label='gross income'
-              value={
-                paycheckSum +
-                taxesSum +
-                retirementSum +
-                benefitsSum +
-                otherSum +
-                incomeSum
-              }
-              fontWeight='bold'
-            />
-            <ListItemValue
-              label='net income'
-              value={paycheckSum + incomeSum}
-              fontWeight='bold'
-            />
-            <Divider />
-            <ListItemText
-              secondary='paychecks'
-              secondaryTypographyProps={{ fontWeight: 'bold' }}
-            />
-            <ListItemValue label='take home' value={paycheckSum} />
-            <ListItemValue label='taxes' value={taxesSum} />
-            <ListItemValue label='retirement' value={retirementSum} />
-            <ListItemValue label='benefits' value={benefitsSum} />
-            <ListItemValue label='other' value={otherSum} />
-            <Divider />
-            <ListItemValue label='other income' value={incomeSum} />
-          </List>
-        </Stack>
-      </CardContent>
+    <Card sx={{ px: 1 }}>
+      <Stack
+        spacing={1}
+        direction='row'
+        justifyContent='space-between'
+        sx={{ alignItems: 'flex-start' }}
+      >
+        <List disablePadding sx={{ width: '100%' }}>
+          <ListItemValue
+            label='gross income'
+            value={
+              paycheckSum +
+              taxesSum +
+              retirementSum +
+              benefitsSum +
+              otherSum +
+              incomeSum
+            }
+            fontWeight='bold'
+          />
+          <ListItemValue
+            label='net income'
+            value={paycheckSum + incomeSum}
+            fontWeight='bold'
+          />
+          <Divider />
+          <ListItemText
+            secondary='paychecks'
+            secondaryTypographyProps={{ fontWeight: 'bold' }}
+          />
+          <ListItemValue label='take home' value={paycheckSum} />
+          <ListItemValue label='taxes' value={taxesSum} />
+          <ListItemValue label='retirement' value={retirementSum} />
+          <ListItemValue label='benefits' value={benefitsSum} />
+          <ListItemValue label='other' value={otherSum} />
+          <Divider />
+          <ListItemValue label='other income' value={incomeSum} />
+        </List>
+      </Stack>
     </Card>
   );
 }

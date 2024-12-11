@@ -42,6 +42,7 @@ function Layout() {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
+        maxWidth: '500px',
       }}
     >
       <CssBaseline />

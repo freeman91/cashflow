@@ -84,8 +84,8 @@ export default function AllocationChart(props) {
         <Pie
           data={data}
           dataKey='value'
-          paddingAngle={8}
-          minAngle={10}
+          paddingAngle={5}
+          minAngle={20}
           innerRadius={25}
           outerRadius={35}
           cx='50%'
