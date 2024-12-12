@@ -4,6 +4,7 @@ from .account import Account
 from .asset import Asset
 from .bill import Bill
 from .borrow import Borrow
+from .budget import Budget
 from .categories import Categories
 from .debt import Debt
 from .expense import Expense

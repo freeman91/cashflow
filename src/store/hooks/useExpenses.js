@@ -13,37 +13,41 @@ export const useExpenses = (year, month) => {
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
 
+  const [start, setStart] = useState(null);
+  const [end, setEnd] = useState(null);
   const [expenses, setExpenses] = useState([]);
   const [pendingExpenses, setPendingExpenses] = useState([]);
   const [sum, setSum] = useState(0);
   const [principalSum, setPrincipalSum] = useState(0);
 
   useEffect(() => {
-    let start = null;
-    let end = null;
+    let _start = null;
+    let _end = null;
     let date = dayjs().set('year', year);
 
-    if (!month) {
-      start = date.startOf('year');
-      end = date.endOf('year');
+    if (isNaN(month)) {
+      _start = date.startOf('year');
+      _end = date.endOf('year');
     } else {
       date = date.set('month', month);
-      start = date.startOf('month');
-      end = date.endOf('month');
+      _start = date.startOf('month');
+      _end = date.endOf('month');
     }
 
-    dispatch(getExpenses({ range: { start, end } }));
+    setStart(_start);
+    setEnd(_end);
+    dispatch(getExpenses({ range: { start: _start, end: _end } }));
   }, [dispatch, year, month]);
 
   useEffect(() => {
-    let _expenses = filter([...allExpenses, ...allRepayments], (expense) => {
+    let _allExpenses = filter([...allExpenses, ...allRepayments], (expense) => {
       const expenseDate = dayjs(expense.date);
-      return (
-        !expense.pending &&
-        expenseDate.year() === year &&
-        (month ? expenseDate.month() === month : true)
-      );
+      return expenseDate.isAfter(start) && expenseDate.isBefore(end);
     });
+
+    let _expenses = filter(_allExpenses, (expense) => !expense.pending);
+    let _pendingExpenses = filter(_allExpenses, (expense) => expense.pending);
+
     setSum(
       reduce(
         _expenses,
@@ -62,20 +66,9 @@ export const useExpenses = (year, month) => {
         0
       )
     );
+    setPendingExpenses(_pendingExpenses);
     setExpenses(_expenses);
-  }, [year, month, allExpenses, allRepayments]);
-
-  useEffect(() => {
-    let _expenses = filter([...allExpenses, ...allRepayments], (expense) => {
-      const expenseDate = dayjs(expense.date);
-      return (
-        expense.pending &&
-        expenseDate.year() === year &&
-        (month ? expenseDate.month() === month : true)
-      );
-    });
-    setPendingExpenses(_expenses);
-  }, [year, month, allExpenses, allRepayments]);
+  }, [start, end, allExpenses, allRepayments]);
 
   return { expenses, pendingExpenses, sum, principalSum };
 };

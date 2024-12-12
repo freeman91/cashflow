@@ -14,16 +14,13 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../../store/user';
-import { MonthSelectButton } from '../../Calendar';
 import CustomAppBar from '../../../components/CustomAppBar';
 import PullToRefresh from '../../../components/PullToRefresh';
 import CustomToggleButton from '../../../components/CustomToggleButton';
+import MonthSelectButton from '../../../components/MonthSelectButton';
 import MonthTotals from './Totals';
 import MonthEarned from './Earned';
 import MonthSpent from './Spent';
-// import Totals from './Totals';
-// import Spent from './Spent';
-// import Earned from './Earned';
 
 const TOTALS = 'totals';
 const EARNED = 'earned';
@@ -66,7 +63,7 @@ export default function MonthSummary(props) {
     dispatch(push(`/summary/${year}`));
   };
 
-  const diff = today.diff(month, 'month');
+  const diff = today.diff(date, 'month');
   const format = diff > 10 ? 'MMMM YYYY' : 'MMMM';
 
   if (!date) {

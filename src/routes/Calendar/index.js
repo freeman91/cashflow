@@ -4,13 +4,10 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
 
-import { alpha } from '@mui/material/styles';
-import useTheme from '@mui/material/styles/useTheme';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../store/user';
@@ -20,24 +17,7 @@ import useExpenses from '../../store/hooks/useExpenses';
 import useIncomes from '../../store/hooks/useIncomes';
 import CustomAppBar from '../../components/CustomAppBar';
 import PullToRefresh from '../../components/PullToRefresh';
-
-export const MonthSelectButton = (props) => {
-  const { Icon, onClick } = props;
-  const theme = useTheme();
-  const lightColor = alpha(theme.palette.primary.main, 0.2);
-  return (
-    <Box
-      sx={{
-        borderRadius: '50%',
-        backgroundColor: lightColor,
-      }}
-    >
-      <IconButton size='large' onClick={onClick} sx={{ p: 0.75 }}>
-        <Icon />
-      </IconButton>
-    </Box>
-  );
-};
+import MonthSelectButton from '../../components/MonthSelectButton';
 
 export default function Calendar() {
   const location = useLocation();

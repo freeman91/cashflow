@@ -15,6 +15,7 @@ def blueprints(app):
     app.register_blueprint(controllers.assets.assets)
     app.register_blueprint(controllers.bills.bills)
     app.register_blueprint(controllers.borrows.borrows)
+    app.register_blueprint(controllers.budgets.budgets)
     app.register_blueprint(controllers.categories.categories)
     app.register_blueprint(controllers.cronjobs.cronjobs)
     app.register_blueprint(controllers.debts.debts)

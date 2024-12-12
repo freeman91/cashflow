@@ -18,6 +18,7 @@ from services.dynamo import (
     Asset,
     Bill,
     Borrow,
+    Budget,
     Debt,
     Expense,
     Income,

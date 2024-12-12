@@ -13,35 +13,37 @@ export const useIncomes = (year, month) => {
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
+  const [start, setStart] = useState(null);
+  const [end, setEnd] = useState(null);
   const [incomes, setIncomes] = useState([]);
   const [sum, setSum] = useState(0);
 
   useEffect(() => {
-    let start = null;
-    let end = null;
+    let _start = null;
+    let _end = null;
     let date = dayjs().set('year', year);
 
     if (!month) {
-      start = date.startOf('year');
-      end = date.endOf('year');
+      _start = date.startOf('year');
+      _end = date.endOf('year');
     } else {
       date = date.set('month', month);
-      start = date.startOf('month');
-      end = date.endOf('month');
+      _start = date.startOf('month');
+      _end = date.endOf('month');
     }
 
-    dispatch(getIncomes({ range: { start, end } }));
-    dispatch(getPaychecks({ range: { start, end } }));
+    setStart(_start);
+    setEnd(_end);
+
+    dispatch(getIncomes({ range: { start: _start, end: _end } }));
+    dispatch(getPaychecks({ range: { start: _start, end: _end } }));
   }, [dispatch, year, month]);
 
   useEffect(() => {
     let _incomes = filter([...allIncomes, ...allPaychecks], (income) => {
       if (!income.date) return false;
       const incomeDate = dayjs(income.date);
-      return (
-        incomeDate.year() === year &&
-        (month ? incomeDate.month() === month : true)
-      );
+      return incomeDate.isAfter(start) && incomeDate.isBefore(end);
     });
     setSum(
       reduce(
@@ -53,7 +55,7 @@ export const useIncomes = (year, month) => {
       )
     );
     setIncomes(_incomes);
-  }, [year, month, allIncomes, allPaychecks]);
+  }, [start, end, allIncomes, allPaychecks]);
 
   return { incomes, sum };
 };

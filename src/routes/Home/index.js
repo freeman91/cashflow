@@ -112,6 +112,7 @@ export default function Home() {
         sx={{ mt: (theme) => theme.appBar.mobile.height }}
       >
         <PullToRefresh onRefresh={onRefresh} />
+        <Grid item xs={12} mt={0} />
         <CurrentCashflow />
         <CurrentNetworth />
         <HomeButtons />

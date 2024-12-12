@@ -3,6 +3,7 @@ from . import (
     assets,
     bills,
     borrows,
+    budgets,
     categories,
     cronjobs,
     debts,

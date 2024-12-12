@@ -67,5 +67,6 @@ class DyanmoDbStack(NestedStack):
         DynamoDBTable(self, "option_list", "user_id", "option_type")
         DynamoDBTable(self, "paycheck", "user_id", "paycheck_id")
         DynamoDBTable(self, "user", "user_id", "email")
+        DynamoDBTable(self, "budget", "user_id", "budget_id")
 
         # expense_table.add_gsi("date")

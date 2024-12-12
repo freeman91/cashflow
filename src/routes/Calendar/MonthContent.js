@@ -55,13 +55,10 @@ export default function MonthContent(props) {
 
     while (_days.length > 0) {
       weeks.push(
-        <Divider
-          key={`divider-${week}`}
-          sx={{ borderColor: (theme) => theme.palette.grey[40] }}
-        />
-      );
-      weeks.push(
         <Grid key={`week-stack-${week}`} item xs={12} mx={1}>
+          <Divider
+            sx={{ borderColor: (theme) => theme.palette.surface[300] }}
+          />
           <Stack
             key={`week-stack-${week}`}
             direction='row'

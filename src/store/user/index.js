@@ -9,6 +9,7 @@ import { getAccounts } from '../accounts';
 import { getAssets } from '../assets';
 import { getBills } from '../bills';
 import { getBorrows } from '../borrows';
+import { getBudgets } from '../budgets';
 import { getDebts } from '../debts';
 import { getExpenses } from '../expenses';
 import { getIncomes } from '../incomes';
@@ -44,6 +45,7 @@ const getUser = createAsyncThunk(
       dispatch(getAssets(user_id));
       dispatch(getBills(user_id));
       dispatch(getBorrows(user_id));
+      dispatch(getBudgets(user_id));
       dispatch(getDebts(user_id));
       dispatch(getExpenses({ user_id, range: { start, end } }));
       dispatch(getIncomes({ user_id, range: { start, end } }));

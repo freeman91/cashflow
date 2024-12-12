@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../store/user';
+import { saveNetworth } from '../../store/networths';
 import usePullToRefresh from '../../store/hooks/usePullToRefresh';
 import CustomAppBar from '../../components/CustomAppBar';
 import SaveButton from '../../components/CustomAppBar/SaveButton';
@@ -24,6 +25,10 @@ export default function Networth() {
   const [selected, setSelected] = useState(null);
   const [tab, setTab] = useState(ASSETS);
 
+  const onSave = () => {
+    dispatch(saveNetworth());
+  };
+
   const onRefresh = async () => {
     dispatch(refreshAll());
   };
@@ -36,7 +41,9 @@ export default function Networth() {
             networth
           </Typography>
         }
-        right={<SaveButton />}
+        right={
+          <SaveButton onClick={onSave} tooltipTitle='save current networth' />
+        }
       />
       <Grid
         container

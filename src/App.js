@@ -16,14 +16,16 @@ import { history, store } from './store/createStore';
 import Account from './routes/Account';
 import Accounts from './routes/Accounts';
 import Asset from './routes/Asset';
+import Budgets from './routes/Budgets';
+import BudgetCategory from './routes/Budgets/Category';
 import Calendar from './routes/Calendar';
 import Debt from './routes/Debt';
-import Layout from './routes/Layout';
 import Home from './routes/Home';
-import Summary from './routes/Summary';
+import Layout from './routes/Layout';
 import Networth from './routes/Networth';
-import Settings from './routes/Settings';
 import Search from './routes/Search';
+import Settings from './routes/Settings';
+import Summary from './routes/Summary';
 import './styles/index.css';
 
 console.log('_package.version: ', _package.version);
@@ -44,7 +46,8 @@ const AppRoutes = () => {
         <Route path='/account' element={<Account />} />
         <Route path='/accounts' element={<Accounts />} />
         <Route path='/asset' element={<Asset />} />
-        <Route path='/budgets' element={<></>} />
+        <Route path='/budgets' element={<Budgets />} />
+        <Route path='/budgets/:category' element={<BudgetCategory />} />
         <Route path='/calendar' element={<Calendar />} />
         <Route path='/calendar/:year/:month' element={<Calendar />} />
         <Route path='/debt' element={<Debt />} />

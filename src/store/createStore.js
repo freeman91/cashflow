@@ -12,6 +12,7 @@ import { loadingBarReducer } from 'react-redux-loading-bar';
 import accounts from './accounts';
 import appSettings from './appSettings';
 import borrows from './borrows';
+import budgets from './budgets';
 import categories from './categories';
 import dialogs from './dialogs';
 import user from './user';
@@ -35,6 +36,7 @@ export const store = configureStore({
     accounts,
     appSettings,
     borrows,
+    budgets,
     categories,
     dialogs,
     expenses,
