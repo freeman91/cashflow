@@ -49,8 +49,6 @@ export default function AccountsChart() {
     setDebtSum(reduce(_debts, (acc, debt) => acc + debt.value, 0));
   }, [allDebts]);
 
-  console.log('debts: ', debts);
-
   const maxValue = Math.max(assetSum, debtSum);
   return (
     <Box
