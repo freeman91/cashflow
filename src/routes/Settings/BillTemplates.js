@@ -115,7 +115,7 @@ const BillBox = (props) => {
             {bill.nextBillDate.format('MMM D, YYYY')}
           </Typography>
           <BoxFlexCenter>
-            <Typography variant='h5' color='grey.10'>
+            <Typography variant='h5' color='text.secondary'>
               $
             </Typography>
             <Typography variant='h5' fontWeight='bold'>

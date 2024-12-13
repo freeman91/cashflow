@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
-import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { _numberToCurrency } from '../../helpers/currency';
@@ -94,20 +92,13 @@ export default function BorrowsStack(props) {
     setBorrows(sortBy(_borrows, 'date').reverse());
   }, [allBorrows, debtId]);
 
-  return (
-    <Card sx={{ width: '100%', mx: 1 }}>
-      <Stack spacing={1} direction='column' pt={1} pb={1}>
-        {map(borrows, (borrow, idx) => {
-          return (
-            <React.Fragment key={borrow.borrow_id}>
-              <BorrowBox borrow={borrow} />
-              {idx < borrows.length - 1 && (
-                <Divider sx={{ mx: '8px !important' }} />
-              )}
-            </React.Fragment>
-          );
-        })}
-      </Stack>
-    </Card>
-  );
+  return borrows.map((borrow) => {
+    return (
+      <Grid item xs={12} key={borrow.borrow_id} mx={1}>
+        <Card sx={{ width: '100%', py: 0.5 }}>
+          <BorrowBox borrow={borrow} />
+        </Card>
+      </Grid>
+    );
+  });
 }

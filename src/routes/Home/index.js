@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import remove from 'lodash/remove';
 import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
@@ -68,13 +67,16 @@ export default function Home() {
 
   useEffect(() => {
     const today = dayjs();
-    let upcomingExpenses = [...allExpenses, ...allRepayments].filter(
-      (expense) => expense.pending
+    const _allExpenses = [...allExpenses, ...allRepayments];
+    let upcomingExpenses = _allExpenses.filter((expense) =>
+      dayjs(expense.date).isAfter(today, 'day')
     );
     upcomingExpenses = sortBy(upcomingExpenses, 'date');
 
-    let pendingExpenses = remove(upcomingExpenses, (expense) => {
-      return dayjs(expense.date).isSameOrBefore(today, 'day');
+    let pendingExpenses = _allExpenses.filter((expense) => {
+      return (
+        dayjs(expense.date).isSameOrBefore(today, 'day') && expense.pending
+      );
     });
 
     setPending(pendingExpenses);

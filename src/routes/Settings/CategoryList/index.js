@@ -54,7 +54,7 @@ export default function CategoryList(props) {
         <Button
           variant='outlined'
           endIcon={<UndoIcon />}
-          sx={{ color: 'button', borderColor: 'button' }}
+          color='info'
           onClick={() => {
             setCategories(categoriesItem?.categories || []);
           }}

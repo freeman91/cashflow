@@ -3,9 +3,7 @@ import { useSelector } from 'react-redux';
 import map from 'lodash/map';
 
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 
 import { findId } from '../../helpers/transactions';
 import TransactionBox from '../../components/TransactionBox';
@@ -74,23 +72,13 @@ export default function SelectedTransactionsStack(props) {
   }, [transactions, bills]);
 
   if (!transactions.length) return null;
-  return (
-    <Grid item xs={12} mx={1}>
-      <Card>
-        <Stack spacing={1} direction='column' py={1}>
-          {map(tableData, (transaction, idx) => {
-            const key = findId(transaction);
-            return (
-              <React.Fragment key={key}>
-                <TransactionBox transaction={transaction} />
-                {idx < transactions.length - 1 && (
-                  <Divider sx={{ mx: '8px !important' }} />
-                )}
-              </React.Fragment>
-            );
-          })}
-        </Stack>
-      </Card>
-    </Grid>
-  );
+  return tableData.map((transaction) => {
+    return (
+      <Grid key={findId(transaction)} item xs={12} mx={1}>
+        <Card sx={{ width: '100%', py: 0.5 }}>
+          <TransactionBox transaction={transaction} />
+        </Card>
+      </Grid>
+    );
+  });
 }

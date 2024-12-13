@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../store/user';
 import { openDialog } from '../../store/dialogs';
-import AccountsNetworth from './Networth';
+import AccountsCharts from './Charts';
 import AccountsStack from './AccountsStack';
 import AssetsStack from './AssetsStack';
 import DebtsStack from './DebtsStack';
@@ -58,7 +58,7 @@ export default function Accounts() {
         sx={{ mt: (theme) => theme.appBar.mobile.height }}
       >
         <PullToRefresh onRefresh={onRefresh} />
-        <AccountsNetworth tab={tab} handleChangeTab={handleChangeTab} />
+        <AccountsCharts tab={tab} />
         <Grid item xs={12} display='flex' justifyContent='center'>
           <ToggleButtonGroup
             fullWidth

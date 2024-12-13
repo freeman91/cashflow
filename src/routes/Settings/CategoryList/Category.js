@@ -137,7 +137,7 @@ export default function Category(props) {
               }}
               sx={{ width: '75%', ml: 1 }}
             />
-            <IconButton sx={{ color: 'button', p: 0.5 }}>
+            <IconButton color='info' sx={{ p: 0.5 }}>
               {expandedCategory === category.name ? (
                 <ExpandLess />
               ) : (
@@ -158,23 +158,17 @@ export default function Category(props) {
             alignItems='center'
           >
             <Tooltip placement='top' title='create'>
-              <IconButton
-                sx={{ color: 'button' }}
-                onClick={handleCreateSubcategory}
-              >
+              <IconButton onClick={handleCreateSubcategory} color='info'>
                 <AddIcon />
               </IconButton>
             </Tooltip>
             <Tooltip placement='top' title='edit'>
-              <IconButton
-                sx={{ color: 'button' }}
-                onClick={() => setEdit(true)}
-              >
+              <IconButton onClick={() => setEdit(true)} color='info'>
                 <EditIcon />
               </IconButton>
             </Tooltip>
             <IconButton
-              sx={{ color: color || 'button' }}
+              sx={{ color: color || 'info' }}
               onClick={(event) => {
                 setAnchorEl(event.currentTarget);
               }}
@@ -182,12 +176,12 @@ export default function Category(props) {
               <ColorLensIcon />
             </IconButton>
             <Tooltip placement='top' title='undo'>
-              <IconButton sx={{ color: 'button' }} onClick={() => {}}>
+              <IconButton onClick={() => {}} color='info'>
                 <UndoIcon />
               </IconButton>
             </Tooltip>
             <Tooltip placement='top' title='delete'>
-              <IconButton sx={{ color: 'button' }} onClick={deleteCategory}>
+              <IconButton onClick={deleteCategory} color='info'>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
@@ -222,21 +216,31 @@ export default function Category(props) {
           horizontal: 'center',
         }}
       >
-        <Grid container>
-          {theme.chartColors.map((color) => (
-            <Grid item key={color} xs={1}>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}
+        >
+          {theme.chartColors.map((color) => {
+            return (
               <IconButton
+                key={color}
                 sx={{ color: color }}
                 onClick={() => {
                   setColor(color);
                   setAnchorEl(null);
                 }}
               >
-                <Box sx={{ width: 20, height: 20, backgroundColor: color }} />
+                <Box
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    backgroundColor: color,
+                    borderRadius: '25%',
+                  }}
+                />
               </IconButton>
-            </Grid>
-          ))}
-        </Grid>
+            );
+          })}
+        </Box>
       </Popover>
     </Grid>
   );

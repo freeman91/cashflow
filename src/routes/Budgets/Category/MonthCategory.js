@@ -84,8 +84,8 @@ export default function MonthCategory(props) {
             {date.format('MMMM YYYY')}
           </Typography>
           <IconButton
+            color='info'
             sx={{
-              color: 'button',
               visibility: showSave ? 'visible' : 'hidden',
             }}
             onClick={handleSave}

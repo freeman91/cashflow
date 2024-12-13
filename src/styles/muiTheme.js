@@ -1,5 +1,10 @@
 import { createTheme } from '@mui/material/styles';
 
+const PRIMARY = '#7373ff';
+const GREEN = '#3caa57';
+const YELLOW = '#C7EA46';
+const RED = '#f44336';
+
 export const breakpoints = {
   xs: 0,
   sm: 600,
@@ -21,45 +26,24 @@ export const muiTheme = createTheme({
       500: '#717171',
       600: '#8b8b8b',
     },
-    primary: { main: '#7373ff' },
-    secondary: { main: '#3caa57' },
+    primary: { main: PRIMARY },
+    secondary: { main: YELLOW },
     green: {
       100: '#d9ebdd',
       200: '#85c093',
       300: '#55a368',
-      400: '#3caa57',
-      chart: {
-        veregy: '#3caa57',
-        'together & compoany': '#29ab87',
-        tips: '#4cbb17',
-        refund: '#d0f0c0',
-        other: '#98fb98',
-        sale: '#9dc183',
-        gift: '#2e8b57',
-      },
+      400: GREEN,
     },
     red: {
       100: '#996666',
       200: '#ac5353',
       300: '#b64949',
-      400: '#c03f3f',
+      400: RED,
       500: '#ca3535',
       600: '#d42b2b',
     },
-    grey: {
-      0: '#f3f3f3',
-      10: '#c6c6c6',
-      20: '#919191',
-      30: '#5e5e5e',
-      40: '#303030',
-    },
-    black: '#282828',
-    jet: '#303036',
-    danger: { main: '#c03f3f', secondary: '#d6726b' },
-    success: { main: '#3caa57' },
-    warning: { main: '#d4952e' },
-    info: { main: '#5c98fb' },
-    button: 'rgba(255, 255, 255, 0.7)',
+    success: { main: GREEN },
+    info: { main: 'rgba(255, 255, 255, 0.7)' },
   },
   typography: {
     fontFamily: '"Arial", "Helvetica", sans-serif',
@@ -83,15 +67,23 @@ export const muiTheme = createTheme({
     },
   },
   chartColors: [
-    '#006633',
-    '#CCCC33',
-    '#00CC66',
-    '#CC6600',
-    '#0099FF',
-    '#666666',
-    '#FF6633',
-    '#FFFF00',
-    '#6633FF',
-    '#808080',
+    '#6633FF', // dark blue
+    PRIMARY, // blue
+    '#0099FF', // light blue
+    '#006633', // dark green
+    GREEN, // green
+    '#9DC183', // light green
+    '#E4CD05', // dark yellow
+    YELLOW, // yellow
+    '#FCF4A3', // light yellow
+    '#d32f2f', // dark red
+    RED, // red
+    '#e57373', // light red
+    'rgb(148, 104, 32)', // dark orange
+    '#d4952e', // orange
+    'rgb(220, 170, 87)', // light orange
+    '#FC0FC0', // pink
+    '#7C4700', // brown
+    '#B200ED', // purple
   ],
 });

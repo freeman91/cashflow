@@ -41,14 +41,16 @@ export default function SubAccountBreakdown(props) {
                   sx={{ py: 0, px: 1 }}
                 >
                   <ListItemText primary={group.group} />
-                  <BoxFlexCenter>
-                    <Typography variant='body1' color='text.secondary'>
-                      $
-                    </Typography>
-                    <Typography variant='h6' color='white' fontWeight='bold'>
-                      {_numberToCurrency.format(group.sum)}
-                    </Typography>
-                  </BoxFlexCenter>
+                  {(items.length > 1 || expanded !== group.group) && (
+                    <BoxFlexCenter>
+                      <Typography variant='body1' color='text.secondary'>
+                        $
+                      </Typography>
+                      <Typography variant='h6' color='white' fontWeight='bold'>
+                        {_numberToCurrency.format(group.sum)}
+                      </Typography>
+                    </BoxFlexCenter>
+                  )}
                 </ListItemButton>
                 <Collapse
                   in={expanded === group.group}

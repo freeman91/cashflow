@@ -24,7 +24,6 @@ APP_ID: str = os.getenv("APP_ID")
 class CategoryMap(MapAttribute):
     category = UnicodeAttribute()
     goal = NumberAttribute()
-    color = UnicodeAttribute()
 
 
 class Budget(BaseModel):

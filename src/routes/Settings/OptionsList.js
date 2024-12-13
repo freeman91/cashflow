@@ -95,7 +95,7 @@ export default function OptionsList(props) {
         <Button
           variant='outlined'
           endIcon={<UndoIcon />}
-          sx={{ color: 'button', borderColor: 'button' }}
+          color='info'
           onClick={() => {
             setSelectedIdx(null);
             setSelectedOption('');
@@ -116,7 +116,7 @@ export default function OptionsList(props) {
             width: '100%',
           }}
         >
-          <IconButton sx={{ px: '10px', color: 'button' }}>
+          <IconButton sx={{ px: '10px' }} color='info'>
             <SearchIcon />
           </IconButton>
           <InputBase
@@ -125,10 +125,7 @@ export default function OptionsList(props) {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
-          <IconButton
-            sx={{ color: 'button' }}
-            onClick={() => setSearchText('')}
-          >
+          <IconButton onClick={() => setSearchText('')} color='info'>
             <ClearIcon />
           </IconButton>
         </Paper>

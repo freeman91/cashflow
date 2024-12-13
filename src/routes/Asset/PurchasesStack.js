@@ -1,12 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import map from 'lodash/map';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { openDialog } from '../../store/dialogs';
@@ -115,20 +113,29 @@ const PurchaseBox = (props) => {
 export default function PurchasesStack(props) {
   const { purchases } = props;
 
-  return (
-    <Card sx={{ width: '100%', mx: 1 }}>
-      <Stack spacing={1} direction='column' pt={1} pb={1}>
-        {map(purchases, (purchase, idx) => {
-          return (
-            <React.Fragment key={purchase.purchase_id}>
-              <PurchaseBox purchase={purchase} />
-              {idx < purchases.length - 1 && (
-                <Divider sx={{ mx: '8px !important' }} />
-              )}
-            </React.Fragment>
-          );
-        })}
-      </Stack>
-    </Card>
-  );
+  return purchases.map((purchase) => {
+    return (
+      <Grid item xs={12} key={purchase.purchase_id} mx={1}>
+        <Card sx={{ width: '100%', py: 0.5 }}>
+          <PurchaseBox purchase={purchase} />
+        </Card>
+      </Grid>
+    );
+  });
+  // return (
+  //   <Card sx={{ width: '100%', mx: 1 }}>
+  //     <Stack spacing={1} direction='column' pt={1} pb={1}>
+  //       {map(purchases, (purchase, idx) => {
+  //         return (
+  //           <React.Fragment key={purchase.purchase_id}>
+  //             <PurchaseBox purchase={purchase} />
+  //             {idx < purchases.length - 1 && (
+  //               <Divider sx={{ mx: '8px !important' }} />
+  //             )}
+  //           </React.Fragment>
+  //         );
+  //       })}
+  //     </Stack>
+  //   </Card>
+  // );
 }

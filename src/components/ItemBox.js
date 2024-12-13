@@ -44,7 +44,9 @@ export default function ItemBox(props) {
 
   const amount = 'amount' in item ? item.amount : item.value;
   const color =
-    item._type === 'asset' ? theme.palette.green[400] : theme.palette.red[400];
+    item._type === 'asset'
+      ? theme.palette.success.main
+      : theme.palette.error.main;
   const Icon =
     item._type === 'asset' ? AccountBalanceWalletIcon : CreditCardIcon;
   return (

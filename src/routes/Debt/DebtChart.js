@@ -7,12 +7,19 @@ import sortBy from 'lodash/sortBy';
 import dayjs from 'dayjs';
 
 import { useTheme } from '@emotion/react';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import {
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import { numberToCurrency } from '../../helpers/currency';
 import SubaccountHistoryTooltip from '../../components/SubaccountHistoryTooltip';
@@ -50,7 +57,7 @@ export default function DebtChart(props) {
         }
 
         const debtValue = find(networth.debts, { debt_id: debt.debt_id });
-        const value = debtValue?.value ? debtValue.value * -1 : 0;
+        const value = debtValue?.value ? debtValue.value : 0;
 
         if (debtValue) {
           return [
@@ -76,106 +83,100 @@ export default function DebtChart(props) {
     }
   }, [selected, allAccounts]);
 
-  const gradientOffset = () => {
-    const dataMax = Math.max(...chartData.map((i) => i.value));
-    const dataMin = Math.min(...chartData.map((i) => i.value));
-
-    if (dataMax <= 0) {
-      return 0;
-    }
-    if (dataMin >= 0) {
-      return 1;
-    }
-
-    return dataMax / (dataMax - dataMin);
-  };
-
-  const off = gradientOffset();
-
   return (
-    <Box sx={{ p: 1, maxWidth: 500, width: '100%' }}>
-      <ResponsiveContainer
-        width='100%'
-        height={200}
-        style={{ '& .recharts-surface': { overflow: 'visible' } }}
-      >
-        <AreaChart
+    <>
+      <Grid item xs={12} mx={1}>
+        <ResponsiveContainer
           width='100%'
           height={200}
-          data={chartData}
-          onClick={(e) => {
-            if (!isNull(e?.activeTooltipIndex)) {
-              setSelected(chartData[e.activeTooltipIndex]);
-            } else {
-              setSelected(null);
-            }
-          }}
-          margin={{
-            top: 0,
-            right: 10,
-            left: 0,
-            bottom: 0,
-          }}
+          style={{ '& .recharts-surface': { overflow: 'visible' } }}
         >
-          <XAxis
-            hide
-            axisLine={false}
-            tickLine={false}
-            type='number'
-            dataKey='timestamp'
-            domain={['dataMin', 'dataMax']}
-          />
-          <Tooltip content={<SubaccountHistoryTooltip />} />
-          <defs>
-            <linearGradient id='splitColor' x1='0' y1='0' x2='0' y2='1'>
-              <stop
-                offset={off}
-                stopColor={theme.palette.error.main}
-                stopOpacity={0}
-              />
-              <stop
-                offset='100%'
-                stopColor={theme.palette.error.main}
-                stopOpacity={0.8}
-              />
-            </linearGradient>
-          </defs>
-          <Area
-            dot={false}
-            type='monotone'
-            dataKey='value'
-            stroke={theme.palette.error.main}
-            fill='url(#splitColor)'
-            strokeWidth={2}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-      <SelectRangeChipStack setRange={setRange} />
-      {selected && (
-        <Card sx={{ mt: 1 }}>
-          <List disablePadding>
-            <ListItemText
-              primary={dayjs
-                .unix(Number(selected.timestamp))
-                .format('MMMM YYYY')}
-              primaryTypographyProps={{
-                align: 'center',
-                color: 'text.secondary',
-              }}
+          <AreaChart
+            width='100%'
+            height={200}
+            data={chartData}
+            onClick={(e) => {
+              if (!isNull(e?.activeTooltipIndex)) {
+                setSelected(chartData[e.activeTooltipIndex]);
+              } else {
+                setSelected(null);
+              }
+            }}
+            margin={{
+              top: 0,
+              right: 10,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <YAxis hide type='number' domain={['auto', 'auto']} />
+            <XAxis
+              hide
+              axisLine={false}
+              tickLine={false}
+              type='number'
+              dataKey='timestamp'
+              domain={['dataMin', 'dataMax']}
             />
-            <ListItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <ListItemText primary={account?.name} secondary='account' />
+            <Tooltip content={<SubaccountHistoryTooltip />} />
+            <defs>
+              <linearGradient id='splitColor' x1='0' y1='0' x2='0' y2='1'>
+                <stop
+                  offset='0%'
+                  stopColor={theme.palette.error.main}
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset={0.8}
+                  stopColor={theme.palette.error.main}
+                  stopOpacity={0}
+                />
+              </linearGradient>
+            </defs>
+            <Area
+              dot={false}
+              type='monotone'
+              dataKey='value'
+              stroke={theme.palette.error.main}
+              fill='url(#splitColor)'
+              strokeWidth={2}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </Grid>
+      <Grid item xs={12} mx={1}>
+        <SelectRangeChipStack setRange={setRange} />
+      </Grid>
+      {selected && (
+        <Grid item xs={12} mx={1}>
+          <Card>
+            <List disablePadding>
               <ListItemText
-                primary={numberToCurrency.format(selected.value)}
+                primary={dayjs
+                  .unix(Number(selected.timestamp))
+                  .format('MMMM YYYY')}
                 primaryTypographyProps={{
-                  align: 'right',
-                  fontWeight: 'bold',
+                  align: 'center',
+                  color: 'text.secondary',
+                  sx: { pt: 1 },
                 }}
               />
-            </ListItem>
-          </List>
-        </Card>
+              <ListItem
+                sx={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <ListItemText primary={account?.name} secondary='account' />
+                <ListItemText
+                  primary={numberToCurrency.format(selected.value)}
+                  primaryTypographyProps={{
+                    align: 'right',
+                    fontWeight: 'bold',
+                  }}
+                />
+              </ListItem>
+            </List>
+          </Card>
+        </Grid>
       )}
-    </Box>
+    </>
   );
 }

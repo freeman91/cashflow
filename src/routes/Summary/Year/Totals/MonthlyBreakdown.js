@@ -59,7 +59,7 @@ const MonthBox = (props) => {
             {date.format('MMMM')}
           </Typography>
           <BoxFlexCenter>
-            <Typography variant='h6' color='grey.10'>
+            <Typography variant='h6' color='text.secondary'>
               $
             </Typography>
             <Typography variant='h6' color='white' fontWeight='bold'>
@@ -69,7 +69,7 @@ const MonthBox = (props) => {
         </BoxFlexColumn>
         <BoxFlexColumn sx={{ width: '33%' }}>
           <BoxFlexCenter>
-            <Typography variant='body1' color='grey.10'>
+            <Typography variant='body1' color='text.secondary'>
               $
             </Typography>
             <Typography variant='body1' color='white' fontWeight='bold'>
@@ -79,7 +79,7 @@ const MonthBox = (props) => {
         </BoxFlexColumn>
         <BoxFlexColumn alignItems='flex-end' sx={{ width: '33%' }}>
           <BoxFlexCenter>
-            <Typography variant='body1' color='grey.10'>
+            <Typography variant='body1' color='text.secondary'>
               $
             </Typography>
             <Typography variant='body1' color='white' fontWeight='bold'>

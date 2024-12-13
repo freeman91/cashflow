@@ -72,7 +72,6 @@ export default function Budgets() {
       _budget.categories = expenseCategories?.categories.map((category) => {
         return {
           category: category.name,
-          color: category.color,
           goal: 100,
         };
       });

@@ -4,7 +4,8 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
-import { useTheme } from '@emotion/react';
+import { lighten } from '@mui/material/styles';
+import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -105,7 +106,7 @@ export default function Day({
 
   const dateNumberColor = (() => {
     if (isToday) return theme.palette.primary.main;
-    if (isSameDayAsSelected) return theme.palette.grey[40];
+    if (isSameDayAsSelected) return theme.palette.surface[300];
     return theme.palette.text.primary;
   })();
 
@@ -117,7 +118,6 @@ export default function Day({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        padding: 0.5,
         cursor: 'pointer',
       }}
       onClick={onClick}
@@ -139,6 +139,7 @@ export default function Day({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          mb: 0.5,
         }}
         fontWeight={isToday ? 'bold' : 'regular'}
       >
@@ -166,7 +167,7 @@ export default function Day({
               return (
                 <Circle
                   key={findId(expense)}
-                  color={theme.palette.danger.main}
+                  color={theme.palette.error.main}
                   diameter={fontSize}
                 />
               );
@@ -181,7 +182,7 @@ export default function Day({
               return (
                 <Circle
                   key={findId(expense)}
-                  color={theme.palette.danger.secondary}
+                  color={lighten(theme.palette.error.main, 0.2)}
                   diameter={fontSize}
                 />
               );

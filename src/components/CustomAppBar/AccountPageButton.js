@@ -46,8 +46,8 @@ const AccountPageButton = (props) => {
   const open = Boolean(anchorEl);
   return (
     <>
-      <IconButton size='medium' onClick={handleClick}>
-        <MoreVertIcon sx={{ color: 'button' }} />
+      <IconButton size='medium' onClick={handleClick} color='info'>
+        <MoreVertIcon />
       </IconButton>
       <Backdrop open={open}>
         <Menu

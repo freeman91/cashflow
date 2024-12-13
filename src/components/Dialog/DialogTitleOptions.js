@@ -23,7 +23,7 @@ function DialogTitleOptions(props) {
     <Box style={{ position: 'absolute', top: 8, right: 8 }}>
       {children?.length > 0 && (
         <>
-          <IconButton onClick={handleMenuClick}>
+          <IconButton onClick={handleMenuClick} color='info'>
             <MoreVertIcon />
           </IconButton>
           <Menu
@@ -38,7 +38,7 @@ function DialogTitleOptions(props) {
         </>
       )}
 
-      <IconButton onClick={handleClose}>
+      <IconButton onClick={handleClose} color='info'>
         <CloseIcon />
       </IconButton>
     </Box>

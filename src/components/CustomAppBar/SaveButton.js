@@ -9,8 +9,8 @@ const SaveButton = ({ show = true, onClick, tooltipTitle = 'save' }) => {
   if (!show) return <Box width='40px' height='35px' />;
   return (
     <Tooltip title={tooltipTitle} placement='left'>
-      <IconButton size='medium' onClick={onClick}>
-        <SaveIcon sx={{ color: 'button' }} />
+      <IconButton size='medium' onClick={onClick} color='info'>
+        <SaveIcon />
       </IconButton>
     </Tooltip>
   );

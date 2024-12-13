@@ -9,8 +9,8 @@ const BackButton = () => {
   const dispatch = useDispatch();
 
   return (
-    <IconButton size='medium' onClick={() => dispatch(goBack())}>
-      <ArrowBackIcon sx={{ color: 'button' }} />
+    <IconButton size='medium' onClick={() => dispatch(goBack())} color='info'>
+      <ArrowBackIcon />
     </IconButton>
   );
 };

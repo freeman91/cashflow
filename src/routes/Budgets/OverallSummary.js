@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { find } from 'lodash';
 
 import { darken } from '@mui/material/styles';
+import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
@@ -44,6 +47,13 @@ export default function OverallSummary({
   expenseSum,
   setShowSave,
 }) {
+  const theme = useTheme();
+  const expenseCategories = useSelector((state) => {
+    return find(state.categories.data, {
+      category_type: 'expense',
+    });
+  });
+
   const [goalSum, setGoalSum] = useState(0);
   const [barMax, setBarMax] = useState(0);
 
@@ -60,7 +70,13 @@ export default function OverallSummary({
 
   useEffect(() => {
     if (!budget || budget?.categories?.length === 0) return;
-    let _budgetCategories = budget.categories.map((category) => {
+    let _budgetCategories = budget.categories.map((category, idx) => {
+      const storeCategory = expenseCategories?.categories?.find(
+        (c) => c.name === category.category
+      );
+      const color =
+        storeCategory?.color ||
+        theme.chartColors[idx % theme.chartColors.length];
       const categoryExpenses = expenses.filter(
         (expense) => expense.category === category.category
       );
@@ -72,11 +88,19 @@ export default function OverallSummary({
         ...category,
         expenses: categoryExpenses,
         expenseSum: categoryExpenseSum,
+        color,
       };
     });
     _budgetCategories.sort((a, b) => b.expenseSum - a.expenseSum);
     setBudgetCategories(_budgetCategories);
-  }, [budget, barMax, expenses, setBudgetCategories]);
+  }, [
+    budget,
+    barMax,
+    expenses,
+    setBudgetCategories,
+    expenseCategories,
+    theme.chartColors,
+  ]);
 
   const overallBudgetCategories = budgetCategories.filter(
     (category) => category.expenseSum > 0
@@ -96,7 +120,7 @@ export default function OverallSummary({
   return (
     <>
       <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
-        <Card sx={{ width: '100%', px: 2, py: 1 }}>
+        <Card sx={{ width: '100%', px: 2 }}>
           <BoxFlexCenter justifyContent='space-between'>
             <Typography
               variant='body1'
@@ -177,7 +201,6 @@ export default function OverallSummary({
           key={category.category}
           category={category}
           updateGoal={updateGoal}
-          budget={budget}
         />
       ))}
     </>

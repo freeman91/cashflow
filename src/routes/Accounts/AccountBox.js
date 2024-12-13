@@ -69,7 +69,6 @@ export default function AccountBox(props) {
         <BoxFlexColumn alignItems='space-between'>
           <Typography
             variant='body1'
-            color='grey.0'
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',

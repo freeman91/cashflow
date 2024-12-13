@@ -49,8 +49,8 @@ export default function Networth() {
         container
         spacing={1}
         justifyContent='center'
-        alignItems='flex-start'
-        sx={{ pt: 1, mt: '42px' }}
+        alignItems='center'
+        sx={{ mt: '42px' }}
       >
         {(isRefreshing || pullPosition > 100) && (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -60,10 +60,8 @@ export default function Networth() {
 
         <CurrentNetworth title='current networth' />
 
-        <Grid item xs={12} display='flex' justifyContent='center'>
-          <Box sx={{ width: '100%', px: 1 }}>
-            <NetworthChart setSelected={setSelected} />
-          </Box>
+        <Grid item xs={12} mx={1}>
+          <NetworthChart setSelected={setSelected} />
         </Grid>
 
         {selected && (

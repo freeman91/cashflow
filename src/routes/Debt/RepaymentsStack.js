@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
-import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { _numberToCurrency } from '../../helpers/currency';
@@ -109,20 +107,13 @@ export default function RepaymentsStack(props) {
     setRepayment(sortBy(_repayments, 'date').reverse());
   }, [allRepayments, debtId]);
 
-  return (
-    <Card sx={{ width: '100%', mx: 1 }}>
-      <Stack spacing={1} direction='column' pt={1} pb={1}>
-        {map(repayments, (repayment, idx) => {
-          return (
-            <React.Fragment key={repayment.repayment_id}>
-              <RepaymentBox repayment={repayment} />
-              {idx < repayments.length - 1 && (
-                <Divider sx={{ mx: '8px !important' }} />
-              )}
-            </React.Fragment>
-          );
-        })}
-      </Stack>
-    </Card>
-  );
+  return repayments.map((repayment) => {
+    return (
+      <Grid item xs={12} key={repayment.repayment_id} mx={1}>
+        <Card sx={{ width: '100%', py: 0.5 }}>
+          <RepaymentBox repayment={repayment} />
+        </Card>
+      </Grid>
+    );
+  });
 }

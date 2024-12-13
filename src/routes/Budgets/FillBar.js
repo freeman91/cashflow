@@ -15,7 +15,7 @@ export default function FillBar({ fillValue, goalSum, color, barMax = null }) {
           color,
           0.4
         )})`,
-        borderRadius: diff > 0 ? 1 : '4px 0 0 4px',
+        borderRadius: diff >= 0 ? 1 : '4px 0 0 4px',
       }}
     />
   );

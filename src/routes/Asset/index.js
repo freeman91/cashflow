@@ -23,7 +23,7 @@ import CustomToggleButton from '../../components/CustomToggleButton';
 import CustomAppBar from '../../components/CustomAppBar';
 import EditButton from '../../components/CustomAppBar/EditButton';
 import PullToRefresh from '../../components/PullToRefresh';
-import TransactionsStack from '../../components/TransactionsStack';
+import TransactionsGridStack from '../../components/TransactionsGridStack';
 
 const PURCHASES = 'purchases';
 const SALES = 'sales';
@@ -231,14 +231,12 @@ export default function Asset() {
           </ToggleButtonGroup>
         </Grid>
 
-        <Grid item xs={12} display='flex' justifyContent='center'>
-          {tab === PURCHASES && <PurchasesStack purchases={purchases} />}
-          {tab === SALES && <SalesStack sales={sales} />}
-          {tab === TRANSACTIONS && (
-            <TransactionsStack transactions={transactions} />
-          )}
-          {tab === HISTORY && <AssetChart asset={asset} />}
-        </Grid>
+        {tab === PURCHASES && <PurchasesStack purchases={purchases} />}
+        {tab === SALES && <SalesStack sales={sales} />}
+        {tab === TRANSACTIONS && (
+          <TransactionsGridStack transactions={transactions} />
+        )}
+        {tab === HISTORY && <AssetChart asset={asset} />}
         <Grid item xs={12} mb={10} />
       </Grid>
     </Box>

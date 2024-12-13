@@ -24,7 +24,7 @@ import PullToRefresh from '../../components/PullToRefresh';
 import CustomAppBar from '../../components/CustomAppBar';
 import CustomToggleButton from '../../components/CustomToggleButton';
 import EditButton from '../../components/CustomAppBar/EditButton';
-import TransactionsStack from '../../components/TransactionsStack';
+import TransactionsGridStack from '../../components/TransactionsGridStack';
 
 const BORROWS = 'borrows';
 const REPAYMENTS = 'repayments';
@@ -242,12 +242,10 @@ export default function Debt() {
           </ToggleButtonGroup>
         </Grid>
 
-        <Grid item xs={12} display='flex' justifyContent='center'>
-          {tab === BORROWS && <BorrowsStack debtId={debt?.debt_id} />}
-          {tab === REPAYMENTS && <RepaymentsStack debtId={debt?.debt_id} />}
-          {tab === EXPENSES && <TransactionsStack transactions={expenses} />}
-          {tab === HISTORY && <DebtChart debt={debt} />}
-        </Grid>
+        {tab === BORROWS && <BorrowsStack debtId={debt?.debt_id} />}
+        {tab === REPAYMENTS && <RepaymentsStack debtId={debt?.debt_id} />}
+        {tab === EXPENSES && <TransactionsGridStack transactions={expenses} />}
+        {tab === HISTORY && <DebtChart debt={debt} />}
         <Grid item xs={12} mb={10} />
       </Grid>
     </Box>

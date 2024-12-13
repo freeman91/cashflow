@@ -110,17 +110,6 @@ function IncomeDialog() {
     >
       <form style={{ width: '100%' }}>
         <List>
-          {/* {mode !== 'create' && (
-            <TextFieldListItem
-              id='income_id'
-              label='income_id'
-              value={income.income_id}
-              InputProps={{
-                readOnly: true,
-                disableUnderline: true,
-              }}
-            />
-          )} */}
           <ListItem disableGutters>
             <DepositToSelect resource={income} setResource={setIncome} />
           </ListItem>

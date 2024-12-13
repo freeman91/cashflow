@@ -52,7 +52,7 @@ export default function Subcategory(props) {
                   onClick={
                     selected ? onSave : () => deleteSubcategory(subcategory)
                   }
-                  sx={{ color: 'button' }}
+                  color='info'
                 >
                   {selected ? <SaveIcon /> : <DeleteIcon />}
                 </IconButton>

@@ -1,12 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import map from 'lodash/map';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { openDialog } from '../../store/dialogs';
@@ -115,20 +113,13 @@ const SaleBox = (props) => {
 export default function SalesStack(props) {
   const { sales } = props;
 
-  return (
-    <Card sx={{ width: '100%', mx: 1 }}>
-      <Stack spacing={1} direction='column' pt={1} pb={1}>
-        {map(sales, (sale, idx) => {
-          return (
-            <React.Fragment key={sale.sale_id}>
-              <SaleBox sale={sale} />
-              {idx < sales.length - 1 && (
-                <Divider sx={{ mx: '8px !important' }} />
-              )}
-            </React.Fragment>
-          );
-        })}
-      </Stack>
-    </Card>
-  );
+  return sales.map((sale) => {
+    return (
+      <Grid item xs={12} key={sale.sale_id} mx={1}>
+        <Card sx={{ width: '100%', py: 0.5 }}>
+          <SaleBox sale={sale} />
+        </Card>
+      </Grid>
+    );
+  });
 }

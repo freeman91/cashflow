@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import find from 'lodash/find';
 import reduce from 'lodash/reduce';
 
-import { alpha } from '@mui/material/styles';
+import { darken, lighten } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
@@ -26,13 +26,13 @@ const numberToRoundedCurrency = new Intl.NumberFormat('en-US', {
 const BoxCurrencyDisplay = (props) => {
   const { value, label, color, icon, orientation, selected, onClick } = props;
 
-  let color1 = color[200];
-  let color2 = color[400];
+  let color1 = lighten(color, 0.25);
+  let color2 = color;
   let disabledTextColor = 'rgb(255, 255, 255, 0.25)';
 
   if (!selected) {
-    color1 = alpha(color[200], 0.25);
-    color2 = alpha(color[400], 0.25);
+    color1 = darken(color1, 0.6);
+    color2 = darken(color2, 0.6);
   }
 
   const deg = orientation === 'right' ? '90deg' : '-90deg';
@@ -146,6 +146,7 @@ export default function NetworthContainer(props) {
 
   const net = assetSum - debtSum;
   if (!networth) return null;
+  console.log('theme.palette.error.main: ', theme.palette.error.main);
   return (
     <Grid item xs={12} mx={1}>
       <Box>
@@ -172,7 +173,7 @@ export default function NetworthContainer(props) {
         <BoxCurrencyDisplay
           value={assetSum}
           label={ASSETS}
-          color={theme.palette.green}
+          color={theme.palette.success.main}
           icon={<AccountBalanceWalletIcon />}
           orientation='left'
           selected={tab === ASSETS}
@@ -181,7 +182,7 @@ export default function NetworthContainer(props) {
         <BoxCurrencyDisplay
           value={debtSum}
           label={DEBTS}
-          color={theme.palette.red}
+          color={theme.palette.error.main}
           icon={<CreditCardIcon />}
           orientation='right'
           selected={tab === DEBTS}

@@ -6,6 +6,7 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import reduce from 'lodash/reduce';
 
+import { lighten } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
@@ -142,15 +143,16 @@ export default function YearTotals(props) {
                   width: `${(nonPrincipalSum / expenseSum) * 100}%`,
                   backgroundColor: 'error.main',
                   height: '10px',
-                  borderRadius: '5px',
+                  borderRadius: principalSum > 0 ? '5px 0 0 5px' : '5px',
                 }}
               />
               <Box
                 sx={{
                   width: `${(principalSum / expenseSum) * 100}%`,
-                  backgroundColor: 'red.200',
+                  backgroundColor: (theme) =>
+                    lighten(theme.palette.error.main, 0.2),
                   height: '10px',
-                  borderRadius: '5px',
+                  borderRadius: '0 5px 5px 0',
                 }}
               />
             </Box>

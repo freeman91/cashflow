@@ -80,8 +80,12 @@ export default function MonthSummary(props) {
         }
         right={
           <Tooltip title={`${date?.format('YYYY')} summary`} placement='left'>
-            <IconButton size='medium' onClick={handleOpenYearlySummary}>
-              <SummarizeIcon sx={{ color: 'button' }} />
+            <IconButton
+              size='medium'
+              onClick={handleOpenYearlySummary}
+              color='info'
+            >
+              <SummarizeIcon />
             </IconButton>
           </Tooltip>
         }

@@ -54,8 +54,12 @@ export default function Search() {
     <Box sx={{ height: '100%', width: '100%' }}>
       <CustomAppBar
         right={
-          <IconButton size='medium' onClick={() => setFilterDialogOpen(true)}>
-            <FilterAltIcon sx={{ color: 'button' }} />
+          <IconButton
+            size='medium'
+            onClick={() => setFilterDialogOpen(true)}
+            color='info'
+          >
+            <FilterAltIcon />
           </IconButton>
         }
       />
@@ -76,7 +80,7 @@ export default function Search() {
               width: '100%',
             }}
           >
-            <IconButton sx={{ px: '10px', color: 'button' }}>
+            <IconButton sx={{ px: '10px' }} color='info'>
               <SearchIcon />
             </IconButton>
             <InputBase
@@ -85,10 +89,7 @@ export default function Search() {
               value={mainFilter}
               onChange={(e) => setMainFilter(e.target.value)}
             />
-            <IconButton
-              sx={{ color: 'button' }}
-              onClick={() => setMainFilter('')}
-            >
+            <IconButton onClick={() => setMainFilter('')} color='info'>
               <ClearIcon />
             </IconButton>
           </Paper>
