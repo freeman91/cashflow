@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 
 import { findId } from '../../helpers/transactions';
-import TransactionBox from '../../components/TransactionBox';
+import ItemBox from '../../components/ItemBox';
 
 const typeOrder = {
   paycheck: 1,
@@ -76,7 +76,7 @@ export default function SelectedTransactionsStack(props) {
     return (
       <Grid key={findId(transaction)} item xs={12} mx={1}>
         <Card sx={{ width: '100%', py: 0.5 }}>
-          <TransactionBox transaction={transaction} />
+          <ItemBox item={transaction} />
         </Card>
       </Grid>
     );

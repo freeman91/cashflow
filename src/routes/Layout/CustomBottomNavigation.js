@@ -14,6 +14,7 @@ import SearchIcon from '@mui/icons-material/SearchOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/HomeOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVertOutlined';
+import TrendingUpIcon from '@mui/icons-material/TrendingUpOutlined';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Box from '@mui/material/Box';
@@ -36,7 +37,10 @@ const Puller = styled('div')(({ theme }) => ({
 const CustomListItemButton = (props) => {
   const { Icon, text, onClick } = props;
   return (
-    <ListItemButton onClick={onClick} sx={{ py: 2 }}>
+    <ListItemButton
+      onClick={onClick}
+      sx={{ my: 2, bgcolor: 'surface.200', borderRadius: 1 }}
+    >
       <ListItemIcon sx={{ minWidth: 'unset' }}>
         <Icon />
       </ListItemIcon>
@@ -129,7 +133,7 @@ function CustomBottomNavigation() {
         onClose={() => setOpen(false)}
         sx={{
           '& .MuiDrawer-paper': {
-            height: '40%',
+            height: '45%',
             overflow: 'visible',
             backgroundColor: (theme) => theme.palette.surface[250],
             backgroundImage: 'unset',
@@ -139,7 +143,12 @@ function CustomBottomNavigation() {
         }}
       >
         <Puller />
-        <List disablePadding sx={{ px: 2, py: 2, bgcolor: 'unset' }}>
+        <List disablePadding sx={{ px: 1, pt: 1, bgcolor: 'unset' }}>
+          <CustomListItemButton
+            Icon={TrendingUpIcon}
+            text='NetWorth'
+            onClick={() => handleNavigate('networth')}
+          />
           <CustomListItemButton
             Icon={SearchIcon}
             text='Search'

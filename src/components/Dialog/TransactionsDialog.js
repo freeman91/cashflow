@@ -4,13 +4,11 @@ import map from 'lodash/map';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
 
 import { findId } from '../../helpers/transactions';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
-import TransactionBox from '../TransactionBox';
+import ItemBox from '../ItemBox';
 
 function TransactionsDialog() {
   const dispatch = useDispatch();
@@ -40,23 +38,17 @@ function TransactionsDialog() {
           width: '100%',
           pb: 2,
           mt: 1,
+          gap: 1,
         }}
       >
-        <Card sx={{ width: '100%' }}>
-          <Stack spacing={1} direction='column' width='100%' py={1}>
-            {map(transactions, (transaction, idx) => {
-              const key = findId(transaction);
-              return (
-                <React.Fragment key={key}>
-                  <TransactionBox transaction={transaction} />
-                  {idx < transactions.length - 1 && (
-                    <Divider sx={{ mx: '8px !important' }} />
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </Stack>
-        </Card>
+        {map(transactions, (transaction, idx) => {
+          const key = findId(transaction);
+          return (
+            <Card sx={{ width: '100%', py: 0.5 }} key={key}>
+              <ItemBox item={transaction} />
+            </Card>
+          );
+        })}
       </Box>
     </BaseDialog>
   );

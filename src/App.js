@@ -45,6 +45,7 @@ const AppRoutes = () => {
         <Route path='/home' element={<Home />} />
         <Route path='/account' element={<Account />} />
         <Route path='/accounts' element={<Accounts />} />
+        <Route path='/accounts/:tab' element={<Accounts />} />
         <Route path='/asset' element={<Asset />} />
         <Route path='/budgets' element={<Budgets />} />
         <Route path='/budgets/:category' element={<BudgetCategory />} />

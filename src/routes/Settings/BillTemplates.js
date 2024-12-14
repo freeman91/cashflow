@@ -5,20 +5,12 @@ import sortBy from 'lodash/sortBy';
 import map from 'lodash/map';
 
 import AddIcon from '@mui/icons-material/Add';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
 import { openDialog } from '../../store/dialogs';
-import { findIcon } from '../../helpers/transactions';
-import { _numberToCurrency } from '../../helpers/currency';
-import BoxFlexColumn from '../../components/BoxFlexColumn';
-import BoxFlexCenter from '../../components/BoxFlexCenter';
-import CustomIconButton from '../../components/CustomIconButton';
+import ItemBox from '../../components/ItemBox';
 
 function getNextBillDate(day, months) {
   const today = dayjs();
@@ -56,78 +48,6 @@ function getNextBillDate(day, months) {
   return null;
 }
 
-const BillBox = (props) => {
-  const { bill, icon } = props;
-  const dispatch = useDispatch();
-
-  const handleClick = (bill) => {
-    dispatch(
-      openDialog({
-        type: bill._type,
-        mode: 'edit',
-        id: bill.bill_id,
-        attrs: bill,
-      })
-    );
-  };
-
-  return (
-    <Box
-      key={bill.bill_id}
-      onClick={() => handleClick(bill)}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        pl: 1,
-        pr: 2,
-        cursor: 'pointer',
-      }}
-    >
-      <CustomIconButton color='error.main'>{icon}</CustomIconButton>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%',
-          ml: 1,
-        }}
-      >
-        <BoxFlexColumn alignItems='space-between'>
-          <Typography
-            variant='h6'
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: '1',
-              WebkitBoxOrient: 'vertical',
-            }}
-          >
-            {bill.name}
-          </Typography>
-          <Typography variant='body2' color='text.secondary'>
-            {bill.category}
-          </Typography>
-        </BoxFlexColumn>
-        <BoxFlexColumn alignItems='space-between'>
-          <Typography align='right' variant='body2' color='text.secondary'>
-            {bill.nextBillDate.format('MMM D, YYYY')}
-          </Typography>
-          <BoxFlexCenter>
-            <Typography variant='h5' color='text.secondary'>
-              $
-            </Typography>
-            <Typography variant='h5' fontWeight='bold'>
-              {_numberToCurrency.format(bill.amount)}
-            </Typography>
-          </BoxFlexCenter>
-        </BoxFlexColumn>
-      </Box>
-    </Box>
-  );
-};
-
 export default function BillTemplates() {
   const dispatch = useDispatch();
   const allBills = useSelector((state) => state.bills.data);
@@ -157,20 +77,15 @@ export default function BillTemplates() {
           create
         </Button>
       </Grid>
-      <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
-        <Card>
-          <Stack spacing={1} direction='column' py={1}>
-            {map(bills, (bill, idx) => {
-              return (
-                <React.Fragment key={bill.bill_id}>
-                  <BillBox bill={bill} icon={findIcon(bill)} />
-                  {idx < bills.length - 1 && <Divider />}
-                </React.Fragment>
-              );
-            })}
-          </Stack>
-        </Card>
-      </Grid>
+      {bills.map((bill) => {
+        return (
+          <Grid item xs={12} key={bill.bill_id} mx={1}>
+            <Card sx={{ width: '100%', py: 0.5 }}>
+              <ItemBox item={bill} />
+            </Card>
+          </Grid>
+        );
+      })}
     </>
   );
 }

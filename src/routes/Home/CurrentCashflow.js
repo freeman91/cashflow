@@ -25,7 +25,7 @@ export default function CurrentCashflow() {
     <Grid item xs={6}>
       <Stack direction='column'>
         <Typography variant='body1' color='text.secondary' align='center'>
-          {today.format('MMMM').toLowerCase()} cashflow
+          cashflow
         </Typography>
         <BoxFlexCenter>
           <Typography variant='h6' color='text.secondary'>

@@ -16,7 +16,7 @@ import { getIncomes } from '../../../store/incomes';
 import { getPaychecks } from '../../../store/paychecks';
 import IncomesSummary from './IncomesSummary';
 import FilterDialog from './FilterDialog';
-import TransactionBox from '../../../components/TransactionBox';
+import ItemBox from '../../../components/ItemBox';
 
 export default function Incomes(props) {
   const { range, mainFilter, filterDialogOpen, setFilterDialogOpen } = props;
@@ -128,7 +128,7 @@ export default function Incomes(props) {
         return (
           <Grid item xs={12} mx={1} key={key}>
             <Card sx={{ py: 0.5 }}>
-              <TransactionBox transaction={income} />
+              <ItemBox item={income} />
             </Card>
           </Grid>
         );

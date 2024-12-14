@@ -5,6 +5,7 @@ import sortBy from 'lodash/sortBy';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { refreshAll } from '../../store/user';
@@ -19,7 +20,7 @@ import TransactionsGridStack from '../../components/TransactionsGridStack';
 
 export default function Home() {
   const dispatch = useDispatch();
-
+  const today = dayjs();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
   const allIncomes = useSelector((state) => state.incomes.data);
@@ -114,7 +115,11 @@ export default function Home() {
         sx={{ mt: (theme) => theme.appBar.mobile.height }}
       >
         <PullToRefresh onRefresh={onRefresh} />
-        <Grid item xs={12} mt={0} />
+        <Grid item xs={12} display='flex' justifyContent='center'>
+          <Typography variant='h6' fontWeight='bold'>
+            {today.format('MMMM Do, YYYY')}
+          </Typography>
+        </Grid>
         <CurrentCashflow />
         <Grid item xs={6}>
           <CurrentNetworth />

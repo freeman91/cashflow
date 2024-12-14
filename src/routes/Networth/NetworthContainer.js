@@ -146,7 +146,6 @@ export default function NetworthContainer(props) {
 
   const net = assetSum - debtSum;
   if (!networth) return null;
-  console.log('theme.palette.error.main: ', theme.palette.error.main);
   return (
     <Grid item xs={12} mx={1}>
       <Box>

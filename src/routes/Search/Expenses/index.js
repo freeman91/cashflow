@@ -14,7 +14,7 @@ import { findId } from '../../../helpers/transactions';
 import { getExpenses } from '../../../store/expenses';
 import FilterDialog from './FilterDialog';
 import ExpensesSummary from './ExpensesSummary';
-import TransactionBox from '../../../components/TransactionBox';
+import ItemBox from '../../../components/ItemBox';
 
 export default function Expenses(props) {
   const { range, mainFilter, filterDialogOpen, setFilterDialogOpen } = props;
@@ -162,7 +162,7 @@ export default function Expenses(props) {
         return (
           <Grid item xs={12} mx={1} key={key}>
             <Card sx={{ py: 0.5 }}>
-              <TransactionBox transaction={expense} />
+              <ItemBox item={expense} />
             </Card>
           </Grid>
         );

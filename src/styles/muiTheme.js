@@ -4,6 +4,7 @@ const PRIMARY = '#7373ff';
 const GREEN = '#3caa57';
 const YELLOW = '#C7EA46';
 const RED = '#f44336';
+const ORANGE = '#d4952e';
 
 export const breakpoints = {
   xs: 0,
@@ -16,6 +17,11 @@ export const breakpoints = {
 export const muiTheme = createTheme({
   palette: {
     mode: 'dark',
+    primary: { main: PRIMARY },
+    success: { main: GREEN },
+    info: { main: 'rgba(255, 255, 255, 0.7)' },
+    orange: { main: ORANGE },
+    yellow: { main: YELLOW },
     surface: {
       100: '#121212',
       150: '#1b1b1b',
@@ -26,8 +32,7 @@ export const muiTheme = createTheme({
       500: '#717171',
       600: '#8b8b8b',
     },
-    primary: { main: PRIMARY },
-    secondary: { main: YELLOW },
+
     green: {
       100: '#d9ebdd',
       200: '#85c093',
@@ -42,8 +47,6 @@ export const muiTheme = createTheme({
       500: '#ca3535',
       600: '#d42b2b',
     },
-    success: { main: GREEN },
-    info: { main: 'rgba(255, 255, 255, 0.7)' },
   },
   typography: {
     fontFamily: '"Arial", "Helvetica", sans-serif',
@@ -80,7 +83,7 @@ export const muiTheme = createTheme({
     RED, // red
     '#e57373', // light red
     'rgb(148, 104, 32)', // dark orange
-    '#d4952e', // orange
+    ORANGE, // orange
     'rgb(220, 170, 87)', // light orange
     '#FC0FC0', // pink
     '#7C4700', // brown
