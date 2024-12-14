@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-
-import groupBy from 'lodash/groupBy';
-import map from 'lodash/map';
-import reduce from 'lodash/reduce';
-import sortBy from 'lodash/sortBy';
+import React, { useState } from 'react';
 
 import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Cell, PieChart, Pie, Sector } from 'recharts';
-import { _numberToCurrency, numberToCurrency } from '../../../helpers/currency';
+
 import { ASSETS } from '..';
+import { _numberToCurrency, numberToCurrency } from '../../../helpers/currency';
 import BoxFlexCenter from '../../../components/BoxFlexCenter';
 
 const renderActiveShape = (props) => {
@@ -31,6 +25,16 @@ const renderActiveShape = (props) => {
 
   return (
     <g>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={selectedFill}
+        cornerRadius={5}
+      />
       <text
         x={cx}
         y={cy}
@@ -64,71 +68,28 @@ const renderActiveShape = (props) => {
       >
         {`${(percent * 100).toFixed(2)}%`}
       </text>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={selectedFill}
-        cornerRadius={5}
-      />
     </g>
   );
 };
 
 export default function SubAccountPieChart(props) {
-  const { type } = props;
+  const { type, data, sum, maxValue } = props;
   const theme = useTheme();
-
-  const assets = useSelector((state) => state.assets.data);
-  const debts = useSelector((state) => state.debts.data);
-  const [chartData, setChartData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [sum, setSum] = useState(0);
-
-  useEffect(() => {
-    let _data = [];
-    if (type === ASSETS) {
-      _data = groupBy(assets, 'category');
-    } else {
-      _data = groupBy(debts, 'category');
-    }
-    _data = map(_data, (subaccounts, category) => {
-      const sum = reduce(
-        subaccounts,
-        (acc, subaccount) => {
-          if (type === ASSETS) {
-            return acc + subaccount.value;
-          } else {
-            return acc + subaccount.amount;
-          }
-        },
-        0
-      );
-      return {
-        name: category,
-        value: sum,
-      };
-    });
-    _data = sortBy(_data, 'value').reverse();
-    setSum(reduce(_data, (acc, subaccount) => acc + subaccount.value, 0));
-    setChartData(_data);
-  }, [assets, debts, type]);
-
+  const endAngle = 360 * (sum / maxValue);
   return (
     <Box
       width='100%'
       sx={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
       }}
     >
       <PieChart width={150} height={150}>
         <Pie
-          data={chartData}
+          data={data}
           dataKey='value'
           paddingAngle={2}
           minAngle={10}
@@ -136,8 +97,8 @@ export default function SubAccountPieChart(props) {
           outerRadius={70}
           cx='50%'
           cy='50%'
-          startAngle={360}
-          endAngle={0}
+          startAngle={0}
+          endAngle={endAngle}
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           cornerRadius={5}
@@ -145,32 +106,33 @@ export default function SubAccountPieChart(props) {
             setActiveIndex(index);
           }}
         >
-          {chartData.map((entry, index) => {
-            const selectedColor = theme.chartColors[index];
+          {data.map((item, index) => {
+            const color =
+              type === ASSETS
+                ? theme.palette.success.main
+                : theme.palette.error.main;
             return (
               <Cell
                 key={`cell-${index}`}
+                selectedFill={color}
                 fill={theme.palette.surface[300]}
-                selectedFill={selectedColor}
                 stroke={theme.palette.surface[300]}
               />
             );
           })}
         </Pie>
       </PieChart>
-      <Stack direction='column'>
-        <Typography variant='body1' color='text.secondary' align='center'>
-          total
+      <Typography variant='h6' color='text.secondary' fontWeight='bold'>
+        {type}
+      </Typography>
+      <BoxFlexCenter sx={{ justifyContent: 'center' }}>
+        <Typography variant='h6' color='text.secondary'>
+          $
         </Typography>
-        <BoxFlexCenter sx={{ justifyContent: 'center' }}>
-          <Typography variant='h6' color='text.secondary'>
-            $
-          </Typography>
-          <Typography variant='h5' color='white' fontWeight='bold'>
-            {_numberToCurrency.format(sum)}
-          </Typography>
-        </BoxFlexCenter>
-      </Stack>
+        <Typography variant='h5' color='white' fontWeight='bold'>
+          {_numberToCurrency.format(sum)}
+        </Typography>
+      </BoxFlexCenter>
     </Box>
   );
 }

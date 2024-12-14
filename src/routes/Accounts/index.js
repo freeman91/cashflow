@@ -58,7 +58,7 @@ export default function Accounts() {
         sx={{ mt: (theme) => theme.appBar.mobile.height }}
       >
         <PullToRefresh onRefresh={onRefresh} />
-        <AccountsCharts tab={tab} />
+        <AccountsCharts />
         <Grid item xs={12} display='flex' justifyContent='center'>
           <ToggleButtonGroup
             fullWidth

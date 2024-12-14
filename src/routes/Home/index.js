@@ -116,7 +116,10 @@ export default function Home() {
         <PullToRefresh onRefresh={onRefresh} />
         <Grid item xs={12} mt={0} />
         <CurrentCashflow />
-        <CurrentNetworth />
+        <Grid item xs={6}>
+          <CurrentNetworth />
+        </Grid>
+
         <HomeButtons />
         <Grid item xs={12} display='flex' justifyContent='center' mx={1} mt={1}>
           <ToggleButtonGroup

@@ -58,7 +58,9 @@ export default function Networth() {
           </Grid>
         )}
 
-        <CurrentNetworth title='current networth' />
+        <Grid item xs={12}>
+          <CurrentNetworth />
+        </Grid>
 
         <Grid item xs={12} mx={1}>
           <NetworthChart setSelected={setSelected} />

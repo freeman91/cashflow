@@ -8,9 +8,7 @@ import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 
 import { findId } from '../../../helpers/transactions';
 import { getExpenses } from '../../../store/expenses';
@@ -159,26 +157,16 @@ export default function Expenses(props) {
       <Grid item xs={12} mx={1}>
         <ExpensesSummary expenses={filteredExpenses} />
       </Grid>
-
-      {filteredExpenses.length > 0 && (
-        <Grid item xs={12} mx={1}>
-          <Card>
-            <Stack spacing={1} direction='column' py={1}>
-              {map(filteredExpenses, (expense, idx) => {
-                const key = findId(expense);
-                return (
-                  <React.Fragment key={key}>
-                    <TransactionBox transaction={expense} />
-                    {idx < filteredExpenses.length - 1 && (
-                      <Divider sx={{ mx: '8px !important' }} />
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </Stack>
-          </Card>
-        </Grid>
-      )}
+      {map(filteredExpenses, (expense, idx) => {
+        const key = findId(expense);
+        return (
+          <Grid item xs={12} mx={1} key={key}>
+            <Card sx={{ py: 0.5 }}>
+              <TransactionBox transaction={expense} />
+            </Card>
+          </Grid>
+        );
+      })}
       <FilterDialog
         title='filter options'
         open={filterDialogOpen}

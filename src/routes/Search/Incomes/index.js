@@ -9,9 +9,7 @@ import sortBy from 'lodash/sortBy';
 import toLower from 'lodash/toLower';
 
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 
 import { findId } from '../../../helpers/transactions';
 import { getIncomes } from '../../../store/incomes';
@@ -125,25 +123,16 @@ export default function Incomes(props) {
         <IncomesSummary incomes={filteredIncomes} />
       </Grid>
 
-      {filteredIncomes.length > 0 && (
-        <Grid item xs={12} mx={1}>
-          <Card>
-            <Stack spacing={1} direction='column' py={1}>
-              {map(filteredIncomes, (income, idx) => {
-                const key = findId(income);
-                return (
-                  <React.Fragment key={key}>
-                    <TransactionBox transaction={income} />
-                    {idx < filteredIncomes.length - 1 && (
-                      <Divider sx={{ mx: '8px !important' }} />
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </Stack>
-          </Card>
-        </Grid>
-      )}
+      {map(filteredIncomes, (income, idx) => {
+        const key = findId(income);
+        return (
+          <Grid item xs={12} mx={1} key={key}>
+            <Card sx={{ py: 0.5 }}>
+              <TransactionBox transaction={income} />
+            </Card>
+          </Grid>
+        );
+      })}
       <FilterDialog
         title='filter options'
         open={filterDialogOpen}

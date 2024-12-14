@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 import find from 'lodash/find';
 import reduce from 'lodash/reduce';
 
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -83,63 +82,57 @@ export default function CurrentNetworth(props) {
   const justifyContent = align === 'center' ? 'center' : 'flex-start';
 
   return (
-    <Grid item xs={6}>
-      <Stack
-        direction='column'
-        onClick={handleClick}
-        sx={{ cursor: 'pointer' }}
-      >
-        <Typography variant={textVariant1} color='text.secondary' align={align}>
-          {title}
+    <Stack direction='column' onClick={handleClick} sx={{ cursor: 'pointer' }}>
+      <Typography variant={textVariant1} color='text.secondary' align={align}>
+        {title}
+      </Typography>
+      <BoxFlexCenter sx={{ justifyContent }}>
+        <Typography variant={textVariant2} color='text.secondary'>
+          $
         </Typography>
-        <BoxFlexCenter sx={{ justifyContent }}>
-          <Typography variant={textVariant2} color='text.secondary'>
-            $
-          </Typography>
-          <Typography variant={textVariant3} color='white' fontWeight='bold'>
-            {_numberToCurrency.format(networth)}
-          </Typography>
-        </BoxFlexCenter>
-        <BoxFlexCenter sx={{ justifyContent }}>
-          {differenceAttrs.symbol && (
-            <Typography
-              variant={textVariant1}
-              color={differenceAttrs.color}
-              fontWeight='bold'
-            >
-              {differenceAttrs.symbol}
-            </Typography>
-          )}
+        <Typography variant={textVariant3} color='white' fontWeight='bold'>
+          {_numberToCurrency.format(networth)}
+        </Typography>
+      </BoxFlexCenter>
+      <BoxFlexCenter sx={{ justifyContent }}>
+        {differenceAttrs.symbol && (
           <Typography
             variant={textVariant1}
             color={differenceAttrs.color}
             fontWeight='bold'
           >
-            $
+            {differenceAttrs.symbol}
           </Typography>
-          <Typography
-            variant={textVariant1}
-            color={differenceAttrs.color}
-            fontWeight='bold'
-          >
-            {_numberToCurrency.format(Math.abs(difference))}
-          </Typography>
-          <Typography
-            variant={textVariant1}
-            color={differenceAttrs.color}
-            fontWeight='bold'
-          >
-            &nbsp;
-          </Typography>
-          <Typography
-            variant={textVariant1}
-            color={differenceAttrs.color}
-            fontWeight='bold'
-          >
-            {`(${percentDifference.toFixed(2)}%)`}
-          </Typography>
-        </BoxFlexCenter>
-      </Stack>
-    </Grid>
+        )}
+        <Typography
+          variant={textVariant1}
+          color={differenceAttrs.color}
+          fontWeight='bold'
+        >
+          $
+        </Typography>
+        <Typography
+          variant={textVariant1}
+          color={differenceAttrs.color}
+          fontWeight='bold'
+        >
+          {_numberToCurrency.format(Math.abs(difference))}
+        </Typography>
+        <Typography
+          variant={textVariant1}
+          color={differenceAttrs.color}
+          fontWeight='bold'
+        >
+          &nbsp;
+        </Typography>
+        <Typography
+          variant={textVariant1}
+          color={differenceAttrs.color}
+          fontWeight='bold'
+        >
+          {`(${percentDifference.toFixed(2)}%)`}
+        </Typography>
+      </BoxFlexCenter>
+    </Stack>
   );
 }
