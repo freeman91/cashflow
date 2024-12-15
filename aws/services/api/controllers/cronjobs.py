@@ -111,6 +111,7 @@ def networth_snapshot():
         return failure_result("Invalid method")
 
     _date = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
+    current_app.logger.info(f"Networth snapshot :: {_date}")
 
     assets, debts = [], []
     accounts = Account.list(user_id=USER_ID)

@@ -4,12 +4,14 @@ import { push } from 'redux-first-history';
 import dayjs from 'dayjs';
 import map from 'lodash/map';
 
+import useTheme from '@mui/material/styles/useTheme';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 
@@ -17,7 +19,25 @@ import { MONTH_NAMES } from './MonthlyLineChart';
 import { _numberToCurrency } from '../../../../helpers/currency';
 import BoxFlexCenter from '../../../../components/BoxFlexCenter';
 import BoxFlexColumn from '../../../../components/BoxFlexColumn';
-import CustomIconButton from '../../../../components/CustomIconButton';
+
+function CustomIconButton(props) {
+  const { color, orientation, children } = props;
+  const theme = useTheme();
+  const deg = orientation === 'left' ? '-45deg' : '45deg';
+  return (
+    <IconButton
+      sx={{
+        color: color,
+        background: `linear-gradient(${deg}, ${theme.palette.surface[200]}, ${theme.palette.surface[300]})`,
+        boxShadow: 6,
+        borderRadius: '50%',
+        p: '4px',
+      }}
+    >
+      {children}
+    </IconButton>
+  );
+}
 
 const MonthBox = (props) => {
   const { year, month, incomeSum, expenseSum } = props;

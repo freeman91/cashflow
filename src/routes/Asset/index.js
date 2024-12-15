@@ -12,7 +12,6 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../store/user';
-import { openDialog } from '../../store/dialogs';
 import { _numberToCurrency, numberToCurrency } from '../../helpers/currency';
 import AllocationChart from '../Account/AllocationChart';
 import PurchasesStack from './PurchasesStack';
@@ -21,9 +20,9 @@ import AssetChart from './AssetChart';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
 import CustomToggleButton from '../../components/CustomToggleButton';
 import CustomAppBar from '../../components/CustomAppBar';
-import EditButton from '../../components/CustomAppBar/EditButton';
 import PullToRefresh from '../../components/PullToRefresh';
 import TransactionsGridStack from '../../components/TransactionsGridStack';
+import PageMoreVertButton from '../../components/CustomAppBar/PageMoreVertButton';
 
 const PURCHASES = 'purchases';
 const SALES = 'sales';
@@ -119,15 +118,7 @@ export default function Asset() {
             {asset?.name}
           </Typography>
         }
-        right={
-          <EditButton
-            handleClick={() =>
-              dispatch(
-                openDialog({ type: 'asset', mode: 'edit', attrs: asset })
-              )
-            }
-          />
-        }
+        right={<PageMoreVertButton item={asset} />}
       />
       <Grid
         container

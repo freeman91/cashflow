@@ -5,9 +5,8 @@ import useTheme from '@mui/material/styles/useTheme';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
-import { alpha } from '@mui/material/styles';
+import { darken as _darken } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -16,8 +15,13 @@ import Typography from '@mui/material/Typography';
 
 import { openDialog } from '../../store/dialogs';
 
-const CreateButton = (props) => {
-  const { Icon, label, color, onClick } = props;
+export const CreateButton = (props) => {
+  const { Icon, label, onClick, darken } = props;
+  const theme = useTheme();
+
+  const color = darken
+    ? _darken(theme.palette.primary.main, 0.7)
+    : theme.palette.primary.main;
   return (
     <Box
       sx={{
@@ -49,9 +53,7 @@ const CreateButton = (props) => {
 };
 
 export default function HomeButtons() {
-  const theme = useTheme();
   const dispatch = useDispatch();
-  const lightColor = alpha(theme.palette.primary.main, 0.2);
 
   const handleCreateClick = (type) => {
     if (type !== 'more') {
@@ -71,26 +73,19 @@ export default function HomeButtons() {
         <CreateButton
           Icon={CreditCardIcon}
           label='expense'
-          color='primary.main'
           onClick={() => handleCreateClick('expense')}
         />
         <CreateButton
           Icon={AttachMoneyIcon}
           label='income'
-          color={lightColor}
+          darken={true}
           onClick={() => handleCreateClick('income')}
         />
         <CreateButton
           Icon={LocalAtmIcon}
           label='paycheck'
-          color={lightColor}
+          darken={true}
           onClick={() => handleCreateClick('paycheck')}
-        />
-        <CreateButton
-          Icon={MoreHorizIcon}
-          label='more'
-          color={lightColor}
-          onClick={() => handleCreateClick('more')}
         />
       </Stack>
     </Grid>

@@ -2,28 +2,22 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../store/user';
 import { saveNetworth } from '../../store/networths';
-import usePullToRefresh from '../../store/hooks/usePullToRefresh';
 import CustomAppBar from '../../components/CustomAppBar';
 import SaveButton from '../../components/CustomAppBar/SaveButton';
 import NetworthChart from '../Accounts/Networth/NetworthChart';
 import CurrentNetworth from '../Home/CurrentNetworth';
 import NetworthContainer from './NetworthContainer';
-import SelectedNetworth from './SelectedNetworth';
-
-export const ASSETS = 'assets';
-export const DEBTS = 'debts';
+import PullToRefresh from '../../components/PullToRefresh';
 
 export default function Networth() {
   const dispatch = useDispatch();
 
   const [selected, setSelected] = useState(null);
-  const [tab, setTab] = useState(ASSETS);
 
   const onSave = () => {
     dispatch(saveNetworth());
@@ -32,7 +26,6 @@ export default function Networth() {
   const onRefresh = async () => {
     dispatch(refreshAll());
   };
-  const { isRefreshing, pullPosition } = usePullToRefresh({ onRefresh });
   return (
     <Box sx={{ WebkitOverflowScrolling: 'touch', width: '100%' }}>
       <CustomAppBar
@@ -50,31 +43,19 @@ export default function Networth() {
         spacing={1}
         justifyContent='center'
         alignItems='center'
-        sx={{ mt: '42px' }}
+        sx={{ mt: (theme) => theme.appBar.mobile.height }}
       >
-        {(isRefreshing || pullPosition > 100) && (
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress sx={{ mt: 1 }} />
-          </Grid>
-        )}
+        <PullToRefresh onRefresh={onRefresh} />
 
         <Grid item xs={12}>
-          <CurrentNetworth />
+          <CurrentNetworth title='current networth' />
         </Grid>
 
         <Grid item xs={12} mx={1}>
-          <NetworthChart setSelected={setSelected} />
+          <NetworthChart selected={selected} setSelected={setSelected} />
         </Grid>
 
-        {selected && (
-          <NetworthContainer
-            networthId={selected.id}
-            setNetworthId={selected.id}
-            tab={tab}
-            setTab={setTab}
-          />
-        )}
-        {selected && <SelectedNetworth networthId={selected.id} tab={tab} />}
+        <NetworthContainer networthId={selected?.id} />
         <Grid item xs={12} mb={10} />
       </Grid>
     </Box>

@@ -13,7 +13,6 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../store/user';
-import { openDialog } from '../../store/dialogs';
 import { _numberToCurrency, numberToCurrency } from '../../helpers/currency';
 import AllocationChart from '../Account/AllocationChart';
 import BorrowsStack from './BorrowsStack';
@@ -23,8 +22,8 @@ import BoxFlexCenter from '../../components/BoxFlexCenter';
 import PullToRefresh from '../../components/PullToRefresh';
 import CustomAppBar from '../../components/CustomAppBar';
 import CustomToggleButton from '../../components/CustomToggleButton';
-import EditButton from '../../components/CustomAppBar/EditButton';
 import TransactionsGridStack from '../../components/TransactionsGridStack';
+import PageMoreVertButton from '../../components/CustomAppBar/PageMoreVertButton';
 
 const BORROWS = 'borrows';
 const REPAYMENTS = 'repayments';
@@ -121,13 +120,7 @@ export default function Debt() {
             {debt?.name}
           </Typography>
         }
-        right={
-          <EditButton
-            handleClick={() =>
-              dispatch(openDialog({ type: 'debt', mode: 'edit', attrs: debt }))
-            }
-          />
-        }
+        right={<PageMoreVertButton item={debt} />}
       />
       <Grid
         container

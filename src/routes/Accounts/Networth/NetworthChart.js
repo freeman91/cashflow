@@ -8,7 +8,14 @@ import dayjs from 'dayjs';
 import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import {
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  ReferenceDot,
+} from 'recharts';
 
 import { _numberToCurrency } from '../../../helpers/currency';
 import BoxFlexColumn from '../../../components/BoxFlexColumn';
@@ -57,11 +64,11 @@ function ChartTooltip({ active, payload, label }) {
 }
 
 export default function NetworthChart(props) {
-  const { setSelected = null } = props;
+  const { selected, setSelected } = props;
   const theme = useTheme();
   const allNetworths = useSelector((state) => state.networths.data);
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(null);
   const [chartData, setChartData] = useState([]);
   const [range, setRange] = useState({
     start: { month: 10, year: 2018 },
@@ -105,13 +112,11 @@ export default function NetworthChart(props) {
     );
     _data = sortBy(_data, 'timestamp');
     setChartData(_data);
-    setActiveIndex(_data.length - 1);
   }, [allNetworths, range]);
 
   useEffect(() => {
-    if (setSelected) {
-      const _selected = chartData[activeIndex];
-      setSelected(_selected);
+    if (activeIndex) {
+      setSelected(chartData[activeIndex]);
     }
   }, [activeIndex, chartData, setSelected]);
 
@@ -130,7 +135,6 @@ export default function NetworthChart(props) {
   };
 
   const off = gradientOffset();
-
   return (
     <Box sx={{ width: '100%' }}>
       <ResponsiveContainer
@@ -163,7 +167,7 @@ export default function NetworthChart(props) {
 
           <Tooltip content={<ChartTooltip />} />
           <defs>
-            <linearGradient id='splitColor' x1='0' y1='0' x2='0' y2='1'>
+            <linearGradient id='stroke' x1='0' y1='0' x2='0' y2='1'>
               <stop
                 offset='0%'
                 stopColor={theme.palette.success.main}
@@ -172,12 +176,34 @@ export default function NetworthChart(props) {
               <stop
                 offset={off}
                 stopColor={theme.palette.success.main}
-                stopOpacity={0.3}
+                stopOpacity={1}
               />
               <stop
                 offset={off}
                 stopColor={theme.palette.error.main}
-                stopOpacity={0.3}
+                stopOpacity={1}
+              />
+              <stop
+                offset='100%'
+                stopColor={theme.palette.error.main}
+                stopOpacity={1}
+              />
+            </linearGradient>
+            <linearGradient id='fill' x1='0' y1='0' x2='0' y2='1'>
+              <stop
+                offset='0%'
+                stopColor={theme.palette.success.main}
+                stopOpacity={1}
+              />
+              <stop
+                offset={off}
+                stopColor={theme.palette.success.main}
+                stopOpacity={0}
+              />
+              <stop
+                offset={off}
+                stopColor={theme.palette.error.main}
+                stopOpacity={0}
               />
               <stop
                 offset='100%'
@@ -190,10 +216,19 @@ export default function NetworthChart(props) {
             dot={false}
             type='monotone'
             dataKey='networth'
-            stroke='url(#splitColor)'
-            fill='url(#splitColor)'
+            stroke='url(#stroke)'
+            fill='url(#fill)'
             strokeWidth={2}
           />
+          {selected && (
+            <ReferenceDot
+              r={4}
+              fill={theme.palette.primary.main}
+              stroke='none'
+              x={selected.timestamp}
+              y={selected.networth}
+            />
+          )}
         </AreaChart>
       </ResponsiveContainer>
       <SelectRangeChipStack setRange={setRange} />

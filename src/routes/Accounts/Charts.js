@@ -38,7 +38,7 @@ export default function AccountsCharts() {
     _data = sortBy(_data, 'value').reverse();
     setGroupedAssets(_data);
     setAssetSum(reduce(_data, (acc, subaccount) => acc + subaccount.value, 0));
-  }, [assets, debts]);
+  }, [assets]);
 
   useEffect(() => {
     let _data = groupBy(debts, 'category');

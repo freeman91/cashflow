@@ -23,6 +23,7 @@ import Debt from './routes/Debt';
 import Home from './routes/Home';
 import Layout from './routes/Layout';
 import Networth from './routes/Networth';
+import NetworthSelected from './routes/Networth/Selected';
 import Search from './routes/Search';
 import Settings from './routes/Settings';
 import Summary from './routes/Summary';
@@ -56,6 +57,7 @@ const AppRoutes = () => {
         <Route path='/summary/:year' element={<Summary />} />
         <Route path='/summary/:year/:month' element={<Summary />} />
         <Route path='/networth' element={<Networth />} />
+        <Route path='/networth/:id' element={<NetworthSelected />} />
         <Route path='/search' element={<Search />} />
         <Route path='/search/:type' element={<Search />} />
         <Route path='/settings' element={<Settings />} />

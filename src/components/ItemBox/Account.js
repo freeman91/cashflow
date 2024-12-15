@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import filter from 'lodash/filter';
 
 import Typography from '@mui/material/Typography';
 
@@ -8,6 +10,17 @@ import BoxFlexCenter from '../../components/BoxFlexCenter';
 
 export default function Account(props) {
   const { account } = props;
+
+  const assets = useSelector((state) => state.assets.data);
+  const debts = useSelector((state) => state.debts.data);
+
+  const [accountAssets, setAccountAssets] = useState([]);
+  const [accountDebts, setAccountDebts] = useState([]);
+
+  useEffect(() => {
+    setAccountAssets(filter(assets, { account_id: account.account_id }));
+    setAccountDebts(filter(debts, { account_id: account.account_id }));
+  }, [account, assets, debts]);
 
   return (
     <>
@@ -24,6 +37,15 @@ export default function Account(props) {
         >
           {account.name}
         </Typography>
+        {(accountAssets.length > 0 || accountDebts.length > 0) && (
+          <Typography variant='body2' color='text.secondary'>
+            {accountAssets.length > 0 && `${accountAssets.length} asset`}
+            {accountAssets.length > 1 && 's'}
+            {accountAssets.length > 0 && accountDebts.length > 0 && ', '}
+            {accountDebts.length > 0 && `${accountDebts.length} debt`}
+            {accountDebts.length > 1 && 's'}
+          </Typography>
+        )}
       </BoxFlexColumn>
       <BoxFlexCenter>
         <Typography variant='body1' color='text.secondary'>

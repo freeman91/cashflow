@@ -73,7 +73,7 @@ const renderActiveShape = (props) => {
 };
 
 export default function SubAccountPieChart(props) {
-  const { type, data, sum, maxValue } = props;
+  const { type, data, sum, maxValue, showTitle = true } = props;
   const theme = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const endAngle = 360 * (sum / maxValue);
@@ -122,9 +122,11 @@ export default function SubAccountPieChart(props) {
           })}
         </Pie>
       </PieChart>
-      <Typography variant='h6' color='text.secondary' fontWeight='bold'>
-        {type}
-      </Typography>
+      {showTitle && (
+        <Typography variant='h6' color='text.secondary' fontWeight='bold'>
+          {type}
+        </Typography>
+      )}
       <BoxFlexCenter sx={{ justifyContent: 'center' }}>
         <Typography variant='h6' color='text.secondary'>
           $

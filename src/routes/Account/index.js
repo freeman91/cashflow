@@ -22,7 +22,7 @@ import AllocationChart from './AllocationChart';
 import CustomAppBar from '../../components/CustomAppBar';
 import PullToRefresh from '../../components/PullToRefresh';
 import CustomToggleButton from '../../components/CustomToggleButton';
-import AccountPageButton from '../../components/CustomAppBar/AccountPageButton';
+import PageMoreVertButton from '../../components/CustomAppBar/PageMoreVertButton';
 
 const ASSETS = 'assets';
 const DEBTS = 'debts';
@@ -89,7 +89,7 @@ export default function Account() {
             {account?.name}
           </Typography>
         }
-        right={<AccountPageButton />}
+        right={<PageMoreVertButton item={account} />}
       />
       <Grid
         container
