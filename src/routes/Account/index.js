@@ -50,9 +50,12 @@ export default function Account() {
 
   useEffect(() => {
     if (location.state?.accountId) {
-      setAccount(
-        accounts.find((a) => a.account_id === location.state.accountId)
+      const _account = accounts.find(
+        (a) => a.account_id === location.state.accountId
       );
+      if (_account) {
+        setAccount(_account);
+      }
     }
   }, [location.state?.accountId, accounts]);
 
@@ -81,6 +84,7 @@ export default function Account() {
   };
 
   const show = assetSum > 0 && debtSum > 0;
+  if (!account) return null;
   return (
     <Box sx={{ WebkitOverflowScrolling: 'touch', width: '100%' }}>
       <CustomAppBar

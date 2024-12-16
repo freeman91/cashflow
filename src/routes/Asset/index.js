@@ -56,7 +56,10 @@ export default function Asset() {
 
   useEffect(() => {
     if (location.state?.assetId) {
-      setAsset(assets.find((a) => a.asset_id === location.state.assetId));
+      const _asset = assets.find((a) => a.asset_id === location.state.assetId);
+      if (_asset) {
+        setAsset(_asset);
+      }
     }
   }, [location.state?.assetId, assets]);
 
@@ -110,6 +113,7 @@ export default function Asset() {
     setTab(newTab);
   };
 
+  if (!asset) return null;
   return (
     <Box sx={{ WebkitOverflowScrolling: 'touch', width: '100%' }}>
       <CustomAppBar

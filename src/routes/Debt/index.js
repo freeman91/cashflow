@@ -55,7 +55,10 @@ export default function Debt() {
 
   useEffect(() => {
     if (location.state?.debtId) {
-      setDebt(debts.find((a) => a.debt_id === location.state.debtId));
+      const _debt = debts.find((a) => a.debt_id === location.state.debtId);
+      if (_debt) {
+        setDebt(_debt);
+      }
     }
   }, [location.state?.debtId, debts]);
 
@@ -112,6 +115,7 @@ export default function Debt() {
     setTab(newTab);
   };
 
+  if (!debt) return null;
   return (
     <Box sx={{ WebkitOverflowScrolling: 'touch', width: '100%' }}>
       <CustomAppBar

@@ -1,97 +1,92 @@
 import React from 'react';
 
-import useTheme from '@mui/material/styles/useTheme';
+import { darken, lighten, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import ListItem from '@mui/material/ListItem';
-import SummaryListItemValue from './SummaryListItemValue';
+
+import LabelValueBox from '../../components/LabelValueBox';
 
 export default function Totals(props) {
-  const { incomeSum, expenseSum, principalSum, interestSum, escrowSum } = props;
+  const {
+    expenseSum,
+    principalSum,
+    interestSum,
+    escrowSum,
+    incomeSum,
+    paycheckSum,
+  } = props;
+
   const theme = useTheme();
 
-  const totalSpent = expenseSum + principalSum + interestSum + escrowSum;
-  const net = incomeSum - totalSpent;
-  const nonPrincipalSum = totalSpent - principalSum;
-  const max = Math.max(incomeSum, totalSpent);
-  const incomePercent = (incomeSum / max) * 100;
-  const expensePercent = (totalSpent / max) * 100;
+  const nonPrincipalExpenseSum = expenseSum + interestSum + escrowSum;
+  const allIncomesSum = incomeSum + paycheckSum;
+  const allExpensesSum = expenseSum + principalSum + interestSum + escrowSum;
+  const max = Math.max(allIncomesSum, allExpensesSum);
+  const incomePercent = (allIncomesSum / max) * 100;
+  const expensePercent = (allExpensesSum / max) * 100;
 
   return (
     <>
-      {totalSpent > 0 && incomeSum > 0 && (
-        <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
-          <Card sx={{ width: '100%' }}>
-            <SummaryListItemValue value={net} label='cashflow' />
-          </Card>
-        </Grid>
-      )}
-
-      {incomeSum > 0 && (
-        <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
-          <Card sx={{ width: '100%', pb: 1 }}>
-            <SummaryListItemValue value={incomeSum} label='earned' />
-            <ListItem>
-              <Box
-                sx={{
-                  width: `${incomePercent}%`,
-                  borderRadius: '5px',
-                  backgroundColor: theme.palette.success.main,
-                  height: '10px',
-                }}
-              />
-            </ListItem>
-          </Card>
-        </Grid>
-      )}
-
-      {totalSpent > 0 && (
-        <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
-          <Card sx={{ width: '100%', pb: 0.5 }}>
-            <SummaryListItemValue value={totalSpent} label='spent' />
-            <ListItem>
-              <Box
-                sx={{
-                  width: `${expensePercent}%`,
-                  height: '10px',
-                  display: 'flex',
-                }}
-              >
-                <Box
-                  sx={{
-                    width: `${(nonPrincipalSum / expenseSum) * 100}%`,
-                    backgroundColor: theme.palette.error.main,
-                    height: '10px',
-                    borderRadius: '5px',
-                  }}
-                />
-                <Box
-                  sx={{
-                    width: `${(principalSum / expenseSum) * 100}%`,
-                    backgroundColor: theme.palette.red[200],
-                    height: '10px',
-                    borderRadius: '5px',
-                  }}
-                />
-              </Box>
-            </ListItem>
-            <SummaryListItemValue value={expenseSum} label='expenses' />
-            <SummaryListItemValue
-              value={principalSum + interestSum + escrowSum}
-              label='repayments'
+      <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
+        <Card sx={{ width: '100%', px: 2, py: 1 }}>
+          <LabelValueBox
+            value={allIncomesSum - allExpensesSum}
+            label='cashflow'
+          />
+        </Card>
+      </Grid>
+      <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
+        <Card sx={{ width: '100%', px: 2, py: 1 }}>
+          <Box
+            sx={{
+              width: `${incomePercent}%`,
+              borderRadius: '4px',
+              backgroundImage: `linear-gradient(to bottom, ${
+                theme.palette.success.main
+              }, ${darken(theme.palette.success.main, 0.2)})`,
+              height: '15px',
+              my: 1,
+            }}
+          />
+          <LabelValueBox value={allIncomesSum} label='earned' />
+        </Card>
+      </Grid>
+      <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
+        <Card sx={{ width: '100%', px: 2, py: 1 }}>
+          <Box
+            sx={{
+              width: `${expensePercent}%`,
+              height: '15px',
+              display: 'flex',
+              my: 1,
+            }}
+          >
+            <Box
+              sx={{
+                width: `${(nonPrincipalExpenseSum / allExpensesSum) * 100}%`,
+                height: '15px',
+                borderRadius: principalSum > 0 ? '4px 0 0 4px' : '4px',
+                backgroundImage: `linear-gradient(to bottom, ${
+                  theme.palette.error.main
+                }, ${darken(theme.palette.error.main, 0.2)})`,
+              }}
             />
-            <Divider sx={{ mx: 1 }} />
-            <SummaryListItemValue
-              value={principalSum}
-              label='principal'
-              textSize='small'
-              gutters
+            <Box
+              sx={{
+                width: `${(principalSum / allExpensesSum) * 100}%`,
+                backgroundImage: `linear-gradient(to bottom, ${lighten(
+                  theme.palette.error.main,
+                  0.2
+                )}, ${theme.palette.error.main})`,
+                height: '15px',
+                borderRadius: '0 4px 4px 0',
+              }}
             />
-          </Card>
-        </Grid>
-      )}
+          </Box>
+          <LabelValueBox value={allExpensesSum} label='spent' />
+        </Card>
+      </Grid>
     </>
   );
 }

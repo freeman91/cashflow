@@ -57,11 +57,14 @@ function DebtDialog() {
   }, [categoriesData]);
 
   useEffect(() => {
-    setCategories(
-      map(expenseCategories?.categories, (category) => {
+    let _categories = [
+      ...map(expenseCategories?.categories, (category) => {
         return category.name;
-      })
-    );
+      }),
+      'credit',
+    ];
+    _categories = _categories.sort();
+    setCategories(_categories);
   }, [expenseCategories]);
 
   useEffect(() => {

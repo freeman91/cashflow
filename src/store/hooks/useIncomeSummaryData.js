@@ -1,22 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import filter from 'lodash/filter';
-import reduce from 'lodash/reduce';
 
-import { findAmount } from '../../helpers/transactions';
+import filter from 'lodash/filter';
+import groupBy from 'lodash/groupBy';
+import reduce from 'lodash/reduce';
+import sumBy from 'lodash/sumBy';
+
 import { getIncomes } from '../incomes';
 import { getPaychecks } from '../paychecks';
 
-export const useIncomes = (year, month) => {
+export const useIncomeSummaryData = (year, month) => {
   const dispatch = useDispatch();
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
+  const [groupedPaychecks, setGroupedPaychecks] = useState([]);
+  const [groupedIncomes, setGroupedIncomes] = useState([]);
   const [incomes, setIncomes] = useState([]);
-  const [sum, setSum] = useState(0);
+  const [incomeSum, setIncomeSum] = useState(0);
+  const [paychecks, setPaychecks] = useState([]);
+  const [paycheckSum, setPaycheckSum] = useState(0);
 
   useEffect(() => {
     if (!year) return;
@@ -41,24 +47,33 @@ export const useIncomes = (year, month) => {
   }, [dispatch, year, month]);
 
   useEffect(() => {
-    let _incomes = filter([...allIncomes, ...allPaychecks], (income) => {
+    let _allIncomes = [...allIncomes, ...allPaychecks];
+    _allIncomes = filter(_allIncomes, (income) => {
       if (!income.date) return false;
       const incomeDate = dayjs(income.date);
       return incomeDate.isAfter(start) && incomeDate.isBefore(end);
     });
-    setSum(
-      reduce(
-        _incomes,
-        (acc, income) => {
-          return acc + findAmount(income);
-        },
-        0
-      )
-    );
+
+    let _incomes = filter(_allIncomes, { _type: 'income' });
+    let _groupedIncomes = groupBy(_incomes, 'category');
+    setGroupedIncomes(_groupedIncomes);
     setIncomes(_incomes);
+    setIncomeSum(reduce(_incomes, (sum, income) => sum + income.amount, 0));
+
+    let _paychecks = filter(_allIncomes, { _type: 'paycheck' });
+    setPaychecks(_paychecks);
+    setPaycheckSum(sumBy(_paychecks, 'take_home'));
+    setGroupedPaychecks(groupBy(_paychecks, 'employer'));
   }, [start, end, allIncomes, allPaychecks]);
 
-  return { incomes, sum };
+  return {
+    incomes,
+    groupedIncomes,
+    incomeSum,
+    groupedPaychecks,
+    paychecks,
+    paycheckSum,
+  };
 };
 
-export default useIncomes;
+export default useIncomeSummaryData;

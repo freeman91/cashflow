@@ -21,6 +21,8 @@ export const useExpenses = (year, month) => {
   const [principalSum, setPrincipalSum] = useState(0);
 
   useEffect(() => {
+    if (!year) return;
+
     let _start = null;
     let _end = null;
     let date = dayjs().set('year', year);

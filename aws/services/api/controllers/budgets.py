@@ -26,14 +26,17 @@ def _budgets(user_id: str):
             budget = Budget.get_(user_id, budget_id)
             budget.update(actions=[Budget.categories.set(body.get("categories"))])
         else:
-            # TODO: check for existing budget for the month
-            budget = Budget.create(
-                user_id=user_id,
-                _date=_date,
-                year=body.get("year"),
-                month=body.get("month"),
-                categories=body.get("categories"),
-            )
+            budget = Budget.get_month(user_id, body.get("year"), body.get("month"))
+            if budget:
+                budget.update(actions=[Budget.categories.set(body.get("categories"))])
+            else:
+                budget = Budget.create(
+                    user_id=user_id,
+                    _date=_date,
+                    year=body.get("year"),
+                    month=body.get("month"),
+                    categories=body.get("categories"),
+                )
 
         return success_result(budget.as_dict())
 

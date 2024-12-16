@@ -95,7 +95,7 @@ export default function IncomesByEmployerCategory(props) {
   useEffect(() => {
     const _selected = chartData[activeIndex];
     setSelected(_selected);
-  }, [activeIndex, chartData, setSelected]);
+  }, [activeIndex, chartData]);
 
   const openTransactionsDialog = (category, transactions) => {
     dispatch(
@@ -133,50 +133,47 @@ export default function IncomesByEmployerCategory(props) {
       justifyContent='space-between'
       sx={{ width: '100%', maxWidth: '400px !important' }}
     >
-      <Box width={300} height={155}>
-        <PieChart width={300} height={155}>
-          <Pie
-            data={chartData}
-            dataKey='value'
-            paddingAngle={2}
-            minAngle={10}
-            innerRadius={50}
-            outerRadius={70}
-            cornerRadius={5}
-            cx='40%'
-            cy='50%'
-            startAngle={360}
-            endAngle={0}
-            activeIndex={activeIndex}
-            activeShape={renderActiveShape}
-            onPointerOver={(_, index) => {
-              setActiveIndex(index);
-            }}
-          >
-            {map(chartData, (group, idx) => {
-              const color = theme.palette.success.main;
-              const lightColor = alpha(color, 0.5);
+      <PieChart width={300} height={155}>
+        <Pie
+          data={chartData}
+          dataKey='value'
+          paddingAngle={2}
+          minAngle={10}
+          innerRadius={50}
+          outerRadius={70}
+          cornerRadius={5}
+          cx='40%'
+          cy='50%'
+          startAngle={360}
+          endAngle={0}
+          activeIndex={activeIndex}
+          activeShape={renderActiveShape}
+          onPointerOver={(_, index) => {
+            setActiveIndex(index);
+          }}
+        >
+          {map(chartData, (group, idx) => {
+            const color = theme.palette.success.main;
+            const lightColor = alpha(color, 0.5);
 
-              return (
-                <Cell
-                  key={`cell-${idx}`}
-                  selectedFill={color}
-                  fill={lightColor}
-                  stroke={lightColor}
-                />
-              );
-            })}
-          </Pie>
-        </PieChart>
-      </Box>
+            return (
+              <Cell
+                key={`cell-${idx}`}
+                selectedFill={color}
+                fill={lightColor}
+                stroke={lightColor}
+              />
+            );
+          })}
+        </Pie>
+      </PieChart>
       {selected && (
         <Box
           sx={{
             position: 'relative',
             zIndex: 1,
-            top: 110,
-            left: -25,
-            transform: 'translate(-40%, -40%)',
+            transform: 'translate(-55%, 80%)',
+            height: 'fit-content',
           }}
         >
           <ListItem

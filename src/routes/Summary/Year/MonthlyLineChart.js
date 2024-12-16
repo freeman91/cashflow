@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
 
 import { useTheme } from '@emotion/react';
 import Box from '@mui/material/Box';
@@ -7,35 +8,21 @@ import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 
 import {
-  BarChart,
+  ComposedChart,
   Bar,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
 
-import { numberToCurrency } from '../../../../helpers/currency';
+import { numberToCurrency } from '../../../helpers/currency';
 
-export const MONTH_NAMES = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
+export const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
-    const income = payload.find((item) => item.name === 'income');
-    const expense = payload.find((item) => item.name === 'expense');
     const net = payload.find((item) => item.name === 'net');
     return (
       <Box
@@ -57,21 +44,7 @@ function CustomTooltip({ active, payload, label }) {
           />
           <ListItemText
             primary={numberToCurrency.format(net.value)}
-            primaryTypographyProps={{ fontWeight: 'bold', align: 'left' }}
-            secondary='net'
-            secondaryTypographyProps={{ align: 'left' }}
-          />
-          <ListItemText
-            primary={numberToCurrency.format(income.value)}
-            primaryTypographyProps={{ fontWeight: 'bold', align: 'left' }}
-            secondary='income'
-            secondaryTypographyProps={{ align: 'left' }}
-          />
-          <ListItemText
-            primary={numberToCurrency.format(expense.value)}
-            primaryTypographyProps={{ fontWeight: 'bold', align: 'left' }}
-            secondary='expense'
-            secondaryTypographyProps={{ align: 'left' }}
+            primaryTypographyProps={{ fontWeight: 'bold', align: 'center' }}
           />
         </List>
       </Box>
@@ -81,13 +54,13 @@ function CustomTooltip({ active, payload, label }) {
 }
 
 const compileData = (incomeSumByMonth, expenseSumByMonth) => {
-  return MONTH_NAMES.map((month, index) => ({
-    name: month,
-    income: incomeSumByMonth[index],
-    resetIncome: -incomeSumByMonth[index],
-    expense: -expenseSumByMonth[index],
-    resetExpense: expenseSumByMonth[index],
-    net: incomeSumByMonth[index] - expenseSumByMonth[index],
+  return MONTHS.map((month) => ({
+    name: dayjs().month(month).format('MMMM'),
+    income: incomeSumByMonth[month],
+    resetIncome: -incomeSumByMonth[month],
+    expense: -expenseSumByMonth[month],
+    resetExpense: expenseSumByMonth[month],
+    net: incomeSumByMonth[month] - expenseSumByMonth[month],
   })).filter((item) => item.net !== 0);
 };
 
@@ -101,21 +74,21 @@ export default function MonthlyLineChart(props) {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
+    setChartData(compileData(incomeSumByMonth, expenseSumByMonth));
+  }, [incomeSumByMonth, expenseSumByMonth]);
+
+  useEffect(() => {
     if (componentRef.current) {
       setWidth(componentRef.current.offsetWidth);
       setHeight(componentRef.current.offsetHeight);
     }
   }, [componentRef]);
 
-  useEffect(() => {
-    setChartData(compileData(incomeSumByMonth, expenseSumByMonth));
-  }, [incomeSumByMonth, expenseSumByMonth]);
-
   return (
     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Box ref={componentRef} sx={{ height: 200, width: '100%' }}>
+      <Box ref={componentRef} sx={{ height: 155, width: '100%' }}>
         <ResponsiveContainer width='100%' height='100%'>
-          <BarChart
+          <ComposedChart
             width={width}
             height={height}
             data={chartData}
@@ -128,22 +101,24 @@ export default function MonthlyLineChart(props) {
               stackId='a'
               dataKey='income'
               fill={theme.palette.success.main}
+              barSize={15}
             />
             <Bar stackId='a' dataKey='resetIncome' fill='transparent' />
             <Bar
               stackId='a'
               dataKey='expense'
               fill={theme.palette.error.main}
+              barSize={15}
             />
             <Bar stackId='a' dataKey='resetExpense' fill='transparent' />
-            <Bar
-              stackId='a'
+            <Line
+              dot={false}
+              type='monotone'
               dataKey='net'
-              fill={theme.palette.primary.main}
-              barSize={5}
-              maxBarSize={15}
+              stroke={theme.palette.primary.main}
+              strokeWidth={3}
             />
-          </BarChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </Box>
     </Grid>
