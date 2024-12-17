@@ -5,19 +5,19 @@ import sumBy from 'lodash/sumBy';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 
 import { openDialog } from '../../store/dialogs';
 import LabelValueBox from '../../components/LabelValueBox';
+import LabelValueButton from '../../components/LabelValueButton';
 
 export default function PaycheckEarnedGrid(props) {
   const { employer, paychecks } = props;
   const dispatch = useDispatch();
 
-  const [expandedSubcategories, setExpandedSubcategories] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const openTransactionsDialog = (title, transactions) => {
     dispatch(
@@ -35,54 +35,14 @@ export default function PaycheckEarnedGrid(props) {
   const retirementSum = sumBy(paychecks, 'retirement');
   const otherSum = sumBy(paychecks, 'other');
 
-  const hasDeductions =
-    taxesSum > 0 || benefitsSum > 0 || retirementSum > 0 || otherSum > 0;
-
   return (
     <>
-      <Grid key={employer} item xs={12} mx={1}>
-        <Card
-          sx={{
-            width: '100%',
-            p: 0.5,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Box
-            sx={{
-              '&:hover': {
-                backgroundColor: 'surface.250',
-              },
-              cursor: 'pointer',
-              py: 0.5,
-              px: 1,
-              borderRadius: 1,
-              flexGrow: 1,
-            }}
-            onClick={() => openTransactionsDialog(employer, paychecks)}
-          >
-            <LabelValueBox value={takeHomeSum} label={employer} />
-          </Box>
-          {hasDeductions && (
-            <Box>
-              <IconButton
-                size='large'
-                color='info'
-                onClick={() => setExpandedSubcategories(!expandedSubcategories)}
-                sx={{ p: 0.75, mr: 0.5 }}
-              >
-                {expandedSubcategories ? (
-                  <ExpandLessIcon />
-                ) : (
-                  <ExpandMoreIcon />
-                )}
-              </IconButton>
-            </Box>
-          )}
-        </Card>
-      </Grid>
+      <LabelValueButton
+        label={employer}
+        value={takeHomeSum}
+        onClick={() => setExpanded(!expanded)}
+        Icon={expanded ? ExpandLessIcon : ExpandMoreIcon}
+      />
       <Grid
         item
         xs={12}
@@ -92,7 +52,7 @@ export default function PaycheckEarnedGrid(props) {
         pt='0 !important'
       >
         <Collapse
-          in={expandedSubcategories}
+          in={expanded}
           timeout='auto'
           unmountOnExit
           sx={{ width: '100%' }}
@@ -100,48 +60,57 @@ export default function PaycheckEarnedGrid(props) {
           <Grid container spacing={1} mt={0}>
             {taxesSum > 0 && (
               <Grid item xs={12} mx={1}>
-                <Card sx={{ width: '100%', py: 0.5, px: 2 }}>
+                <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
                   <LabelValueBox
                     value={taxesSum}
                     label='taxes'
                     textSize='small'
                   />
-                </Card>
+                </Box>
               </Grid>
             )}
             {benefitsSum > 0 && (
               <Grid item xs={12} mx={1}>
-                <Card sx={{ width: '100%', py: 0.5, px: 2 }}>
+                <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
                   <LabelValueBox
                     value={benefitsSum}
                     label='benefits'
                     textSize='small'
                   />
-                </Card>
+                </Box>
               </Grid>
             )}
             {retirementSum > 0 && (
               <Grid item xs={12} mx={1}>
-                <Card sx={{ width: '100%', py: 0.5, px: 2 }}>
+                <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
                   <LabelValueBox
                     value={retirementSum}
                     label='retirement'
                     textSize='small'
                   />
-                </Card>
+                </Box>
               </Grid>
             )}
             {otherSum > 0 && (
               <Grid item xs={12} mx={1}>
-                <Card sx={{ width: '100%', py: 0.5, px: 2 }}>
+                <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
                   <LabelValueBox
                     value={otherSum}
                     label='other'
                     textSize='small'
                   />
-                </Card>
+                </Box>
               </Grid>
             )}
+            <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+              <Button
+                variant='outlined'
+                color='primary'
+                onClick={() => openTransactionsDialog('paychecks', paychecks)}
+              >
+                show all
+              </Button>
+            </Grid>
           </Grid>
         </Collapse>
       </Grid>

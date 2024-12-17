@@ -86,7 +86,7 @@ export default function MonthlyLineChart(props) {
 
   return (
     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Box ref={componentRef} sx={{ height: 155, width: '100%' }}>
+      <Box ref={componentRef} sx={{ height: 157, width: '100%' }}>
         <ResponsiveContainer width='100%' height='100%'>
           <ComposedChart
             width={width}

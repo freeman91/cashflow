@@ -146,10 +146,14 @@ export default function MonthSummary(props) {
           <IncomesByEmployerCategory
             groupedIncomes={groupedIncomes}
             groupedPaychecks={groupedPaychecks}
+            incomeTotal={incomeSum + paycheckSum}
           />
         )}
         {tab === SPENT && (
-          <ExpensesByCategory groupedExpenses={groupedExpenses} />
+          <ExpensesByCategory
+            groupedExpenses={groupedExpenses}
+            expenseTotal={expenseSum + principalSum + interestSum + escrowSum}
+          />
         )}
         <Grid item xs={12} display='flex' justifyContent='center' mx={1} mt={1}>
           <ToggleButtonGroup
@@ -187,11 +191,9 @@ export default function MonthSummary(props) {
           <Spent
             groupedExpenses={groupedExpenses}
             repayments={repayments}
-            expenseSum={expenseSum}
             principalSum={principalSum}
             interestSum={interestSum}
             escrowSum={escrowSum}
-            incomeTotal={incomeSum + paycheckSum}
           />
         )}
         <Grid item xs={12} mb={10} />

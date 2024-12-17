@@ -144,7 +144,7 @@ export default function MonthPieCharts(props) {
       justifyContent='space-between'
       sx={{ width: '100%' }}
     >
-      <PieChart width={200} height={155}>
+      <PieChart width={200} height={157}>
         <Pie
           data={groupedExpenses}
           dataKey='value'
