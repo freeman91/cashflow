@@ -1,30 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
-import dayjs from 'dayjs';
+import React, { useEffect, useState, useRef } from 'react';
+import head from 'lodash/head';
+import range from 'lodash/range';
 
 import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import BoxFlexCenter from '../../../components/BoxFlexCenter';
-
 import {
   ComposedChart,
   Bar,
-  Line,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-
-import { _numberToCurrency } from '../../../helpers/currency';
-
-export const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+import dayjs from 'dayjs';
+import { findAmount } from '../../helpers/transactions';
+import { _numberToCurrency } from '../../helpers/currency';
+import BoxFlexCenter from '../../components/BoxFlexCenter';
 
 function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
-    const net = payload.find((item) => item.name === 'net');
+    const value = head(payload).value || 0;
     return (
       <Box
         sx={{
@@ -43,7 +41,7 @@ function CustomTooltip({ active, payload, label }) {
             $
           </Typography>
           <Typography variant='h6' fontWeight='bold'>
-            {_numberToCurrency.format(net.value)}
+            {_numberToCurrency.format(value)}
           </Typography>
         </BoxFlexCenter>
       </Box>
@@ -52,19 +50,8 @@ function CustomTooltip({ active, payload, label }) {
   return null;
 }
 
-const compileData = (incomeSumByMonth, expenseSumByMonth) => {
-  return MONTHS.map((month) => ({
-    name: dayjs().month(month).format('MMMM'),
-    income: incomeSumByMonth[month],
-    resetIncome: -incomeSumByMonth[month],
-    expense: -expenseSumByMonth[month],
-    resetExpense: expenseSumByMonth[month],
-    net: incomeSumByMonth[month] - expenseSumByMonth[month],
-  })).filter((item) => item.net !== 0);
-};
-
-export default function MonthlyLineChart(props) {
-  const { incomeSumByMonth, expenseSumByMonth } = props;
+export default function IncomesByMonth(props) {
+  const { year, incomes } = props;
   const theme = useTheme();
   const componentRef = useRef(null);
 
@@ -73,8 +60,24 @@ export default function MonthlyLineChart(props) {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
-    setChartData(compileData(incomeSumByMonth, expenseSumByMonth));
-  }, [incomeSumByMonth, expenseSumByMonth]);
+    const _data = range(12)
+      .map((month) => {
+        const monthDayJs = dayjs().year(year).month(month).set('date', 15);
+        const monthIncomes = incomes.filter((income) => {
+          return dayjs(income.date).isSame(monthDayJs, 'month');
+        });
+
+        return {
+          name: monthDayJs.format('MMMM'),
+          sum: monthIncomes.reduce(
+            (acc, income) => acc + findAmount(income),
+            0
+          ),
+        };
+      })
+      .filter((item) => item.sum !== 0);
+    setChartData(_data);
+  }, [year, incomes]);
 
   useEffect(() => {
     if (componentRef.current) {
@@ -103,27 +106,7 @@ export default function MonthlyLineChart(props) {
             />
             <YAxis hide />
             <Tooltip cursor={false} content={<CustomTooltip />} />
-            <Bar
-              stackId='a'
-              dataKey='income'
-              fill={theme.palette.success.main}
-              barSize={15}
-            />
-            <Bar stackId='a' dataKey='resetIncome' fill='transparent' />
-            <Bar
-              stackId='a'
-              dataKey='expense'
-              fill={theme.palette.error.main}
-              barSize={15}
-            />
-            <Bar stackId='a' dataKey='resetExpense' fill='transparent' />
-            <Line
-              dot={false}
-              type='monotone'
-              dataKey='net'
-              stroke={theme.palette.primary.main}
-              strokeWidth={3}
-            />
+            <Bar dataKey='sum' fill={theme.palette.success.main} barSize={15} />
           </ComposedChart>
         </ResponsiveContainer>
       </Box>

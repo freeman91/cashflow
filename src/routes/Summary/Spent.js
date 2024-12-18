@@ -73,14 +73,14 @@ export default function Spent(props) {
             </MenuItem>
           )}
           {repaymentsSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
-          <ListSubheader sx={{ bgcolor: 'unset', py: 0.5 }}>
+          <ListSubheader sx={{ bgcolor: 'unset', py: 1 }}>
             <Typography
               variant='h5'
               color='text.secondary'
               align='center'
               fontWeight='bold'
             >
-              expenses by category
+              expense category
             </Typography>
           </ListSubheader>
           {repaymentsSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}

@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import map from 'lodash/map';
 import sumBy from 'lodash/sumBy';
 import sortBy from 'lodash/sortBy';
 
 import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
-import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { Cell, PieChart, Pie, Sector } from 'recharts';
+import { Cell, PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
 
-import { openDialog } from '../../store/dialogs';
 import { _numberToCurrency } from '../../helpers/currency';
 import BoxFlexCenter from '../BoxFlexCenter';
-import LabelValueBox from '../LabelValueBox';
 
 const renderActiveShape = (props) => {
   const {
@@ -63,7 +56,6 @@ const renderActiveShape = (props) => {
 export default function IncomesByEmployerCategory(props) {
   const { groupedIncomes, groupedPaychecks, incomeTotal } = props;
   const theme = useTheme();
-  const dispatch = useDispatch();
 
   const [selected, setSelected] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -98,16 +90,6 @@ export default function IncomesByEmployerCategory(props) {
     setSelected(_selected);
   }, [activeIndex, chartData]);
 
-  const openTransactionsDialog = (category, transactions) => {
-    dispatch(
-      openDialog({
-        type: 'transactions',
-        id: category,
-        attrs: transactions,
-      })
-    );
-  };
-
   if (groupedIncomes.length === 0) {
     return (
       <Grid
@@ -126,111 +108,74 @@ export default function IncomesByEmployerCategory(props) {
     );
   }
 
+  const height = 125;
   return (
     <>
       <Grid
         item
-        xs={12}
+        xs={6}
         display='flex'
-        justifyContent='space-between'
+        justifyContent='center'
         sx={{ width: '100%' }}
       >
-        <PieChart width={300} height={125}>
-          <Pie
-            data={chartData}
-            dataKey='value'
-            paddingAngle={2}
-            minAngle={10}
-            innerRadius={40}
-            outerRadius={60}
-            cornerRadius={4}
-            cx='40%'
-            cy='50%'
-            startAngle={360}
-            endAngle={0}
-            activeIndex={activeIndex}
-            activeShape={renderActiveShape}
-            onPointerOver={(_, index) => {
-              setActiveIndex(index);
-            }}
-          >
-            {map(chartData, (group, idx) => {
-              const color = theme.palette.success.main;
-              const lightColor = alpha(color, 0.5);
-
-              return (
-                <Cell
-                  key={`cell-${idx}`}
-                  selectedFill={color}
-                  fill={lightColor}
-                  stroke={lightColor}
-                />
-              );
-            })}
-          </Pie>
-        </PieChart>
-        {selected && (
-          <Box
-            sx={{
-              position: 'relative',
-              zIndex: 1,
-              transform: 'translate(-55%, 80%)',
-              height: 'fit-content',
-            }}
-          >
-            <ListItem
-              disablePadding
-              sx={{ cursor: 'pointer' }}
-              onClick={() =>
-                openTransactionsDialog(selected.name, selected.transactions)
-              }
+        <ResponsiveContainer width='100%' height={height}>
+          <PieChart width='100%' height={height}>
+            <Pie
+              data={chartData}
+              dataKey='value'
+              paddingAngle={2}
+              minAngle={10}
+              innerRadius={40}
+              outerRadius={60}
+              cornerRadius={4}
+              cx='60%'
+              cy='50%'
+              startAngle={360}
+              endAngle={0}
+              activeIndex={activeIndex}
+              activeShape={renderActiveShape}
+              onPointerOver={(_, index) => {
+                setActiveIndex(index);
+              }}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 'unset',
-                  mr: 2,
-                  backgroundColor: 'success.main',
-                  borderRadius: '5px',
-                  width: 30,
-                  height: 30,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <MenuIcon
-                  sx={{
-                    width: 20,
-                    height: 20,
-                    color: 'surface.100',
-                  }}
-                />
-              </ListItemIcon>
-              <ListItemText
-                sx={{ width: '100px' }}
-                primary={
-                  <BoxFlexCenter sx={{ justifyContent: 'flex-start' }}>
-                    <Typography variant='body2' color='text.secondary'>
-                      $
-                    </Typography>
-                    <Typography variant='body1' color='white' fontWeight='bold'>
-                      {_numberToCurrency.format(selected.value)}
-                    </Typography>
-                  </BoxFlexCenter>
-                }
-                secondary={selected.name}
-                secondaryTypographyProps={{
-                  align: 'left',
-                  sx: {
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    display: '-webkit-box',
-                    WebkitLineClamp: '1',
-                    WebkitBoxOrient: 'vertical',
-                  },
-                }}
-              />
-            </ListItem>
+              {map(chartData, (group, idx) => {
+                const color = theme.palette.success.main;
+                const lightColor = alpha(color, 0.5);
+
+                return (
+                  <Cell
+                    key={`cell-${idx}`}
+                    selectedFill={color}
+                    fill={lightColor}
+                    stroke={lightColor}
+                  />
+                );
+              })}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+      </Grid>
+      <Grid
+        item
+        xs={6}
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        sx={{ width: '100%', height: `${height}px` }}
+      >
+        {selected && (
+          <Box sx={{ width: '100%', pr: 6 }}>
+            <BoxFlexCenter>
+              <Typography variant='body1' color='text.secondary'>
+                $
+              </Typography>
+              <Typography variant='h6' fontWeight='bold'>
+                {_numberToCurrency.format(selected.value)}
+              </Typography>
+            </BoxFlexCenter>
+            <Typography variant='h6' color='text.secondary' align='center'>
+              {selected.name}
+            </Typography>
           </Box>
         )}
       </Grid>
@@ -239,10 +184,25 @@ export default function IncomesByEmployerCategory(props) {
         xs={12}
         display='flex'
         justifyContent='center'
-        mx={12}
-        pt='0 !important'
+        sx={{ width: '100%' }}
       >
-        <LabelValueBox label='total' value={incomeTotal} />
+        <Typography
+          variant='h6'
+          color='text.secondary'
+          align='center'
+          fontWeight='bold'
+          sx={{ mr: 2 }}
+        >
+          total
+        </Typography>
+        <BoxFlexCenter>
+          <Typography variant='h6' color='text.secondary'>
+            $
+          </Typography>
+          <Typography variant='h5' color='white' fontWeight='bold'>
+            {_numberToCurrency.format(incomeTotal)}
+          </Typography>
+        </BoxFlexCenter>
       </Grid>
     </>
   );

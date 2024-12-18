@@ -155,7 +155,7 @@ export default function MonthSummary(props) {
             expenseTotal={expenseSum + principalSum + interestSum + escrowSum}
           />
         )}
-        <Grid item xs={12} display='flex' justifyContent='center' mx={1} mt={1}>
+        <Grid item xs={12} display='flex' justifyContent='center' mx={1} mt={0}>
           <ToggleButtonGroup
             fullWidth
             color='primary'
@@ -180,6 +180,8 @@ export default function MonthSummary(props) {
         )}
         {tab === EARNED && (
           <Earned
+            year={year}
+            month={month}
             incomes={incomes}
             incomeSum={incomeSum}
             paycheckSum={paycheckSum}

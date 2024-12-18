@@ -9,9 +9,10 @@ import Grid from '@mui/material/Grid';
 
 import { openDialog } from '../../store/dialogs';
 import LabelValueBox from '../../components/LabelValueBox';
+import IncomesByMonth from './IncomesByMonth';
 
 export default function IncomeSummary(props) {
-  const { label, incomes } = props;
+  const { year, month, label, incomes } = props;
   const dispatch = useDispatch();
 
   const openTransactionsDialog = (title, transactions) => {
@@ -61,6 +62,8 @@ export default function IncomeSummary(props) {
           </Card>
         </Grid>
       )}
+
+      {year && isNaN(month) && <IncomesByMonth year={year} incomes={incomes} />}
 
       <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
         <Button

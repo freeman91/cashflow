@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import map from 'lodash/map';
 
 import { alpha } from '@mui/material/styles';
-import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { Cell, PieChart, Pie, Sector } from 'recharts';
+import { Cell, PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
 
-import { openDialog } from '../../store/dialogs';
 import { _numberToCurrency } from '../../helpers/currency';
 import BoxFlexCenter from '../BoxFlexCenter';
-import LabelValueBox from '../LabelValueBox';
 
 const renderActiveShape = (props) => {
   const {
@@ -59,7 +52,6 @@ const renderActiveShape = (props) => {
 
 export default function ExpensesByCategory(props) {
   const { groupedExpenses, expenseTotal } = props;
-  const dispatch = useDispatch();
 
   const [selected, setSelected] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -68,16 +60,6 @@ export default function ExpensesByCategory(props) {
     const _selected = groupedExpenses[activeIndex];
     setSelected(_selected);
   }, [activeIndex, groupedExpenses]);
-
-  const openTransactionsDialog = (category, transactions) => {
-    dispatch(
-      openDialog({
-        type: 'transactions',
-        id: category,
-        attrs: transactions,
-      })
-    );
-  };
 
   if (groupedExpenses.length === 0) {
     return (
@@ -97,48 +79,101 @@ export default function ExpensesByCategory(props) {
     );
   }
 
+  const height = 125;
   return (
     <>
       <Grid
         item
+        xs={6}
+        display='flex'
+        justifyContent='center'
+        sx={{ width: '100%' }}
+      >
+        <ResponsiveContainer width='100%' height={height}>
+          <PieChart width='100%' height={height}>
+            <Pie
+              data={groupedExpenses}
+              dataKey='value'
+              paddingAngle={2}
+              minAngle={10}
+              innerRadius={40}
+              outerRadius={60}
+              cornerRadius={4}
+              cx='60%'
+              cy='50%'
+              startAngle={360}
+              endAngle={0}
+              activeIndex={activeIndex}
+              activeShape={renderActiveShape}
+              onPointerOver={(_, index) => {
+                setActiveIndex(index);
+              }}
+            >
+              {map(groupedExpenses, (group, idx) => {
+                const lightColor = alpha(group.color, 0.5);
+                return (
+                  <Cell
+                    key={`cell-${idx}`}
+                    selectedFill={group.color}
+                    fill={lightColor}
+                    stroke={lightColor}
+                  />
+                );
+              })}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+      </Grid>
+      <Grid
+        item
+        xs={6}
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        sx={{ width: '100%', height: `${height}px` }}
+      >
+        {selected && (
+          <Box sx={{ width: '100%', pr: 6 }}>
+            <BoxFlexCenter>
+              <Typography variant='body1' color='text.secondary'>
+                $
+              </Typography>
+              <Typography variant='h6' fontWeight='bold'>
+                {_numberToCurrency.format(selected.value)}
+              </Typography>
+            </BoxFlexCenter>
+            <Typography variant='h6' color='text.secondary' align='center'>
+              {selected.name}
+            </Typography>
+          </Box>
+        )}
+      </Grid>
+      <Grid
+        item
         xs={12}
         display='flex'
-        justifyContent='space-between'
-        sx={{ width: '100%', maxWidth: '400px !important' }}
+        justifyContent='center'
+        sx={{ width: '100%' }}
       >
-        <PieChart width={300} height={125}>
-          <Pie
-            data={groupedExpenses}
-            dataKey='value'
-            paddingAngle={2}
-            minAngle={10}
-            innerRadius={40}
-            outerRadius={60}
-            cornerRadius={4}
-            cx='40%'
-            cy='50%'
-            startAngle={360}
-            endAngle={0}
-            activeIndex={activeIndex}
-            activeShape={renderActiveShape}
-            onPointerOver={(_, index) => {
-              setActiveIndex(index);
-            }}
-          >
-            {map(groupedExpenses, (group, idx) => {
-              const lightColor = alpha(group.color, 0.5);
-              return (
-                <Cell
-                  key={`cell-${idx}`}
-                  selectedFill={group.color}
-                  fill={lightColor}
-                  stroke={lightColor}
-                />
-              );
-            })}
-          </Pie>
-        </PieChart>
-        {selected && (
+        <Typography
+          variant='h6'
+          color='text.secondary'
+          align='center'
+          fontWeight='bold'
+          sx={{ mr: 2 }}
+        >
+          total
+        </Typography>
+        <BoxFlexCenter>
+          <Typography variant='h6' color='text.secondary'>
+            $
+          </Typography>
+          <Typography variant='h5' color='white' fontWeight='bold'>
+            {_numberToCurrency.format(expenseTotal)}
+          </Typography>
+        </BoxFlexCenter>
+      </Grid>
+      {/* {selected && (
           <Box
             sx={{
               position: 'relative',
@@ -203,7 +238,7 @@ export default function ExpensesByCategory(props) {
         pt='0 !important'
       >
         <LabelValueBox label='total' value={expenseTotal} />
-      </Grid>
+      </Grid> */}
     </>
   );
 }

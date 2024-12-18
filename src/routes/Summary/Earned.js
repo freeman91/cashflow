@@ -6,11 +6,18 @@ import Grid from '@mui/material/Grid';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-import PaycheckSummary from './IncomeSummary';
+import IncomeSummary from './IncomeSummary';
 import MenuItemContent from '../../components/MenuItemContent';
 
 export default function Earned(props) {
-  const { incomeSum, paycheckSum, groupedPaychecks, groupedIncomes } = props;
+  const {
+    year,
+    month,
+    incomeSum,
+    paycheckSum,
+    groupedPaychecks,
+    groupedIncomes,
+  } = props;
 
   const [selected, setSelected] = useState({
     name: '',
@@ -121,7 +128,12 @@ export default function Earned(props) {
           })}
         </Select>
       </Grid>
-      <PaycheckSummary label={selected.name} incomes={selected.incomes} />
+      <IncomeSummary
+        year={year}
+        month={month}
+        label={selected.name}
+        incomes={selected.incomes}
+      />
     </>
   );
 }

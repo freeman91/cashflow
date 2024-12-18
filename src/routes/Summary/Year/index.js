@@ -279,6 +279,7 @@ export default function YearSummary(props) {
         )}
         {tab === EARNED && (
           <Earned
+            year={year}
             incomes={incomes}
             incomeSum={incomeSum / numMonths}
             paycheckSum={paycheckSum / numMonths}
@@ -288,6 +289,7 @@ export default function YearSummary(props) {
         )}
         {tab === SPENT && (
           <Spent
+            year={selectedYear}
             groupedExpenses={groupedExpenses}
             repayments={repayments}
             principalSum={principalSum / numMonths}
