@@ -189,6 +189,8 @@ export default function MonthSummary(props) {
         )}
         {tab === SPENT && (
           <Spent
+            year={year}
+            month={month}
             groupedExpenses={groupedExpenses}
             repayments={repayments}
             principalSum={principalSum}

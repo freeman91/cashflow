@@ -1,117 +1,127 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import sumBy from 'lodash/sumBy';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import MenuIcon from '@mui/icons-material/Menu';
-import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
-import { openDialog } from '../../store/dialogs';
-import PaycheckEarnedGrid from './PaycheckEarnedGrid';
-import LabelValueButton from '../../components/LabelValueButton';
+import PaycheckSummary from './IncomeSummary';
+import MenuItemContent from '../../components/MenuItemContent';
 
 export default function Earned(props) {
   const { incomeSum, paycheckSum, groupedPaychecks, groupedIncomes } = props;
-  const dispatch = useDispatch();
 
-  const [expandedPaychecks, setExpandedPaychecks] = useState(false);
-  const [expandedIncomes, setExpandedIncomes] = useState(false);
+  const [selected, setSelected] = useState({
+    name: '',
+    sum: 0,
+    incomes: [],
+  });
 
-  const openTransactionsDialog = (title, transactions) => {
-    dispatch(
-      openDialog({
-        type: 'transactions',
-        attrs: transactions,
-        id: title,
-      })
-    );
-  };
+  useEffect(() => {
+    if (paycheckSum > 0) {
+      setSelected({
+        name: 'paychecks',
+        sum: paycheckSum,
+        incomes: Object.values(groupedPaychecks).flat(),
+      });
+    } else if (incomeSum > 0) {
+      setSelected({
+        name: 'other incomes',
+        sum: incomeSum,
+        incomes: Object.values(groupedIncomes).flat(),
+      });
+    }
+  }, [groupedPaychecks, paycheckSum, groupedIncomes, incomeSum]);
 
-  const sortedIncomeGroups = Object.keys(groupedIncomes)
-    .map((group) => ({
-      name: group,
-      value: sumBy(groupedIncomes[group], 'amount'),
-      transactions: groupedIncomes[group],
-    }))
-    .sort((a, b) => b.value - a.value);
-  const paycheckEmployers = Object.keys(groupedPaychecks).sort();
+  if (paycheckSum === 0 && incomeSum === 0) {
+    return null;
+  }
+
   return (
     <>
-      {paycheckEmployers.length > 0 && (
-        <>
-          <LabelValueButton
-            label='paychecks'
-            value={paycheckSum}
-            onClick={() => setExpandedPaychecks(!expandedPaychecks)}
-            Icon={expandedPaychecks ? ExpandLessIcon : ExpandMoreIcon}
-          />
-          <Grid
-            item
-            xs={12}
-            display='flex'
-            justifyContent='center'
-            mx={1}
-            pt='0 !important'
-          >
-            <Collapse in={expandedPaychecks} timeout='auto' unmountOnExit>
-              <Grid container spacing={1} mt={0}>
-                {paycheckEmployers.map((employer) => {
-                  const _paychecks = groupedPaychecks[employer];
-                  return (
-                    <PaycheckEarnedGrid
-                      key={employer}
-                      employer={employer}
-                      paychecks={_paychecks}
-                    />
-                  );
-                })}
-              </Grid>
-            </Collapse>
-          </Grid>
-        </>
-      )}
-      {sortedIncomeGroups.length > 0 && (
-        <>
-          <LabelValueButton
-            label='other incomes'
-            value={incomeSum}
-            onClick={() => setExpandedIncomes(!expandedIncomes)}
-            Icon={expandedIncomes ? ExpandLessIcon : ExpandMoreIcon}
-          />
-          <Grid
-            item
-            xs={12}
-            display='flex'
-            justifyContent='center'
-            mx={1}
-            pt='0 !important'
-          >
-            <Collapse
-              in={expandedIncomes}
-              timeout='auto'
-              unmountOnExit
-              sx={{ width: '100%' }}
+      <Grid item xs={12} mx={1}>
+        <Select
+          fullWidth
+          value={selected.name}
+          MenuProps={{
+            MenuListProps: {
+              disablePadding: true,
+              sx: { bgcolor: 'surface.300' },
+            },
+          }}
+          sx={{ '& .MuiSelect-select': { py: 1, px: 2 } }}
+        >
+          {paycheckSum > 0 && (
+            <MenuItem
+              value='paychecks'
+              onClick={() =>
+                setSelected({
+                  name: 'paychecks',
+                  sum: paycheckSum,
+                  incomes: Object.values(groupedPaychecks).flat(),
+                })
+              }
             >
-              <Grid container spacing={1} mt={0}>
-                {sortedIncomeGroups.map((group) => {
-                  const { name, value, transactions } = group;
-                  return (
-                    <LabelValueButton
-                      key={name}
-                      label={name}
-                      value={value}
-                      onClick={() => openTransactionsDialog(name, transactions)}
-                      Icon={MenuIcon}
-                    />
-                  );
-                })}
-              </Grid>
-            </Collapse>
-          </Grid>
-        </>
-      )}
+              <MenuItemContent subheader name='paychecks' sum={paycheckSum} />
+            </MenuItem>
+          )}
+          {paycheckSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
+          {Object.entries(groupedPaychecks).map(([employer, paychecks]) => {
+            const takeHome = sumBy(paychecks, 'take_home');
+            return (
+              <MenuItem
+                key={employer}
+                value={employer}
+                onClick={() => {
+                  setSelected({
+                    name: employer,
+                    sum: takeHome,
+                    incomes: paychecks,
+                  });
+                }}
+              >
+                <MenuItemContent name={employer} sum={takeHome} indent={1} />
+              </MenuItem>
+            );
+          })}
+          {paycheckSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
+          {incomeSum > 0 && (
+            <MenuItem
+              value='other incomes'
+              onClick={() =>
+                setSelected({
+                  name: 'other incomes',
+                  sum: incomeSum,
+                  incomes: Object.values(groupedIncomes).flat(),
+                })
+              }
+            >
+              <MenuItemContent subheader name='other incomes' sum={incomeSum} />
+            </MenuItem>
+          )}
+          {incomeSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
+          {Object.entries(groupedIncomes).map(([category, incomes]) => {
+            const sum = sumBy(incomes, 'amount');
+            return (
+              <MenuItem
+                key={category}
+                value={category}
+                onClick={() => {
+                  setSelected({
+                    name: category,
+                    sum: sum,
+                    incomes,
+                  });
+                }}
+              >
+                <MenuItemContent name={category} sum={sum} indent={1} />
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </Grid>
+      <PaycheckSummary label={selected.name} incomes={selected.incomes} />
     </>
   );
 }

@@ -1,159 +1,127 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
-import Fade from '@mui/material/Fade';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-
-import { openDialog } from '../../store/dialogs';
-import LabelValueBox from '../../components/LabelValueBox';
-import ExpenseCategorySpentGrid from './ExpenseCategorySpentGrid';
-import LabelValueButton from '../../components/LabelValueButton';
+import ListSubheader from '@mui/material/ListSubheader';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
+import MenuItemContent from '../../components/MenuItemContent';
+import RepaymentsSummary from './RepaymentsSummary';
+import ExpenseCategorySummary from './ExpenseCategorySummary';
 
 export default function Spent(props) {
-  const { groupedExpenses, repayments, principalSum, interestSum, escrowSum } =
-    props;
-  const dispatch = useDispatch();
+  const {
+    year,
+    month,
+    groupedExpenses,
+    repayments,
+    principalSum,
+    interestSum,
+    escrowSum,
+  } = props;
+  const repaymentsSum = principalSum + interestSum + escrowSum;
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [expandedExpenses, setExpandedExpenses] = useState(false);
-  const [expandedRepayments, setExpandedRepayments] = useState(false);
+  const [selected, setSelected] = useState({
+    name: '',
+    sum: 0,
+    expenses: [],
+  });
 
-  const openTransactionsDialog = (title, transactions) => {
-    dispatch(
-      openDialog({
-        type: 'transactions',
-        attrs: transactions,
-        id: title,
-      })
-    );
-  };
+  useEffect(() => {
+    if (repaymentsSum > 0) {
+      setSelected({
+        name: 'repayments',
+        sum: repaymentsSum,
+        expenses: repayments,
+      });
+    } else {
+      console.log('find first expense category');
+    }
+  }, [repaymentsSum, repayments]);
 
   return (
     <>
-      <LabelValueButton
-        label='repayments'
-        value={principalSum + interestSum + escrowSum}
-        onClick={() => setExpandedRepayments(!expandedRepayments)}
-        Icon={expandedRepayments ? ExpandLessIcon : ExpandMoreIcon}
-      />
-      <Fade in={expandedExpenses === false} unmountOnExit>
-        <Grid
-          item
-          xs={12}
-          display='flex'
-          justifyContent='center'
-          mx={1}
-          pt='0 !important'
+      <Grid item xs={12} mx={1}>
+        <Select
+          fullWidth
+          value={selected.name}
+          MenuProps={{
+            MenuListProps: {
+              disablePadding: true,
+              sx: { bgcolor: 'surface.300' },
+            },
+          }}
+          sx={{ '& .MuiSelect-select': { py: 1, px: 2 } }}
         >
-          <Collapse
-            in={expandedRepayments}
-            timeout='auto'
-            unmountOnExit
-            sx={{ width: '100%' }}
-          >
-            <Grid container spacing={1} mt={0}>
-              {principalSum > 0 && (
-                <Grid item xs={12} mx={1}>
-                  <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
-                    <LabelValueBox
-                      value={principalSum}
-                      label='principal'
-                      textSize='small'
-                    />
-                  </Box>
-                </Grid>
-              )}
-              {interestSum > 0 && (
-                <Grid item xs={12} mx={1}>
-                  <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
-                    <LabelValueBox
-                      value={interestSum}
-                      label='interest'
-                      textSize='small'
-                    />
-                  </Box>
-                </Grid>
-              )}
-              {escrowSum > 0 && (
-                <Grid item xs={12} mx={1}>
-                  <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
-                    <LabelValueBox
-                      value={escrowSum}
-                      label='escrow'
-                      textSize='small'
-                    />
-                  </Box>
-                </Grid>
-              )}
-              {repayments.length > 0 && (
-                <Grid
-                  item
-                  xs={12}
-                  mx={1}
-                  display='flex'
-                  justifyContent='center'
-                >
-                  <Button
-                    variant='outlined'
-                    color='primary'
-                    onClick={() =>
-                      openTransactionsDialog('repayments', repayments)
-                    }
-                  >
-                    show all
-                  </Button>
-                </Grid>
-              )}
-            </Grid>
-          </Collapse>
-        </Grid>
-      </Fade>
-      <LabelValueButton
-        label='expenses by category'
-        onClick={() => {
-          setExpandedExpenses(!expandedExpenses);
-        }}
-        Icon={expandedExpenses ? ExpandLessIcon : ExpandMoreIcon}
-      />
-      <Fade in={expandedRepayments === false}>
-        <Grid
-          item
-          xs={12}
-          display='flex'
-          justifyContent='center'
-          mx={selectedCategory === null ? 1 : 0}
-          pt='0 !important'
-        >
-          <Collapse in={expandedExpenses} timeout='auto' unmountOnExit>
-            <Grid container spacing={1} mt={0}>
-              {groupedExpenses.map((group) => {
-                const { category, value, expenses, subcategories } = group;
-                if (
-                  selectedCategory === category ||
-                  selectedCategory === null
-                ) {
-                  return (
-                    <ExpenseCategorySpentGrid
-                      key={category}
-                      category={category}
-                      value={value}
-                      expenses={expenses}
-                      subcategories={subcategories}
-                      selectedCategory={selectedCategory}
-                      setSelectedCategory={setSelectedCategory}
-                    />
-                  );
-                } else return null;
-              })}
-            </Grid>
-          </Collapse>
-        </Grid>
-      </Fade>
+          {repaymentsSum > 0 && (
+            <MenuItem
+              value='repayments'
+              onClick={() =>
+                setSelected({
+                  name: 'repayments',
+                  sum: repaymentsSum,
+                  expenses: repayments,
+                })
+              }
+            >
+              <MenuItemContent
+                subheader
+                name='repayments'
+                sum={repaymentsSum}
+              />
+            </MenuItem>
+          )}
+          {repaymentsSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
+          <ListSubheader sx={{ bgcolor: 'unset', py: 0.5 }}>
+            <Typography
+              variant='h5'
+              color='text.secondary'
+              align='center'
+              fontWeight='bold'
+            >
+              expenses by category
+            </Typography>
+          </ListSubheader>
+          {repaymentsSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
+          {groupedExpenses.map((group) => {
+            const { category, value, expenses, subcategories } = group;
+            return (
+              <MenuItem
+                key={category}
+                value={category}
+                onClick={() => {
+                  setSelected({
+                    name: category,
+                    sum: value,
+                    expenses: expenses,
+                    subcategories: subcategories,
+                  });
+                }}
+              >
+                <MenuItemContent name={category} sum={value} />
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </Grid>
+      {selected.name === 'repayments' ? (
+        <RepaymentsSummary
+          principalSum={principalSum}
+          interestSum={interestSum}
+          escrowSum={escrowSum}
+          repayments={selected.expenses}
+        />
+      ) : (
+        <ExpenseCategorySummary
+          year={year}
+          month={month}
+          category={selected.name}
+          sum={selected.sum}
+          expenses={selected.expenses}
+          subcategories={selected?.subcategories}
+        />
+      )}
     </>
   );
 }

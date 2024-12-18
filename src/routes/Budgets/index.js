@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../store/user';
 import { putBudget } from '../../store/budgets';
-import useExpenses from '../../store/hooks/useExpenses';
 import CustomAppBar from '../../components/CustomAppBar';
 import PullToRefresh from '../../components/PullToRefresh';
 import MonthSelectButton from '../../components/MonthSelectButton';
@@ -41,7 +40,6 @@ export default function Budgets() {
   const [date, setDate] = useState(today);
   const [currentBudget, setCurrentBudget] = useState(defaultBudget);
   const [budgetCategories, setBudgetCategories] = useState([]);
-  const { expenses, sum } = useExpenses(date.year(), date.month());
 
   const onRefresh = async () => {
     dispatch(refreshAll());
@@ -58,6 +56,14 @@ export default function Budgets() {
       _budget = budgets.find((budget) => {
         return dayjs(budget.date).isSame(lastMonth, 'month');
       });
+      if (_budget) {
+        _budget = {
+          date: date.set('date', 15),
+          year: date.year(),
+          month: date.month() + 1,
+          categories: _budget.categories,
+        };
+      }
     }
 
     if (!expenseCategories) return;
@@ -105,8 +111,6 @@ export default function Budgets() {
     setShowSave(false);
   };
 
-  const diff = today.diff(date, 'month');
-  const format = diff > 10 ? 'MMMM YYYY' : 'MMMM';
   return (
     <Box sx={{ WebkitOverflowScrolling: 'touch', width: '100%' }}>
       <CustomAppBar
@@ -141,7 +145,7 @@ export default function Budgets() {
               onClick={handlePrevMonth}
             />
             <Typography variant='h5' fontWeight='bold'>
-              {date?.format(format)}
+              {date?.format('MMMM YYYY')}
             </Typography>
             <MonthSelectButton
               Icon={ChevronRightIcon}
@@ -152,8 +156,6 @@ export default function Budgets() {
         <OverallSummary
           setShowSave={setShowSave}
           budget={currentBudget}
-          expenses={expenses}
-          expenseSum={sum}
           budgetCategories={budgetCategories}
           setBudgetCategories={setBudgetCategories}
         />

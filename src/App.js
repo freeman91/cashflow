@@ -17,7 +17,6 @@ import Account from './routes/Account';
 import Accounts from './routes/Accounts';
 import Asset from './routes/Asset';
 import Budgets from './routes/Budgets';
-import BudgetCategory from './routes/Budgets/Category';
 import Calendar from './routes/Calendar';
 import Debt from './routes/Debt';
 import Home from './routes/Home';
@@ -49,7 +48,6 @@ const AppRoutes = () => {
         <Route path='/accounts/:tab' element={<Accounts />} />
         <Route path='/asset' element={<Asset />} />
         <Route path='/budgets' element={<Budgets />} />
-        <Route path='/budgets/:category' element={<BudgetCategory />} />
         <Route path='/calendar' element={<Calendar />} />
         <Route path='/calendar/:year/:month' element={<Calendar />} />
         <Route path='/debt' element={<Debt />} />
