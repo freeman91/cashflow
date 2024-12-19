@@ -127,7 +127,10 @@ export default function RepaymentsSummary(props) {
               })
             }
           >
-            <ListItemText primary='debts' />
+            <ListItemText
+              primary='debts'
+              primaryTypographyProps={{ variant: 'h6' }}
+            />
           </MenuItem>
           {debts.map((debt) => {
             const { name, sum, principal, interest, escrow, repayments } = debt;

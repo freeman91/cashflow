@@ -11,12 +11,7 @@ export default function LabelValueAverageBox(props) {
 
   return (
     <BoxFlexCenter sx={{ flexGrow: 1 }} justifyContent='space-between'>
-      <Typography
-        variant='h5'
-        color='text.secondary'
-        align='center'
-        fontWeight='bold'
-      >
+      <Typography variant='h6' align='center'>
         {label}
       </Typography>
       <BoxFlexColumn sx={{ alignItems: 'center' }}>
@@ -24,7 +19,7 @@ export default function LabelValueAverageBox(props) {
           <Typography variant='h6' color='text.secondary'>
             $
           </Typography>
-          <Typography variant='h5' color='white' fontWeight='bold'>
+          <Typography variant='h6' color='white' fontWeight='bold'>
             {_numberToCurrency.format(value)}
           </Typography>
         </BoxFlexCenter>

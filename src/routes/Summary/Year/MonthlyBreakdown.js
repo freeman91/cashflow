@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 import dayjs from 'dayjs';
@@ -8,6 +8,7 @@ import useTheme from '@mui/material/styles/useTheme';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -111,6 +112,20 @@ const MonthBox = (props) => {
 export default function MonthlyBreakdown(props) {
   const { year, incomeSumByMonth, expenseSumByMonth } = props;
 
+  const [show, setShow] = useState(false);
+
+  if (!show)
+    return (
+      <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
+        <Button
+          variant='outlined'
+          color='primary'
+          onClick={() => setShow(true)}
+        >
+          show all
+        </Button>
+      </Grid>
+    );
   return (
     <>
       <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
@@ -119,10 +134,23 @@ export default function MonthlyBreakdown(props) {
             display: 'flex',
             ml: 5,
             justifyContent: 'space-between',
+            alignItems: 'center',
             width: '100%',
+            pb: 1,
           }}
         >
-          <Box sx={{ width: '33%' }} />
+          <Box sx={{ width: '33%' }}>
+            <Button
+              variant='outlined'
+              color='info'
+              onClick={() => setShow(false)}
+              sx={{ py: 0.5 }}
+            >
+              <Typography align='center' variant='body1' color='info'>
+                hide
+              </Typography>
+            </Button>
+          </Box>
           <Typography
             align='center'
             variant='body1'

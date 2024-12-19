@@ -21,7 +21,8 @@ export default function Subcategory(props) {
     setSubcategoryText(value);
   };
 
-  const onSave = () => {
+  const onSave = (e) => {
+    e.preventDefault();
     updateSubactegory(subcategoryText);
     setSelectedSubcategory(null);
   };

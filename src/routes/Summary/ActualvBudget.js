@@ -24,7 +24,7 @@ export default function ActualvBudget(props) {
     let budgets = [];
     if (isNaN(month)) {
       budgets = filter(allBudgets, {
-        year: year,
+        year: Number(year),
       });
     } else {
       budgets = [
@@ -60,13 +60,7 @@ export default function ActualvBudget(props) {
             sx={{ alignItems: 'flex-end' }}
             justifyContent='space-between'
           >
-            <Typography
-              variant='h6'
-              color='text.secondary'
-              align='left'
-              fontWeight='bold'
-              sx={{ width: '33%' }}
-            >
+            <Typography variant='h6' align='left' sx={{ width: '33%' }}>
               budget
             </Typography>
             <Typography
@@ -82,7 +76,7 @@ export default function ActualvBudget(props) {
               <Typography variant='h6' color='text.secondary'>
                 $
               </Typography>
-              <Typography variant='h5' color='white' fontWeight='bold'>
+              <Typography variant='h6' color='white' fontWeight='bold'>
                 {_numberToCurrency.format(goal)}
               </Typography>
             </BoxFlexCenter>

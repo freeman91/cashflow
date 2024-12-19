@@ -7,7 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-const SelectOption = ({ value, onChange, options, label }) => {
+export default function SelectOption({ value, onChange, options, label }) {
   const handleChange = (e) => {
     onChange({ target: { id: label, value: e.target.value } });
   };
@@ -37,7 +37,7 @@ const SelectOption = ({ value, onChange, options, label }) => {
             },
           }}
         >
-          <MenuItem value=''>none</MenuItem>
+          <MenuItem value='none'>none</MenuItem>
           {sortedOptions.map((option) => (
             <MenuItem key={option} value={option}>
               {option}
@@ -47,6 +47,4 @@ const SelectOption = ({ value, onChange, options, label }) => {
       </FormControl>
     </ListItem>
   );
-};
-
-export default SelectOption;
+}

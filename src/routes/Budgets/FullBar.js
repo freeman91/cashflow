@@ -15,6 +15,7 @@ export default function FullBar({ children }) {
           `linear-gradient(to bottom, ${theme.palette.surface[250]}, ${theme.palette.surface[300]})`,
         borderRadius: 1,
         boxShadow: (theme) => `0 0 2px ${theme.palette.surface[400]}`,
+        overflow: 'hidden',
       }}
     >
       {children}

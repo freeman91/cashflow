@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 
 export default function MonthSelectButton(props) {
   const { Icon, onClick } = props;
+
   const theme = useTheme();
   const lightColor = alpha(theme.palette.primary.main, 0.2);
   return (

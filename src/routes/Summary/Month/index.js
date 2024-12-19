@@ -23,6 +23,7 @@ import MonthSelectButton from '../../../components/MonthSelectButton';
 import MonthPieCharts from '../../../components/summary/MonthPieCharts';
 import ExpensesByCategory from '../../../components/summary/ExpensesByCategory';
 import IncomesByEmployerCategory from '../../../components/summary/IncomesByEmployerCategory';
+import MonthOverallBudgetBar from '../Budget/MonthOverallActualvBudget';
 import Earned from '../Earned';
 import Spent from '../Spent';
 import YearTotals from '../Totals';
@@ -169,14 +170,21 @@ export default function MonthSummary(props) {
           </ToggleButtonGroup>
         </Grid>
         {tab === TOTALS && (
-          <YearTotals
-            expenseSum={expenseSum}
-            principalSum={principalSum}
-            interestSum={interestSum}
-            escrowSum={escrowSum}
-            incomeSum={incomeSum}
-            paycheckSum={paycheckSum}
-          />
+          <>
+            <YearTotals
+              expenseSum={expenseSum}
+              principalSum={principalSum}
+              interestSum={interestSum}
+              escrowSum={escrowSum}
+              incomeSum={incomeSum}
+              paycheckSum={paycheckSum}
+            />
+            <MonthOverallBudgetBar
+              year={year}
+              month={month}
+              groupedExpenses={groupedExpenses}
+            />
+          </>
         )}
         {tab === EARNED && (
           <Earned

@@ -70,7 +70,9 @@ export default function Category(props) {
 
   const updateSubactegory = (subcategory) => {
     let _category = cloneDeep(category);
-    _category.subcategories[0] = subcategory;
+    _category.subcategories = _category.subcategories
+      .map((item) => (item === '' ? subcategory : item))
+      .sort();
     handleSaveCategory(idx, _category);
   };
 

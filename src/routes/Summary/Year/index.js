@@ -27,6 +27,7 @@ import MonthlyBreakdown from './MonthlyBreakdown';
 import Earned from '../Earned';
 import Spent from '../Spent';
 import YearTotals from '../Totals';
+import YearOverallBudgetBar from '../Budget/YearOverallBudgetBar';
 
 const TOTALS = 'totals';
 const EARNED = 'earned';
@@ -245,6 +246,7 @@ export default function YearSummary(props) {
               incomeSum={incomeSum}
               paycheckSum={paycheckSum}
             />
+            <YearOverallBudgetBar year={Number(selectedYear)} />
             <MonthlyBreakdown
               year={selectedYear}
               incomeSumByMonth={incomeSumByMonth}
@@ -255,7 +257,7 @@ export default function YearSummary(props) {
         {tab === EARNED && (
           <Earned
             numMonths={numMonths}
-            year={year}
+            year={selectedYear}
             incomes={incomes}
             incomeSum={incomeSum}
             paycheckSum={paycheckSum}

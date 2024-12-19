@@ -17,7 +17,6 @@ export default function OverageBar({ expenseSum, goal, barMax = null }) {
             theme.palette.error.main,
             0.4
           )})`,
-        borderRadius: !goal ? '4px' : '0 4px 4px 0',
       }}
     />
   );
