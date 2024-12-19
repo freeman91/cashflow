@@ -52,7 +52,7 @@ export default function ActualvBudget(props) {
             width: '100%',
             px: 2,
             py: 1,
-            border: (theme) => `1px solid ${theme.palette.surface[250]}`,
+            border: (theme) => `1px solid ${theme.palette.surface[300]}`,
             borderRadius: 1,
           }}
         >

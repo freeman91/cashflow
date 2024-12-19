@@ -84,6 +84,7 @@ export default function ExpenseCategorySummary(props) {
     <>
       <Grid item xs={12} mx={1}>
         <Select
+          autoWidth
           displayEmpty
           fullWidth
           value={selected.name}
@@ -94,11 +95,11 @@ export default function ExpenseCategorySummary(props) {
             },
             slotProps: {
               paper: {
-                sx: { minWidth: 'unset !important', maxWidth: '350px' },
+                sx: { minWidth: '300px !important', maxWidth: '350px' },
               },
             },
           }}
-          sx={{ '& .MuiSelect-select': { py: 1, px: 2 } }}
+          sx={{ '& .MuiSelect-select': { py: 0, px: 2 } }}
         >
           <MenuItem
             value=''
@@ -110,7 +111,10 @@ export default function ExpenseCategorySummary(props) {
               })
             }
           >
-            <ListItemText primary='subcategories' />
+            <ListItemText
+              primary='subcategories'
+              primaryTypographyProps={{ variant: 'h6' }}
+            />
           </MenuItem>
           {subcategories.map((subcategory) => {
             const { name, value, expenses } = subcategory;
@@ -139,7 +143,7 @@ export default function ExpenseCategorySummary(props) {
               width: '100%',
               px: 2,
               py: 1,
-              border: (theme) => `1px solid ${theme.palette.surface[250]}`,
+              border: (theme) => `1px solid ${theme.palette.surface[300]}`,
               borderRadius: 1,
             }}
           >
@@ -157,7 +161,7 @@ export default function ExpenseCategorySummary(props) {
               width: '100%',
               px: 2,
               py: 1,
-              border: (theme) => `1px solid ${theme.palette.surface[250]}`,
+              border: (theme) => `1px solid ${theme.palette.surface[300]}`,
               borderRadius: 1,
             }}
           >

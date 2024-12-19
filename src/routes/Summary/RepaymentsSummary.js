@@ -106,12 +106,12 @@ export default function RepaymentsSummary(props) {
             },
             slotProps: {
               paper: {
-                sx: { minWidth: 'unset !important', maxWidth: '350px' },
+                sx: { minWidth: '300px !important', maxWidth: '350px' },
               },
             },
           }}
           sx={{
-            '& .MuiSelect-select': { py: 1, px: 2 },
+            '& .MuiSelect-select': { py: 0, px: 2 },
           }}
         >
           <MenuItem
@@ -159,7 +159,7 @@ export default function RepaymentsSummary(props) {
               width: '100%',
               px: 2,
               py: 1,
-              border: `1px solid ${theme.palette.surface[250]}`,
+              border: `1px solid ${theme.palette.surface[300]}`,
               borderRadius: 1,
             }}
           >
@@ -177,7 +177,7 @@ export default function RepaymentsSummary(props) {
               width: '100%',
               px: 2,
               py: 1,
-              border: `1px solid ${theme.palette.surface[250]}`,
+              border: `1px solid ${theme.palette.surface[300]}`,
               borderRadius: 1,
             }}
           >

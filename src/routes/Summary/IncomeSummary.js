@@ -43,7 +43,7 @@ export default function IncomeSummary(props) {
               width: '100%',
               px: 2,
               py: 1,
-              border: `1px solid ${theme.palette.surface[250]}`,
+              border: `1px solid ${theme.palette.surface[300]}`,
               borderRadius: 1,
             }}
           >
@@ -58,7 +58,7 @@ export default function IncomeSummary(props) {
               width: '100%',
               px: 2,
               py: 1,
-              border: `1px solid ${theme.palette.surface[250]}`,
+              border: `1px solid ${theme.palette.surface[300]}`,
               borderRadius: 1,
             }}
           >

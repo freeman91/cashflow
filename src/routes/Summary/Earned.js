@@ -59,11 +59,11 @@ export default function Earned(props) {
             },
             slotProps: {
               paper: {
-                sx: { minWidth: 'unset !important', maxWidth: '350px' },
+                sx: { minWidth: '300px !important', maxWidth: '350px' },
               },
             },
           }}
-          sx={{ '& .MuiSelect-select': { py: 1, px: 2 } }}
+          sx={{ '& .MuiSelect-select': { py: 0, px: 2 } }}
         >
           {paycheckSum > 0 && (
             <MenuItem

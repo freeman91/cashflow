@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
@@ -46,14 +45,20 @@ export default function Spent(props) {
       <Grid item xs={12} mx={1}>
         <Select
           fullWidth
+          autoWidth
           value={selected.name}
           MenuProps={{
             MenuListProps: {
               disablePadding: true,
               sx: { bgcolor: 'surface.300' },
             },
+            slotProps: {
+              paper: {
+                sx: { minWidth: '300px !important', maxWidth: '350px' },
+              },
+            },
           }}
-          sx={{ '& .MuiSelect-select': { py: 1, px: 2 } }}
+          sx={{ '& .MuiSelect-select': { py: 0, px: 2 } }}
         >
           {repaymentsSum > 0 && (
             <MenuItem
@@ -73,14 +78,12 @@ export default function Spent(props) {
               />
             </MenuItem>
           )}
-          {repaymentsSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
-          <ListSubheader sx={{ bgcolor: 'unset' }}>
+          <ListSubheader sx={{ bgcolor: 'surface.300' }}>
             <ListItemText
               primary='expense category'
-              primaryTypographyProps={{ align: 'center' }}
+              primaryTypographyProps={{ align: 'center', variant: 'h6' }}
             />
           </ListSubheader>
-          {repaymentsSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
           {groupedExpenses.map((group) => {
             const { category, value, expenses, subcategories } = group;
             return (

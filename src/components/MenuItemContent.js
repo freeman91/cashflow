@@ -2,27 +2,26 @@ import React from 'react';
 
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { numberToCurrency } from '../helpers/currency';
+
+import { _numberToCurrency } from '../helpers/currency';
+import BoxFlexCenter from './BoxFlexCenter';
 
 export default function MenuItemContent({ name, sum, subheader, indent = 0 }) {
   return (
-    <>
-      {/* <Typography variant='body1'>{name}</Typography> */}
-      <ListItemText>{name}</ListItemText>
-      {/* <ListItemText primary={name} /> */}
-      {/* <Typography variant='h6' fontWeight='bold'>
-        <Typography variant='h6' fontWeight='bold'>
-        {numberToCurrency.format(sum)}
-      </Typography> */}
-      <ListItemText>
-        <Typography variant='h6' fontWeight='bold' align='right'>
-          {numberToCurrency.format(sum)}
-        </Typography>
-      </ListItemText>
-      {/* <ListItemText
-        primary={numberToCurrency.format(sum)}
-        primaryTypographyProps={{ fontWeight: 'bold', align: 'right' }}
-      /> */}
-    </>
+    <ListItemText
+      primary={name}
+      secondary={
+        <BoxFlexCenter justifyContent='flex-start'>
+          <Typography variant='h6' color='text.secondary'>
+            $
+          </Typography>
+          <Typography variant='h6' color='white' fontWeight='bold'>
+            {_numberToCurrency.format(sum)}
+          </Typography>
+        </BoxFlexCenter>
+      }
+      primaryTypographyProps={{ variant: 'h6' }}
+      secondaryTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+    />
   );
 }
