@@ -2,10 +2,9 @@ import React from 'react';
 
 import { darken, lighten, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 
-import LabelValueBox from '../../components/LabelValueBox';
+import LabelValueAverageBox from '../../components/LabelValueAverageBox';
 
 export default function Totals(props) {
   const {
@@ -27,20 +26,35 @@ export default function Totals(props) {
   const incomePercent = (allIncomesSum / max) * 100;
   const expensePercent = (allExpensesSum / max) * 100;
 
-  const netAvg = (allIncomesSum + allExpensesSum) / numMonths
-  console.log('netAvg: ', netAvg);
   return (
     <>
       <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
-        <Card sx={{ width: '100%', px: 2, py: 1 }}>
-          <LabelValueBox
+        <Box
+          sx={{
+            width: '100%',
+            px: 2,
+            py: 1,
+            border: `1px solid ${theme.palette.surface[250]}`,
+            borderRadius: 1,
+          }}
+        >
+          <LabelValueAverageBox
             value={allIncomesSum - allExpensesSum}
             label='cashflow'
+            divisor={numMonths}
           />
-        </Card>
+        </Box>
       </Grid>
       <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
-        <Card sx={{ width: '100%', px: 2, py: 1 }}>
+        <Box
+          sx={{
+            width: '100%',
+            px: 2,
+            py: 1,
+            border: `1px solid ${theme.palette.surface[250]}`,
+            borderRadius: 1,
+          }}
+        >
           <Box
             sx={{
               width: `${incomePercent}%`,
@@ -52,11 +66,23 @@ export default function Totals(props) {
               my: 1,
             }}
           />
-          <LabelValueBox value={allIncomesSum} label='earned' />
-        </Card>
+          <LabelValueAverageBox
+            value={allIncomesSum}
+            label='earned'
+            divisor={numMonths}
+          />
+        </Box>
       </Grid>
       <Grid item xs={12} display='flex' justifyContent='center' mx={1}>
-        <Card sx={{ width: '100%', px: 2, py: 1 }}>
+        <Box
+          sx={{
+            width: '100%',
+            px: 2,
+            py: 1,
+            border: `1px solid ${theme.palette.surface[250]}`,
+            borderRadius: 1,
+          }}
+        >
           <Box
             sx={{
               width: `${expensePercent}%`,
@@ -87,8 +113,12 @@ export default function Totals(props) {
               }}
             />
           </Box>
-          <LabelValueBox value={allExpensesSum} label='spent' />
-        </Card>
+          <LabelValueAverageBox
+            value={allExpensesSum}
+            label='spent'
+            divisor={numMonths}
+          />
+        </Box>
       </Grid>
     </>
   );

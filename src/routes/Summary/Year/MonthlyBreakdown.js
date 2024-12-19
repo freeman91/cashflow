@@ -117,30 +117,43 @@ export default function MonthlyBreakdown(props) {
         <Box
           sx={{
             display: 'flex',
-            pl: 6,
-            pr: 2,
+            ml: 5,
             justifyContent: 'space-between',
             width: '100%',
           }}
         >
-          <Typography align='left' variant='body1' color='text.secondary'>
-            cashflow
-          </Typography>
-          <Typography align='center' variant='body1' color='text.secondary'>
+          <Box sx={{ width: '33%' }} />
+          <Typography
+            align='center'
+            variant='body1'
+            color='text.secondary'
+            sx={{ width: '33%' }}
+          >
             earned
           </Typography>
-          <Typography align='right' variant='body1' color='text.secondary'>
+          <Typography
+            align='center'
+            variant='body1'
+            color='text.secondary'
+            sx={{ width: '33%' }}
+          >
             spent
           </Typography>
         </Box>
       </Grid>
-      {map(MONTHS, (month) => {
+      {map(MONTHS, (month, idx) => {
         const incomeSum = incomeSumByMonth[month];
         const expenseSum = expenseSumByMonth[month];
 
         if (incomeSum === 0 && expenseSum === 0) return null;
         return (
-          <Grid key={year + month} item xs={12} mx={1}>
+          <Grid
+            key={year + month}
+            item
+            xs={12}
+            mx={1}
+            sx={{ pt: idx === 0 ? '0 !important' : 1 }}
+          >
             <Card
               sx={{
                 width: '100%',

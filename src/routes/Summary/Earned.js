@@ -13,6 +13,7 @@ export default function Earned(props) {
   const {
     year,
     month,
+    numMonths = 1,
     incomeSum,
     paycheckSum,
     groupedPaychecks,
@@ -55,6 +56,11 @@ export default function Earned(props) {
             MenuListProps: {
               disablePadding: true,
               sx: { bgcolor: 'surface.300' },
+            },
+            slotProps: {
+              paper: {
+                sx: { minWidth: 'unset !important', maxWidth: '350px' },
+              },
             },
           }}
           sx={{ '& .MuiSelect-select': { py: 1, px: 2 } }}
@@ -131,8 +137,10 @@ export default function Earned(props) {
       <IncomeSummary
         year={year}
         month={month}
+        numMonths={numMonths}
         label={selected.name}
         incomes={selected.incomes}
+        sum={selected.sum}
       />
     </>
   );

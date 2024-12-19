@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import find from 'lodash/find'
+import find from 'lodash/find';
 import sumBy from 'lodash/sumBy';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Typography from '@mui/material/Typography';
 
 import { openDialog } from '../../store/dialogs';
 import LabelValueBox from '../../components/LabelValueBox';
 import MenuItemContent from '../../components/MenuItemContent';
 import ActualvBudget from './ActualvBudget';
-import TransactionsByMonth from './TransactionsByMonth'
+import TransactionsByMonth from './TransactionsByMonth';
 
 export default function ExpenseCategorySummary(props) {
   const {
     year,
     month,
+    numMonths,
     category,
     sum,
     expenses: categoryExpenses,
@@ -92,6 +92,11 @@ export default function ExpenseCategorySummary(props) {
               disablePadding: true,
               sx: { bgcolor: 'surface.300' },
             },
+            slotProps: {
+              paper: {
+                sx: { minWidth: 'unset !important', maxWidth: '350px' },
+              },
+            },
           }}
           sx={{ '& .MuiSelect-select': { py: 1, px: 2 } }}
         >
@@ -105,14 +110,7 @@ export default function ExpenseCategorySummary(props) {
               })
             }
           >
-            <Typography
-              variant='h5'
-              color='text.secondary'
-              align='left'
-              sx={{ width: '100%' }}
-            >
-              subcategories
-            </Typography>
+            <ListItemText primary='subcategories' />
           </MenuItem>
           {subcategories.map((subcategory) => {
             const { name, value, expenses } = subcategory;
@@ -134,26 +132,52 @@ export default function ExpenseCategorySummary(props) {
           })}
         </Select>
       </Grid>
+      {numMonths > 1 && (
+        <Grid item xs={12} mx={1}>
+          <Box
+            sx={{
+              width: '100%',
+              px: 2,
+              py: 1,
+              border: (theme) => `1px solid ${theme.palette.surface[250]}`,
+              borderRadius: 1,
+            }}
+          >
+            <LabelValueBox
+              value={(selected.name ? selected.sum : sum) / numMonths}
+              label='average'
+            />
+          </Box>
+        </Grid>
+      )}
       {showRepaymnetTotals && (
         <Grid item xs={12} mx={1}>
-          <Card sx={{ width: '100%', p: 1 }}>
+          <Box
+            sx={{
+              width: '100%',
+              px: 2,
+              py: 1,
+              border: (theme) => `1px solid ${theme.palette.surface[250]}`,
+              borderRadius: 1,
+            }}
+          >
             {principalSum > 0 && (
-              <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
+              <Box sx={{ width: '100%', py: 0.5 }}>
                 <LabelValueBox value={principalSum} label='principal' />
               </Box>
             )}
 
             {interestSum > 0 && (
-              <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
+              <Box sx={{ width: '100%', py: 0.5 }}>
                 <LabelValueBox value={interestSum} label='interest' />
               </Box>
             )}
             {escrowSum > 0 && (
-              <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
+              <Box sx={{ width: '100%', py: 0.5 }}>
                 <LabelValueBox value={escrowSum} label='escrow' />
               </Box>
             )}
-          </Card>
+          </Box>
         </Grid>
       )}
       {!selected.name && (
@@ -166,7 +190,13 @@ export default function ExpenseCategorySummary(props) {
         />
       )}
 
-      {year && isNaN(month) && <TransactionsByMonth year={year} transactions={selected.name ? selected.expenses : categoryExpenses} color={color} />}
+      {year && isNaN(month) && (
+        <TransactionsByMonth
+          year={year}
+          transactions={selected.name ? selected.expenses : categoryExpenses}
+          color={color}
+        />
+      )}
 
       <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
         <Button

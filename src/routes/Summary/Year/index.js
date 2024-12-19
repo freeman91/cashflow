@@ -7,13 +7,9 @@ import reduce from 'lodash/reduce';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ToggleOffIcon from '@mui/icons-material/ToggleOff';
-import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../../store/user';
@@ -215,15 +211,13 @@ export default function YearSummary(props) {
           <IncomesByEmployerCategory
             groupedIncomes={groupedIncomes}
             groupedPaychecks={groupedPaychecks}
-            incomeTotal={(incomeSum + paycheckSum)}
+            incomeTotal={incomeSum + paycheckSum}
           />
         )}
         {tab === SPENT && (
           <ExpensesByCategory
             groupedExpenses={groupedExpenses}
-            expenseTotal={
-              (expenseSum + principalSum + interestSum + escrowSum)
-            }
+            expenseTotal={expenseSum + principalSum + interestSum + escrowSum}
           />
         )}
         <Grid item xs={12} display='flex' justifyContent='center' mx={1} mt={1}>
@@ -260,6 +254,7 @@ export default function YearSummary(props) {
         )}
         {tab === EARNED && (
           <Earned
+            numMonths={numMonths}
             year={year}
             incomes={incomes}
             incomeSum={incomeSum}
@@ -270,6 +265,7 @@ export default function YearSummary(props) {
         )}
         {tab === SPENT && (
           <Spent
+            numMonths={numMonths}
             year={selectedYear}
             groupedExpenses={groupedExpenses}
             repayments={repayments}

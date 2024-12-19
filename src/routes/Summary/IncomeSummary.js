@@ -5,7 +5,6 @@ import sumBy from 'lodash/sumBy';
 import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 
 import { openDialog } from '../../store/dialogs';
@@ -13,8 +12,8 @@ import LabelValueBox from '../../components/LabelValueBox';
 import TransactionsByMonth from './TransactionsByMonth';
 
 export default function IncomeSummary(props) {
-  const { year, month, label, incomes } = props;
-  const theme = useTheme()
+  const { year, month, numMonths, label, incomes, sum } = props;
+  const theme = useTheme();
   const dispatch = useDispatch();
 
   const openTransactionsDialog = (title, transactions) => {
@@ -37,35 +36,64 @@ export default function IncomeSummary(props) {
 
   return (
     <>
+      {numMonths > 1 && (
+        <Grid item xs={12} mx={1}>
+          <Box
+            sx={{
+              width: '100%',
+              px: 2,
+              py: 1,
+              border: `1px solid ${theme.palette.surface[250]}`,
+              borderRadius: 1,
+            }}
+          >
+            <LabelValueBox value={sum / numMonths} label='average' />
+          </Box>
+        </Grid>
+      )}
       {show && (
         <Grid item xs={12} mx={1}>
-          <Card sx={{ width: '100%', p: 1 }}>
+          <Box
+            sx={{
+              width: '100%',
+              px: 2,
+              py: 1,
+              border: `1px solid ${theme.palette.surface[250]}`,
+              borderRadius: 1,
+            }}
+          >
             {taxesSum > 0 && (
-              <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
+              <Box sx={{ width: '100%', py: 0.5 }}>
                 <LabelValueBox value={taxesSum} label='taxes' />
               </Box>
             )}
 
             {benefitsSum > 0 && (
-              <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
+              <Box sx={{ width: '100%', py: 0.5 }}>
                 <LabelValueBox value={benefitsSum} label='benefits' />
               </Box>
             )}
             {retirementSum > 0 && (
-              <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
+              <Box sx={{ width: '100%', py: 0.5 }}>
                 <LabelValueBox value={retirementSum} label='retirement' />
               </Box>
             )}
             {otherSum > 0 && (
-              <Box sx={{ width: '100%', py: 0.5, px: 2 }}>
+              <Box sx={{ width: '100%', py: 0.5 }}>
                 <LabelValueBox value={otherSum} label='other' />
               </Box>
             )}
-          </Card>
+          </Box>
         </Grid>
       )}
 
-      {year && isNaN(month) && <TransactionsByMonth year={year} transactions={incomes} color={theme.palette.success.main} />}
+      {year && isNaN(month) && (
+        <TransactionsByMonth
+          year={year}
+          transactions={incomes}
+          color={theme.palette.success.main}
+        />
+      )}
 
       <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
         <Button

@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import head from 'lodash/head';
 import range from 'lodash/range';
 
-import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -53,7 +52,6 @@ function CustomTooltip({ active, payload, label }) {
 
 export default function TransactionsByMonth(props) {
   const { year, transactions, color } = props;
-  const theme = useTheme();
   const componentRef = useRef(null);
 
   const [chartData, setChartData] = useState([]);
@@ -61,21 +59,20 @@ export default function TransactionsByMonth(props) {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
-    const _data = range(12)
-      .map((month) => {
-        const monthDayJs = dayjs().year(year).month(month).set('date', 15);
-        const monthTransactions = transactions.filter((transaction) => {
-          return dayjs(transaction.date).isSame(monthDayJs, 'month');
-        });
+    const _data = range(12).map((month) => {
+      const monthDayJs = dayjs().year(year).month(month).set('date', 15);
+      const monthTransactions = transactions.filter((transaction) => {
+        return dayjs(transaction.date).isSame(monthDayJs, 'month');
+      });
 
-        return {
-          name: monthDayJs.format('MMMM'),
-          sum: monthTransactions.reduce(
-            (acc, transaction) => acc + findAmount(transaction),
-            0
-          ),
-        };
-      })
+      return {
+        name: monthDayJs.format('MMMM'),
+        sum: monthTransactions.reduce(
+          (acc, transaction) => acc + findAmount(transaction),
+          0
+        ),
+      };
+    });
     setChartData(_data);
   }, [year, transactions]);
 

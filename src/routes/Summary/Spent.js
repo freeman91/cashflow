@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Typography from '@mui/material/Typography';
 import MenuItemContent from '../../components/MenuItemContent';
 import RepaymentsSummary from './RepaymentsSummary';
 import ExpenseCategorySummary from './ExpenseCategorySummary';
@@ -14,6 +14,7 @@ export default function Spent(props) {
   const {
     year,
     month,
+    numMonths = 1,
     groupedExpenses,
     repayments,
     principalSum,
@@ -73,15 +74,11 @@ export default function Spent(props) {
             </MenuItem>
           )}
           {repaymentsSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
-          <ListSubheader sx={{ bgcolor: 'unset', py: 1 }}>
-            <Typography
-              variant='h5'
-              color='text.secondary'
-              align='center'
-              fontWeight='bold'
-            >
-              expense category
-            </Typography>
+          <ListSubheader sx={{ bgcolor: 'unset' }}>
+            <ListItemText
+              primary='expense category'
+              primaryTypographyProps={{ align: 'center' }}
+            />
           </ListSubheader>
           {repaymentsSum > 0 && <Divider sx={{ my: '0 !important', mx: 1 }} />}
           {groupedExpenses.map((group) => {
@@ -109,6 +106,7 @@ export default function Spent(props) {
         <RepaymentsSummary
           year={year}
           month={month}
+          numMonths={numMonths}
           principalSum={principalSum}
           interestSum={interestSum}
           escrowSum={escrowSum}
@@ -118,6 +116,7 @@ export default function Spent(props) {
         <ExpenseCategorySummary
           year={year}
           month={month}
+          numMonths={numMonths}
           category={selected.name}
           sum={selected.sum}
           expenses={selected.expenses}

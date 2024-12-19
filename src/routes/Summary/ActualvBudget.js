@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 
-import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -19,7 +19,7 @@ export default function ActualvBudget(props) {
   const allBudgets = useSelector((state) => state.budgets.data);
 
   const [goal, setGoal] = useState(0);
-  
+
   useEffect(() => {
     let budgets = [];
     if (isNaN(month)) {
@@ -47,9 +47,17 @@ export default function ActualvBudget(props) {
   return (
     <>
       <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
-        <Card sx={{ width: '100%', p: 1 }}>
+        <Box
+          sx={{
+            width: '100%',
+            px: 2,
+            py: 1,
+            border: (theme) => `1px solid ${theme.palette.surface[250]}`,
+            borderRadius: 1,
+          }}
+        >
           <BoxFlexCenter
-            sx={{ alignItems: 'flex-end', px: 2 }}
+            sx={{ alignItems: 'flex-end' }}
             justifyContent='space-between'
           >
             <Typography
@@ -83,7 +91,7 @@ export default function ActualvBudget(props) {
             <FillBar fillValue={actual} goalSum={goal} color={color} />
             <OverageBar expenseSum={actual} goal={goal} />
           </FullBar>
-        </Card>
+        </Box>
       </Grid>
     </>
   );
