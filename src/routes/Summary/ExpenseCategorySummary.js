@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import find from 'lodash/find'
 import sumBy from 'lodash/sumBy';
 
 import Box from '@mui/material/Box';
@@ -14,6 +15,7 @@ import { openDialog } from '../../store/dialogs';
 import LabelValueBox from '../../components/LabelValueBox';
 import MenuItemContent from '../../components/MenuItemContent';
 import ActualvBudget from './ActualvBudget';
+import TransactionsByMonth from './TransactionsByMonth'
 
 export default function ExpenseCategorySummary(props) {
   const {
@@ -25,6 +27,11 @@ export default function ExpenseCategorySummary(props) {
     subcategories = [],
   } = props;
   const dispatch = useDispatch();
+  const expenseCategories = useSelector((state) => {
+    return find(state.categories.data, {
+      category_type: 'expense',
+    });
+  });
 
   const [selected, setSelected] = useState({
     name: '',
@@ -35,6 +42,14 @@ export default function ExpenseCategorySummary(props) {
   const [principalSum, setPrincipalSum] = useState(0);
   const [interestSum, setInterestSum] = useState(0);
   const [escrowSum, setEscrowSum] = useState(0);
+  const [color, setColor] = useState('');
+
+  useEffect(() => {
+    const _category = find(expenseCategories.categories, {
+      name: category,
+    });
+    setColor(_category?.color || '');
+  }, [expenseCategories, category]);
 
   useEffect(() => {
     let _expenses = expenses;
@@ -143,12 +158,16 @@ export default function ExpenseCategorySummary(props) {
       )}
       {!selected.name && (
         <ActualvBudget
+          color={color}
           category={category}
           year={year}
           month={month}
           actual={sum}
         />
       )}
+
+      {year && isNaN(month) && <TransactionsByMonth year={year} transactions={selected.name ? selected.expenses : categoryExpenses} color={color} />}
+
       <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
         <Button
           variant='outlined'
@@ -163,11 +182,6 @@ export default function ExpenseCategorySummary(props) {
           show all
         </Button>
       </Grid>
-      {!selected.name && (
-        <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
-          expense sum by month
-        </Grid>
-      )}
     </>
   );
 }

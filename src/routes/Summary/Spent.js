@@ -107,6 +107,8 @@ export default function Spent(props) {
       </Grid>
       {selected.name === 'repayments' ? (
         <RepaymentsSummary
+          year={year}
+          month={month}
           principalSum={principalSum}
           interestSum={interestSum}
           escrowSum={escrowSum}

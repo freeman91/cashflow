@@ -40,7 +40,6 @@ export default function YearSummary(props) {
   const { year } = props;
   const dispatch = useDispatch();
 
-  const [showAverage, setShowAverage] = useState(false);
   const [numMonths, setNumMonths] = useState(1);
   const [tab, setTab] = useState(TOTALS);
   const [selectedYear, setSelectedYear] = useState(year);
@@ -74,25 +73,21 @@ export default function YearSummary(props) {
   };
 
   useEffect(() => {
-    if (showAverage) {
-      const numIncomeMonths = incomeSumByMonth.filter(
-        (month) => month > 0
-      ).length;
-      const numExpenseMonths = expenseSumByMonth.filter(
-        (month) => month > 0
-      ).length;
-      setNumMonths(Math.floor(Math.min(numIncomeMonths, numExpenseMonths)));
-    } else {
-      setNumMonths(1);
-    }
-  }, [showAverage, incomeSumByMonth, expenseSumByMonth]);
+    const numIncomeMonths = incomeSumByMonth.filter(
+      (month) => month > 0
+    ).length;
+    const numExpenseMonths = expenseSumByMonth.filter(
+      (month) => month > 0
+    ).length;
+    setNumMonths(Math.floor(Math.min(numIncomeMonths, numExpenseMonths)));
+  }, [incomeSumByMonth, expenseSumByMonth]);
 
   useEffect(() => {
     let _groupedIncomes = Object.entries(originalGroupedIncomes).reduce(
       (acc, [key, values]) => {
         acc[key] = values.map((item) => ({
           ...item,
-          amount: item.amount / numMonths,
+          amount: item.amount,
         }));
         return acc;
       },
@@ -102,11 +97,11 @@ export default function YearSummary(props) {
       (acc, [key, values]) => {
         acc[key] = values.map((item) => ({
           ...item,
-          take_home: item.take_home / numMonths,
-          taxes: item.taxes / numMonths,
-          benefits: item.benefits / numMonths,
-          retirement: item.retirement / numMonths,
-          other: item.other / numMonths,
+          take_home: item.take_home,
+          taxes: item.taxes,
+          benefits: item.benefits,
+          retirement: item.retirement,
+          other: item.other,
         }));
         return acc;
       },
@@ -118,10 +113,10 @@ export default function YearSummary(props) {
       originalGroupedExpenses.map((expense) => {
         return {
           ...expense,
-          value: expense.value / numMonths,
+          value: expense.value,
           subcategories: expense.subcategories.map((subcategory) => ({
             ...subcategory,
-            value: subcategory.value / numMonths,
+            value: subcategory.value,
           })),
         };
       })
@@ -130,7 +125,6 @@ export default function YearSummary(props) {
     originalGroupedIncomes,
     originalGroupedPaychecks,
     originalGroupedExpenses,
-    numMonths,
   ]);
 
   useEffect(() => {
@@ -178,20 +172,6 @@ export default function YearSummary(props) {
             summary
           </Typography>
         }
-        right={
-          <Tooltip
-            title={showAverage ? 'show total' : 'show average'}
-            placement='left'
-          >
-            <IconButton
-              size='medium'
-              onClick={() => setShowAverage(!showAverage)}
-              color='info'
-            >
-              {showAverage ? <ToggleOnIcon /> : <ToggleOffIcon />}
-            </IconButton>
-          </Tooltip>
-        }
       />
       <Grid
         container
@@ -235,14 +215,14 @@ export default function YearSummary(props) {
           <IncomesByEmployerCategory
             groupedIncomes={groupedIncomes}
             groupedPaychecks={groupedPaychecks}
-            incomeTotal={(incomeSum + paycheckSum) / numMonths}
+            incomeTotal={(incomeSum + paycheckSum)}
           />
         )}
         {tab === SPENT && (
           <ExpensesByCategory
             groupedExpenses={groupedExpenses}
             expenseTotal={
-              (expenseSum + principalSum + interestSum + escrowSum) / numMonths
+              (expenseSum + principalSum + interestSum + escrowSum)
             }
           />
         )}
@@ -263,12 +243,13 @@ export default function YearSummary(props) {
         {tab === TOTALS && (
           <>
             <YearTotals
-              expenseSum={expenseSum / numMonths}
-              principalSum={principalSum / numMonths}
-              interestSum={interestSum / numMonths}
-              escrowSum={escrowSum / numMonths}
-              incomeSum={incomeSum / numMonths}
-              paycheckSum={paycheckSum / numMonths}
+              numMonths={numMonths}
+              expenseSum={expenseSum}
+              principalSum={principalSum}
+              interestSum={interestSum}
+              escrowSum={escrowSum}
+              incomeSum={incomeSum}
+              paycheckSum={paycheckSum}
             />
             <MonthlyBreakdown
               year={selectedYear}
@@ -281,8 +262,8 @@ export default function YearSummary(props) {
           <Earned
             year={year}
             incomes={incomes}
-            incomeSum={incomeSum / numMonths}
-            paycheckSum={paycheckSum / numMonths}
+            incomeSum={incomeSum}
+            paycheckSum={paycheckSum}
             groupedPaychecks={groupedPaychecks}
             groupedIncomes={groupedIncomes}
           />
@@ -292,9 +273,9 @@ export default function YearSummary(props) {
             year={selectedYear}
             groupedExpenses={groupedExpenses}
             repayments={repayments}
-            principalSum={principalSum / numMonths}
-            interestSum={interestSum / numMonths}
-            escrowSum={escrowSum / numMonths}
+            principalSum={principalSum}
+            interestSum={interestSum}
+            escrowSum={escrowSum}
           />
         )}
         <Grid item xs={12} mb={10} />

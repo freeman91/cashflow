@@ -9,6 +9,7 @@ import LabelValueBox from '../../components/LabelValueBox';
 
 export default function Totals(props) {
   const {
+    numMonths = 1,
     expenseSum,
     principalSum,
     interestSum,
@@ -26,6 +27,8 @@ export default function Totals(props) {
   const incomePercent = (allIncomesSum / max) * 100;
   const expensePercent = (allExpensesSum / max) * 100;
 
+  const netAvg = (allIncomesSum + allExpensesSum) / numMonths
+  console.log('netAvg: ', netAvg);
   return (
     <>
       <Grid item xs={12} display='flex' justifyContent='center' mx={1}>

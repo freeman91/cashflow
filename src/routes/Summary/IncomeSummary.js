@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import sumBy from 'lodash/sumBy';
 
+import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -9,10 +10,11 @@ import Grid from '@mui/material/Grid';
 
 import { openDialog } from '../../store/dialogs';
 import LabelValueBox from '../../components/LabelValueBox';
-import IncomesByMonth from './IncomesByMonth';
+import TransactionsByMonth from './TransactionsByMonth';
 
 export default function IncomeSummary(props) {
   const { year, month, label, incomes } = props;
+  const theme = useTheme()
   const dispatch = useDispatch();
 
   const openTransactionsDialog = (title, transactions) => {
@@ -63,7 +65,7 @@ export default function IncomeSummary(props) {
         </Grid>
       )}
 
-      {year && isNaN(month) && <IncomesByMonth year={year} incomes={incomes} />}
+      {year && isNaN(month) && <TransactionsByMonth year={year} transactions={incomes} color={theme.palette.success.main} />}
 
       <Grid item xs={12} mx={1} display='flex' justifyContent='center'>
         <Button

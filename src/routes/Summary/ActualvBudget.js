@@ -14,25 +14,12 @@ import FillBar from '../Budgets/FillBar';
 import OverageBar from '../Budgets/OverageBar';
 
 export default function ActualvBudget(props) {
-  const { category, year, month, actual } = props;
+  const { year, month, actual, category, color } = props;
 
   const allBudgets = useSelector((state) => state.budgets.data);
-  const expenseCategories = useSelector((state) => {
-    return find(state.categories.data, {
-      category_type: 'expense',
-    });
-  });
 
   const [goal, setGoal] = useState(0);
-  const [color, setColor] = useState('');
-
-  useEffect(() => {
-    const _category = find(expenseCategories.categories, {
-      name: category,
-    });
-    setColor(_category?.color || '');
-  }, [expenseCategories, category]);
-
+  
   useEffect(() => {
     let budgets = [];
     if (isNaN(month)) {

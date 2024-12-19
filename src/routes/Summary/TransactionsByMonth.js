@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import dayjs from 'dayjs';
 import head from 'lodash/head';
 import range from 'lodash/range';
 
@@ -15,7 +16,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import dayjs from 'dayjs';
+
 import { findAmount } from '../../helpers/transactions';
 import { _numberToCurrency } from '../../helpers/currency';
 import BoxFlexCenter from '../../components/BoxFlexCenter';
@@ -50,8 +51,8 @@ function CustomTooltip({ active, payload, label }) {
   return null;
 }
 
-export default function IncomesByMonth(props) {
-  const { year, incomes } = props;
+export default function TransactionsByMonth(props) {
+  const { year, transactions, color } = props;
   const theme = useTheme();
   const componentRef = useRef(null);
 
@@ -63,21 +64,20 @@ export default function IncomesByMonth(props) {
     const _data = range(12)
       .map((month) => {
         const monthDayJs = dayjs().year(year).month(month).set('date', 15);
-        const monthIncomes = incomes.filter((income) => {
-          return dayjs(income.date).isSame(monthDayJs, 'month');
+        const monthTransactions = transactions.filter((transaction) => {
+          return dayjs(transaction.date).isSame(monthDayJs, 'month');
         });
 
         return {
           name: monthDayJs.format('MMMM'),
-          sum: monthIncomes.reduce(
-            (acc, income) => acc + findAmount(income),
+          sum: monthTransactions.reduce(
+            (acc, transaction) => acc + findAmount(transaction),
             0
           ),
         };
       })
-      .filter((item) => item.sum !== 0);
     setChartData(_data);
-  }, [year, incomes]);
+  }, [year, transactions]);
 
   useEffect(() => {
     if (componentRef.current) {
@@ -88,7 +88,7 @@ export default function IncomesByMonth(props) {
 
   return (
     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Box ref={componentRef} sx={{ height: 157, width: '100%' }}>
+      <Box ref={componentRef} sx={{ height: 155, width: '100%' }}>
         <ResponsiveContainer width='100%' height='100%'>
           <ComposedChart
             width={width}
@@ -106,7 +106,7 @@ export default function IncomesByMonth(props) {
             />
             <YAxis hide />
             <Tooltip cursor={false} content={<CustomTooltip />} />
-            <Bar dataKey='sum' fill={theme.palette.success.main} barSize={15} />
+            <Bar dataKey='sum' fill={color} barSize={15} />
           </ComposedChart>
         </ResponsiveContainer>
       </Box>
