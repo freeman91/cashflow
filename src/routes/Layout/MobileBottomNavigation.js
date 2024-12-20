@@ -56,7 +56,7 @@ const CustomListItemButton = (props) => {
   );
 };
 
-function CustomBottomNavigation() {
+export default function MobileBottomNavigation() {
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -96,6 +96,7 @@ function CustomBottomNavigation() {
         zIndex: 1,
         borderTop: '1px solid',
         borderColor: (theme) => theme.palette.surface[200],
+        maxWidth: 500,
       }}
     >
       <BottomNavigation
@@ -146,27 +147,27 @@ function CustomBottomNavigation() {
         <List disablePadding sx={{ px: 1, pt: 1, bgcolor: 'unset' }}>
           <CustomListItemButton
             Icon={TrendingUpIcon}
-            text='NetWorth'
+            text='networth'
             onClick={() => handleNavigate('networth')}
           />
           <CustomListItemButton
             Icon={SearchIcon}
-            text='Search'
+            text='search'
             onClick={() => handleNavigate('search')}
           />
           <CustomListItemButton
             Icon={AssignmentIcon}
-            text='Budgets'
+            text='budgets'
             onClick={() => handleNavigate('budgets')}
           />
           <CustomListItemButton
             Icon={SettingsIcon}
-            text='Settings'
+            text='settings'
             onClick={() => handleNavigate('settings')}
           />
           <CustomListItemButton
             Icon={PersonIcon}
-            text='User Account'
+            text='user settings'
             onClick={() => handleNavigate('user')}
           />
         </List>
@@ -174,5 +175,3 @@ function CustomBottomNavigation() {
     </Box>
   );
 }
-
-export default CustomBottomNavigation;

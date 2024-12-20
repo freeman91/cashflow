@@ -5,6 +5,7 @@ import { HistoryRouter } from 'redux-first-history/rr6';
 import LoadingBar from 'react-redux-loading-bar';
 
 import styled from '@mui/material/styles/styled';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,6 +20,7 @@ import Asset from './routes/Asset';
 import Budgets from './routes/Budgets';
 import Calendar from './routes/Calendar';
 import Debt from './routes/Debt';
+import DesktopHome from './routes/Desktop/Home';
 import Home from './routes/Home';
 import Layout from './routes/Layout';
 import Networth from './routes/Networth';
@@ -38,7 +40,7 @@ const ReduxLoader = styled(LoadingBar)(({ theme }) => ({
   top: 0,
 }));
 
-const AppRoutes = () => {
+const MobileRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
@@ -67,6 +69,41 @@ const AppRoutes = () => {
       </Route>
     </Routes>
   );
+};
+
+const DesktopRoutes = () => {
+  return (
+    <Routes>
+      <Route path='/' element={<Layout />}>
+        <Route path='/home' element={<DesktopHome />} />
+        <Route path='/account' element={<></>} />
+        <Route path='/accounts' element={<></>} />
+        {/* <Route path='/asset' element={<></>} /> */}
+        <Route path='/budgets' element={<></>} />
+        <Route path='/calendar' element={<></>} />
+        <Route path='/calendar/:year/:month' element={<></>} />
+        {/* <Route path='/debt' element={<></>} /> */}
+        <Route path='/summary' element={<></>} />
+        <Route path='/summary/:year' element={<></>} />
+        <Route path='/summary/:year/:month' element={<></>} />
+        <Route path='/networth' element={<></>} />
+        {/* <Route path='/networth/:id' element={<></>} /> */}
+        <Route path='/search' element={<></>} />
+        {/* <Route path='/search/:type' element={<></>} /> */}
+        <Route path='/settings' element={<></>} />
+        {/* <Route path='/settings/:type' element={<></>} /> */}
+        <Route path='/user' element={<></>} />
+      </Route>
+      <Route path='*'>
+        <Route index element={<Navigate to='/home' />} />
+      </Route>
+    </Routes>
+  );
+};
+
+const AppRoutes = () => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  return isMobile ? <MobileRoutes /> : <DesktopRoutes />;
 };
 
 function App() {

@@ -8,7 +8,7 @@ const ORANGE = '#d4952e';
 
 export const breakpoints = {
   xs: 0,
-  sm: 600,
+  sm: 500,
   md: 960,
   lg: 1280,
   xl: 1920,
@@ -58,9 +58,8 @@ export const muiTheme = createTheme({
   breakpoints: {
     keys: ['xs', 'sm', 'md', 'lg', 'xl'],
     values: breakpoints,
-    maxWidth: 1000,
   },
-  drawerWidth: 175,
+  drawerWidth: 200,
   appBar: {
     mobile: {
       height: '42px',
