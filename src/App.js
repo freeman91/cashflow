@@ -14,20 +14,23 @@ import _package from '../package.json';
 import { muiTheme } from './styles/muiTheme';
 import { history, store } from './store/createStore';
 
-import Account from './routes/Account';
-import Accounts from './routes/Accounts';
-import Asset from './routes/Asset';
-import Budgets from './routes/Budgets';
-import Calendar from './routes/Calendar';
-import Debt from './routes/Debt';
+import DesktopAccount from './routes/Desktop/Account';
+import DesktopAccounts from './routes/Desktop/Accounts';
+import DesktopCalendar from './routes/Desktop/Calendar';
 import DesktopHome from './routes/Desktop/Home';
-import Home from './routes/Home';
 import Layout from './routes/Layout';
-import Networth from './routes/Networth';
-import NetworthSelected from './routes/Networth/Selected';
-import Search from './routes/Search';
-import Settings from './routes/Settings';
-import Summary from './routes/Summary';
+import MobileAccount from './routes/Mobile/Account';
+import MobileAccounts from './routes/Mobile/Accounts';
+import MobileAsset from './routes/Mobile/Asset';
+import MobileBudgets from './routes/Mobile/Budgets';
+import MobileCalendar from './routes/Mobile/Calendar';
+import MobileDebt from './routes/Mobile/Debt';
+import MobileHome from './routes/Mobile/Home';
+import MobileNetworth from './routes/Mobile/Networth';
+import MobileNetworthSelected from './routes/Mobile/Networth/Selected';
+import MobileSearch from './routes/Mobile/Search';
+import MobileSettings from './routes/Mobile/Settings';
+import MobileSummary from './routes/Mobile/Summary';
 import './styles/index.css';
 
 console.log('_package.version: ', _package.version);
@@ -44,24 +47,24 @@ const MobileRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
-        <Route path='/home' element={<Home />} />
-        <Route path='/account' element={<Account />} />
-        <Route path='/accounts' element={<Accounts />} />
-        <Route path='/accounts/:tab' element={<Accounts />} />
-        <Route path='/asset' element={<Asset />} />
-        <Route path='/budgets' element={<Budgets />} />
-        <Route path='/calendar' element={<Calendar />} />
-        <Route path='/calendar/:year/:month' element={<Calendar />} />
-        <Route path='/debt' element={<Debt />} />
-        <Route path='/summary' element={<Summary />} />
-        <Route path='/summary/:year' element={<Summary />} />
-        <Route path='/summary/:year/:month' element={<Summary />} />
-        <Route path='/networth' element={<Networth />} />
-        <Route path='/networth/:id' element={<NetworthSelected />} />
-        <Route path='/search' element={<Search />} />
-        <Route path='/search/:type' element={<Search />} />
-        <Route path='/settings' element={<Settings />} />
-        <Route path='/settings/:type' element={<Settings />} />
+        <Route path='/home' element={<MobileHome />} />
+        <Route path='/account' element={<MobileAccount />} />
+        <Route path='/accounts' element={<MobileAccounts />} />
+        <Route path='/accounts/:tab' element={<MobileAccounts />} />
+        <Route path='/asset' element={<MobileAsset />} />
+        <Route path='/budgets' element={<MobileBudgets />} />
+        <Route path='/calendar' element={<MobileCalendar />} />
+        <Route path='/calendar/:year/:month' element={<MobileCalendar />} />
+        <Route path='/debt' element={<MobileDebt />} />
+        <Route path='/summary' element={<MobileSummary />} />
+        <Route path='/summary/:year' element={<MobileSummary />} />
+        <Route path='/summary/:year/:month' element={<MobileSummary />} />
+        <Route path='/networth' element={<MobileNetworth />} />
+        <Route path='/networth/:id' element={<MobileNetworthSelected />} />
+        <Route path='/search' element={<MobileSearch />} />
+        <Route path='/search/:type' element={<MobileSearch />} />
+        <Route path='/settings' element={<MobileSettings />} />
+        <Route path='/settings/:type' element={<MobileSettings />} />
         <Route path='/user' element={<></>} />
       </Route>
       <Route path='*'>
@@ -76,13 +79,13 @@ const DesktopRoutes = () => {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route path='/home' element={<DesktopHome />} />
-        <Route path='/account' element={<></>} />
-        <Route path='/accounts' element={<></>} />
-        {/* <Route path='/asset' element={<></>} /> */}
+        <Route path='/account' element={<DesktopAccount />} />
+        <Route path='/accounts' element={<DesktopAccounts />} />
+        <Route path='/asset' element={<></>} />
         <Route path='/budgets' element={<></>} />
-        <Route path='/calendar' element={<></>} />
-        <Route path='/calendar/:year/:month' element={<></>} />
-        {/* <Route path='/debt' element={<></>} /> */}
+        <Route path='/calendar' element={<DesktopCalendar />} />
+        <Route path='/calendar/:year/:month' element={<DesktopCalendar />} />
+        <Route path='/debt' element={<></>} />
         <Route path='/summary' element={<></>} />
         <Route path='/summary/:year' element={<></>} />
         <Route path='/summary/:year/:month' element={<></>} />

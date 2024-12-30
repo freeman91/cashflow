@@ -37,7 +37,14 @@ export default function Transaction(props) {
         >
           {source}
         </Typography>
-        <Typography variant='body1' color='text.secondary'>
+        <Typography
+          variant='body1'
+          color='text.secondary'
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
           {category} {subcategory ? `- ${subcategory}` : ''}
         </Typography>
       </BoxFlexColumn>

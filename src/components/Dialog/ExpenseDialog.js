@@ -37,6 +37,7 @@ const defaultExpense = {
   subcategory: '',
   pending: false,
   bill_id: '',
+  debt_id: '',
   asset_id: '',
   description: '',
 };

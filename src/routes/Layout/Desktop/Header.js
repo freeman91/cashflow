@@ -5,8 +5,12 @@ import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+
+import LogoImg from '../../../components/CustomAppBar/LogoImg';
 
 function Header() {
   return (
@@ -18,15 +22,30 @@ function Header() {
         elevation={0}
         sx={{
           zIndex: 0,
-          bgcolor: '#2D2D58',
+          borderBottom: (theme) => `1px solid ${theme.palette.surface[200]}`,
         }}
       >
         <Toolbar>
-          <Grid container spacing={1} sx={{ alignItems: 'center' }}>
+          <Grid
+            container
+            spacing={1}
+            sx={{ alignItems: 'center', justifyContent: 'center' }}
+          >
             <Grid item xs>
-              <Typography color='inherit' variant='h5' component='h1'>
-                home
-              </Typography>
+              <ListItem>
+                <ListItemIcon sx={{ minWidth: 'fit-content', mr: 1 }}>
+                  <LogoImg />
+                </ListItemIcon>
+                <ListItemText
+                  primary='cashflow'
+                  primaryTypographyProps={{
+                    fontWeight: 'bold',
+                    variant: 'h4',
+                    color: 'success.main',
+                    lineHeight: 1,
+                  }}
+                />
+              </ListItem>
             </Grid>
             <Grid item>
               <IconButton>
@@ -38,22 +57,6 @@ function Header() {
           </Grid>
         </Toolbar>
       </AppBar>
-      {/* <AppBar
-        component='div'
-        position='sticky'
-        elevation={0}
-        sx={{
-          zIndex: 0,
-          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.25),
-        }}
-      >
-        <Tabs value={0} textColor='inherit'>
-          <Tab label='Users' />
-          <Tab label='Sign-in method' />
-          <Tab label='Templates' />
-          <Tab label='Usage' />
-        </Tabs>
-      </AppBar> */}
     </React.Fragment>
   );
 }

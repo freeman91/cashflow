@@ -12,7 +12,7 @@ export default function PlaceholderBox(props) {
         width: '100%',
         bgcolor: (theme) => alpha(theme.palette.primary.main, 0.05),
         borderRadius: 1,
-        border: (theme) => `1px solid ${theme.palette.surface[250]}`,
+        border: (theme) => `1px solid ${theme.palette.surface[200]}`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

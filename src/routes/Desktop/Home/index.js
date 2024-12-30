@@ -6,6 +6,7 @@ import sortBy from 'lodash/sortBy';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import PlaceholderBox from '../../../components/PlaceholderBox';
+import TransactionsTable from './Transactions/Table';
 
 export default function DesktopHome() {
   const allExpenses = useSelector((state) => state.expenses.data);
@@ -14,8 +15,7 @@ export default function DesktopHome() {
   const allPaychecks = useSelector((state) => state.paychecks.data);
 
   const [recent, setRecent] = useState([]);
-  const [pending, setPending] = useState([]);
-  const [upcoming, setUpcoming] = useState([]);
+  const [pendingAndUpcoming, setPendingAndUpcoming] = useState([]);
 
   useEffect(() => {
     const today = dayjs();
@@ -47,9 +47,12 @@ export default function DesktopHome() {
 
   useEffect(() => {
     const today = dayjs();
+    const fourDaysAhead = dayjs().add(4, 'day');
     const _allExpenses = [...allExpenses, ...allRepayments];
-    let upcomingExpenses = _allExpenses.filter((expense) =>
-      dayjs(expense.date).isAfter(today, 'day')
+    let upcomingExpenses = _allExpenses.filter(
+      (expense) =>
+        dayjs(expense.date).isAfter(today, 'day') &&
+        dayjs(expense.date).isBefore(fourDaysAhead, 'day')
     );
     upcomingExpenses = sortBy(upcomingExpenses, 'date');
 
@@ -59,8 +62,13 @@ export default function DesktopHome() {
       );
     });
 
-    setPending(pendingExpenses);
-    setUpcoming(upcomingExpenses);
+    upcomingExpenses = upcomingExpenses.slice(0, 4);
+    const _pendingAndUpcoming = [...pendingExpenses, ...upcomingExpenses];
+    _pendingAndUpcoming
+      .sort((a, b) => dayjs(a.date).diff(dayjs(b.date)))
+      .reverse();
+
+    setPendingAndUpcoming(_pendingAndUpcoming);
   }, [allExpenses, allRepayments]);
 
   return (
@@ -70,7 +78,7 @@ export default function DesktopHome() {
         spacing={1}
         justifyContent='center'
         alignItems='flex-start'
-        sx={{ maxWidth: 1000, mx: 'auto', width: '100%', mt: 2 }}
+        sx={{ maxWidth: 1000, mx: 'auto', width: '100%', mt: 1 }}
       >
         <Grid item xs={6} display='flex' justifyContent='center'>
           <PlaceholderBox>cashflow, expenses, incomes</PlaceholderBox>
@@ -84,13 +92,11 @@ export default function DesktopHome() {
         >
           <PlaceholderBox>accounts</PlaceholderBox>
         </Grid>
-        <Grid item xs={12} display='flex' justifyContent='center'>
-          <PlaceholderBox height={500}>
-            table of transactions, pending collapsed by default, upcoming and
-            recent expanded by default
-          </PlaceholderBox>
-        </Grid>
-
+        <TransactionsTable
+          transactions={pendingAndUpcoming}
+          label='pending and upcoming'
+        />
+        <TransactionsTable transactions={recent} label='transaction history' />
         <Grid item xs={12} mb={10} />
       </Grid>
     </Box>

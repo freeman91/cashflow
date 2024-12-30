@@ -1,7 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router';
 
-import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -20,25 +19,29 @@ export default function DesktopLayout({ children }) {
       }}
     >
       <CssBaseline />
-      <Box
-        component='nav'
-        sx={{ width: { sm: theme.drawerWidth }, flexShrink: { sm: 0 } }}
-      >
-        <DesktopDrawer
-          PaperProps={{
-            sx: {
-              width: theme.drawerWidth,
-              bgcolor: alpha(theme.palette.primary.main, 0.1),
-            },
-          }}
-        />
-      </Box>
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Header />
-        <Box component='main' sx={{ flex: 1 }}>
+        <Box
+          component='nav'
+          sx={{
+            width: { sm: theme.drawerWidth },
+            flexShrink: { sm: 0 },
+          }}
+        >
+          <DesktopDrawer
+            PaperProps={{
+              sx: {
+                width: theme.drawerWidth,
+                marginTop: '65px',
+              },
+            }}
+          />
+        </Box>
+        <Box component='main' sx={{ flex: 1, marginLeft: 25 }}>
           <Outlet />
         </Box>
       </Box>
+
       {children}
     </Box>
   );

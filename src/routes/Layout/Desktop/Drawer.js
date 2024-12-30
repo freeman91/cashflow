@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { push } from 'redux-first-history';
 import groupBy from 'lodash/groupBy';
 import includes from 'lodash/includes';
 
@@ -28,7 +30,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { TreeItem, treeItemClasses } from '@mui/x-tree-view/TreeItem';
 import { SimpleTreeView } from '@mui/x-tree-view';
 
-import LogoImg from '../../../components/CustomAppBar/LogoImg';
+import { openDialog } from '../../../store/dialogs';
 
 const Label = styled('div')({ display: 'flex', alignItems: 'center' });
 const StyledTreeItem = styled(TreeItem)(({ theme }) => {
@@ -45,13 +47,82 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => {
   };
 });
 
+const PageButton = (props) => {
+  const { pageName, currentPage, icon } = props;
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(push(`/${pageName}`));
+  };
+
+  return (
+    <ListItemButton
+      sx={{ m: 0.5, borderRadius: 1 }}
+      selected={currentPage === pageName}
+      onClick={handleClick}
+    >
+      <ListItemIcon
+        sx={{
+          minWidth: 'fit-content',
+          mr: 2,
+          color: currentPage === pageName ? 'primary.main' : 'inherit',
+        }}
+      >
+        {icon}
+      </ListItemIcon>
+      <ListItemText
+        primary={pageName}
+        primaryTypographyProps={{
+          color: currentPage === pageName ? 'primary' : 'inherit',
+        }}
+      />
+    </ListItemButton>
+  );
+};
+
+const CreateButton = (props) => {
+  const { type, icon } = props;
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(openDialog({ type, mode: 'create' }));
+  };
+
+  return (
+    <ListItemButton
+      sx={{
+        borderRadius: 1,
+        justifyContent: 'center',
+      }}
+      onClick={handleClick}
+    >
+      <ListItemIcon
+        sx={{
+          width: 'fit-content',
+          minWidth: 'unset',
+        }}
+      >
+        {icon}
+      </ListItemIcon>
+    </ListItemButton>
+  );
+};
+
 export default function DesktopDrawer(props) {
   const { PaperProps } = props;
+  const dispatch = useDispatch();
+  const location = useLocation();
 
   const accounts = useSelector((state) => state.accounts.data);
+  const [page, setPage] = useState('');
   const [nodes, setNodes] = useState([]);
   const [expanded, setExpanded] = useState([]);
   const [selected, setSelected] = useState([]);
+
+  useEffect(() => {
+    const _page = location.pathname.split('/')[1];
+    setPage(_page);
+  }, [location]);
 
   useEffect(() => {
     const groupedAccounts = groupBy(accounts, 'account_type');
@@ -86,8 +157,7 @@ export default function DesktopDrawer(props) {
     }
 
     setSelected([id]);
-    console.log('TODO: push id: ', id);
-    // dispatch(push());
+    dispatch(push(`/account`, { accountId: id }));
   };
 
   const mapNodes = (_nodes) => {
@@ -119,100 +189,44 @@ export default function DesktopDrawer(props) {
   return (
     <Drawer variant='permanent' PaperProps={PaperProps}>
       <List disablePadding>
-        <ListItem>
-          <ListItemIcon sx={{ minWidth: 'fit-content', mr: 1 }}>
-            <LogoImg />
-          </ListItemIcon>
-          <ListItemText
-            primary='cashflow'
-            primaryTypographyProps={{
-              fontWeight: 'bold',
-              variant: 'h5',
-            }}
-          />
-        </ListItem>
-        <Divider sx={{ mx: 1 }} />
         <ListItem sx={{ width: '100%', columnGap: 1, p: 1 }}>
-          <ListItemButton
-            sx={{
-              borderRadius: 1,
-              justifyContent: 'center',
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                width: 'fit-content',
-                minWidth: 'unset',
-              }}
-            >
-              <CreditCardIcon />
-            </ListItemIcon>
-          </ListItemButton>
-          <ListItemButton
-            sx={{
-              borderRadius: 1,
-              justifyContent: 'center',
-            }}
-          >
-            <ListItemIcon sx={{ width: 'fit-content', minWidth: 'unset' }}>
-              <AttachMoneyIcon />
-            </ListItemIcon>
-          </ListItemButton>
-          <ListItemButton
-            sx={{
-              borderRadius: 1,
-              justifyContent: 'center',
-            }}
-          >
-            <ListItemIcon sx={{ width: 'fit-content', minWidth: 'unset' }}>
-              <LocalAtmIcon />
-            </ListItemIcon>
-          </ListItemButton>
+          <CreateButton type='expense' icon={<CreditCardIcon />} />
+          <CreateButton type='income' icon={<AttachMoneyIcon />} />
+          <CreateButton type='paycheck' icon={<LocalAtmIcon />} />
         </ListItem>
         <Divider sx={{ mx: 1 }} />
-        <ListItemButton sx={{ m: 0.5, borderRadius: 1 }}>
-          <ListItemIcon sx={{ minWidth: 'fit-content', mr: 2 }}>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText>home</ListItemText>
-        </ListItemButton>
-        <ListItemButton sx={{ m: 0.5, borderRadius: 1 }}>
-          <ListItemIcon sx={{ minWidth: 'fit-content', mr: 2 }}>
-            <CalendarMonthIcon />
-          </ListItemIcon>
-          <ListItemText>calendar</ListItemText>
-        </ListItemButton>
-        <ListItemButton sx={{ m: 0.5, borderRadius: 1 }}>
-          <ListItemIcon sx={{ minWidth: 'fit-content', mr: 2 }}>
-            <AssessmentIcon />
-          </ListItemIcon>
-          <ListItemText>summary</ListItemText>
-        </ListItemButton>
-        <ListItemButton sx={{ m: 0.5, borderRadius: 1 }}>
-          <ListItemIcon sx={{ minWidth: 'fit-content', mr: 2 }}>
-            <TrendingUpIcon />
-          </ListItemIcon>
-          <ListItemText>networth</ListItemText>
-        </ListItemButton>
-        <ListItemButton sx={{ m: 0.5, borderRadius: 1 }}>
-          <ListItemIcon sx={{ minWidth: 'fit-content', mr: 2 }}>
-            <AssignmentIcon />
-          </ListItemIcon>
-          <ListItemText>budgets</ListItemText>
-        </ListItemButton>
-        <ListItemButton sx={{ m: 0.5, borderRadius: 1 }}>
-          <ListItemIcon sx={{ minWidth: 'fit-content', mr: 2 }}>
-            <SearchIcon />
-          </ListItemIcon>
-          <ListItemText>search</ListItemText>
-        </ListItemButton>
+        <PageButton pageName='home' currentPage={page} icon={<HomeIcon />} />
+        <PageButton
+          pageName='calendar'
+          currentPage={page}
+          icon={<CalendarMonthIcon />}
+        />
+        <PageButton
+          pageName='summary'
+          currentPage={page}
+          icon={<AssessmentIcon />}
+        />
+        <PageButton
+          pageName='networth'
+          currentPage={page}
+          icon={<TrendingUpIcon />}
+        />
+        <PageButton
+          pageName='budgets'
+          currentPage={page}
+          icon={<AssignmentIcon />}
+        />
+        <PageButton
+          pageName='search'
+          currentPage={page}
+          icon={<SearchIcon />}
+        />
         <Divider sx={{ mx: 1 }} />
-        <ListItemButton sx={{ m: 0.5, borderRadius: 1 }}>
-          <ListItemIcon sx={{ minWidth: 'fit-content', mr: 2 }}>
-            <AccountBalanceIcon />
-          </ListItemIcon>
-          <ListItemText>accounts</ListItemText>
-        </ListItemButton>
+        <PageButton
+          pageName='accounts'
+          currentPage={page}
+          icon={<AccountBalanceIcon />}
+        />
         <SimpleTreeView
           slots={{ collapseIcon: CollapseIcon, expandIcon: ExpandIcon }}
           expandedItems={expanded}
@@ -223,12 +237,11 @@ export default function DesktopDrawer(props) {
           {mapNodes(nodes)}
         </SimpleTreeView>
         <Divider sx={{ mx: 1 }} />
-        <ListItemButton sx={{ m: 0.5, borderRadius: 1 }}>
-          <ListItemIcon sx={{ minWidth: 'fit-content', mr: 2 }}>
-            <SettingsIcon />
-          </ListItemIcon>
-          <ListItemText>settings</ListItemText>
-        </ListItemButton>
+        <PageButton
+          pageName='settings'
+          currentPage={page}
+          icon={<SettingsIcon />}
+        />
       </List>
     </Drawer>
   );

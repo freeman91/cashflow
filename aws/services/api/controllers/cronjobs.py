@@ -84,9 +84,13 @@ def update_stock_prices():
         )
 
         tickers = map_(stock_assets, lambda asset: asset.name.upper())
-        for ticker in tickers:
-            asset = find(stock_assets, lambda asset: asset.name == ticker)
-            asset.price = round(float(get_stock_price(ticker.upper())), 2)
+        ticker_prices = map_(
+            tickers, lambda ticker: {"name": ticker, "price": get_stock_price(ticker)}
+        )
+        for asset in stock_assets:
+            ticker = find(ticker_prices, lambda t: t["name"] == asset.name.upper())
+            ticker_price = ticker["price"]
+            asset.price = round(float(ticker_price), 2)
             asset.value = round(asset.price * asset.shares, 2)
 
             current_app.logger.info("%s: %s", asset.name, asset.price)

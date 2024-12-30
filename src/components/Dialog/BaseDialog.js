@@ -55,6 +55,7 @@ function BaseDialog(props) {
           justifyContent: 'center',
           alignItems: 'flex-start',
           px: disableGutters ? 1 : 2,
+          minWidth: '350px',
         }}
       >
         {children}
