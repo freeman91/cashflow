@@ -9,9 +9,9 @@ const LogoImg = () => {
     <img
       src='/apple-touch-icon.png'
       alt='logo'
-      width={35}
-      height={35}
-      onClick={() => dispatch(push('/home'))}
+      width={30}
+      height={30}
+      onClick={() => dispatch(push('/dashboard'))}
     />
   );
 };

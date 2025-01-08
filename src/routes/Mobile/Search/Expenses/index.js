@@ -31,7 +31,7 @@ export default function Expenses(props) {
   });
   const [categoryFilter, setCategoryFilter] = useState('');
   const [subcategoryFilter, setSubcategoryFilter] = useState('');
-  const [vendorFilter, setVendorFilter] = useState('');
+  const [merchantFilter, setMerchantFilter] = useState('');
   const [billFilter, setBillFilter] = useState('');
   const [pendingFilter, setPendingFilter] = useState(['pending', 'paid']);
 
@@ -94,7 +94,7 @@ export default function Expenses(props) {
     if (mainFilter) {
       _expenses = filter(_expenses, (expense) => {
         return (
-          expense.vendor?.toLowerCase().includes(mainFilter.toLowerCase()) ||
+          expense.merchant?.toLowerCase().includes(mainFilter.toLowerCase()) ||
           expense.category?.toLowerCase().includes(mainFilter.toLowerCase()) ||
           expense.subcategory
             ?.toLowerCase()
@@ -118,10 +118,10 @@ export default function Expenses(props) {
       });
     }
 
-    // filter by vendor
-    if (vendorFilter) {
+    // filter by merchant
+    if (merchantFilter) {
       _expenses = filter(_expenses, (expense) => {
-        return expense.vendor === vendorFilter;
+        return expense.merchant === merchantFilter;
       });
     }
 
@@ -142,7 +142,7 @@ export default function Expenses(props) {
     amountFilter,
     categoryFilter,
     subcategoryFilter,
-    vendorFilter,
+    merchantFilter,
     billFilter,
     pendingFilter,
     mainFilter,
@@ -181,8 +181,8 @@ export default function Expenses(props) {
         setCategoryFilter={setCategoryFilter}
         subcategoryFilter={subcategoryFilter}
         setSubcategoryFilter={setSubcategoryFilter}
-        vendorFilter={vendorFilter}
-        setVendorFilter={setVendorFilter}
+        merchantFilter={merchantFilter}
+        setMerchantFilter={setMerchantFilter}
         billFilter={billFilter}
         setBillFilter={setBillFilter}
       />

@@ -27,18 +27,18 @@ import AutocompleteListItem from '../List/AutocompleteListItem';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import PaymentFromSelect from '../Selector/PaymentFromSelect';
 import SelectOption from '../Selector/SelectOption';
+
 const defaultExpense = {
   expense_id: '',
   date: dayjs().hour(12).minute(0).second(0),
   amount: '',
-  vendor: '',
+  merchant: '',
   _type: 'expense',
   category: '',
   subcategory: '',
   pending: false,
   bill_id: '',
-  debt_id: '',
-  asset_id: '',
+  payment_from_id: '',
   description: '',
 };
 
@@ -57,7 +57,7 @@ function ExpenseDialog() {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
 
-  const expenseVendors = find(optionLists, { option_type: 'expense_vendor' });
+  const expenseVendors = find(optionLists, { option_type: 'merchant' });
 
   useEffect(() => {
     const _bill = find(bills, { bill_id: expense.bill_id });
@@ -184,9 +184,9 @@ function ExpenseDialog() {
             setItem={setExpense}
           />
           <AutocompleteListItem
-            id='vendor'
-            label='vendor'
-            value={expense.vendor}
+            id='merchant'
+            label='merchant'
+            value={expense.merchant}
             options={get(expenseVendors, 'options', [])}
             onChange={handleChange}
           />
@@ -204,13 +204,6 @@ function ExpenseDialog() {
             options={subcategories}
             onChange={handleChange}
           />
-          {expense.asset_id && (
-            <TextFieldListItem
-              id='asset_id'
-              label='asset'
-              value={expense.asset_id}
-            />
-          )}
           <TextFieldListItem
             id='description'
             label='description'

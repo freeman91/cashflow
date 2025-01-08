@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import filter from 'lodash/filter';
 import get from 'lodash/get';
@@ -14,24 +14,16 @@ import Select from '@mui/material/Select';
 function PaymentFromSelect(props) {
   const { resource, setResource } = props;
 
-  const allDebts = useSelector((state) => state.debts.data);
-  const allAssets = useSelector((state) => state.assets.data);
-  const [assets, setAssets] = useState([]);
-  const [debts, setDebts] = useState([]);
-
-  useEffect(() => {
-    let _assets = filter(allAssets, (asset) => {
-      return asset.can_pay_from;
+  const [cashAccounts, creditAccounts] = useSelector((state) => {
+    let _accounts = state.accounts.data;
+    let cashAccounts = filter(_accounts, (account) => {
+      return account.asset_type === 'Cash';
     });
-    setAssets(sortBy(_assets, 'name'));
-  }, [allAssets]);
-
-  useEffect(() => {
-    let _debts = filter(allDebts, (debt) => {
-      return debt.can_pay_from;
+    let creditAccounts = filter(_accounts, (account) => {
+      return account.liability_type === 'Credit';
     });
-    setDebts(sortBy(_debts, 'name'));
-  }, [allDebts]);
+    return [sortBy(cashAccounts, 'name'), sortBy(creditAccounts, 'name')];
+  });
 
   const handleChangeDebt = (e) => {
     setResource((prevResource) => ({
@@ -66,23 +58,23 @@ function PaymentFromSelect(props) {
           None
         </MenuItem>
         <Divider sx={{ mx: 1 }} />
-        {debts.map((debt) => (
+        {creditAccounts.map((account) => (
           <MenuItem
-            key={debt.debt_id}
-            id={`${debt.debt_id}-menu-item`}
-            value={debt.debt_id}
+            key={account.account_id}
+            id={`${account.account_id}-menu-item`}
+            value={account.account_id}
           >
-            {debt.name}
+            {account.name}
           </MenuItem>
         ))}
         <Divider sx={{ mx: 1 }} />
-        {assets.map((asset) => (
+        {cashAccounts.map((account) => (
           <MenuItem
-            key={asset.asset_id}
-            id={`${asset.asset_id}-menu-item`}
-            value={asset.asset_id}
+            key={account.account_id}
+            id={`${account.account_id}-menu-item`}
+            value={account.account_id}
           >
-            {asset.name}
+            {account.name}
           </MenuItem>
         ))}
       </Select>

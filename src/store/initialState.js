@@ -20,6 +20,7 @@ export const dialogs = (() => {
     'purchase',
     'repayment',
     'sale',
+    'security',
     'newTransaction',
     'transactions',
   ].reduce((acc, resourceType) => {

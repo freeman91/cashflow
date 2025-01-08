@@ -27,15 +27,16 @@ class Sale(BaseModel):
 
     date = UTCDateTimeAttribute()
     amount = NumberAttribute()
-    vendor = UnicodeAttribute()
-    asset_id = UnicodeAttribute(null=True)
+    merchant = UnicodeAttribute(null=True)
+    security_id = UnicodeAttribute(null=True)
+    account_id = UnicodeAttribute(null=True)
     shares = NumberAttribute(null=True)
     price = NumberAttribute(null=True)
     fee = NumberAttribute(null=True)
     deposit_to_id = UnicodeAttribute(null=True)
 
     def __repr__(self):
-        return f"Sale<{self.user_id}, {self.asset_id}, {self.date}, {self.amount}>"
+        return f"Sale<{self.user_id}, {self.security_id}, {self.date}, {self.amount}>"
 
     @classmethod
     def create(
@@ -43,10 +44,11 @@ class Sale(BaseModel):
         user_id: str,
         _date: datetime,
         amount: float,
-        asset_id: str,
+        security_id: str,
+        account_id: str,
         shares: float,
         price: float,
-        vendor: str,
+        merchant: str,
         fee: float,
         deposit_to_id: str,
     ) -> "Sale":
@@ -55,8 +57,9 @@ class Sale(BaseModel):
             sale_id=f"sale:{uuid4()}",
             date=_date,
             amount=amount,
-            vendor=vendor,
-            asset_id=asset_id,
+            merchant=merchant,
+            security_id=security_id,
+            account_id=account_id,
             shares=shares,
             price=price,
             fee=fee,
@@ -85,22 +88,21 @@ class Sale(BaseModel):
             )
         )
 
-    def withdraw(self) -> dynamo.Asset:
-        asset = None
-        if self.asset_id.startswith("asset"):
-            asset = dynamo.Asset.get_(self.user_id, self.asset_id)
-            asset.shares -= self.shares
-            asset.value = asset.shares * self.price
-            asset.save()
+    def withdraw(self) -> "dynamo.Security":
+        security = None
+        if self.security_id.startswith("security"):
+            security = dynamo.Security.get_(self.user_id, self.security_id)
+            security.shares -= self.shares
+            security.save()
 
-        return asset
+        return security
 
-    def deposit(self) -> dynamo.Asset:
-        asset = None
-        if self.deposit_to_id.startswith("asset"):
-            asset = dynamo.Asset.get_(self.user_id, self.deposit_to_id)
-            asset.value += self.amount
-            asset.save()
+    def deposit(self) -> dynamo.Account:
+        account = None
+        if self.deposit_to_id.startswith("account"):
+            account = dynamo.Account.get_(self.user_id, self.deposit_to_id)
+            account.value += self.amount
+            account.save()
 
-        asset.save()
-        return asset
+        account.save()
+        return account

@@ -18,6 +18,7 @@ from services.dynamo import (
     Purchase,
     Repayment,
     Sale,
+    Security,
     User,
 )
 
@@ -183,3 +184,13 @@ def sale() -> Sale:
     ]
 
     return resource(sales, "Sale")
+
+
+def security() -> Security:
+    _user = user()
+    securities = [
+        {"name": f"{security.name} [{security.ticker}]", "value": security}
+        for security in sort_by(Security.list(user_id=_user.user_id), "name")
+    ]
+
+    return resource(securities, "Security")

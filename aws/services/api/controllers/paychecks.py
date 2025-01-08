@@ -39,8 +39,9 @@ def _paychecks(user_id: str):
                 employer=body.get("employer"),
                 take_home=float(body.get("take_home")),
                 taxes=float(body.get("taxes")),
-                retirement=float(body.get("retirement")),
-                benefits=float(body.get("benefits")),
+                retirement_contribution=body.get("retirement"),
+                benefits_contribution=body.get("benefits"),
+                other_benefits=float(body.get("other")),
                 other=float(body.get("other")),
                 deposit_to_id=body.get("deposit_to_id"),
                 description=body.get("description"),
@@ -54,15 +55,16 @@ def _paychecks(user_id: str):
                 employer=body.get("employer"),
                 take_home=float(body.get("take_home")),
                 taxes=float(body.get("taxes")),
-                retirement=float(body.get("retirement")),
-                benefits=float(body.get("benefits")),
+                retirement_contribution=body.get("retirement"),
+                benefits_contribution=body.get("benefits"),
+                other_benefits=float(body.get("other")),
                 other=float(body.get("other")),
                 deposit_to_id=body.get("deposit_to_id"),
                 description=body.get("description"),
             )
 
             if paycheck.deposit_to_id:
-                asset = paycheck.update_asset()
+                asset = paycheck.update_account()
                 asset = asset.as_dict()
 
         return success_result({"paycheck": paycheck.as_dict(), "asset": asset})
@@ -96,12 +98,48 @@ def _paycheck(user_id: str, paycheck_id: str):
                 request.json["date"][:19], "%Y-%m-%dT%H:%M:%S"
             )
 
+        bodyRetirementContribution = request.json.get("retirement_contribution")
+        if bodyRetirementContribution:
+            setattr(
+                paycheck.retirement_contribution,
+                "account_id",
+                bodyRetirementContribution.get("account_id"),
+            )
+            setattr(
+                paycheck.retirement_contribution,
+                "employee",
+                float(bodyRetirementContribution.get("employee")),
+            )
+            setattr(
+                paycheck.retirement_contribution,
+                "employer",
+                float(bodyRetirementContribution.get("employer")),
+            )
+
+        bodyBenefitsContribution = request.json.get("benefits_contribution")
+        if bodyBenefitsContribution:
+            setattr(
+                paycheck.benefits_contribution,
+                "account_id",
+                bodyBenefitsContribution.get("account_id"),
+            )
+            setattr(
+                paycheck.benefits_contribution,
+                "employee",
+                float(bodyBenefitsContribution.get("employee")),
+            )
+            setattr(
+                paycheck.benefits_contribution,
+                "employer",
+                float(bodyBenefitsContribution.get("employer")),
+            )
+
         paycheck.employer = request.json.get("employer")
         paycheck.take_home = float(request.json.get("take_home"))
-        paycheck.taxes = float(request.json.get("taxes"))
-        paycheck.retirement = float(request.json.get("retirement"))
-        paycheck.benefits = float(request.json.get("benefits"))
-        paycheck.other = float(request.json.get("other"))
+        paycheck.taxes = float(request.json.get("taxes") or 0)
+
+        paycheck.other_benefits = float(request.json.get("other_benefits") or 0)
+        paycheck.other = float(request.json.get("other") or 0)
         paycheck.description = request.json.get("description")
         paycheck.deposit_to_id = request.json.get("deposit_to_id")
 

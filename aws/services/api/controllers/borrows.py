@@ -21,8 +21,8 @@ def _borrows(user_id: str):
             user_id=user_id,
             _date=_date,
             amount=float(body.get("amount")),
-            lender=body.get("lender"),
-            debt_id=body.get("debt_id"),
+            merchant=body.get("merchant"),
+            account_id=body.get("account_id"),
         )
         return success_result(borrow.as_dict())
 
@@ -46,11 +46,7 @@ def _borrow(user_id: str, borrow_id: str):
         borrow.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
         borrow.amount = float(request.json.get("amount"))
 
-        for attr in [
-            "lender",
-            "pending",
-            "debt_id",
-        ]:
+        for attr in ["merchant", "pending", "account_id"]:
             setattr(borrow, attr, request.json.get(attr))
 
         borrow.save()

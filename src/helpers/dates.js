@@ -49,4 +49,19 @@ const updateRange = (_range, oldStart, oldEnd) => {
   return [range, { start: newStart, end: newEnd }];
 };
 
-export { dateStringToDayJS, updateRange };
+const timeSinceLastUpdate = (lastUpdate) => {
+  const now = dayjs();
+  const seconds = now.diff(lastUpdate, 'seconds');
+
+  if (seconds < 60) {
+    return 'Just now';
+  } else if (seconds < 3600) {
+    return `${Math.floor(seconds / 60)} minutes ago`;
+  } else if (seconds < 86400) {
+    return `${Math.floor(seconds / 3600)} hours ago`;
+  } else {
+    return `${Math.floor(seconds / 86400)} days ago`;
+  }
+};
+
+export { dateStringToDayJS, updateRange, timeSinceLastUpdate };

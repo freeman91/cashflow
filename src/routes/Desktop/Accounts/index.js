@@ -1,80 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { push } from 'redux-first-history';
+import { useSelector } from 'react-redux';
+import get from 'lodash/get';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Typography from '@mui/material/Typography';
 
-import { refreshAll } from '../../../store/user';
-import { openDialog } from '../../../store/dialogs';
-import AccountsCharts from '../../Mobile/Accounts/Charts';
-import AccountsStack from '../../Mobile/Accounts/AccountsStack';
-import AssetsStack from '../../Mobile/Accounts/AssetsStack';
-import DebtsStack from '../../Mobile/Accounts/DebtsStack';
-import CustomToggleButton from '../../../components/CustomToggleButton';
-import PullToRefresh from '../../../components/PullToRefresh';
-import CustomAppBar from '../../../components/CustomAppBar';
-import CreateButton from '../../../components/CustomAppBar/CreateButton';
-
-export const ACCOUNTS = 'accounts';
-export const ASSETS = 'assets';
-export const DEBTS = 'debts';
+import AccountsRoot from './Root';
+import Account from './Account';
 
 export default function Accounts() {
-  const dispatch = useDispatch();
   const location = useLocation();
 
-  const [tab, setTab] = useState(ACCOUNTS);
-
-  const onRefresh = async () => {
-    dispatch(refreshAll());
-  };
+  const accounts = useSelector((state) => state.accounts.data);
+  const [account, setAccount] = useState(null);
 
   useEffect(() => {
-    const _tab = location.pathname.split('/')[2];
-    if (_tab) {
-      setTab(_tab);
-    } else {
-      setTab(ACCOUNTS);
-    }
-  }, [location.pathname]);
+    let accountName = get(location.pathname.split('/'), 2);
+    accountName = accountName?.replace(/%20/g, ' ');
 
-  const handleChangeTab = (event, newTab) => {
-    dispatch(push(`/accounts/${newTab}`));
-  };
+    if (accountName) {
+      const _account = accounts.find((a) => a.name === accountName);
+      if (_account) {
+        setAccount(_account);
+        return;
+      }
+    }
+    setAccount(null);
+  }, [location, accounts]);
 
   return (
-    <Grid
-      container
-      spacing={1}
-      justifyContent='center'
-      alignItems='flex-start'
-      sx={{ maxWidth: 1000, mx: 'auto', width: '100%', mt: 1 }}
-    >
-      <AccountsCharts />
-      <Grid item xs={12} display='flex' justifyContent='center'>
-        <ToggleButtonGroup
-          fullWidth
-          color='primary'
-          value={tab}
-          exclusive
-          onChange={handleChangeTab}
-          sx={{ px: 1 }}
-        >
-          <CustomToggleButton value={ACCOUNTS}>{ACCOUNTS}</CustomToggleButton>
-          <CustomToggleButton value={ASSETS}>{ASSETS}</CustomToggleButton>
-          <CustomToggleButton value={DEBTS}>{DEBTS}</CustomToggleButton>
-        </ToggleButtonGroup>
-      </Grid>
-
-      {tab === ACCOUNTS && <AccountsStack />}
-      {tab === ASSETS && <AssetsStack />}
-      {tab === DEBTS && <DebtsStack />}
-
-      <Grid item xs={12} mb={10} />
-    </Grid>
+    <Box sx={{ width: '100%' }}>
+      {!account ? <AccountsRoot /> : <Account account={account} />}
+      <Grid item xs={12} mb={5} />
+    </Box>
   );
 }

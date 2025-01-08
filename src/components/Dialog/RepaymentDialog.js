@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
-import includes from 'lodash/includes';
 import map from 'lodash/map';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -41,22 +39,18 @@ const defaultRepayment = {
   principal: '',
   interest: '',
   escrow: '',
-  lender: '',
+  merchant: '',
   category: '',
   subcategory: '',
   _type: 'repayment',
   pending: false,
-  debt_id: '',
+  account_id: '',
   bill_id: '',
 };
 
 function RepaymentDialog() {
   const dispatch = useDispatch();
-  const location = useLocation();
-
-  const accounts = useSelector((state) => state.accounts.data);
   const categoriesData = useSelector((state) => state.categories.data);
-  const debts = useSelector((state) => state.debts.data);
   const repayments = useSelector((state) => state.repayments.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.repayment);
 
@@ -90,28 +84,6 @@ function RepaymentDialog() {
 
     setSubcategories(get(_category, 'subcategories', []));
   }, [repayment.category, expenseCategories]);
-
-  useEffect(() => {
-    let _lender = '';
-    if (repayment.debt_id) {
-      const debt = find(debts, { debt_id: repayment.debt_id });
-      const account = find(accounts, { account_id: debt?.account_id });
-      setDebt(debt);
-      _lender = get(account, 'name', '');
-    }
-    setRepayment((e) => ({ ...e, lender: _lender }));
-  }, [repayment.debt_id, accounts, debts]);
-
-  useEffect(() => {
-    if (mode !== 'create') {
-      let _pathname = location.pathname;
-      if (includes(location.pathname, '/app/debts')) {
-        let _id = _pathname.replace('/app/debts', '');
-        _id = _id.replace('/', '');
-        setRepayment((e) => ({ ...e, debt_id: _id }));
-      }
-    }
-  }, [location.pathname, mode]);
 
   useEffect(() => {
     if (id) {
@@ -256,9 +228,9 @@ function RepaymentDialog() {
             />
           )}
           <TextFieldListItem
-            id='lender'
-            label='lender'
-            value={repayment.lender}
+            id='merchant'
+            label='merchant'
+            value={repayment.merchant}
             onChange={handleChange}
           />
           <SelectOption

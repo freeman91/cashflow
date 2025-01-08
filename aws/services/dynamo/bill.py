@@ -37,10 +37,10 @@ class Bill(BaseModel):
     escrow = NumberAttribute(null=True)
     category = UnicodeAttribute()
     subcategory = UnicodeAttribute()
-    vendor = UnicodeAttribute()
+    merchant = UnicodeAttribute(null=True)
     day = NumberAttribute()
     months = ListAttribute()
-    debt_id = UnicodeAttribute(null=True)
+    account_id = UnicodeAttribute(null=True)
     payment_from_id = UnicodeAttribute(null=True)
     last_update = UTCDateTimeAttribute(default=datetime.now(timezone.utc))
 
@@ -53,12 +53,13 @@ class Bill(BaseModel):
         user_id: str,
         name: str,
         amount: float,
+        escrow: float,
         category: str,
         subcategory: str,
-        vendor: str,
+        merchant: str,
         day: str,
         months: List,
-        debt_id: str,
+        account_id: str,
         payment_from_id: str,
     ) -> "Bill":
         bill = cls(
@@ -66,12 +67,13 @@ class Bill(BaseModel):
             bill_id=f"bill:{uuid4()}",
             name=name,
             amount=amount,
+            escrow=escrow,
             category=category,
             subcategory=subcategory,
-            vendor=vendor,
+            merchant=merchant,
             day=day,
             months=months,
-            debt_id=debt_id,
+            account_id=account_id,
             payment_from_id=payment_from_id,
             last_update=datetime.now(timezone.utc),
         )
@@ -96,8 +98,8 @@ class Bill(BaseModel):
         return super().list(user_id, bill_id)
 
     def generate(self, year: int, month: int):
-        if self.debt_id:
-            debt = dynamo.Debt.get_(user_id=USER_ID, debt_id=self.debt_id)
+        if self.account_id:
+            debt = dynamo.Account.get_(user_id=USER_ID, account_id=self.account_id)
             interest = debt.amount * (debt.interest_rate / 12)
             principal = self.amount - interest
             escrow = None
@@ -112,11 +114,11 @@ class Bill(BaseModel):
                 principal=round(principal, 2),
                 interest=round(interest, 2),
                 escrow=round(escrow, 2) if escrow else None,
-                lender=self.vendor,
+                merchant=self.merchant,
                 category=self.category,
                 subcategory=self.subcategory,
                 pending=True,
-                debt_id=self.debt_id,
+                account_id=self.account_id,
                 bill_id=self.bill_id,
                 payment_from_id=self.payment_from_id,
             )
@@ -127,7 +129,7 @@ class Bill(BaseModel):
             _date=datetime(year, month, self.day, 12, 0),
             category=self.category,
             subcategory=self.subcategory,
-            vendor=self.vendor,
+            merchant=self.merchant,
             pending=True,
             bill_id=self.bill_id,
             payment_from_id=self.payment_from_id,

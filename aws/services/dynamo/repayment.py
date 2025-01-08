@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import List, Optional
 from uuid import uuid4
 from pynamodb.attributes import (
     BooleanAttribute,
@@ -34,17 +34,17 @@ class Repayment(BaseModel):
     principal = NumberAttribute()
     interest = NumberAttribute()
     escrow = NumberAttribute(null=True)
-    lender = UnicodeAttribute()
+    merchant = UnicodeAttribute(null=True)
     pending = BooleanAttribute(default=False)
     category = UnicodeAttribute(default="")
     subcategory = UnicodeAttribute(default="")
-    debt_id = UnicodeAttribute()
+    account_id = UnicodeAttribute(null=True)
     bill_id = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
     payment_from_id = UnicodeAttribute(null=True)
 
     def __repr__(self):
-        return f"Repayment<{self.user_id}, {self.date}, {self.lender}, {self.principal}, {self.interest}>"
+        return f"Repayment<{self.user_id}, {self.date}, {self.merchant}, {self.principal}, {self.interest}>"
 
     @classmethod
     def create(
@@ -53,10 +53,10 @@ class Repayment(BaseModel):
         _date: datetime,
         principal: float,
         interest: float,
-        lender: str,
+        merchant: str,
         category: str,
         subcategory: str,
-        debt_id: str,
+        account_id: str,
         escrow: float = None,
         bill_id: str = None,
         pending: bool = False,
@@ -70,10 +70,10 @@ class Repayment(BaseModel):
             principal=principal,
             interest=interest,
             escrow=escrow,
-            lender=lender,
+            merchant=merchant,
             category=category,
             subcategory=subcategory,
-            debt_id=debt_id,
+            account_id=account_id,
             bill_id=bill_id,
             pending=pending,
             description=description,
@@ -102,27 +102,30 @@ class Repayment(BaseModel):
             )
         )
 
-    def update_subaccount(self) -> Union[dynamo.Asset, dynamo.Debt]:
-        subaccount = None
+    def update_account(self) -> dynamo.Account:
+        account = None
         if self.payment_from_id is None:
-            return subaccount
+            return account
 
         total = self.principal + self.interest + (self.escrow or 0)
-        if self.payment_from_id.startswith("asset"):
-            subaccount = dynamo.Asset.get_(self.user_id, self.payment_from_id)
-            subaccount.value -= total
-            subaccount.value = round(subaccount.value, 2)
-            subaccount.save()
-        elif self.payment_from_id.startswith("debt"):
-            subaccount = dynamo.Debt.get_(self.user_id, self.payment_from_id)
-            subaccount.amount += total
-            subaccount.amount = round(subaccount.amount, 2)
-            subaccount.save()
+        if self.payment_from_id.startswith("account"):
+            account = dynamo.Account.get_(self.user_id, self.payment_from_id)
 
-        return subaccount
+            if account.account_type == "Asset":
+                if account.balance:
+                    account.balance -= total
+                if account.amount:
+                    account.amount -= total
+            elif account.account_type == "Liability":
+                account.amount += total
 
-    def update_debt_principal(self) -> dynamo.Debt:
-        debt = dynamo.Debt.get_(self.user_id, self.debt_id)
-        debt.amount -= self.principal
-        debt.save()
-        return debt
+            account.value = round(account.value, 2)
+            account.save()
+
+        return account
+
+    def update_account_principal(self) -> dynamo.Account:
+        account = dynamo.Account.get_(self.user_id, self.account_id)
+        account.amount -= self.principal
+        account.save()
+        return account

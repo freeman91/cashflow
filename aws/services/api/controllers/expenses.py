@@ -24,7 +24,7 @@ def _expenses(user_id: str):
             user_id=user_id,
             _date=_date,
             amount=float(body.get("amount")),
-            vendor=body.get("vendor"),
+            merchant=body.get("merchant"),
             category=body.get("category"),
             subcategory=body.get("subcategory"),
             pending=body.get("pending"),
@@ -33,12 +33,12 @@ def _expenses(user_id: str):
             description=body.get("description"),
         )
 
-        subaccount = None
+        account = None
         if not expense.pending and expense.payment_from_id:
-            subaccount = expense.update_subaccount()
-            subaccount = subaccount.as_dict()
+            account = expense.update_account()
+            account = account.as_dict()
 
-        return success_result({"expense": expense.as_dict(), "subaccount": subaccount})
+        return success_result({"expense": expense.as_dict(), "account": account})
 
     if request.method == "GET":
         start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
@@ -71,7 +71,7 @@ def _expense(user_id: str, expense_id: str):
         expense.amount = float(request.json.get("amount"))
 
         for attr in [
-            "vendor",
+            "merchant",
             "category",
             "subcategory",
             "pending",
@@ -82,13 +82,13 @@ def _expense(user_id: str, expense_id: str):
             setattr(expense, attr, request.json.get(attr))
         expense.save()
 
-        subaccount = None
+        account = None
         if prev_pending is True and expense.pending is False:
-            subaccount = expense.update_subaccount()
-            if subaccount:
-                subaccount = subaccount.as_dict()
+            account = expense.update_account()
+            if account:
+                account = account.as_dict()
 
-        return success_result({"expense": expense.as_dict(), "subaccount": subaccount})
+        return success_result({"expense": expense.as_dict(), "account": account})
 
     if request.method == "DELETE":
         Expense.get_(user_id=user_id, expense_id=expense_id).delete()

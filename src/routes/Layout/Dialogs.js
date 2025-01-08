@@ -12,6 +12,7 @@ import PaycheckDialog from '../../components/Dialog/PaycheckDialog';
 import PurchaseDialog from '../../components/Dialog/PurchaseDialog';
 import RepaymentDialog from '../../components/Dialog/RepaymentDialog';
 import SaleDialog from '../../components/Dialog/SaleDialog';
+import SecurityDialog from '../../components/Dialog/SecurityDialog';
 import TransactionsDialog from '../../components/Dialog/TransactionsDialog';
 
 export default function Dialogs() {
@@ -29,6 +30,7 @@ export default function Dialogs() {
       <PurchaseDialog />
       <RepaymentDialog />
       <SaleDialog />
+      <SecurityDialog />
       <TransactionsDialog />
     </>
   );

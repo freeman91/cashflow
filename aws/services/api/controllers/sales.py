@@ -23,25 +23,26 @@ def _sales(user_id: str):
             amount=float(body.get("amount")),
             shares=float(body.get("shares")),
             price=float(body.get("price")),
-            asset_id=body.get("asset_id"),
-            vendor=body.get("vendor"),
+            security_id=body.get("security_id"),
+            account_id=body.get("account_id"),
+            merchant=body.get("merchant"),
             fee=float(body.get("fee")),
             deposit_to_id=body.get("deposit_to_id"),
         )
 
-        if sale.asset_id:
-            withdraw_asset = sale.withdraw()
-            withdraw_asset = withdraw_asset.as_dict()
+        if sale.security_id:
+            withdraw_security = sale.withdraw()
+            withdraw_security = withdraw_security.as_dict()
 
         if sale.deposit_to_id:
-            deposit_asset = sale.deposit()
-            deposit_asset = deposit_asset.as_dict()
+            deposit_account = sale.deposit()
+            deposit_account = deposit_account.as_dict()
 
         return success_result(
             {
                 "sale": sale.as_dict(),
-                "deposit_asset": deposit_asset,
-                "withdraw_asset": withdraw_asset,
+                "deposit_account": deposit_account,
+                "withdraw_security": withdraw_security,
             }
         )
 
@@ -64,7 +65,7 @@ def _sale(user_id: str, sale_id: str):
         sale.price = float(request.json.get("price"))
         sale.fee = float(request.json.get("fee"))
 
-        for attr in ["asset_id", "vendor", "deposit_to_id"]:
+        for attr in ["account_id", "security_id", "merchant", "deposit_to_id"]:
             setattr(sale, attr, request.json.get(attr))
 
         sale.save()

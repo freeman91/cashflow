@@ -14,10 +14,10 @@ import _package from '../package.json';
 import { muiTheme } from './styles/muiTheme';
 import { history, store } from './store/createStore';
 
-import DesktopAccount from './routes/Desktop/Account';
 import DesktopAccounts from './routes/Desktop/Accounts';
-import DesktopCalendar from './routes/Desktop/Calendar';
-import DesktopHome from './routes/Desktop/Home';
+import DesktopDashboard from './routes/Desktop/Dashboard';
+import DesktopTransactions from './routes/Desktop/Transactions';
+import DesktopRecurring from './routes/Desktop/Recurring';
 import Layout from './routes/Layout';
 import MobileAccount from './routes/Mobile/Account';
 import MobileAccounts from './routes/Mobile/Accounts';
@@ -25,7 +25,7 @@ import MobileAsset from './routes/Mobile/Asset';
 import MobileBudgets from './routes/Mobile/Budgets';
 import MobileCalendar from './routes/Mobile/Calendar';
 import MobileDebt from './routes/Mobile/Debt';
-import MobileHome from './routes/Mobile/Home';
+import MobileDashboard from './routes/Mobile/Dashboard';
 import MobileNetworth from './routes/Mobile/Networth';
 import MobileNetworthSelected from './routes/Mobile/Networth/Selected';
 import MobileSearch from './routes/Mobile/Search';
@@ -47,7 +47,7 @@ const MobileRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
-        <Route path='/home' element={<MobileHome />} />
+        <Route path='/dashboard' element={<MobileDashboard />} />
         <Route path='/account' element={<MobileAccount />} />
         <Route path='/accounts' element={<MobileAccounts />} />
         <Route path='/accounts/:tab' element={<MobileAccounts />} />
@@ -68,7 +68,7 @@ const MobileRoutes = () => {
         <Route path='/user' element={<></>} />
       </Route>
       <Route path='*'>
-        <Route index element={<Navigate to='/home' />} />
+        <Route index element={<Navigate to='/dashboard' />} />
       </Route>
     </Routes>
   );
@@ -78,27 +78,28 @@ const DesktopRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
-        <Route path='/home' element={<DesktopHome />} />
-        <Route path='/account' element={<DesktopAccount />} />
+        <Route path='/dashboard' element={<DesktopDashboard />} />
         <Route path='/accounts' element={<DesktopAccounts />} />
-        <Route path='/asset' element={<></>} />
+        <Route path='/accounts/:accountName' element={<DesktopAccounts />} />
+        <Route path='/transactions' element={<DesktopTransactions />} />
+        <Route path='/reports' element={<></>} />
         <Route path='/budgets' element={<></>} />
-        <Route path='/calendar' element={<DesktopCalendar />} />
-        <Route path='/calendar/:year/:month' element={<DesktopCalendar />} />
-        <Route path='/debt' element={<></>} />
-        <Route path='/summary' element={<></>} />
-        <Route path='/summary/:year' element={<></>} />
-        <Route path='/summary/:year/:month' element={<></>} />
-        <Route path='/networth' element={<></>} />
+        <Route path='/recurring' element={<DesktopRecurring />} />
+        {/* <Route path='/calendar' element={<DesktopCalendar />} /> */}
+        {/* <Route path='/calendar/:year/:month' element={<DesktopCalendar />} /> */}
+        {/* <Route path='/summary' element={<></>} /> */}
+        {/* <Route path='/summary/:year' element={<DesktopSummary />} /> */}
+        {/* <Route path='/summary/:year/:month' element={<DesktopSummary />} /> */}
+        {/* <Route path='/networth' element={<></>} /> */}
         {/* <Route path='/networth/:id' element={<></>} /> */}
-        <Route path='/search' element={<></>} />
+        {/* <Route path='/search' element={<></>} /> */}
         {/* <Route path='/search/:type' element={<></>} /> */}
-        <Route path='/settings' element={<></>} />
+        {/* <Route path='/settings' element={<></>} /> */}
         {/* <Route path='/settings/:type' element={<></>} /> */}
-        <Route path='/user' element={<></>} />
+        {/* <Route path='/user' element={<></>} /> */}
       </Route>
       <Route path='*'>
-        <Route index element={<Navigate to='/home' />} />
+        <Route index element={<Navigate to='/dashboard' />} />
       </Route>
     </Routes>
   );

@@ -34,11 +34,11 @@ const defaultBill = {
   amount: '',
   category: '',
   subcategory: '',
-  vendor: '',
+  merchant: '',
   _type: 'bill',
   day: '15',
   months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-  debt_id: '',
+  account_id: '',
 };
 
 function BillDialog() {
@@ -46,12 +46,11 @@ function BillDialog() {
   const optionLists = useSelector((state) => state.optionLists.data);
   const categoriesData = useSelector((state) => state.categories.data);
   const accounts = useSelector((state) => state.accounts.data);
-  const debts = useSelector((state) => state.debts.data);
   const bills = useSelector((state) => state.bills.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.bill);
   const [bill, setBill] = useState(defaultBill);
 
-  const expenseVendors = find(optionLists, { option_type: 'expense_vendor' });
+  const merchants = find(optionLists, { option_type: 'merchant' });
   const [expenseCategories, setExpenseCategories] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
@@ -94,16 +93,15 @@ function BillDialog() {
   }, [attrs]);
 
   useEffect(() => {
-    if (bill.debt_id) {
-      const debt = find(debts, { debt_id: bill.debt_id });
-      const account = find(accounts, { account_id: debt.account_id });
+    if (bill.account_id) {
+      const account = find(accounts, { account_id: bill.account_id });
       setBill((bill) => ({
         ...bill,
-        name: debt.name,
-        vendor: account.name,
+        name: account.name,
+        merchant: account.name,
       }));
     }
-  }, [bill.debt_id, accounts, debts]);
+  }, [bill.account_id, accounts]);
 
   const handleChange = (e) => {
     setBill({ ...bill, [e.target.id]: e.target.value });
@@ -128,7 +126,7 @@ function BillDialog() {
   };
 
   const handleGenerateExpense = () => {
-    const type = bill?.debt_id ? 'repayment' : 'expense';
+    const type = bill?.account_id ? 'repayment' : 'expense';
     let attrs = {
       user_id: bill.user_id,
       category: bill.category,
@@ -142,10 +140,10 @@ function BillDialog() {
       let principal,
         interest,
         escrow = null;
-      const debt = find(debts, { debt_id: bill.debt_id });
+      const account = find(accounts, { account_id: bill.account_id });
 
       interest = parseFloat(
-        (debt.amount * (debt.interest_rate / 12)).toFixed(2)
+        (account.amount * (account.interest_rate / 12)).toFixed(2)
       );
       principal = parseFloat((bill.amount - interest).toFixed(2));
 
@@ -160,15 +158,15 @@ function BillDialog() {
         principal,
         interest,
         escrow,
-        lender: bill.vendor,
-        debt_id: bill.debt_id,
+        account_id: bill.account_id,
+        merchant: bill.merchant,
         bill_id: bill.bill_id,
       };
     } else {
       attrs = {
         ...attrs,
         amount: bill.amount,
-        vendor: bill.vendor,
+        merchant: bill.merchant,
         bill_id: bill.bill_id,
       };
     }
@@ -214,7 +212,7 @@ function BillDialog() {
               }}
             />
           )} */}
-          {(mode === 'create' || bill.debt_id) && (
+          {(mode === 'create' || bill.account_id) && (
             <ListItem key='debt-select' disablePadding sx={{ pt: 2, pb: 1 }}>
               <DebtSelect mode={mode} resource={bill} setResource={setBill} />
             </ListItem>
@@ -236,10 +234,10 @@ function BillDialog() {
             />
           )}
           <AutocompleteListItem
-            id='vendor'
-            label='vendor'
-            value={bill.vendor}
-            options={get(expenseVendors, 'options', [])}
+            id='merchant'
+            label='merchant'
+            value={bill.merchant}
+            options={get(merchants, 'options', [])}
             onChange={handleChange}
           />
           <SelectOption

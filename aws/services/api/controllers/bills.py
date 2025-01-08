@@ -16,17 +16,23 @@ bills = Blueprint("bills", __name__)
 def _bills(user_id: str):
     if request.method == "POST":
         body = request.json
+        escrow = body.get("escrow")
+        if escrow:
+            escrow = float(escrow)
+        else:
+            escrow = 0
+
         bill = Bill.create(
             user_id=user_id,
             name=body.get("name"),
             amount=float(body.get("amount")),
-            escrow=float(body.get("escrow")),
+            escrow=escrow,
             category=body.get("category"),
             subcategory=body.get("subcategory"),
-            vendor=body.get("vendor"),
+            merchant=body.get("merchant"),
             day=body.get("day"),
             months=body.get("months"),
-            debt_id=body.get("debt_id"),
+            account_id=body.get("account_id"),
             payment_from_id=body.get("payment_from_id"),
         )
         return success_result(bill.as_dict())
@@ -55,10 +61,10 @@ def _bill(user_id: str, bill_id: str):
             "name",
             "category",
             "subcategory",
-            "vendor",
+            "merchant",
             "day",
             "months",
-            "debt_id",
+            "account_id",
             "payment_from_id",
         ]:
             setattr(bill, attr, payload.get(attr))

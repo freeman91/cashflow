@@ -23,8 +23,8 @@ def _purchases(user_id: str):
             amount=float(body.get("amount")),
             shares=float(body.get("shares")),
             price=float(body.get("price")),
-            vendor=body.get("vendor"),
-            asset_id=body.get("asset_id"),
+            merchant=body.get("merchant"),
+            account_id=body.get("account_id"),
         )
         return success_result(purchase.as_dict())
 
@@ -52,7 +52,7 @@ def _purchase(user_id: str, purchase_id: str):
         purchase.shares = float(request.json.get("shares"))
         purchase.price = float(request.json.get("price"))
 
-        for attr in ["asset_id", "vendor"]:
+        for attr in ["account_id", "merchant"]:
             setattr(purchase, attr, request.json.get(attr))
 
         purchase.save()

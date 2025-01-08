@@ -23,10 +23,10 @@ export default function Borrow(props) {
             WebkitBoxOrient: 'vertical',
           }}
         >
-          {transaction.lender}
+          {transaction.merchant}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
-          lender
+          merchant
         </Typography>
       </BoxFlexColumn>
       <BoxFlexColumn alignItems='space-between'>

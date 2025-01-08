@@ -1,20 +1,24 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import sortBy from 'lodash/sortBy';
 
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { sortBy } from 'lodash';
+
+import { ASSET } from '../Dialog/AccountDialog';
 
 function AssetSelect(props) {
   const { resource, setResource } = props;
 
-  const assets = useSelector((state) => state.assets.data);
+  const assets = useSelector((state) =>
+    state.accounts.data.filter((account) => account.account_type === ASSET)
+  );
 
   const handleChangeAsset = (e) => {
     if (e.target.value === '') return;
-    setResource({ ...resource, asset_id: e.target.value });
+    setResource({ ...resource, account_id: e.target.value });
   };
 
   return (
@@ -23,7 +27,7 @@ function AssetSelect(props) {
       <Select
         labelId='asset-label'
         id='item_id'
-        value={resource.asset_id}
+        value={resource.account_id}
         onChange={handleChangeAsset}
         label='Asset'
         sx={{
@@ -35,9 +39,9 @@ function AssetSelect(props) {
       >
         {sortBy(assets, 'name ').map((asset) => (
           <MenuItem
-            key={asset.asset_id}
-            id={`${asset.asset_id}-menu-item`}
-            value={asset.asset_id}
+            key={asset.account_id}
+            id={`${asset.account_id}-menu-item`}
+            value={asset.account_id}
           >
             {asset.name}
           </MenuItem>

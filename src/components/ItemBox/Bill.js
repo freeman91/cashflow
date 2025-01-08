@@ -30,7 +30,7 @@ export default function Bill(props) {
       </BoxFlexColumn>
       <BoxFlexColumn alignItems='space-between'>
         <Typography align='right' variant='body2' color='text.secondary'>
-          {bill.nextBillDate.format('MMM Do, YYYY')}
+          {bill?.nextBillDate?.format('MMM Do, YYYY') || ''}
         </Typography>
         <BoxFlexCenter>
           <Typography variant='h5' color='text.secondary'>

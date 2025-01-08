@@ -55,9 +55,7 @@ const compileData = (incomeSumByMonth, expenseSumByMonth) => {
     .map((month) => ({
       name: dayjs().month(month).format('MMMM'),
       income: incomeSumByMonth[month],
-      resetIncome: -incomeSumByMonth[month],
-      expense: -expenseSumByMonth[month],
-      resetExpense: expenseSumByMonth[month],
+      expense: expenseSumByMonth[month],
       net: incomeSumByMonth[month] - expenseSumByMonth[month],
     }))
     .filter((item) => item.net !== 0);
@@ -100,23 +98,16 @@ export default function MonthlyLineChart(props) {
               tickFormatter={(monthName) => {
                 return monthName[0];
               }}
+              bar
             />
             <YAxis hide />
             <Tooltip cursor={false} content={<CustomTooltip />} />
-            <Bar
-              stackId='a'
-              dataKey='income'
-              fill={theme.palette.success.main}
-              barSize={15}
-            />
-            <Bar stackId='a' dataKey='resetIncome' fill='transparent' />
+            <Bar dataKey='income' fill={theme.palette.success.main} />
             <Bar
               stackId='a'
               dataKey='expense'
               fill={theme.palette.error.main}
-              barSize={15}
             />
-            <Bar stackId='a' dataKey='resetExpense' fill='transparent' />
             <Line
               dot={false}
               type='monotone'

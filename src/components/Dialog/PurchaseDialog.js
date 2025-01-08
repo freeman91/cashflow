@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
-import get from 'lodash/get';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 
@@ -30,50 +28,30 @@ const defaultPurchase = {
   purchase_id: '',
   date: dayjs().hour(12).minute(0).second(0),
   amount: '',
-  vendor: '',
+  merchant: '',
   shares: '',
   price: '',
   _type: 'purchase',
-  asset_id: '',
+  account_id: '',
 };
 
 function PurchaseDialog() {
   const dispatch = useDispatch();
-  const location = useLocation();
 
-  const accounts = useSelector((state) => state.accounts.data);
-  const assets = useSelector((state) => state.assets.data);
   const purchases = useSelector((state) => state.purchases.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.purchase);
 
   const [purchase, setPurchase] = useState(defaultPurchase);
 
   useEffect(() => {
-    let _vendor = '';
-    if (purchase.asset_id) {
-      const asset = find(assets, { asset_id: purchase.asset_id });
-      const account = find(accounts, { account_id: asset?.account_id });
-      _vendor = get(account, 'name', '');
-    }
-    setPurchase((e) => ({ ...e, vendor: _vendor }));
-  }, [purchase.asset_id, accounts, assets]);
-
-  useEffect(() => {
-    if (mode !== 'create') {
-      let _pathname = location.pathname;
-      let _id = _pathname.replace('/app/assets', '');
-      _id = _id.replace('/', '');
-      setPurchase((e) => ({ ...e, asset_id: _id }));
-    }
-  }, [location.pathname, mode]);
-
-  useEffect(() => {
     if (id) {
       let _purchase = find(purchases, { purchase_id: id });
-      setPurchase({
-        ..._purchase,
-        date: dayjs(_purchase.date),
-      });
+      if (_purchase) {
+        setPurchase({
+          ..._purchase,
+          date: dayjs(_purchase.date),
+        });
+      }
     }
   }, [id, purchases]);
 
@@ -188,9 +166,9 @@ function PurchaseDialog() {
             }}
           />
           <TextFieldListItem
-            id='vendor'
-            label='vendor'
-            value={purchase.vendor}
+            id='merchant'
+            label='merchant'
+            value={purchase.merchant}
             onChange={handleChange}
           />
           <ListItem

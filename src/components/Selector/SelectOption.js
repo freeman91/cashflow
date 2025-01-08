@@ -7,9 +7,9 @@ import ListItem from '@mui/material/ListItem';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-export default function SelectOption({ value, onChange, options, label }) {
+export default function SelectOption({ id, label, value, onChange, options }) {
   const handleChange = (e) => {
-    onChange({ target: { id: label, value: e.target.value } });
+    onChange({ target: { id, value: e.target.value } });
   };
 
   const sortedOptions = cloneDeep(options).sort();

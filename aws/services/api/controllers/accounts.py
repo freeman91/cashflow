@@ -1,5 +1,6 @@
 """Accounts controller"""
 
+from datetime import datetime, timezone
 from flask import Blueprint, request
 
 from services.dynamo import Account
@@ -18,12 +19,31 @@ accounts = Blueprint("accounts", __name__)
 def _accounts(user_id: str):
     if request.method == "POST":
         body = request.json
+
+        for attr in ["amount", "value", "balance", "interest_rate"]:
+            attrVal = body.get(attr)
+            if attrVal == "":
+                body[attr] = None
+            else:
+                body[attr] = float(attrVal)
+
+        # TODO: ensure name is unique
+
         account = Account.create(
             user_id=user_id,
             name=body.get("name"),
+            institution=body.get("institution"),
             url=body.get("url"),
             account_type=body.get("account_type"),
+            asset_type=body.get("asset_type"),
+            liability_type=body.get("liability_type"),
+            subtype=body.get("subtype"),
             description=body.get("description"),
+            amount=body.get("amount"),
+            value=body.get("value"),
+            balance=body.get("balance"),
+            interest_rate=body.get("interest_rate"),
+            icon_url=body.get("icon_url"),
         )
         return success_result(account.as_dict())
 
@@ -45,8 +65,28 @@ def _account(user_id: str, account_id: str):
     if request.method == "PUT":
         account = Account.get_(user_id=user_id, account_id=account_id)
 
-        for attr in ["name", "url", "account_type", "description"]:
+        # TODO: ensure name is unique
+
+        account.last_update = datetime.now(timezone.utc)
+        for attr in [
+            "name",
+            "institution",
+            "url",
+            "account_type",
+            "asset_type",
+            "liability_type",
+            "subtype",
+            "description",
+            "icon_url",
+        ]:
             setattr(account, attr, request.json.get(attr))
+
+        for attr in ["amount", "value", "balance", "interest_rate"]:
+            attrVal = request.json.get(attr)
+            if attrVal == "" or attrVal is None:
+                setattr(account, attr, None)
+            else:
+                setattr(account, attr, float(attrVal))
 
         account.save()
         return success_result(account.as_dict())

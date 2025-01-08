@@ -8,7 +8,7 @@ import sortBy from 'lodash/sortBy';
 import Grid from '@mui/material/Grid';
 
 import { ASSETS, DEBTS } from '.';
-import CurrentNetworth from '../Home/CurrentNetworth';
+import CurrentNetworth from '../Dashboard/CurrentNetworth';
 import SubAccountPieChart from './Networth/SubAccountPieChart';
 
 export default function AccountsCharts() {

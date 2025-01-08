@@ -3,33 +3,32 @@
 
 import os
 import math
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 
-from pydash import filter_, map_, find
+from pydash import filter_, map_, find, find_index, sort_by
 from flask import request, Blueprint, current_app
 from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
 
-from services.dynamo import Account, Asset, Bill, Debt, Networth
+from services.dynamo import Account, Bill, History, Security
+from services.dynamo.history import ValueItem
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
 )
 
-
-USER_ID = os.getenv("REACT_APP_USER_ID")
 CRYPTO_KEY = os.getenv("CRYPTO_COMPARE_KEY")
 
 
 cronjobs = Blueprint("cronjobs", __name__)
 
 
-def get_crypto_prices(tickers: list):
+def get_crypto_prices(tickers: set):
     """get current crypto prices"""
 
     cryptocompare._set_api_key_parameter(CRYPTO_KEY)
-    return cryptocompare.get_price(tickers, currency="USD")
+    return cryptocompare.get_price(list(tickers), currency="USD")
 
 
 def get_stock_price(ticker: str):
@@ -51,22 +50,28 @@ def update_crypto_prices():
     """
 
     if request.method == "PUT":
-        crypto_assets = list(
-            filter_(Asset.list(), lambda asset: asset.category == "crypto")
+        tickers = set()
+        crypto_securities = list(
+            filter_(
+                Security.list(),
+                lambda security: security.security_type == "Crypto"
+                and security.shares > 0,
+            )
         )
 
-        tickers = map_(crypto_assets, lambda asset: asset.name.upper())
+        for security in crypto_securities:
+            tickers.add(security.ticker.upper())
+
         prices = get_crypto_prices(tickers)
 
-        for asset in crypto_assets:
-            price = prices[f"{asset.name.upper()}"]["USD"]
-            asset.price = round(price, 2)
-            asset.value = round(asset.price * asset.shares, 2)
+        for security in crypto_securities:
+            price = prices[f"{security.ticker.upper()}"]["USD"]
+            security.price = round(price, 2)
 
-            current_app.logger.info("%s: %s", asset.name, asset.price)
-            asset.save()
+            current_app.logger.info("%s: %s", security.ticker, security.price)
+            security.save()
 
-        return success_result("assets updated")
+        return success_result("crypto securities updated")
 
     return failure_result()
 
@@ -78,104 +83,111 @@ def update_stock_prices():
     0 18 * * * curl -X PUT localhost:9000/cronjobs/update_stock_prices
     """
 
+    stock_types = ["Stock", "Mutual Fund", "Index Fund", "ETF"]
+
     if request.method == "PUT":
-        stock_assets = list(
-            filter_(Asset.list(), lambda asset: asset.category == "stock")
+        stock_securities = list(
+            filter_(
+                Security.list(),
+                lambda securities: securities.security_type in stock_types
+                and securities.shares > 0,
+            )
         )
 
-        tickers = map_(stock_assets, lambda asset: asset.name.upper())
+        tickers = map_(stock_securities, lambda securities: securities.ticker.upper())
         ticker_prices = map_(
-            tickers, lambda ticker: {"name": ticker, "price": get_stock_price(ticker)}
+            tickers, lambda ticker: {"ticker": ticker, "price": get_stock_price(ticker)}
         )
-        for asset in stock_assets:
-            ticker = find(ticker_prices, lambda t: t["name"] == asset.name.upper())
+        for security in stock_securities:
+            ticker = find(
+                ticker_prices, lambda t: t["ticker"] == security.ticker.upper()
+            )
             ticker_price = ticker["price"]
-            asset.price = round(float(ticker_price), 2)
-            asset.value = round(asset.price * asset.shares, 2)
+            security.price = round(float(ticker_price), 2)
 
-            current_app.logger.info("%s: %s", asset.name, asset.price)
-            asset.save()
+            current_app.logger.info("%s: %s", security.ticker, security.price)
+            security.save()
 
-        return success_result("assets updated")
+        return success_result("stock securities updated")
 
     return failure_result()
 
 
 @handle_exception
-@cronjobs.route("/cronjobs/networth_snapshot", methods=["POST"])
-def networth_snapshot():
+@cronjobs.route("/cronjobs/save_value_histories", methods=["POST"])
+def save_value_histories():
     """
-    0 22 30 4,6,9,11        * curl -X POST localhost:9000/cronjobs/networth_snapshot
-    0 22 31 1,3,5,7,8,10,12 * curl -X POST localhost:9000/cronjobs/networth_snapshot
-    0 22 28 2               * curl -X POST localhost:9000/cronjobs/networth_snapshot
+    0 22 30 4,6,9,11        * curl -X POST localhost:9000/cronjobs/save_value_histories
+    0 22 31 1,3,5,7,8,10,12 * curl -X POST localhost:9000/cronjobs/save_value_histories
+    0 22 28 2               * curl -X POST localhost:9000/cronjobs/save_value_histories
 
-    0 22 28 * * curl -X POST localhost:9000/cronjobs/networth_snapshot > /dev/null
+    0 22 28 * * curl -X POST localhost:9000/cronjobs/save_value_histories > /dev/null
     """
     if request.method != "POST":
         return failure_result("Invalid method")
 
-    _date = datetime.now().replace(hour=12, minute=0, second=0, microsecond=0)
-    current_app.logger.info(f"Networth snapshot :: {_date}")
+    _date = date.today()
 
-    assets, debts = [], []
-    accounts = Account.list(user_id=USER_ID)
-    allAssets = Asset.list(user_id=USER_ID)
-    allDebts = Debt.list(user_id=USER_ID)
+    def update_or_create_history(
+        item_id: str, user_id: str, account_type: str, value_item: dict
+    ):
+        history = History.get_(item_id, _date.strftime("%Y-%m"))
+        if history:
+            idx = find_index(history.values, lambda v: v["date"] == value_item["date"])
+            if idx > -1:
+                history.values[idx] = value_item
+            else:
+                history.values.append(value_item)
+
+            history.values = sort_by(history.values, "date")
+            for value in history.values:
+                print(value.as_dict(), end=", ")
+
+            print()
+            history.save()
+
+        else:
+            History.create(
+                item_id, _date.strftime("%Y-%m"), account_type, user_id, [value_item]
+            )
+
+    current_app.logger.info(f"Update Value Histories :: {_date}")
+
+    accounts = Account.list()
+    securities = Security.list()
 
     for account in accounts:
-        assets.extend(
-            [
-                {
-                    "asset_id": asset.asset_id,
-                    "account_id": account.account_id,
-                    "name": asset.name,
-                    "value": asset.value,
-                    "category": asset.category,
-                }
-                for asset in filter_(
-                    allAssets,
-                    lambda a: a.account_id == account.account_id and a.value > 0,
-                )
-            ]
+        value = None
+        if account.value is not None:
+            value = account.value
+        elif account.amount is not None:
+            value = account.amount
+        elif account.balance is not None:
+            value = account.balance
+
+        value_item = ValueItem(
+            date=_date.strftime("%Y-%m-%d"),
+            value=value,
+        )
+        update_or_create_history(
+            account.account_id, account.user_id, account.account_type, value_item
         )
 
-        debts.extend(
-            [
-                {
-                    "debt_id": debt.debt_id,
-                    "account_id": account.account_id,
-                    "name": debt.name,
-                    "value": debt.amount,
-                    "category": debt.category,
-                }
-                for debt in filter_(
-                    allDebts,
-                    lambda d: d.account_id == account.account_id and d.amount > 0,
-                )
-            ]
-        )
+    for security in securities:
+        if security.shares > 0:
+            value = round(security.shares * security.price)
+            value_item = ValueItem(
+                date=_date.strftime("%Y-%m-%d"),
+                value=value,
+                shares=security.shares,
+                price=security.price,
+            )
 
-    networth = Networth.get_month(user_id=USER_ID, year=_date.year, month=_date.month)
+            update_or_create_history(
+                security.security_id, security.user_id, "asset", value_item
+            )
 
-    networth_data = {
-        "user_id": USER_ID,
-        "_date": _date,
-        "year": _date.year,
-        "month": _date.month,
-        "assets": assets,
-        "debts": debts,
-    }
-
-    if not networth:
-        Networth.create(**networth_data)
-        current_app.logger.info("Networth created")
-    else:
-        for key, value in networth_data.items():
-            setattr(networth, key, value)
-        networth.save()
-        current_app.logger.info("Networth updated")
-
-    return success_result("Networth snapshot created/updated successfully")
+    return success_result("Value Histories created/updated successfully")
 
 
 @handle_exception

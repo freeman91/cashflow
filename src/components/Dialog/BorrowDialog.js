@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 import find from 'lodash/find';
@@ -24,40 +23,28 @@ const defaultBorrow = {
   borrow_id: '',
   date: dayjs().hour(12).minute(0).second(0),
   amount: '',
-  lender: '',
+  merchant: '',
   _type: 'borrow',
-  debt_id: '',
+  account_id: '',
 };
 
 function BorrowDialog() {
   const dispatch = useDispatch();
-  const location = useLocation();
 
   const accounts = useSelector((state) => state.accounts.data);
-  const debts = useSelector((state) => state.debts.data);
   const borrows = useSelector((state) => state.borrows.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.borrow);
 
   const [borrow, setBorrow] = useState(defaultBorrow);
 
   useEffect(() => {
-    let _lender = '';
-    if (borrow.debt_id) {
-      const debt = find(debts, { debt_id: borrow.debt_id });
-      const account = find(accounts, { account_id: debt?.account_id });
-      _lender = get(account, 'name', '');
+    let _merchant = '';
+    if (borrow.account_id) {
+      const account = find(accounts, { account_id: borrow.account_id });
+      _merchant = get(account, 'name', '');
     }
-    setBorrow((e) => ({ ...e, lender: _lender }));
-  }, [borrow.debt_id, accounts, debts]);
-
-  useEffect(() => {
-    if (mode !== 'create') {
-      let _pathname = location.pathname;
-      let _id = _pathname.replace('/app/debts', '');
-      _id = _id.replace('/', '');
-      setBorrow((e) => ({ ...e, debt_id: _id }));
-    }
-  }, [location.pathname, mode]);
+    setBorrow((e) => ({ ...e, merchant: _merchant }));
+  }, [borrow.account_id, accounts]);
 
   useEffect(() => {
     if (id) {
@@ -145,9 +132,9 @@ function BorrowDialog() {
           </ListItem>
           <DecimalFieldListItem id='amount' item={borrow} setItem={setBorrow} />
           <TextFieldListItem
-            id='lender'
-            label='lender'
-            value={borrow.lender}
+            id='merchant'
+            label='merchant'
+            value={borrow.merchant}
             onChange={handleChange}
           />
           <ListItem

@@ -25,18 +25,29 @@ import BaseDialog from './BaseDialog';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import DepositToSelect from '../Selector/DepositToSelect';
 import AutocompleteListItem from '../List/AutocompleteListItem';
+import ContributionListItem from '../List/ContributionListItem';
 
 const defaultPaycheck = {
   paycheck_id: '',
   deposit_to_id: '',
   date: dayjs().hour(12).minute(0).second(0),
-  amount: '',
   employer: '',
   _type: 'paycheck',
   take_home: '',
   taxes: '',
-  retirement: '',
-  benefits: '',
+  retirement_contribution: {
+    name: '',
+    employer_amount: '',
+    employee_amount: '',
+    account_id: '',
+  },
+  benefits_contribution: {
+    name: '',
+    employer_amount: '',
+    employee_amount: '',
+    account_id: '',
+  },
+  other_benefits: '',
   other: '',
   description: '',
 };
@@ -102,8 +113,9 @@ function PaycheckDialog() {
       employer: template.employer,
       take_home: template.take_home,
       taxes: template.taxes,
-      retirement: template.retirement,
-      benefits: template.benefits,
+      retirement_contribution: template.retirement_contribution,
+      benefits_contribution: template.benefits_contribution,
+      other_benefits: template.other_benefits,
       other: template.other,
       description: template.description,
     }));
@@ -161,16 +173,36 @@ function PaycheckDialog() {
             options={get(incomeSources, 'options', [])}
             onChange={handleChange}
           />
-          {['take_home', 'taxes', 'retirement', 'benefits', 'other'].map(
-            (attr) => (
-              <DecimalFieldListItem
-                key={attr}
-                id={attr}
-                item={paycheck}
-                setItem={setPaycheck}
-              />
-            )
-          )}
+          <DecimalFieldListItem
+            id='take_home'
+            item={paycheck}
+            setItem={setPaycheck}
+          />
+          <DecimalFieldListItem
+            id='taxes'
+            item={paycheck}
+            setItem={setPaycheck}
+          />
+          <ContributionListItem
+            paycheck={paycheck}
+            setPaycheck={setPaycheck}
+            attr='retirement_contribution'
+          />
+          <ContributionListItem
+            paycheck={paycheck}
+            setPaycheck={setPaycheck}
+            attr='benefits_contribution'
+          />
+          <DecimalFieldListItem
+            id='other_benefits'
+            item={paycheck}
+            setItem={setPaycheck}
+          />
+          <DecimalFieldListItem
+            id='other'
+            item={paycheck}
+            setItem={setPaycheck}
+          />
           <TextFieldListItem
             id='description'
             label='description'

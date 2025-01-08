@@ -15,6 +15,8 @@ import SellIcon from '@mui/icons-material/Sell';
 
 const findAmount = (transaction) => {
   if (transaction.amount) return transaction.amount;
+  if (transaction.balance) return transaction.balance;
+  if (transaction.value) return transaction.value;
   if (transaction.principal)
     return (
       transaction.principal +
@@ -22,17 +24,11 @@ const findAmount = (transaction) => {
       (transaction.escrow ? transaction.escrow : 0)
     );
   if (transaction.take_home) return transaction.take_home;
-
   return 0;
 };
 
-const findSource = (transaction, bills) => {
-  if (transaction.bill_id) {
-    const bill = find(bills, (bill) => bill.bill_id === transaction.bill_id);
-    if (bill) return bill.name;
-  }
-  if (transaction.vendor) return transaction.vendor;
-  if (transaction.lender) return transaction.lender;
+const findSource = (transaction) => {
+  if (transaction.merchant) return transaction.merchant;
   if (transaction.employer) return transaction.employer;
   if (transaction.source) return transaction.source;
   return '';
@@ -112,4 +108,30 @@ const findIcon = (type, pending = false) => {
   }
 };
 
-export { findAmount, findCategory, findSource, findId, findColor, findIcon };
+const findAccount = (transaction, accounts) => {
+  let accountId = '';
+  if (transaction.payment_from_id) {
+    accountId = transaction.payment_from_id;
+  } else if (transaction.account_id) {
+    accountId = transaction.account_id;
+  }
+
+  if (accountId) {
+    const account = find(
+      accounts,
+      (account) => account.account_id === accountId
+    );
+    if (account) return account.name;
+  }
+  return '';
+};
+
+export {
+  findAmount,
+  findCategory,
+  findSource,
+  findId,
+  findColor,
+  findIcon,
+  findAccount,
+};

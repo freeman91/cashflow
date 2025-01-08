@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
 import Typography from '@mui/material/Typography';
@@ -15,10 +14,8 @@ import BoxFlexColumn from '../BoxFlexColumn';
 
 export default function Transaction(props) {
   const { transaction } = props;
-  const bills = useSelector((state) => state.bills.data);
-
   const amount = findAmount(transaction);
-  const source = findSource(transaction, bills);
+  const source = findSource(transaction);
   const category = findCategory(transaction);
   const subcategory = transaction?.subcategory;
 

@@ -1,6 +1,5 @@
 """Budgets controller"""
 
-from datetime import datetime
 from flask import Blueprint, request
 
 from services.dynamo import Budget
@@ -19,28 +18,29 @@ def _budgets(user_id: str):
     if request.method == "PUT":
         budget = None
         body = request.json
-        _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
 
         budget_id = body.get("budget_id")
         if budget_id:
             budget = Budget.get_(user_id, budget_id)
-            budget.update(actions=[Budget.categories.set(body.get("categories"))])
+            # budget.update(actions=[Budget.categories.set(body.get("categories"))])
         else:
-            budget = Budget.get_month(user_id, body.get("year"), body.get("month"))
+            budget = Budget.get_(user_id, body.get("month"))
             if budget:
-                budget.update(actions=[Budget.categories.set(body.get("categories"))])
+                pass
+                # budget.update(actions=[Budget.categories.set(body.get("categories"))])
             else:
                 budget = Budget.create(
                     user_id=user_id,
-                    _date=_date,
-                    year=body.get("year"),
-                    month=body.get("month"),
-                    categories=body.get("categories"),
+                    month=f"{body.get('year')}-{body.get('month')}",
+                    incomes=body.get("incomes"),
+                    expenses=body.get("expenses"),
+                    savings=body.get("savings"),
                 )
 
         return success_result(budget.as_dict())
 
     if request.method == "GET":
+        # TODO: get in range
         return success_result(
             [budget.as_dict() for budget in Budget.list(user_id=user_id)]
         )

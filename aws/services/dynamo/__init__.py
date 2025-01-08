@@ -8,6 +8,7 @@ from .budget import Budget
 from .categories import Categories
 from .debt import Debt
 from .expense import Expense
+from .history import History
 from .income import Income
 from .networth import Networth
 from .option_list import OptionList
@@ -15,4 +16,6 @@ from .paycheck import Paycheck
 from .purchase import Purchase
 from .repayment import Repayment
 from .sale import Sale
+from .security import Security
+from .transfer import Transfer
 from .user import User

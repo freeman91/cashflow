@@ -6,7 +6,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextFieldListItem from './TextFieldListItem';
 
 function SharesFieldListItem(props) {
-  const { id, item, setItem, shares } = props;
+  const { id, item, setItem, shares, mode } = props;
 
   const handleMax = () => {
     setItem((_item) => ({ ..._item, [id]: shares }));
@@ -30,11 +30,12 @@ function SharesFieldListItem(props) {
       onChange={handleChange}
       inputProps={{ inputMode: 'decimal' }}
       InputProps={{
-        endAdornment: (
-          <InputAdornment position='end'>
-            <Button onClick={handleMax}>MAX</Button>
-          </InputAdornment>
-        ),
+        endAdornment:
+          mode === 'create' ? (
+            <InputAdornment position='end'>
+              <Button onClick={handleMax}>MAX</Button>
+            </InputAdornment>
+          ) : null,
       }}
     />
   );

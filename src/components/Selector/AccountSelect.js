@@ -23,7 +23,7 @@ function AccountSelect(props) {
       <Select
         labelId='account-label'
         id='item_id'
-        value={resource.account_id}
+        value={resource.account_id || ''}
         onChange={handleChangeAccount}
         label='Account'
         sx={{

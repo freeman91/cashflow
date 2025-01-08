@@ -2,15 +2,12 @@
 """Budget pynamodb model"""
 
 import os
-from datetime import datetime
 from typing import List, Optional
-from uuid import uuid4
 from pynamodb.attributes import (
     ListAttribute,
     NumberAttribute,
     MapAttribute,
     UnicodeAttribute,
-    UTCDateTimeAttribute,
 )
 
 from .base import BaseModel
@@ -21,8 +18,8 @@ REGION: str = os.getenv("REGION")
 APP_ID: str = os.getenv("APP_ID")
 
 
-class CategoryMap(MapAttribute):
-    category = UnicodeAttribute()
+class BudgetGoalMap(MapAttribute):
+    name = UnicodeAttribute()
     goal = NumberAttribute()
 
 
@@ -32,33 +29,31 @@ class Budget(BaseModel):
         table_name = f"{APP_ID}-{ENV}-{TYPE}s"
 
     user_id = UnicodeAttribute(hash_key=True)
-    budget_id = UnicodeAttribute(range_key=True)
+    month = UnicodeAttribute(range_key=True)  # YYYY-MM
     _type = UnicodeAttribute(default=TYPE)
 
-    date = UTCDateTimeAttribute()
-    year = NumberAttribute()
-    month = NumberAttribute()
-    categories = ListAttribute(of=CategoryMap)
+    incomes = ListAttribute(of=BudgetGoalMap)
+    expenses = ListAttribute(of=BudgetGoalMap)
+    savings = ListAttribute(of=BudgetGoalMap)
 
     def __repr__(self):
-        return f"Budget<{self.user_id}, {self.year}, {self.month}>"
+        return f"Budget<{self.user_id}, {self.month}>"
 
     @classmethod
     def create(
         cls,
         user_id: str,
-        _date: datetime,
-        year: int,
-        month: int,
-        categories: List[CategoryMap],
+        month: str,
+        incomes: List[BudgetGoalMap],
+        expenses: List[BudgetGoalMap],
+        savings: List[BudgetGoalMap],
     ) -> "Budget":
         budget = cls(
             user_id=user_id,
-            budget_id=f"budget:{uuid4()}",
-            date=_date,
-            year=year,
             month=month,
-            categories=categories,
+            incomes=incomes,
+            expenses=expenses,
+            savings=savings,
         )
         budget.save()
         return budget
@@ -68,21 +63,8 @@ class Budget(BaseModel):
         return super().get_(user_id, budget_id)
 
     @classmethod
-    def get_month(cls, user_id: str, year: int, month: int) -> "Budget":
-        try:
-            return next(
-                cls.query(
-                    user_id,
-                    cls.budget_id.startswith("budget"),
-                    (cls.year == year) & (cls.month == month),
-                )
-            )
-        except StopIteration:
-            return None
-
-    @classmethod
     def list_year(cls, user_id: str, year: int) -> List["Budget"]:
-        return cls.query(user_id, cls.budget_id.startswith("budget"), cls.year == year)
+        return cls.query(user_id, cls.month.startswith(f"{year}"))
 
     @classmethod
     def list(

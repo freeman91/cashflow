@@ -23,7 +23,7 @@ import OptionsList from './OptionsList';
 import CategoryList from './CategoryList';
 import CustomAppBar from '../../../components/CustomAppBar';
 
-const EXPENSE_VENDORS = 'expense-vendors';
+const MERCHANTS = 'merchants';
 const EXPENSE_CATEGORIES = 'expense-categories';
 const INCOME_SOURCES = 'income-sources';
 const INCOME_CATEGORIES = 'income-categories';
@@ -32,7 +32,7 @@ const PAYCHECK_TEMPLATES = 'paycheck-templates';
 const BILL_TEMPLATES = 'bill-templates';
 
 const DETAILS = [
-  EXPENSE_VENDORS,
+  MERCHANTS,
   EXPENSE_CATEGORIES,
   INCOME_SOURCES,
   INCOME_CATEGORIES,
@@ -137,8 +137,8 @@ export default function Settings() {
             </Card>
           </Grid>
         )}
-        {selected === EXPENSE_VENDORS && (
-          <OptionsList optionType='expense_vendor' placeholder='vendor' />
+        {selected === MERCHANTS && (
+          <OptionsList optionType='merchant' placeholder='merchant' />
         )}
         {selected === EXPENSE_CATEGORIES && (
           <CategoryList categoryType='expense' placeholder='category' />

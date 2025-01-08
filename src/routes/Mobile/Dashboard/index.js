@@ -18,7 +18,7 @@ import CustomToggleButton from '../../../components/CustomToggleButton';
 import PullToRefresh from '../../../components/PullToRefresh';
 import TransactionsGridStack from '../../../components/TransactionsGridStack';
 
-export default function Home() {
+export default function Dashboard() {
   const dispatch = useDispatch();
   const today = dayjs();
   const allExpenses = useSelector((state) => state.expenses.data);

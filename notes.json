@@ -1,0 +1,61 @@
+{
+  "transaction_types": [
+    "purchase",
+    "sale",
+    "transfer",
+    "borrow",
+    "repayment",
+    "expense",
+    "income",
+    "paycheck"
+  ],
+  "security_types": [
+    "stock",
+    "mutual fund",
+    "index fund",
+    "etf",
+    "crypto",
+    "bond"
+  ],
+  "account_types": {
+    "asset_types": {
+      "cash": [
+        "checking",
+        "savings",
+        "digital wallet",
+        "physical cash",
+        "receivable"
+      ],
+      "real estate": [
+        "primary residence",
+        "rental property",
+        "commercial property",
+        "land"
+      ],
+      "vehicle": ["personal", "recreation"],
+      "investment": [
+        "brokerage",
+        "traditional 401(k)",
+        "roth 401(k)",
+        "traditional IRA",
+        "roth IRA",
+        "403(b)",
+        "457(b)",
+        "529",
+        "pension"
+      ],
+      "personal property": ["jewelry", "art", "collectibles", "electronics"],
+      "business ownership": [
+        "sole proprietorship",
+        "partnership",
+        "llc",
+        "s-corp",
+        "c-corp"
+      ]
+    },
+    "liability_types": {
+      "loan": ["mortgage", "auto", "student", "personal", "business"],
+      "credit": ["credit card", "line of credit"]
+    }
+  }
+}

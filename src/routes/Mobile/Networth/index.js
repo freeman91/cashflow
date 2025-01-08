@@ -10,7 +10,7 @@ import { saveNetworth } from '../../../store/networths';
 import CustomAppBar from '../../../components/CustomAppBar';
 import SaveButton from '../../../components/CustomAppBar/SaveButton';
 import NetworthChart from '../Accounts/Networth/NetworthChart';
-import CurrentNetworth from '../Home/CurrentNetworth';
+import CurrentNetworth from '../Dashboard/CurrentNetworth';
 import NetworthContainer from './NetworthContainer';
 import PullToRefresh from '../../../components/PullToRefresh';
 

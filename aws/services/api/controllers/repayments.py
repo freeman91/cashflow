@@ -25,24 +25,22 @@ def _repayments(user_id: str):
             principal=float(body.get("principal")),
             interest=float(body.get("interest")),
             escrow=float(escrow) if escrow else None,
-            lender=body.get("lender"),
+            merchant=body.get("merchant"),
             category=body.get("category"),
             subcategory=body.get("subcategory"),
-            debt_id=body.get("debt_id"),
+            account_id=body.get("account_id"),
             bill_id=body.get("bill_id"),
             payment_from_id=body.get("payment_from_id"),
             pending=body.get("pending", True),
         )
 
-        subaccount = None
+        account = None
         if not repayment.pending and repayment.payment_from_id:
-            subaccount = repayment.update_subaccount()
-            if subaccount:
-                subaccount = subaccount.as_dict()
+            account = repayment.update_account()
+            if account:
+                account = account.as_dict()
 
-        return success_result(
-            {"repayment": repayment.as_dict(), "subaccount": subaccount}
-        )
+        return success_result({"repayment": repayment.as_dict(), "account": account})
 
     if request.method == "GET":
         return success_result(
@@ -75,10 +73,10 @@ def _repayment(user_id: str, repayment_id: str):
         repayment.escrow = float(escrow) if escrow else None
 
         for attr in [
-            "lender",
+            "merchant",
             "category",
             "subcategory",
-            "debt_id",
+            "account_id",
             "bill_id",
             "payment_from_id",
             "pending",
@@ -86,19 +84,23 @@ def _repayment(user_id: str, repayment_id: str):
             setattr(repayment, attr, request.json.get(attr))
         repayment.save()
 
-        subaccount = None
-        debt = None
+        account = None
+        liability_account = None
         if prev_pending is True and repayment.pending is False:
-            # update payment subaccount
-            subaccount = repayment.update_subaccount()
-            subaccount = subaccount.as_dict()
+            # update payment account
+            account = repayment.update_account()
+            account = account.as_dict()
 
-            # update debt principal
-            debt = repayment.update_debt_principal()
-            debt = debt.as_dict()
+            # update liability_account principal
+            liability_account = repayment.update_account_principal()
+            liability_account = liability_account.as_dict()
 
         return success_result(
-            {"repayment": repayment.as_dict(), "subaccount": subaccount, "debt": debt}
+            {
+                "repayment": repayment.as_dict(),
+                "account": account,
+                "liability_account": liability_account,
+            }
         )
 
     if request.method == "DELETE":

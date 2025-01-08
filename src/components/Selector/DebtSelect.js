@@ -7,25 +7,28 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { sortBy } from 'lodash';
+import { LIABILITY } from '../Dialog/AccountDialog';
 
-function DebtSelect(props) {
+function LiabilitySelect(props) {
   const { mode, resource, setResource } = props;
 
-  const debts = useSelector((state) => state.debts.data);
+  const liabilities = useSelector((state) =>
+    state.accounts.data.filter((account) => account.account_type === LIABILITY)
+  );
 
   const handleChangeDebt = (e) => {
     if (e.target.value === '') return;
-    setResource({ ...resource, debt_id: e.target.value });
+    setResource({ ...resource, account_id: e.target.value });
   };
 
   return (
     <FormControl variant='standard' fullWidth>
-      <InputLabel id='debt-label'>debt</InputLabel>
+      <InputLabel id='liability-label'>liability</InputLabel>
       <Select
         disabled={mode === 'edit'}
-        labelId='debt-label'
-        id='item_id'
-        value={get(resource, 'debt_id', '')}
+        labelId='liability-label'
+        id='liability-id'
+        value={get(resource, 'account_id', '')}
         onChange={handleChangeDebt}
         label='Debt'
         sx={{
@@ -39,13 +42,13 @@ function DebtSelect(props) {
         <MenuItem key='none' id={`none-menu-item`} value=''>
           None
         </MenuItem>
-        {sortBy(debts, 'name ').map((debt) => (
+        {sortBy(liabilities, 'name ').map((liability) => (
           <MenuItem
-            key={debt.debt_id}
-            id={`${debt.debt_id}-menu-item`}
-            value={debt.debt_id}
+            key={liability.account_id}
+            id={`${liability.account_id}-menu-item`}
+            value={liability.account_id}
           >
-            {debt.name}
+            {liability.name}
           </MenuItem>
         ))}
       </Select>
@@ -53,4 +56,4 @@ function DebtSelect(props) {
   );
 }
 
-export default DebtSelect;
+export default LiabilitySelect;

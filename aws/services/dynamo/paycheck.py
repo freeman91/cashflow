@@ -2,10 +2,16 @@
 """Paycheck pynamodb model"""
 
 import os
+from typing import Dict, Optional
 from datetime import datetime
-from typing import Optional
+
 from uuid import uuid4
-from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
+from pynamodb.attributes import (
+    NumberAttribute,
+    UnicodeAttribute,
+    UTCDateTimeAttribute,
+    MapAttribute,
+)
 
 from services import dynamo
 from .base import BaseModel
@@ -15,6 +21,12 @@ TYPE = "paycheck"
 ENV: str = os.getenv("ENV")
 REGION: str = os.getenv("REGION")
 APP_ID: str = os.getenv("APP_ID")
+
+
+class ContributionItemAttribute(MapAttribute):
+    employer = NumberAttribute()
+    employee = NumberAttribute()
+    account_id = UnicodeAttribute(null=True)
 
 
 class Paycheck(BaseModel):
@@ -31,8 +43,9 @@ class Paycheck(BaseModel):
 
     take_home = NumberAttribute()
     taxes = NumberAttribute(null=True)
-    retirement = NumberAttribute(null=True)
-    benefits = NumberAttribute(null=True)
+    retirement_contribution = ContributionItemAttribute(null=True)
+    benefits_contribution = ContributionItemAttribute(null=True)
+    other_benefits = NumberAttribute(null=True)
     other = NumberAttribute(null=True)
     deposit_to_id = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
@@ -50,8 +63,9 @@ class Paycheck(BaseModel):
         employer: str,
         take_home: float,
         taxes: float = None,
-        retirement: float = None,
-        benefits: float = None,
+        retirement_contribution: Dict = None,
+        benefits_contribution: Dict = None,
+        other_benefits: float = None,
         other: float = None,
         deposit_to_id: str = None,
         description: str = None,
@@ -63,8 +77,9 @@ class Paycheck(BaseModel):
             employer=employer,
             take_home=take_home,
             taxes=taxes,
-            retirement=retirement,
-            benefits=benefits,
+            retirement_contribution=retirement_contribution,
+            benefits_contribution=benefits_contribution,
+            other_benefits=other_benefits,
             other=other,
             deposit_to_id=deposit_to_id,
             description=description,
@@ -80,8 +95,9 @@ class Paycheck(BaseModel):
         employer: str,
         take_home: float,
         taxes: float = None,
-        retirement: float = None,
-        benefits: float = None,
+        retirement_contribution: Dict = None,
+        benefits_contribution: Dict = None,
+        other_benefits: float = None,
         other: float = None,
         deposit_to_id: str = None,
         description: str = None,
@@ -92,8 +108,9 @@ class Paycheck(BaseModel):
             employer=employer,
             take_home=take_home,
             taxes=taxes,
-            retirement=retirement,
-            benefits=benefits,
+            retirement_contribution=retirement_contribution,
+            benefits_contribution=benefits_contribution,
+            other_benefits=other_benefits,
             other=other,
             deposit_to_id=deposit_to_id,
             description=description,
@@ -121,12 +138,16 @@ class Paycheck(BaseModel):
             )
         )
 
-    def update_asset(self) -> dynamo.Asset:
-        asset = None
-        if self.deposit_to_id.startswith("asset"):
-            asset = dynamo.Asset.get_(self.user_id, self.deposit_to_id)
-            asset.value += self.take_home
-            asset.save()
+    def update_account(self) -> dynamo.Asset:
+        account = None
+        if self.deposit_to_id.startswith("account"):
+            account = dynamo.Account.get_(self.user_id, self.deposit_to_id)
 
-        asset.save()
-        return asset
+            for attr in ["balance", "amount", "value"]:
+                if getattr(account, attr, None):
+                    setattr(account, attr, getattr(account, attr) + self.take_home)
+                    continue
+            account.save()
+
+        account.save()
+        return account

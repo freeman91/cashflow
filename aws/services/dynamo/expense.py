@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import List, Optional
 from uuid import uuid4
 from pynamodb.attributes import (
     BooleanAttribute,
@@ -32,7 +32,7 @@ class Expense(BaseModel):
 
     date = UTCDateTimeAttribute()
     amount = NumberAttribute()
-    vendor = UnicodeAttribute(null=True)
+    merchant = UnicodeAttribute(null=True)
     category = UnicodeAttribute(default="")
     subcategory = UnicodeAttribute(default="")
     pending = BooleanAttribute(default=False)
@@ -41,7 +41,7 @@ class Expense(BaseModel):
     description = UnicodeAttribute(null=True)
 
     def __repr__(self):
-        return f"Expense<{self.user_id}, {self.date}, {self.vendor}, {self.amount}>"
+        return f"Expense<{self.user_id}, {self.date}, {self.merchant}, {self.amount}>"
 
     @classmethod
     def create(
@@ -49,7 +49,7 @@ class Expense(BaseModel):
         user_id: str,
         _date: datetime,
         amount: float,
-        vendor: str,
+        merchant: str,
         category: str,
         subcategory: str,
         pending: bool = False,
@@ -64,7 +64,7 @@ class Expense(BaseModel):
             amount=amount,
             category=category,
             subcategory=subcategory,
-            vendor=vendor,
+            merchant=merchant,
             pending=pending,
             bill_id=bill_id,
             payment_from_id=payment_from_id,
@@ -93,21 +93,23 @@ class Expense(BaseModel):
             )
         )
 
-    def update_subaccount(self) -> Union[dynamo.Asset, dynamo.Debt]:
-        subaccount = None
+    def update_account(self) -> dynamo.Account:
+        account = None
         if self.payment_from_id is None:
-            return subaccount
+            return account
 
-        if self.payment_from_id.startswith("asset"):
-            subaccount = dynamo.Asset.get_(self.user_id, self.payment_from_id)
-            subaccount.value -= self.amount
-            subaccount.value = round(subaccount.value, 2)
+        if self.payment_from_id.startswith("account"):
+            account = dynamo.Account.get_(self.user_id, self.payment_from_id)
 
-            subaccount.save()
-        elif self.payment_from_id.startswith("debt"):
-            subaccount = dynamo.Debt.get_(self.user_id, self.payment_from_id)
-            subaccount.amount += self.amount
-            subaccount.amount = round(subaccount.amount, 2)
-            subaccount.save()
+            if account.account_type == "Asset":
+                if account.balance:
+                    account.balance -= self.amount
+                if account.amount:
+                    account.amount -= self.amount
+            elif account.account_type == "Liability":
+                account.amount += self.amount
 
-        return subaccount
+            account.value = round(account.value, 2)
+            account.save()
+
+        return account

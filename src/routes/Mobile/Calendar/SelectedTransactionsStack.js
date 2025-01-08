@@ -29,8 +29,7 @@ const findAmount = (transaction) => {
 };
 
 const findSource = (transaction) => {
-  if (transaction.vendor) return transaction.vendor;
-  if (transaction.lender) return transaction.lender;
+  if (transaction.merchant) return transaction.merchant;
   if (transaction.employer) return transaction.employer;
   if (transaction.source) return transaction.source;
   return '';
@@ -52,7 +51,7 @@ export default function SelectedTransactionsStack(props) {
       return {
         ...transaction,
         amount: findAmount(transaction),
-        source: findSource(transaction, bills),
+        source: findSource(transaction),
         category: findCategory(transaction),
       };
     });

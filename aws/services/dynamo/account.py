@@ -2,10 +2,11 @@
 """Account pynamodb model"""
 
 import os
+from datetime import datetime, timezone
 from typing import Optional
 from uuid import uuid4
 from pprint import pformat
-from pynamodb.attributes import UnicodeAttribute
+from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
 
 from .base import BaseModel
 
@@ -26,10 +27,21 @@ class Account(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     name = UnicodeAttribute()
+    institution = UnicodeAttribute(null=True)
+    amount = NumberAttribute(null=True)
+    value = NumberAttribute(null=True)
+    balance = NumberAttribute(null=True)
+    account_type = UnicodeAttribute()
+    asset_type = UnicodeAttribute(null=True)
+    liability_type = UnicodeAttribute(null=True)
+    subtype = UnicodeAttribute(null=True)
     url = UnicodeAttribute(null=True)
-    category = UnicodeAttribute(null=True)
-    account_type = UnicodeAttribute(null=True)
-    description = UnicodeAttribute(null=True)
+    interest_rate = NumberAttribute(null=True)
+    icon_url = UnicodeAttribute(null=True)
+    last_update = UTCDateTimeAttribute(default=datetime.now(timezone.utc))
+
+    category = UnicodeAttribute(null=True)  # TODO: delete
+    description = UnicodeAttribute(null=True)  # TODO: delete
 
     def __repr__(self):
         return f"Account<{self.user_id}, {self.name}>"
@@ -41,18 +53,36 @@ class Account(BaseModel):
     def create(
         cls,
         user_id: str,
-        name: str,
-        account_type: str,
+        name: str = "",
+        institution: str = None,
         url: str = None,
+        account_type: str = "",
+        asset_type: str = None,
+        liability_type: str = None,
+        subtype: str = None,
         description: str = None,
+        amount: float = None,
+        value: float = None,
+        balance: float = None,
+        interest_rate: float = None,
+        icon_url: Optional[str] = None,
     ) -> "Account":
         account = cls(
             user_id=user_id,
             account_id=f"account:{uuid4()}",
             name=name,
+            institution=institution,
             url=url,
             account_type=account_type,
+            asset_type=asset_type,
+            liability_type=liability_type,
+            subtype=subtype,
             description=description,
+            amount=amount,
+            value=value,
+            balance=balance,
+            interest_rate=interest_rate,
+            icon_url=icon_url,
         )
         account.save()
         return account

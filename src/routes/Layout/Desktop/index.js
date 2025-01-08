@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import DesktopDrawer from './Drawer';
-import Header from './Header';
 
 export default function DesktopLayout({ children }) {
   const theme = useTheme();
@@ -20,7 +19,6 @@ export default function DesktopLayout({ children }) {
     >
       <CssBaseline />
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <Header />
         <Box
           component='nav'
           sx={{
@@ -32,7 +30,9 @@ export default function DesktopLayout({ children }) {
             PaperProps={{
               sx: {
                 width: theme.drawerWidth,
-                marginTop: '65px',
+                borderRight: 'unset',
+                backgroundImage: 'unset',
+                backgroundColor: 'unset',
               },
             }}
           />
@@ -41,7 +41,6 @@ export default function DesktopLayout({ children }) {
           <Outlet />
         </Box>
       </Box>
-
       {children}
     </Box>
   );

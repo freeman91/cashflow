@@ -25,24 +25,29 @@ class Borrow(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     date = UTCDateTimeAttribute()
-    debt_id = UnicodeAttribute()
+    account_id = UnicodeAttribute(null=True)
     amount = NumberAttribute()
-    lender = UnicodeAttribute()
+    merchant = UnicodeAttribute(null=True)
 
     def __repr__(self):
-        return f"Borrow<{self.user_id}, {self.debt_id}, {self.date}, {self.amount}>"
+        return f"Borrow<{self.user_id}, {self.account_id}, {self.date}, {self.amount}>"
 
     @classmethod
     def create(
-        cls, user_id: str, _date: datetime, debt_id: str, amount: float, lender: str
+        cls,
+        user_id: str,
+        _date: datetime,
+        account_id: str,
+        amount: float,
+        merchant: str,
     ) -> "Borrow":
         borrow = Borrow(
             user_id=user_id,
             borrow_id=f"borrow:{uuid4()}",
             date=_date,
-            debt_id=debt_id,
+            account_id=account_id,
             amount=amount,
-            lender=lender,
+            merchant=merchant,
         )
         borrow.save()
         return borrow

@@ -12,12 +12,11 @@ import Typography from '@mui/material/Typography';
 
 import { refreshAll } from '../../../store/user';
 import MonthContent from '../../Mobile/Calendar/MonthContent';
-import SelectedTransactionsStack from '../../Mobile/Calendar/SelectedTransactionsStack';
 import useExpenses from '../../../store/hooks/useExpenses';
 import useIncomes from '../../../store/hooks/useIncomes';
 import PullToRefresh from '../../../components/PullToRefresh';
 import MonthSelectButton from '../../../components/MonthSelectButton';
-import TransactionsTable from '../Home/Transactions/Table';
+import TransactionsTable from '../Dashboard/Transactions/Table';
 
 export default function Calendar() {
   const location = useLocation();

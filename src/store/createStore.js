@@ -17,6 +17,7 @@ import categories from './categories';
 import dialogs from './dialogs';
 import user from './user';
 import expenses from './expenses';
+import histories from './histories';
 import incomes from './incomes';
 import bills from './bills';
 import assets from './assets';
@@ -27,7 +28,7 @@ import paychecks from './paychecks';
 import purchases from './purchases';
 import repayments from './repayments';
 import sales from './sales';
-
+import securities from './securities';
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({ history: createBrowserHistory() });
 
@@ -44,12 +45,14 @@ export const store = configureStore({
     bills,
     assets,
     debts,
+    histories,
     networths,
     optionLists,
     paychecks,
     purchases,
     repayments,
     sales,
+    securities,
     loadingBar: loadingBarReducer,
     router: routerReducer,
     user,

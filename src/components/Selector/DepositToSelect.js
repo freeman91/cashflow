@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import filter from 'lodash/filter';
 import get from 'lodash/get';
-import sortBy from 'lodash/sortBy';
 
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -13,17 +11,12 @@ import Select from '@mui/material/Select';
 function DepositToSelect(props) {
   const { resource, setResource } = props;
 
-  const allAssets = useSelector((state) => state.assets.data);
-  const [assets, setAssets] = useState([]);
+  const accounts = useSelector((state) => {
+    let _accounts = state.accounts.data;
+    return _accounts.filter((account) => account?.asset_type === 'Cash');
+  });
 
-  useEffect(() => {
-    let _assets = filter(allAssets, (asset) => {
-      return asset.can_deposit_to;
-    });
-    setAssets(sortBy(_assets, 'name'));
-  }, [allAssets]);
-
-  const handleChangeDebt = (e) => {
+  const handleChangeDepositTo = (e) => {
     setResource((prevResource) => ({
       ...prevResource,
       deposit_to_id: e.target.value,
@@ -37,8 +30,8 @@ function DepositToSelect(props) {
         labelId='deposit_to-label'
         id='deposit_to'
         value={get(resource, 'deposit_to_id', '')}
-        onChange={handleChangeDebt}
-        label='Debt'
+        onChange={handleChangeDepositTo}
+        label='Deposit To'
         sx={{
           '& .MuiSelect-select': {
             display: 'flex',
@@ -55,13 +48,13 @@ function DepositToSelect(props) {
         <MenuItem key='none' id='none-menu-item' value=''>
           None
         </MenuItem>
-        {assets.map((asset) => (
+        {accounts.map((account) => (
           <MenuItem
-            key={asset.asset_id}
-            id={`${asset.asset_id}-menu-item`}
-            value={asset.asset_id}
+            key={account.account_id}
+            id={`${account.account_id}-menu-item`}
+            value={account.account_id}
           >
-            {asset.name}
+            {account.name}
           </MenuItem>
         ))}
       </Select>

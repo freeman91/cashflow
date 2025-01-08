@@ -30,8 +30,8 @@ export default function FilterDialog(props) {
     setCategoryFilter,
     subcategoryFilter,
     setSubcategoryFilter,
-    vendorFilter,
-    setVendorFilter,
+    merchantFilter,
+    setMerchantFilter,
     billFilter,
     setBillFilter,
     pendingFilter,
@@ -43,7 +43,7 @@ export default function FilterDialog(props) {
   const [expenseCategories, setExpenseCategories] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
-  const expenseVendors = find(optionLists, { option_type: 'expense_vendor' });
+  const merchants = find(optionLists, { option_type: 'merchant' });
 
   useEffect(() => {
     setExpenseCategories(
@@ -130,11 +130,11 @@ export default function FilterDialog(props) {
             </ListItem>
             <ListItem>
               <StringFilter
-                label='vendor'
+                label='merchant'
                 disabled={false}
-                stringFilter={vendorFilter}
-                setStringFilter={setVendorFilter}
-                options={expenseVendors?.options || []}
+                stringFilter={merchantFilter}
+                setStringFilter={setMerchantFilter}
+                options={merchants?.options || []}
               />
             </ListItem>
             <ListItem>

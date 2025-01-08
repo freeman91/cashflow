@@ -25,23 +25,28 @@ class Purchase(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     date = UTCDateTimeAttribute()
-    asset_id = UnicodeAttribute()
+    security_id = UnicodeAttribute(null=True)
+    account_id = UnicodeAttribute(null=True)
     amount = NumberAttribute()
-    vendor = UnicodeAttribute(null=True)
+    merchant = UnicodeAttribute(null=True)
     shares = NumberAttribute(null=True)
     price = NumberAttribute(null=True)
+    payment_from_id = UnicodeAttribute(null=True)
 
     def __repr__(self):
-        return f"Purchase<{self.user_id}, {self.asset_id}, {self.date}, {self.amount}>"
+        return (
+            f"Purchase<{self.user_id}, {self.security_id}, {self.date}, {self.amount}>"
+        )
 
     @classmethod
     def create(
         cls,
         user_id: str,
         _date: datetime,
-        asset_id: str,
+        security_id: str,
+        account_id: str,
         amount: float,
-        vendor: str,
+        merchant: str,
         shares: str = None,
         price: str = None,
     ) -> "Purchase":
@@ -49,9 +54,10 @@ class Purchase(BaseModel):
             user_id=user_id,
             purchase_id=f"purchase:{uuid4()}",
             date=_date,
-            asset_id=asset_id,
+            security_id=security_id,
+            account_id=account_id,
             amount=amount,
-            vendor=vendor,
+            merchant=merchant,
             shares=shares,
             price=price,
         )
