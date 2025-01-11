@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from flask import Blueprint, request
 
 from services.dynamo import Income
@@ -20,19 +20,21 @@ def _incomes(user_id: str):
         income = Income.create(
             user_id=user_id,
             _date=_date,
+            pending=body.get("pending"),
             amount=float(body.get("amount")),
             source=body.get("source"),
-            description=body.get("description"),
             category=body.get("category"),
             deposit_to_id=body.get("deposit_to_id"),
+            recurring_id=body.get("recurring_id"),
+            description=body.get("description"),
         )
 
-        asset = None
-        if income.deposit_to_id:
-            asset = income.update_asset()
-            asset = asset.as_dict()
+        if income.deposit_to_id and not income.pending:
+            account = income.update_account()
+            if account:
+                account = account.as_dict()
 
-        return success_result({"income": income.as_dict(), "asset": asset})
+        return success_result({"income": income.as_dict(), "account": account})
 
     if request.method == "GET":
         start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
@@ -60,12 +62,28 @@ def _income(user_id: str, income_id: str):
         income = Income.get_(user_id=user_id, income_id=income_id)
         income.date = datetime.strptime(request.json["date"][:19], "%Y-%m-%dT%H:%M:%S")
         income.amount = float(request.json.get("amount"))
+        prev_pending = income.pending
+        account = None
 
-        for attr in ["source", "category", "deposit_to_id", "description"]:
+        for attr in [
+            "pending",
+            "source",
+            "category",
+            "deposit_to_id",
+            "recurring_id",
+            "description",
+        ]:
             setattr(income, attr, request.json.get(attr))
 
+        income.last_update = datetime.now(timezone.utc)
         income.save()
-        return success_result(income.as_dict())
+
+        if income.pending is False and prev_pending is True:
+            account = income.update_account()
+            if account:
+                account = account.as_dict()
+
+        return success_result({"income": income.as_dict(), "account": account})
 
     if request.method == "DELETE":
         Income.get_(user_id=user_id, income_id=income_id).delete()

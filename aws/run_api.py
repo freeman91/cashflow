@@ -25,6 +25,7 @@ def blueprints(app):
     app.register_blueprint(controllers.networths.networths)
     app.register_blueprint(controllers.paychecks.paychecks)
     app.register_blueprint(controllers.purchases.purchases)
+    app.register_blueprint(controllers.recurrings.recurrings)
     app.register_blueprint(controllers.repayments.repayments)
     app.register_blueprint(controllers.sales.sales)
     app.register_blueprint(controllers.securities.securities)

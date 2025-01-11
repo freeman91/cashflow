@@ -16,6 +16,7 @@ from services.dynamo import (
     OptionList,
     Paycheck,
     Purchase,
+    Recurring,
     Repayment,
     Sale,
     Security,
@@ -76,11 +77,21 @@ def asset() -> Asset:
 def bill() -> Bill:
     _user = user()
     bills = [
-        {"name": f"{bill.name} [{bill.vendor}]", "value": bill}
+        {"name": f"{bill.name} [{bill.merchant}]", "value": bill}
         for bill in sort_by(Bill.list(user_id=_user.user_id), "name")
     ]
 
     return resource(bills, "Bill")
+
+
+def recurring() -> Recurring:
+    _user = user()
+    recurrings = [
+        {"name": f"{recurring.name} [{recurring.item_type}]", "value": recurring}
+        for recurring in sort_by(Recurring.list(user_id=_user.user_id), "name")
+    ]
+
+    return resource(recurrings, "Recurring")
 
 
 def borrow() -> Borrow:

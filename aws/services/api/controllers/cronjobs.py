@@ -1,16 +1,16 @@
-# pylint: disable=import-error, broad-except, protected-access, cell-var-from-loop
+# pylint: disable=import-error, broad-except, protected-access, cell-var-from-loop, singleton-comparison
 """Cronjob controller"""
 
 import os
 import math
-from datetime import date, timedelta
+from datetime import date, datetime, timezone, timedelta
 
 from pydash import filter_, map_, find, find_index, sort_by
 from flask import request, Blueprint, current_app
 from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
 
-from services.dynamo import Account, Bill, History, Security
+from services.dynamo import Account, History, Recurring, Security
 from services.dynamo.history import ValueItem
 from services.api.controllers.__util__ import (
     failure_result,
@@ -46,14 +46,16 @@ def get_stock_price(ticker: str):
 @cronjobs.route("/cronjobs/update_crypto_prices", methods=["PUT"])
 def update_crypto_prices():
     """
-    0 18 * * * curl -X PUT localhost:9000/cronjobs/update_crypto_prices
+    30 18,6 * * * curl -X PUT localhost:9000/cronjobs/update_crypto_prices
     """
 
     if request.method == "PUT":
+        now = datetime.now(timezone.utc)
+        accounts = {}
         tickers = set()
         crypto_securities = list(
             filter_(
-                Security.list(),
+                Security.scan(Security.active == True),
                 lambda security: security.security_type == "Crypto"
                 and security.shares > 0,
             )
@@ -69,9 +71,31 @@ def update_crypto_prices():
             security.price = round(price, 2)
 
             current_app.logger.info("%s: %s", security.ticker, security.price)
+
+            if security.account_id not in accounts:
+                accounts[security.account_id] = {
+                    "user_id": security.user_id,
+                    "value": round(security.shares * security.price, 2),
+                }
+            else:
+                accounts[security.account_id]["value"] += round(
+                    security.shares * security.price, 2
+                )
+
+            security.last_update = now
             security.save()
 
-        return success_result("crypto securities updated")
+        for account_id, values in accounts.items():
+            user_id = values["user_id"]
+            value = values["value"]
+            account = Account.get_(user_id, account_id)
+            account.value = value
+            account.last_update = now
+            account.save()
+
+        message = "crypto securities updated"
+        current_app.logger.info(message)
+        return success_result(message)
 
     return failure_result()
 
@@ -80,15 +104,17 @@ def update_crypto_prices():
 @cronjobs.route("/cronjobs/update_stock_prices", methods=["PUT"])
 def update_stock_prices():
     """
-    0 18 * * * curl -X PUT localhost:9000/cronjobs/update_stock_prices
+    30 18 * * * curl -X PUT localhost:9000/cronjobs/update_stock_prices
     """
 
     stock_types = ["Stock", "Mutual Fund", "Index Fund", "ETF"]
 
     if request.method == "PUT":
+        now = datetime.now(timezone.utc)
+        accounts = {}
         stock_securities = list(
             filter_(
-                Security.list(),
+                Security.scan(Security.active == True),
                 lambda securities: securities.security_type in stock_types
                 and securities.shares > 0,
             )
@@ -106,9 +132,31 @@ def update_stock_prices():
             security.price = round(float(ticker_price), 2)
 
             current_app.logger.info("%s: %s", security.ticker, security.price)
+
+            if security.account_id not in accounts:
+                accounts[security.account_id] = {
+                    "user_id": security.user_id,
+                    "value": round(security.shares * security.price, 2),
+                }
+            else:
+                accounts[security.account_id]["value"] += round(
+                    security.shares * security.price, 2
+                )
+
+            security.last_update = now
             security.save()
 
-        return success_result("stock securities updated")
+        for account_id, values in accounts.items():
+            user_id = values["user_id"]
+            value = values["value"]
+            account = Account.get_(user_id, account_id)
+            account.value = value
+            account.last_update = now
+            account.save()
+
+        message = "stock securities updated"
+        current_app.logger.info(message)
+        return success_result(message)
 
     return failure_result()
 
@@ -117,21 +165,20 @@ def update_stock_prices():
 @cronjobs.route("/cronjobs/save_value_histories", methods=["POST"])
 def save_value_histories():
     """
-    0 22 30 4,6,9,11        * curl -X POST localhost:9000/cronjobs/save_value_histories
-    0 22 31 1,3,5,7,8,10,12 * curl -X POST localhost:9000/cronjobs/save_value_histories
-    0 22 28 2               * curl -X POST localhost:9000/cronjobs/save_value_histories
-
-    0 22 28 * * curl -X POST localhost:9000/cronjobs/save_value_histories > /dev/null
+    45 18 * * * curl -X POST localhost:9000/cronjobs/save_value_histories > /dev/null
     """
     if request.method != "POST":
         return failure_result("Invalid method")
 
     _date = date.today()
+    month_str = _date.strftime("%Y-%m")
+    date_str = _date.strftime("%Y-%m-%d")
+    now = datetime.now(timezone.utc)
 
     def update_or_create_history(
         item_id: str, user_id: str, account_type: str, value_item: dict
     ):
-        history = History.get_(item_id, _date.strftime("%Y-%m"))
+        history = History.get_(item_id, month_str)
         if history:
             idx = find_index(history.values, lambda v: v["date"] == value_item["date"])
             if idx > -1:
@@ -140,21 +187,16 @@ def save_value_histories():
                 history.values.append(value_item)
 
             history.values = sort_by(history.values, "date")
-            for value in history.values:
-                print(value.as_dict(), end=", ")
-
-            print()
+            history.last_update = now
             history.save()
 
         else:
-            History.create(
-                item_id, _date.strftime("%Y-%m"), account_type, user_id, [value_item]
-            )
+            History.create(item_id, month_str, account_type, user_id, [value_item])
 
     current_app.logger.info(f"Update Value Histories :: {_date}")
 
-    accounts = Account.list()
-    securities = Security.list()
+    accounts = Account.scan(Account.active == True)
+    securities = Security.scan(Security.active == True)
 
     for account in accounts:
         value = None
@@ -165,10 +207,7 @@ def save_value_histories():
         elif account.balance is not None:
             value = account.balance
 
-        value_item = ValueItem(
-            date=_date.strftime("%Y-%m-%d"),
-            value=value,
-        )
+        value_item = ValueItem(date=date_str, value=value)
         update_or_create_history(
             account.account_id, account.user_id, account.account_type, value_item
         )
@@ -177,17 +216,19 @@ def save_value_histories():
         if security.shares > 0:
             value = round(security.shares * security.price)
             value_item = ValueItem(
-                date=_date.strftime("%Y-%m-%d"),
+                date=date_str,
                 value=value,
                 shares=security.shares,
                 price=security.price,
             )
 
             update_or_create_history(
-                security.security_id, security.user_id, "asset", value_item
+                security.security_id, security.user_id, "Asset", value_item
             )
 
-    return success_result("Value Histories created/updated successfully")
+    message = "Value Histories created/updated successfully"
+    current_app.logger.info(message)
+    return success_result(message)
 
 
 @handle_exception
@@ -199,14 +240,30 @@ def generate_bill_expenses():
 
     if request.method == "POST":
         count = 0
-        _date = date.today() + timedelta(days=31)
+        _date = date.today()
 
-        for bill in Bill.list():
-            if _date.day == bill.day and _date.month in bill.months:
-                expense = bill.generate(year=_date.year, month=_date.month)
-                current_app.logger.info("%s - %s", bill.name, expense)
+        current_app.logger.info("Generating Expenses for :: %s", _date)
+
+        for recurring in Recurring.scan(Recurring.active == True):
+            if recurring.next_date is None:
+                continue
+
+            if (
+                recurring.next_date.day == _date.day
+                and recurring.next_date.month == _date.month
+                and recurring.next_date.year == _date.year
+            ):
+                expense = recurring.generate(year=_date.year, month=_date.month)
+                current_app.logger.info(
+                    "Generating :: %s :: %s", recurring.name, expense
+                )
+
+                # TODO: update recurring.next_date
+
                 count += 1
 
-        return success_result(f"{_date} :: {count} expenses generated")
+        message = f"{_date} :: {count} expenses generated"
+        current_app.logger.info(message)
+        return success_result(message)
 
     return failure_result()

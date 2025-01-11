@@ -42,11 +42,13 @@ const ContributionListItems = (props) => {
   const account_id = get(paycheck, `${attr}.account_id`, '');
 
   return (
-    <ListItem>
+    (<ListItem>
       <List disablePadding sx={{ width: '100%' }}>
         <ListItemText
           primary={attr.replace('_', ' ')}
-          primaryTypographyProps={{ align: 'center' }}
+          slotProps={{
+            primary: { align: 'center' }
+          }}
         />
         <ListItem disableGutters>
           <FormControl variant='standard' fullWidth>
@@ -107,7 +109,7 @@ const ContributionListItems = (props) => {
           }}
         />
       </List>
-    </ListItem>
+    </ListItem>)
   );
 };
 

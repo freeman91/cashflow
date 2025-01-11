@@ -1,6 +1,6 @@
 """Expenses controller"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from flask import Blueprint, request
 
 from services.dynamo import Expense
@@ -23,20 +23,21 @@ def _expenses(user_id: str):
         expense = Expense.create(
             user_id=user_id,
             _date=_date,
+            pending=body.get("pending"),
             amount=float(body.get("amount")),
             merchant=body.get("merchant"),
             category=body.get("category"),
             subcategory=body.get("subcategory"),
-            pending=body.get("pending"),
-            bill_id=body.get("bill_id"),
             payment_from_id=body.get("payment_from_id"),
+            recurring_id=body.get("recurring_id"),
             description=body.get("description"),
         )
 
         account = None
         if not expense.pending and expense.payment_from_id:
             account = expense.update_account()
-            account = account.as_dict()
+            if account:
+                account = account.as_dict()
 
         return success_result({"expense": expense.as_dict(), "account": account})
 
@@ -75,15 +76,17 @@ def _expense(user_id: str, expense_id: str):
             "category",
             "subcategory",
             "pending",
-            "bill_id",
             "payment_from_id",
+            "recurring_id",
             "description",
         ]:
             setattr(expense, attr, request.json.get(attr))
+
+        expense.last_update = datetime.now(timezone.utc)
         expense.save()
 
         account = None
-        if prev_pending is True and expense.pending is False:
+        if expense.pending is False and prev_pending is True:
             account = expense.update_account()
             if account:
                 account = account.as_dict()

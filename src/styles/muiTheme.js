@@ -14,39 +14,45 @@ export const breakpoints = {
   xl: 1920,
 };
 
-export const muiTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: { main: PRIMARY },
-    success: { main: GREEN },
-    info: { main: 'rgba(255, 255, 255, 0.7)' },
-    orange: { main: ORANGE },
-    yellow: { main: YELLOW },
-    surface: {
-      100: '#121212',
-      150: '#1b1b1b',
-      200: '#282828',
-      250: '#2b2b2b',
-      300: '#3f3f3f',
-      400: '#575757',
-      500: '#717171',
-      600: '#8b8b8b',
-    },
+const PALETTE = {
+  primary: { main: PRIMARY },
+  success: { main: GREEN },
+  info: { main: 'rgba(255, 255, 255, 0.7)' },
+  orange: { main: ORANGE },
+  yellow: { main: YELLOW },
+  surface: {
+    100: '#121212',
+    150: '#1b1b1b',
+    200: '#282828',
+    250: '#2b2b2b',
+    300: '#3f3f3f',
+    400: '#575757',
+    500: '#717171',
+    600: '#8b8b8b',
+  },
+  green: {
+    100: '#d9ebdd',
+    200: '#85c093',
+    300: '#55a368',
+    400: GREEN,
+  },
+  red: {
+    100: '#996666',
+    200: '#ac5353',
+    300: '#b64949',
+    400: RED,
+    500: '#ca3535',
+    600: '#d42b2b',
+  },
+};
 
-    green: {
-      100: '#d9ebdd',
-      200: '#85c093',
-      300: '#55a368',
-      400: GREEN,
-    },
-    red: {
-      100: '#996666',
-      200: '#ac5353',
-      300: '#b64949',
-      400: RED,
-      500: '#ca3535',
-      600: '#d42b2b',
-    },
+export const muiTheme = createTheme({
+  colorSchemes: {
+    dark: { palette: PALETTE },
+    light: { palette: PALETTE },
+  },
+  cssVariables: {
+    colorSchemeSelector: 'class',
   },
   typography: {
     fontFamily: '"Arial", "Helvetica", sans-serif',

@@ -60,6 +60,7 @@ class DyanmoDbStack(NestedStack):
         DynamoDBTable(self, "asset", "user_id", "asset_id")
         DynamoDBTable(self, "bill", "user_id", "bill_id")
         DynamoDBTable(self, "borrow", "user_id", "borrow_id")
+        DynamoDBTable(self, "recurring", "user_id", "recurring_id")
         DynamoDBTable(self, "repayment", "user_id", "repayment_id")
         DynamoDBTable(self, "debt", "user_id", "debt_id")
         DynamoDBTable(self, "security", "user_id", "security_id")

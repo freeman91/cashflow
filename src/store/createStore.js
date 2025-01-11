@@ -19,13 +19,10 @@ import user from './user';
 import expenses from './expenses';
 import histories from './histories';
 import incomes from './incomes';
-import bills from './bills';
-import assets from './assets';
-import debts from './debts';
-import networths from './networths';
 import optionLists from './optionLists';
 import paychecks from './paychecks';
 import purchases from './purchases';
+import recurrings from './recurrings';
 import repayments from './repayments';
 import sales from './sales';
 import securities from './securities';
@@ -42,14 +39,11 @@ export const store = configureStore({
     dialogs,
     expenses,
     incomes,
-    bills,
-    assets,
-    debts,
     histories,
-    networths,
     optionLists,
     paychecks,
     purchases,
+    recurrings,
     repayments,
     sales,
     securities,

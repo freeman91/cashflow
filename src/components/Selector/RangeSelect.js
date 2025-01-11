@@ -32,20 +32,20 @@ const RANGE_OPTIONS = [
     start: dayjs().subtract(1, 'month').startOf('month'),
     end: dayjs().subtract(1, 'month').endOf('month'),
   },
+  // {
+  //   id: 3,
+  //   label: 'This Year',
+  //   start: dayjs().startOf('year'),
+  //   end: dayjs().endOf('year'),
+  // },
+  // {
+  //   id: 4,
+  //   label: 'Last Year',
+  //   start: dayjs().subtract(1, 'year').startOf('year'),
+  //   end: dayjs().subtract(1, 'year').endOf('year'),
+  // },
   {
     id: 3,
-    label: 'This Year',
-    start: dayjs().startOf('year'),
-    end: dayjs().endOf('year'),
-  },
-  {
-    id: 4,
-    label: 'Last Year',
-    start: dayjs().subtract(1, 'year').startOf('year'),
-    end: dayjs().subtract(1, 'year').endOf('year'),
-  },
-  {
-    id: 5,
     label: 'Custom Range',
     start: null,
     end: null,
@@ -59,7 +59,7 @@ export default function RangeSelect(props) {
   const [customRange, setCustomRange] = useState({});
 
   const handleOptionClick = (option) => {
-    if (option.id === 5) {
+    if (option.id === 3) {
       setOpen(true);
     } else {
       setRange(option);
@@ -91,10 +91,10 @@ export default function RangeSelect(props) {
 
   const handleSubmit = () => {
     setRange({
-      id: 5,
-      label: `${dayjs(customRange.start).format('YYYY MMM D')} - ${dayjs(
+      id: 3,
+      label: `${dayjs(customRange.start).format('YYYY/MM/DD')} - ${dayjs(
         customRange.end
-      ).format('YYYY MMM D')}`,
+      ).format('YYYY/MM/DD')}`,
       start: customRange.start,
       end: customRange.end,
     });
@@ -105,20 +105,21 @@ export default function RangeSelect(props) {
     <Box
       sx={{
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        width: '100%',
       }}
     >
-      <IconButton onClick={handleClick} sx={{ mr: 2 }}>
-        <CalendarMonthIcon />
-      </IconButton>
       <Typography
         variant='body1'
         onClick={handleClick}
-        sx={{ cursor: 'pointer', pt: '4px' }}
+        sx={{ cursor: 'pointer' }}
       >
         {range.label}
       </Typography>
+      <IconButton onClick={handleClick}>
+        <CalendarMonthIcon />
+      </IconButton>
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}

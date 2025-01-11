@@ -31,17 +31,20 @@ class Repayment(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     date = UTCDateTimeAttribute()
+    pending = BooleanAttribute(default=False)
+    recurring_id = UnicodeAttribute(null=True)
+
     principal = NumberAttribute()
     interest = NumberAttribute()
     escrow = NumberAttribute(null=True)
     merchant = UnicodeAttribute(null=True)
-    pending = BooleanAttribute(default=False)
     category = UnicodeAttribute(default="")
     subcategory = UnicodeAttribute(default="")
     account_id = UnicodeAttribute(null=True)
-    bill_id = UnicodeAttribute(null=True)
-    description = UnicodeAttribute(null=True)
     payment_from_id = UnicodeAttribute(null=True)
+    description = UnicodeAttribute(null=True)
+
+    bill_id = UnicodeAttribute(null=True)  # TODO: remove
 
     def __repr__(self):
         return f"Repayment<{self.user_id}, {self.date}, {self.merchant}, {self.principal}, {self.interest}>"
@@ -58,10 +61,10 @@ class Repayment(BaseModel):
         subcategory: str,
         account_id: str,
         escrow: float = None,
-        bill_id: str = None,
         pending: bool = False,
-        description: str = None,
         payment_from_id: str = None,
+        recurring_id: str = None,
+        description: str = None,
     ) -> "Repayment":
         repayment = cls(
             user_id=user_id,
@@ -74,10 +77,10 @@ class Repayment(BaseModel):
             category=category,
             subcategory=subcategory,
             account_id=account_id,
-            bill_id=bill_id,
             pending=pending,
-            description=description,
             payment_from_id=payment_from_id,
+            recurring_id=recurring_id,
+            description=description,
         )
         repayment.save()
         return repayment
@@ -114,12 +117,17 @@ class Repayment(BaseModel):
             if account.account_type == "Asset":
                 if account.balance:
                     account.balance -= total
-                if account.amount:
+                    account.balance = round(account.balance, 2)
+                elif account.amount:
                     account.amount -= total
+                    account.amount = round(account.amount, 2)
+                elif account.value:
+                    account.value -= total
+                    account.value = round(account.value, 2)
             elif account.account_type == "Liability":
                 account.amount += total
+                account.amount = round(account.amount, 2)
 
-            account.value = round(account.value, 2)
             account.save()
 
         return account
@@ -127,5 +135,6 @@ class Repayment(BaseModel):
     def update_account_principal(self) -> dynamo.Account:
         account = dynamo.Account.get_(self.user_id, self.account_id)
         account.amount -= self.principal
+        account.amount = round(account.amount, 2)
         account.save()
         return account

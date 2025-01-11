@@ -37,7 +37,7 @@ const Puller = styled('div')(({ theme }) => ({
 const CustomListItemButton = (props) => {
   const { Icon, text, onClick } = props;
   return (
-    <ListItemButton
+    (<ListItemButton
       onClick={onClick}
       sx={{ my: 2, bgcolor: 'surface.200', borderRadius: 1 }}
     >
@@ -46,13 +46,15 @@ const CustomListItemButton = (props) => {
       </ListItemIcon>
       <ListItemText
         primary={text}
-        primaryTypographyProps={{ align: 'left' }}
         sx={{ ml: 3 }}
+        slotProps={{
+          primary: { align: 'left' }
+        }}
       />
       <ListItemIcon sx={{ minWidth: 'unset' }}>
         <ChevronRightIcon />
       </ListItemIcon>
-    </ListItemButton>
+    </ListItemButton>)
   );
 };
 

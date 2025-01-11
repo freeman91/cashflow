@@ -37,7 +37,7 @@ const defaultExpense = {
   category: '',
   subcategory: '',
   pending: false,
-  bill_id: '',
+  recurring_id: '',
   payment_from_id: '',
   description: '',
 };
@@ -47,11 +47,11 @@ function ExpenseDialog() {
 
   const optionLists = useSelector((state) => state.optionLists.data);
   const categoriesData = useSelector((state) => state.categories.data);
-  const bills = useSelector((state) => state.bills.data);
+  const recurrings = useSelector((state) => state.recurrings.data);
   const expenses = useSelector((state) => state.expenses.data);
   const { mode, id, attrs } = useSelector((state) => state.dialogs.expense);
 
-  const [bill, setBill] = useState({ name: '' });
+  const [recurring, setRecurring] = useState({ name: '' });
   const [expense, setExpense] = useState(defaultExpense);
   const [expenseCategories, setExpenseCategories] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -60,13 +60,13 @@ function ExpenseDialog() {
   const expenseVendors = find(optionLists, { option_type: 'merchant' });
 
   useEffect(() => {
-    const _bill = find(bills, { bill_id: expense.bill_id });
-    if (_bill) {
-      setBill(_bill);
+    const _recurring = find(recurrings, { recurring_id: expense.recurring_id });
+    if (_recurring) {
+      setRecurring(_recurring);
     } else {
-      setBill({ name: '' });
+      setRecurring({ name: '' });
     }
-  }, [expense.bill_id, bills]);
+  }, [expense.recurring_id, recurrings]);
 
   useEffect(() => {
     setExpenseCategories(
@@ -150,10 +150,10 @@ function ExpenseDialog() {
     >
       <form style={{ width: '100%' }}>
         <List>
-          {bill.name && (
+          {recurring.name && (
             <TextFieldListItem
-              label='bill'
-              value={bill.name}
+              label='recurring'
+              value={recurring.name}
               InputProps={{ readOnly: true }}
             />
           )}

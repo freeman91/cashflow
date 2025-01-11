@@ -6,6 +6,7 @@ from typing import Optional
 from uuid import uuid4
 from datetime import datetime, timezone
 from pynamodb.attributes import (
+    BooleanAttribute,
     NumberAttribute,
     UnicodeAttribute,
     UTCDateTimeAttribute,
@@ -29,6 +30,7 @@ class Security(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     name = UnicodeAttribute()
+    active = BooleanAttribute(default=True)
     ticker = UnicodeAttribute(null=True)
     account_id = UnicodeAttribute()
     security_type = UnicodeAttribute()

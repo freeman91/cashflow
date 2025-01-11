@@ -3,6 +3,7 @@
 
 import os
 import json
+import calendar
 from datetime import date, datetime, timedelta, timezone
 from pprint import pprint
 from time import sleep
@@ -11,6 +12,7 @@ from uuid import uuid4
 import inquirer
 from pydash import (
     find,
+    group_by,
     get,
     map_,
     uniq,
@@ -38,12 +40,14 @@ from services.dynamo import (
     Networth,
     Paycheck,
     Purchase,
+    Recurring,
     Repayment,
     Sale,
     Security,
     User,
     OptionList,
 )
+from services.dynamo import ExpenseAttributes, RepaymentAttributes, PaycheckAttributes
 from services.dynamo.history import ValueItem
 
 
@@ -51,38 +55,6 @@ ENV = os.getenv("ENV")
 REGION = os.getenv("REGION")
 APP_ID = os.getenv("APP_ID")
 USER_ID = os.getenv("REACT_APP_USER_ID")
-
-
-def backup_items():
-    for type_, Model in [
-        ("account", Account),
-        ("asset", Asset),
-        ("bill", Bill),
-        ("borrow", Borrow),
-        ("debt", Debt),
-        ("expense", Expense),
-        ("income", Income),
-        ("networth", Networth),
-        ("paycheck", Paycheck),
-        ("purchase", Purchase),
-        ("repayment", Repayment),
-        ("sale", Sale),
-    ]:
-        print(type_)
-
-        # overwrite or create file
-        if os.path.exists(f"backups/{type_}.json"):
-            os.remove(f"backups/{type_}.json")
-
-        # write all accounts to file
-        with open(f"backups/{type_}.json", "w", encoding="utf-8") as f:
-            f.write("[")
-
-            for item in Model.list():
-                f.write(json.dumps(item.as_dict()))
-                f.write(",\n")
-
-            f.write("]")
 
 
 def find_item_id(id_: str):
@@ -99,56 +71,179 @@ def find_item_id(id_: str):
     return None
 
 
-def update_or_create_history(item_id: str, account_type: str, value_item: dict):
-    history = History.get_(item_id, "2025-01")
-    if history:
-        idx = find_index(history.values, lambda v: v["date"] == value_item["date"])
-        if idx > -1:
-            history.values[idx] = value_item
-        else:
-            history.values.append(value_item)
+def find_recurring_attrs(bill):
+    active = True
+    frequency = None
+    interval = 1
+    day_of_month = None
+    month_of_year = None
 
-        history.values = sort_by(history.values, "date")
-        for value in history.values:
-            print(value.as_dict(), end=", ")
-        print()
-        history.save()
+    if len(bill.months) == 0:
+        active = False
+        frequency = "monthly"
+        day_of_month = bill.day
 
-    else:
-        print("CREATE")
-        # History.create(
-        #     item_id, "2025-01", account_type, USER_ID, [value_item]
-        # )
+    elif len(bill.months) == 1:
+        frequency = "yearly"
+        month_of_year = bill.months[0]
+        day_of_month = bill.day
+
+    elif len(bill.months) == 4:
+        frequency = "monthly"
+        interval = 4
+
+    elif len(bill.months) == 3:
+        frequency = "weekly"
+        interval = 15
+
+    elif len(bill.months) == 12:
+        frequency = "monthly"
+        day_of_month = bill.day
+
+    return active, frequency, interval, month_of_year, day_of_month
+
+
+# def migrate_bills():
+#     bill_id_recurring_id = {}
+#     for bill in Bill.list():
+#         active, frequency, interval, month_of_year, day_of_month = find_recurring_attrs(
+#             bill
+#         )
+
+#         print(f"Migrating bill {bill.name} :: {bill.day} :: {len(bill.months)}")
+
+#         if bill.account_id:
+#             # generate recurring repayment
+#             recurring = Recurring(
+#                 recurring_id=f"recurring:{uuid4()}",
+#                 active=active,
+#                 user_id=bill.user_id,
+#                 item_type="repayment",
+#                 name=bill.name,
+#                 frequency=frequency,
+#                 interval=interval,
+#                 month_of_year=month_of_year,
+#                 day_of_month=day_of_month,
+#                 repayment_attributes=RepaymentAttributes(
+#                     amount=bill.amount,
+#                     escrow=bill.escrow,
+#                     merchant=bill.merchant,
+#                     category=bill.category,
+#                     subcategory=bill.subcategory,
+#                     account_id=bill.account_id,
+#                     payment_from_id=bill.payment_from_id,
+#                 ),
+#             )
+#         else:
+#             # generate recurring expense
+#             recurring = Recurring(
+#                 recurring_id=f"recurring:{uuid4()}",
+#                 active=active,
+#                 user_id=bill.user_id,
+#                 item_type="expense",
+#                 name=bill.name,
+#                 frequency=frequency,
+#                 interval=interval,
+#                 month_of_year=month_of_year,
+#                 day_of_month=day_of_month,
+#                 expense_attributes=ExpenseAttributes(
+#                     amount=bill.amount,
+#                     merchant=bill.merchant,
+#                     category=bill.category,
+#                     subcategory=bill.subcategory,
+#                     payment_from_id=bill.payment_from_id,
+#                 ),
+#             )
+
+#         recurring.save()
+#         bill_id_recurring_id[bill.bill_id] = recurring.recurring_id
+
+#     pprint(bill_id_recurring_id)
+
+
+# def migrate_paycheck_templates():
+#     all_paychecks = Paycheck.list()
+#     templates = filter_(all_paychecks, lambda p: "template" in p.paycheck_id)
+#     for paycheck in templates:
+#         recurring = Recurring(
+#             active=True,
+#             recurring_id=f"recurring:{uuid4()}",
+#             user_id=paycheck.user_id,
+#             item_type="paycheck",
+#             name=f"{paycheck.employer} paycheck",
+#             frequency="weekly",
+#             interval=2,
+#             day_of_week=5,
+#             paycheck_attributes=PaycheckAttributes(
+#                 employer=paycheck.employer,
+#                 take_home=paycheck.take_home,
+#                 taxes=paycheck.taxes,
+#                 retirement_contribution=paycheck.retirement_contribution,
+#                 benefits_contribution=paycheck.benefits_contribution,
+#                 other_benefits=paycheck.other_benefits,
+#                 other=paycheck.other,
+#                 deposit_to_id=paycheck.deposit_to_id,
+#             ),
+#         )
+#         pprint(recurring.as_dict())
+#         recurring.save()
+
+
+# def add_expense_repayment_recurring_id():
+#     # while Expense.batch_pu
+#     expenses = list(Expense.scan(Expense.bill_id.exists()))
+#     repayments = list(Repayment.scan(Repayment.bill_id.exists()))
+
+#     with Expense.batch_write() as batch:
+#         for expense in expenses:
+#             if expense.bill_id and expense.bill_id in bill_to_recurring:
+#                 expense.recurring_id = bill_to_recurring[expense.bill_id]
+#             expense.bill_id = None
+#             batch.save(expense)
+
+#     print(f"Updated {len(expenses)} expenses")
+
+#     with Repayment.batch_write() as batch:
+#         for repayment in repayments:
+#             if repayment.bill_id and repayment.bill_id in bill_to_recurring:
+#                 repayment.recurring_id = bill_to_recurring[repayment.bill_id]
+#             repayment.bill_id = None
+#             repayment.save()
+
+#     print(f"Updated {len(repayments)} repayments")
 
 
 def test():
-    with open("backups/networth.json", "r", encoding="utf-8") as f:
-        networths = json.load(f)
-
-    jan_2025_nw = find(networths, lambda nw: nw["month"] == 1 and nw["year"] == 2025)
-    assets = jan_2025_nw["assets"]
-    debts = jan_2025_nw["debts"]
-
-    for asset in assets:
-        item_id = find_item_id(asset["asset_id"])
-        update_or_create_history(
-            item_id,
-            "asset",
-            ValueItem(date="2025-01-01", value=asset["value"]),
-        )
-
-    for debt in debts:
-        item_id = find_item_id(debt["debt_id"])
-        update_or_create_history(
-            item_id,
-            "liabaility",
-            ValueItem(date="2025-01-01", value=debt["value"]),
-        )
+    pass
 
 
 def main():
     pass
 
+
+bill_to_recurring = {
+    "bill:09bc9179-9b88-42b5-81d8-8c893692dadd": "recurring:45e3df4a-eda6-4d3a-a33b-cfb973e7baeb",
+    "bill:09e88d03-ac90-4037-b127-18feea8c8275": "recurring:08bdce1b-4948-4583-ac93-23e946fa49ca",
+    "bill:1e60c4de-12fe-407f-b9be-ffb111a41cc4": "recurring:e56fc93f-c015-475d-a606-69736dc0ab8b",
+    "bill:2b19838b-1642-41e7-8792-3de7eb78808d": "recurring:f117c9a3-954c-441c-b202-e5ef171c8fb5",
+    "bill:393254e0-264b-4f1a-91a5-b81fa01d02f4": "recurring:28704eac-4b13-4f88-8fbe-69f30930d910",
+    "bill:3bd24338-3ed4-457e-827a-617d4a741edf": "recurring:738d97f7-f900-4c6b-a6fb-e5c63f30fb00",
+    "bill:3de9966d-3ca6-4cac-b607-bdd2a5a773ee": "recurring:07bded37-f94b-4717-8ffc-6e1674e10304",
+    "bill:419a59ba-badc-49f1-96b5-2ba38ea320aa": "recurring:96d1a341-4522-4b04-89a2-6f99949b8c5d",
+    "bill:487d9ecc-edaf-4f15-af22-e25754adee8d": "recurring:7e7d4799-eb95-4a8e-b287-6f6f4c0a7a9c",
+    "bill:5a68bd76-5d99-4046-82c0-e143bf655a18": "recurring:ece95e14-9295-426a-a673-17d8f3522505",
+    "bill:60f87407-1ee5-47f0-b253-f112d76c93a5": "recurring:07430170-3c9d-4fc3-b3cf-230cd4c123fa",
+    "bill:9c4359b5-fb0f-47f6-8811-4eb8a7090116": "recurring:42be9bf2-0797-4956-8c4e-b91d4c9283f7",
+    "bill:a82abae2-0327-4634-ac57-a0e71939dfc3": "recurring:482981d0-9cde-4426-aec3-d68a7b2be516",
+    "bill:bdac1b68-e403-43b3-b751-2159b6762c29": "recurring:0696b4c5-0a3f-427a-a9e8-8200aeafe022",
+    "bill:d73da1e5-ca75-4154-97fb-098db53d4bb8": "recurring:1030ed79-5b50-4abd-b7db-5810d62cff00",
+    "bill:d828bee1-8cbc-4aba-9327-15a00643e395": "recurring:25c47d4a-0bce-497b-b750-70da2bfc85cd",
+    "bill:db25a7ba-c359-4bd1-9a39-7183dc27b4d7": "recurring:804bbd77-512d-4429-bfe7-f395bac36940",
+    "bill:dce4db49-840a-42b7-a939-cc4be07474ee": "recurring:90dc96b3-b84f-412d-87c4-6edae022fb7e",
+    "bill:e1f16ffa-8eff-4983-988e-20fb166716d0": "recurring:ec0d0b6e-b684-45d2-9cb8-ea4745240073",
+    "bill:e3763164-4cf8-400e-b02d-2d6c61d1a46f": "recurring:ebef97c9-26ba-4958-b36d-a093b7391102",
+    "bill:f74f87b9-c467-469b-a1dd-853fe5fef73b": "recurring:ca19c27a-dfa8-4c8b-9c6a-1805ce70d410",
+}
 
 asset_to_account = {
     "asset:8c4a7955-7fdb-465b-a3bc-c4207b2151ea": "account:4d51ff4b-0f75-4b6f-aba0-2e026d5c1c59",

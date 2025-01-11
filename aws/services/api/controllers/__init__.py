@@ -13,6 +13,7 @@ from . import (
     networths,
     paychecks,
     purchases,
+    recurrings,
     repayments,
     sales,
     securities,

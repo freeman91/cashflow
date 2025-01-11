@@ -9,19 +9,15 @@ const details = {
 export const dialogs = (() => {
   return [
     'account',
-    'asset',
-    'bill',
     'borrow',
-    'debt',
     'expense',
     'income',
-    'networth',
     'paycheck',
     'purchase',
     'repayment',
     'sale',
     'security',
-    'newTransaction',
+    'recurring',
     'transactions',
   ].reduce((acc, resourceType) => {
     acc[resourceType] = {

@@ -28,11 +28,11 @@ export default function AssetTransaction(props) {
   return (
     <>
       <BoxFlexColumn alignItems='space-between'>
-        <Typography variant='body2' color='text.secondary'>
+        <Typography variant='body2' color='textSecondary'>
           {dayjs(transaction.date).format('MMM Do, YYYY')}
         </Typography>
         <BoxFlexCenter justifyContent='flex-start'>
-          <Typography variant='h6' color='text.secondary'>
+          <Typography variant='h6' color='textSecondary'>
             $
           </Typography>
           <Typography variant='h5' fontWeight='bold'>
@@ -42,14 +42,14 @@ export default function AssetTransaction(props) {
       </BoxFlexColumn>
       <BoxFlexColumn alignItems='space-between'>
         <BoxFlexCenter>
-          <Typography variant='body2' color='text.secondary'>
+          <Typography variant='body2' color='textSecondary'>
             $
           </Typography>
           <Typography variant='body1' fontWeight='bold'>
             {numberToValue(transaction.price)}
           </Typography>
         </BoxFlexCenter>
-        <Typography variant='body2' color='text.secondary'>
+        <Typography variant='body2' color='textSecondary'>
           price
         </Typography>
       </BoxFlexColumn>
@@ -67,7 +67,7 @@ export default function AssetTransaction(props) {
         >
           {numberToValue(transaction.shares)}
         </Typography>
-        <Typography variant='body2' color='text.secondary'>
+        <Typography variant='body2' color='textSecondary'>
           shares
         </Typography>
       </BoxFlexColumn>

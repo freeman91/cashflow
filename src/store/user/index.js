@@ -6,13 +6,12 @@ import { getUserAPI, putUserAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { user as initialState } from '../initialState';
 import { getAccounts } from '../accounts';
-import { getBills } from '../bills';
 import { getBorrows } from '../borrows';
 import { getBudgets } from '../budgets';
 import { getExpenses } from '../expenses';
 import { getHistories } from '../histories';
 import { getIncomes } from '../incomes';
-import { getPaychecks, getPaycheckTemplates } from '../paychecks';
+import { getPaychecks } from '../paychecks';
 import { getPurchases } from '../purchases';
 import { getRepayments } from '../repayments';
 import { getSales } from '../sales';
@@ -20,6 +19,7 @@ import { getSecurities } from '../securities';
 import { getOptionLists } from '../optionLists';
 import { getCategories } from '../categories';
 import { setSnackbar } from '../appSettings';
+import { getRecurrings } from '../recurrings';
 
 const getUser = createAsyncThunk(
   'user/getUser',
@@ -44,7 +44,6 @@ const getUser = createAsyncThunk(
 
       const user = await getUserAPI(user_id);
       dispatch(getAccounts(user_id));
-      dispatch(getBills(user_id));
       dispatch(getBorrows(user_id));
       dispatch(getBudgets(user_id));
       dispatch(
@@ -55,14 +54,14 @@ const getUser = createAsyncThunk(
       );
       dispatch(getExpenses({ user_id, range: { start, end } }));
       dispatch(getIncomes({ user_id, range: { start, end } }));
+      dispatch(getPaychecks({ user_id, range: { start, end } }));
       dispatch(getPurchases(user_id));
+      dispatch(getRecurrings(user_id));
       dispatch(getRepayments(user_id));
       dispatch(getSales(user_id));
       dispatch(getSecurities(user_id));
       dispatch(getOptionLists(user_id));
       dispatch(getCategories(user_id));
-      await dispatch(getPaychecks({ user_id, range: { start, end } }));
-      dispatch(getPaycheckTemplates({ user_id }));
 
       return { item: user };
     } catch (err) {
@@ -87,19 +86,29 @@ const refreshAll = createAsyncThunk(
       .minute(0)
       .second(0);
     const end = start.add(3, 'month').date(0).hour(0).minute(0).second(0);
+    const historiesEnd = dayjs().format('YYYY-MM');
+    const historiesStart = dayjs().subtract(6, 'month').format('YYYY-MM');
 
     try {
       dispatch(showLoading());
 
       dispatch(getAccounts(user.user_id));
-      dispatch(getBills(user.user_id));
       dispatch(getBorrows(user.user_id));
+      dispatch(getBudgets(user.user_id));
+      dispatch(
+        getHistories({
+          user_id: user.user_id,
+          range: { start: historiesStart, end: historiesEnd },
+        })
+      );
       dispatch(getExpenses({ user_id: user.user_id, range: { start, end } }));
       dispatch(getIncomes({ user_id: user.user_id, range: { start, end } }));
       dispatch(getPaychecks({ user_id: user.user_id, range: { start, end } }));
       dispatch(getPurchases(user.user_id));
+      dispatch(getRecurrings(user.user_id));
       dispatch(getRepayments(user.user_id));
       dispatch(getSales(user.user_id));
+      dispatch(getSecurities(user.user_id));
       dispatch(getOptionLists(user.user_id));
       dispatch(getCategories(user.user_id));
 

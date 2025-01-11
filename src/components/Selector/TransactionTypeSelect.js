@@ -1,22 +1,10 @@
 import React from 'react';
 import startCase from 'lodash/startCase';
 
+import FilterIcon from '@mui/icons-material/FilterList';
 import useTheme from '@mui/material/styles/useTheme';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 export const TRANSACTION_TYPES = [
   'purchase',
@@ -49,29 +37,27 @@ export default function TransactionTypeSelect(props) {
   };
 
   return (
-    <FormControl sx={{ m: 1, width: 300 }}>
-      <InputLabel id='types-select-label-id'>Types</InputLabel>
-      <Select
-        labelId='types-select-label-id'
-        id='demo-multiple-name'
-        multiple
-        value={types}
-        onChange={handleChange}
-        MenuProps={MenuProps}
-        variant='standard'
-        sx={{ width: 300 }}
-        disableUnderline
-      >
-        {TRANSACTION_TYPES.map((type) => (
-          <MenuItem
-            key={type}
-            value={type}
-            style={getStyles(type, types, theme)}
-          >
-            {startCase(type)}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <Select
+      labelId='types-select-label-id'
+      id='demo-multiple-name'
+      multiple
+      value={types}
+      onChange={handleChange}
+      variant='standard'
+      sx={{ px: 2, width: 300, ml: 1 }}
+      disableUnderline
+      displayEmpty
+      renderValue={(selected) => {
+        if (selected.length === 0) return 'Show All Types';
+        return selected.join(', ');
+      }}
+      IconComponent={() => <FilterIcon />}
+    >
+      {TRANSACTION_TYPES.map((type) => (
+        <MenuItem key={type} value={type} style={getStyles(type, types, theme)}>
+          {startCase(type)}
+        </MenuItem>
+      ))}
+    </Select>
   );
 }

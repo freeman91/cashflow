@@ -13,12 +13,12 @@ export default function Repayment(props) {
   return (
     <>
       <BoxFlexColumn alignItems='space-between'>
-        <Typography align='left' variant='body2' color='text.secondary'>
+        <Typography align='left' variant='body2' color='textSecondary'>
           {dayjs(transaction.date).format('MMM Do, YYYY')}{' '}
           {transaction.pending && '(pending)'}
         </Typography>
         <BoxFlexCenter justifyContent='flex-start'>
-          <Typography variant='h5' color='text.secondary'>
+          <Typography variant='h5' color='textSecondary'>
             $
           </Typography>
           <Typography variant='h5' fontWeight='bold'>
@@ -32,27 +32,27 @@ export default function Repayment(props) {
       </BoxFlexColumn>
       <BoxFlexColumn alignItems='space-between'>
         <BoxFlexCenter>
-          <Typography variant='h6' color='text.secondary'>
+          <Typography variant='h6' color='textSecondary'>
             $
           </Typography>
           <Typography variant='h6' fontWeight='bold'>
             {_numberToCurrency.format(transaction.principal)}
           </Typography>
         </BoxFlexCenter>
-        <Typography variant='body2' color='text.secondary'>
+        <Typography variant='body2' color='textSecondary'>
           principal
         </Typography>
       </BoxFlexColumn>
       <BoxFlexColumn alignItems='space-between'>
         <BoxFlexCenter>
-          <Typography variant='h6' color='text.secondary'>
+          <Typography variant='h6' color='textSecondary'>
             $
           </Typography>
           <Typography variant='h6' fontWeight='bold'>
             {_numberToCurrency.format(transaction.interest)}
           </Typography>
         </BoxFlexCenter>
-        <Typography variant='body2' color='text.secondary'>
+        <Typography variant='body2' color='textSecondary'>
           interest
         </Typography>
       </BoxFlexColumn>

@@ -17,6 +17,9 @@ def _sales(user_id: str):
     if request.method == "POST":
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
+        deposit_account = None
+        withdraw_security = None
+
         sale = Sale.create(
             user_id=user_id,
             _date=_date,

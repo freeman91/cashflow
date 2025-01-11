@@ -11,17 +11,17 @@ function PaycheckTemplateSelect(props) {
   const { selected, handleSelect } = props;
 
   const paycheckTemplates = useSelector((state) => {
-    return state.paychecks.data.filter((paycheck) =>
-      paycheck.paycheck_id.startsWith('paycheck:template')
+    return state.recurring.data.filter(
+      (recurring) => recurring.item_type === 'paycheck'
     );
   });
   return (
     <FormControl variant='standard' fullWidth>
-      <InputLabel id='paycheck_id-label'>paycheck template</InputLabel>
+      <InputLabel id='recurring_id-label'>paycheck template</InputLabel>
       <Select
-        labelId='paycheck_id-label'
-        id='paycheck_id'
-        value={get(selected, 'paycheck_id', '')}
+        labelId='recurring_id-label'
+        id='recurring_id'
+        value={get(selected, 'recurring_id', '')}
         onChange={handleSelect}
         sx={{
           '& .MuiSelect-select': {
@@ -36,11 +36,11 @@ function PaycheckTemplateSelect(props) {
         </MenuItem>
         {paycheckTemplates.map((paycheck) => (
           <MenuItem
-            key={paycheck.paycheck_id}
-            id={`${paycheck.paycheck_id}-menu-item`}
-            value={paycheck.paycheck_id}
+            key={paycheck.recurring_id}
+            id={`${paycheck.recurring_id}-menu-item`}
+            value={paycheck.recurring_id}
           >
-            {paycheck.employer}
+            {paycheck.name}
           </MenuItem>
         ))}
       </Select>

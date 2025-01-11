@@ -25,16 +25,16 @@ export default function Borrow(props) {
         >
           {transaction.merchant}
         </Typography>
-        <Typography variant='body2' color='text.secondary'>
+        <Typography variant='body2' color='textSecondary'>
           merchant
         </Typography>
       </BoxFlexColumn>
       <BoxFlexColumn alignItems='space-between'>
-        <Typography align='right' variant='body2' color='text.secondary'>
+        <Typography align='right' variant='body2' color='textSecondary'>
           {dayjs(transaction.date).format('MMM D, YYYY')}
         </Typography>
         <BoxFlexCenter>
-          <Typography variant='body1' color='text.secondary'>
+          <Typography variant='body1' color='textSecondary'>
             $
           </Typography>
           <Typography variant='h6' fontWeight='bold'>

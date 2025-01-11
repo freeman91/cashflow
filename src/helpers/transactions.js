@@ -2,13 +2,10 @@ import find from 'lodash/find';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import PaymentIcon from '@mui/icons-material/Payment';
-import PaymentsIcon from '@mui/icons-material/Payments';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SellIcon from '@mui/icons-material/Sell';
@@ -58,13 +55,10 @@ const findColor = (type, theme) => {
   switch (type) {
     case 'account':
       return theme.palette.primary.main;
-    case 'debt':
-    case 'bill':
     case 'borrow':
     case 'expense':
     case 'repayment':
       return theme.palette.error.main;
-    case 'asset':
     case 'paycheck':
     case 'income':
       return theme.palette.success.main;
@@ -81,12 +75,6 @@ const findIcon = (type, pending = false) => {
   switch (type) {
     case 'account':
       return AccountBalanceIcon;
-    case 'asset':
-      return AccountBalanceWalletIcon;
-    case 'debt':
-      return CreditCardIcon;
-    case 'bill':
-      return PaymentsIcon;
     case 'borrow':
       return AssuredWorkloadIcon;
     case 'expense':

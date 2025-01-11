@@ -15,15 +15,16 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { deleteSale, postSale, putSale } from '../../store/sales';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
-import AssetSelect from '../Selector/AssetSelect';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import SharesFieldListItem from '../List/SharesFieldListItem';
 import DepositToSelect from '../Selector/DepositToSelect';
+import SecuritySelect from '../Selector/SecuritySelect';
 
 const defaultSale = {
   sale_id: '',
   _type: 'sale',
   account_id: '',
+  security_id: '',
   date: dayjs().hour(12).minute(0).second(0),
   amount: '',
   merchant: '',
@@ -44,13 +45,12 @@ function SaleDialog() {
   const [account, setAccount] = useState({});
 
   useEffect(() => {
-    if (mode === 'create') {
+    if (mode === 'create' && sale.account_id) {
       const account = find(accounts, { account_id: sale.account_id });
       setAccount(account);
       setSale((e) => ({
         ...e,
         merchant: account.institution,
-        price: account.price,
       }));
     }
   }, [sale.account_id, accounts, mode]);
@@ -69,7 +69,11 @@ function SaleDialog() {
 
   useEffect(() => {
     if (!isEmpty(attrs)) {
-      setSale((e) => ({ ...e, ...attrs, date: dayjs(attrs.date) }));
+      setSale((e) => ({
+        ...e,
+        ...attrs,
+        date: dayjs().hour(12).minute(0).second(0),
+      }));
     }
   }, [attrs]);
 
@@ -122,7 +126,11 @@ function SaleDialog() {
               }}
             />
           )} */}
-          <AssetSelect resource={sale} setResource={setSale} />
+          <SecuritySelect
+            accountId={sale.account_id}
+            resource={sale}
+            setResource={setSale}
+          />
           <ListItem disableGutters>
             <DatePicker
               label='date'

@@ -6,7 +6,12 @@ from datetime import datetime, timezone
 from typing import Optional
 from uuid import uuid4
 from pprint import pformat
-from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
+from pynamodb.attributes import (
+    BooleanAttribute,
+    NumberAttribute,
+    UnicodeAttribute,
+    UTCDateTimeAttribute,
+)
 
 from .base import BaseModel
 
@@ -27,6 +32,7 @@ class Account(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     name = UnicodeAttribute()
+    active = BooleanAttribute(default=True)
     institution = UnicodeAttribute(null=True)
     amount = NumberAttribute(null=True)
     value = NumberAttribute(null=True)
@@ -39,9 +45,6 @@ class Account(BaseModel):
     interest_rate = NumberAttribute(null=True)
     icon_url = UnicodeAttribute(null=True)
     last_update = UTCDateTimeAttribute(default=datetime.now(timezone.utc))
-
-    category = UnicodeAttribute(null=True)  # TODO: delete
-    description = UnicodeAttribute(null=True)  # TODO: delete
 
     def __repr__(self):
         return f"Account<{self.user_id}, {self.name}>"
@@ -68,6 +71,7 @@ class Account(BaseModel):
         icon_url: Optional[str] = None,
     ) -> "Account":
         account = cls(
+            active=True,
             user_id=user_id,
             account_id=f"account:{uuid4()}",
             name=name,

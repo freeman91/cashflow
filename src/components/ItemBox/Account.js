@@ -38,7 +38,7 @@ export default function Account(props) {
           {account.name}
         </Typography>
         {(accountAssets.length > 0 || accountDebts.length > 0) && (
-          <Typography variant='body2' color='text.secondary'>
+          <Typography variant='body2' color='textSecondary'>
             {accountAssets.length > 0 && `${accountAssets.length} asset`}
             {accountAssets.length > 1 && 's'}
             {accountAssets.length > 0 && accountDebts.length > 0 && ', '}
@@ -48,7 +48,7 @@ export default function Account(props) {
         )}
       </BoxFlexColumn>
       <BoxFlexCenter>
-        <Typography variant='body1' color='text.secondary'>
+        <Typography variant='body1' color='textSecondary'>
           $
         </Typography>
         <Typography variant='h6' color='white' fontWeight='bold'>

@@ -7,6 +7,7 @@ from datetime import datetime
 
 from uuid import uuid4
 from pynamodb.attributes import (
+    BooleanAttribute,
     NumberAttribute,
     UnicodeAttribute,
     UTCDateTimeAttribute,
@@ -28,6 +29,14 @@ class ContributionItemAttribute(MapAttribute):
     employee = NumberAttribute()
     account_id = UnicodeAttribute(null=True)
 
+    @classmethod
+    def parse(cls, payload: dict):
+        return cls(
+            employer=float(payload.get("employer")) if payload.get("employer") else 0,
+            employee=float(payload.get("employee")) if payload.get("employee") else 0,
+            account_id=payload.get("account_id"),
+        )
+
 
 class Paycheck(BaseModel):
     class Meta:
@@ -39,8 +48,10 @@ class Paycheck(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     date = UTCDateTimeAttribute(null=True)
-    employer = UnicodeAttribute()
+    pending = BooleanAttribute(default=False)
+    recurring_id = UnicodeAttribute(null=True)
 
+    employer = UnicodeAttribute()
     take_home = NumberAttribute()
     taxes = NumberAttribute(null=True)
     retirement_contribution = ContributionItemAttribute(null=True)
@@ -62,12 +73,14 @@ class Paycheck(BaseModel):
         _date: datetime,
         employer: str,
         take_home: float,
+        pending: bool = False,
         taxes: float = None,
         retirement_contribution: Dict = None,
         benefits_contribution: Dict = None,
         other_benefits: float = None,
         other: float = None,
         deposit_to_id: str = None,
+        recurring_id: str = None,
         description: str = None,
     ) -> "Paycheck":
         paycheck = cls(
@@ -77,42 +90,13 @@ class Paycheck(BaseModel):
             employer=employer,
             take_home=take_home,
             taxes=taxes,
+            pending=pending,
             retirement_contribution=retirement_contribution,
             benefits_contribution=benefits_contribution,
             other_benefits=other_benefits,
             other=other,
             deposit_to_id=deposit_to_id,
-            description=description,
-        )
-        paycheck.save()
-        return paycheck
-
-    @classmethod
-    def create_template(
-        cls,
-        user_id: str,
-        paycheck_id: str,
-        employer: str,
-        take_home: float,
-        taxes: float = None,
-        retirement_contribution: Dict = None,
-        benefits_contribution: Dict = None,
-        other_benefits: float = None,
-        other: float = None,
-        deposit_to_id: str = None,
-        description: str = None,
-    ) -> "Paycheck":
-        paycheck = cls(
-            user_id=user_id,
-            paycheck_id=paycheck_id,
-            employer=employer,
-            take_home=take_home,
-            taxes=taxes,
-            retirement_contribution=retirement_contribution,
-            benefits_contribution=benefits_contribution,
-            other_benefits=other_benefits,
-            other=other,
-            deposit_to_id=deposit_to_id,
+            recurring_id=recurring_id,
             description=description,
         )
         paycheck.save()
@@ -138,14 +122,17 @@ class Paycheck(BaseModel):
             )
         )
 
-    def update_account(self) -> dynamo.Asset:
+    def update_account(self) -> dynamo.Account:
         account = None
         if self.deposit_to_id.startswith("account"):
             account = dynamo.Account.get_(self.user_id, self.deposit_to_id)
-
             for attr in ["balance", "amount", "value"]:
                 if getattr(account, attr, None):
-                    setattr(account, attr, getattr(account, attr) + self.take_home)
+                    setattr(
+                        account,
+                        attr,
+                        round(getattr(account, attr) + self.take_home, 2),
+                    )
                     continue
             account.save()
 

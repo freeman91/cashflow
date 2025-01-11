@@ -36,7 +36,7 @@ export default function Transaction(props) {
         </Typography>
         <Typography
           variant='body1'
-          color='text.secondary'
+          color='textSecondary'
           sx={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -46,11 +46,11 @@ export default function Transaction(props) {
         </Typography>
       </BoxFlexColumn>
       <BoxFlexColumn alignItems='space-between'>
-        <Typography align='right' variant='body2' color='text.secondary'>
+        <Typography align='right' variant='body2' color='textSecondary'>
           {dayjs(transaction.date).format('MMM Do')}
         </Typography>
         <BoxFlexCenter>
-          <Typography variant='h6' color='text.secondary'>
+          <Typography variant='h6' color='textSecondary'>
             $
           </Typography>
           <Typography variant='h5' color='white' fontWeight='bold'>

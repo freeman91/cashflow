@@ -31,14 +31,17 @@ class Expense(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     date = UTCDateTimeAttribute()
+    pending = BooleanAttribute(default=False)
+    recurring_id = UnicodeAttribute(null=True)
+
     amount = NumberAttribute()
     merchant = UnicodeAttribute(null=True)
     category = UnicodeAttribute(default="")
     subcategory = UnicodeAttribute(default="")
-    pending = BooleanAttribute(default=False)
-    bill_id = UnicodeAttribute(null=True)
     payment_from_id = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
+
+    bill_id = UnicodeAttribute(null=True)  # TODO: remove
 
     def __repr__(self):
         return f"Expense<{self.user_id}, {self.date}, {self.merchant}, {self.amount}>"
@@ -53,8 +56,8 @@ class Expense(BaseModel):
         category: str,
         subcategory: str,
         pending: bool = False,
-        bill_id: str = None,
         payment_from_id: str = None,
+        recurring_id: str = None,
         description: str = None,
     ) -> "Expense":
         expense = cls(
@@ -66,8 +69,8 @@ class Expense(BaseModel):
             subcategory=subcategory,
             merchant=merchant,
             pending=pending,
-            bill_id=bill_id,
             payment_from_id=payment_from_id,
+            recurring_id=recurring_id,
             description=description,
         )
         expense.save()
@@ -104,12 +107,13 @@ class Expense(BaseModel):
             if account.account_type == "Asset":
                 if account.balance:
                     account.balance -= self.amount
+                    account.balance = round(account.balance, 2)
                 if account.amount:
                     account.amount -= self.amount
+                    account.amount = round(account.amount, 2)
             elif account.account_type == "Liability":
                 account.amount += self.amount
 
-            account.value = round(account.value, 2)
             account.save()
 
         return account

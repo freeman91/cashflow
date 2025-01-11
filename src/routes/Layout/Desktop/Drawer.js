@@ -7,11 +7,13 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import HomeIcon from '@mui/icons-material/Home';
 import LayersIcon from '@mui/icons-material/Layers';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 
+import { useColorScheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -21,7 +23,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-import LogoImg from '../../../components/CustomAppBar/LogoImg';
+import LogoImg from '../../../components/LogoImg';
 
 const PageButton = (props) => {
   const { pageName, currentPage, icon } = props;
@@ -50,8 +52,10 @@ const PageButton = (props) => {
       </ListItemIcon>
       <ListItemText
         primary={pageName}
-        primaryTypographyProps={{
-          variant: 'body2',
+        slotProps={{
+          primary: {
+            variant: 'body2',
+          },
         }}
       />
     </ListItemButton>
@@ -63,6 +67,7 @@ export default function DesktopDrawer(props) {
   const dispatch = useDispatch();
   const location = useLocation();
 
+  const { mode, setMode } = useColorScheme();
   const [page, setPage] = useState('');
 
   useEffect(() => {
@@ -73,13 +78,18 @@ export default function DesktopDrawer(props) {
   return (
     <Drawer variant='permanent' PaperProps={PaperProps}>
       <List disablePadding>
-        <ListItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <ListItem
+          sx={{ display: 'flex', justifyContent: 'space-between', pr: 0 }}
+        >
           <ListItemIcon sx={{ minWidth: 'fit-content' }}>
             <LogoImg />
           </ListItemIcon>
           <Box>
-            <IconButton onClick={() => dispatch(push('/search'))} color='info'>
-              <SearchIcon />
+            <IconButton
+              onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
+              color='info'
+            >
+              {mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
             </IconButton>
             <IconButton
               onClick={() => dispatch(push('/settings'))}

@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -141,7 +143,7 @@ function AccountDialog() {
 
   let numberAttribute = null;
   if (account.account_type === ASSET) {
-    if (account.asset_type === 'cash') {
+    if (account.asset_type === 'Cash') {
       if (['Checking', 'Savings'].includes(account.subtype)) {
         numberAttribute = 'balance';
       } else {
@@ -175,12 +177,31 @@ function AccountDialog() {
             value={account.institution}
             onChange={handleChange}
           />
-          <TextFieldListItem
-            id='url'
-            label='url'
-            value={account.url}
-            onChange={handleChange}
-          />
+          {numberAttribute && (
+            <TextFieldListItem
+              id={numberAttribute}
+              label={numberAttribute}
+              value={account[numberAttribute]}
+              onChange={(e) => {
+                const otherNumberAttributes = numberAttributes.filter(
+                  (attr) => attr !== numberAttribute
+                );
+                setAccount((prevAccount) => ({
+                  ...prevAccount,
+                  [numberAttribute]: e.target.value,
+                  ...otherNumberAttributes.map((attr) => ({ [attr]: '' })),
+                }));
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <AttachMoneyIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+
           <ListItem disableGutters>
             <FormControl variant='standard' fullWidth>
               <InputLabel id='account_type-label'>account type</InputLabel>
@@ -279,31 +300,20 @@ function AccountDialog() {
               </FormControl>
             </ListItem>
           )}
-          {numberAttribute && (
-            <TextFieldListItem
-              id={numberAttribute}
-              label={numberAttribute}
-              value={account[numberAttribute]}
-              onChange={(e) => {
-                const otherNumberAttributes = numberAttributes.filter(
-                  (attr) => attr !== numberAttribute
-                );
-                setAccount((prevAccount) => ({
-                  ...prevAccount,
-                  [numberAttribute]: e.target.value,
-                  ...otherNumberAttributes.map((attr) => ({ [attr]: '' })),
-                }));
-              }}
-            />
-          )}
           {account.account_type === LIABILITY && (
             <TextFieldListItem
               id='interest_rate'
               label='interest rate'
-              value={account.interest_rate}
+              value={account.interest_rate || ''}
               onChange={handleChange}
             />
           )}
+          <TextFieldListItem
+            id='url'
+            label='url'
+            value={account.url}
+            onChange={handleChange}
+          />
           <TextFieldListItem
             id='icon_url'
             label='icon url'

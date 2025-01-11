@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Blueprint, request
 
 from services.dynamo import Repayment
@@ -15,6 +15,7 @@ repayments = Blueprint("repayments", __name__)
 @repayments.route("/repayments/<user_id>", methods=["POST", "GET"])
 def _repayments(user_id: str):
     if request.method == "POST":
+        account = None
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
         escrow = body.get("escrow")
@@ -22,6 +23,7 @@ def _repayments(user_id: str):
         repayment = Repayment.create(
             user_id=user_id,
             _date=_date,
+            pending=body.get("pending"),
             principal=float(body.get("principal")),
             interest=float(body.get("interest")),
             escrow=float(escrow) if escrow else None,
@@ -29,13 +31,10 @@ def _repayments(user_id: str):
             category=body.get("category"),
             subcategory=body.get("subcategory"),
             account_id=body.get("account_id"),
-            bill_id=body.get("bill_id"),
             payment_from_id=body.get("payment_from_id"),
-            pending=body.get("pending", True),
         )
 
-        account = None
-        if not repayment.pending and repayment.payment_from_id:
+        if repayment.payment_from_id and not repayment.pending:
             account = repayment.update_account()
             if account:
                 account = account.as_dict()
@@ -73,20 +72,23 @@ def _repayment(user_id: str, repayment_id: str):
         repayment.escrow = float(escrow) if escrow else None
 
         for attr in [
+            "pending",
             "merchant",
             "category",
             "subcategory",
             "account_id",
-            "bill_id",
             "payment_from_id",
-            "pending",
+            "recurring_id",
+            "description",
         ]:
             setattr(repayment, attr, request.json.get(attr))
+
+        repayment.last_update = datetime.now(timezone.utc)
         repayment.save()
 
         account = None
         liability_account = None
-        if prev_pending is True and repayment.pending is False:
+        if repayment.pending is False and prev_pending is True:
             # update payment account
             account = repayment.update_account()
             account = account.as_dict()

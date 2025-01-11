@@ -57,8 +57,8 @@ function PaycheckDialog() {
   const optionLists = useSelector((state) => state.optionLists.data);
   const paychecks = useSelector((state) => state.paychecks.data);
   const templates = useSelector((state) => {
-    return state.paychecks.data.filter((paycheck) =>
-      paycheck.paycheck_id.startsWith('paycheck:template')
+    return state.recurrings.data.filter(
+      (recurring) => recurring.item_type === 'paycheck'
     );
   });
   const { mode, id, attrs } = useSelector((state) => state.dialogs.paycheck);
@@ -109,15 +109,16 @@ function PaycheckDialog() {
     e.preventDefault();
     setPaycheck((prevPaycheck) => ({
       ...prevPaycheck,
-      deposit_to_id: template.deposit_to_id,
-      employer: template.employer,
-      take_home: template.take_home,
-      taxes: template.taxes,
-      retirement_contribution: template.retirement_contribution,
-      benefits_contribution: template.benefits_contribution,
-      other_benefits: template.other_benefits,
-      other: template.other,
-      description: template.description,
+      deposit_to_id: template.paycheck_attributes.deposit_to_id,
+      employer: template.paycheck_attributes.employer,
+      take_home: template.paycheck_attributes.take_home,
+      taxes: template.paycheck_attributes.taxes,
+      retirement_contribution:
+        template.paycheck_attributes.retirement_contribution,
+      benefits_contribution: template.paycheck_attributes.benefits_contribution,
+      other_benefits: template.paycheck_attributes.other_benefits,
+      other: template.paycheck_attributes.other,
+      recurring_id: template.recurring_id,
     }));
   };
 
@@ -127,14 +128,17 @@ function PaycheckDialog() {
         delete
       </MenuItem>
     ),
-    ...templates.map((template) => (
-      <MenuItem
-        key={template.paycheck_id}
-        onClick={(e) => handleTemplateClick(e, template)}
-      >
-        {template.employer}
-      </MenuItem>
-    )),
+    ...templates.map((template) => {
+      if (mode !== 'create') return null;
+      return (
+        <MenuItem
+          key={template.paycheck_id}
+          onClick={(e) => handleTemplateClick(e, template)}
+        >
+          {template.name}
+        </MenuItem>
+      );
+    }),
   ].filter(Boolean);
   return (
     <BaseDialog

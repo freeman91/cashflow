@@ -85,5 +85,8 @@ class Transfer(BaseModel):
         from_account.value -= self.amount
         to_account.value += self.amount
 
+        from_account.value = round(from_account.value, 2)
+        to_account.value = round(to_account.value, 2)
+
         from_account.save()
         to_account.save()

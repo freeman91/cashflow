@@ -1,0 +1,2632 @@
+[
+  {
+    "_type": "income",
+    "amount": 49.02,
+    "category": "refund",
+    "date": "2020-09-10T12:00:00+00:00",
+    "description": "CC reward",
+    "income_id": "income:006e4985-c402-443f-a39c-28e10799b95c",
+    "source": "Keybank",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 30.75,
+    "category": "tips",
+    "date": "2019-01-18T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:0266a720-994d-44bc-8a5a-6e8eb00b2faa",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 273.21,
+    "category": "refund",
+    "date": "2021-09-10T12:00:00+00:00",
+    "description": "",
+    "income_id": "income:02d1ea09-c990-4c88-9cdc-1f2392125bcd",
+    "source": "Ekeba",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 256,
+    "category": "tips",
+    "date": "2019-10-12T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:03f271ac-dc44-4e56-ba54-a724561135d7",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 42.45,
+    "category": "tips",
+    "date": "2019-03-15T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:0547334a-3aae-43e8-89e8-52979fe58370",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 113,
+    "category": "tips",
+    "date": "2018-11-29T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:05544a93-54f1-4b1b-91f1-ba53aba63f64",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 369,
+    "category": "tips",
+    "date": "2019-12-21T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:055dd763-9169-4648-b586-25ef44d4a8ea",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 80.73,
+    "category": "credit card reward",
+    "date": "2024-12-16T17:00:00+00:00",
+    "deposit_to_id": "asset:df7ea372-a391-4d2e-b16a-87880ee8142a",
+    "description": "CC rewards",
+    "income_id": "income:06dd814b-07d3-4dbc-a919-040462caa7d0",
+    "source": "Huntington",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 172,
+    "category": "tips",
+    "date": "2020-01-14T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:07b7e5bc-99b6-437e-94b6-33ee6247fade",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 358,
+    "category": "tips",
+    "date": "2020-02-22T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:08809abb-8fc3-4451-89da-cdf9827f7e6f",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 14.9,
+    "category": "refund",
+    "date": "2019-02-27T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:0bbd9c43-4069-414b-aa70-48e683713bfa",
+    "source": "other",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 100,
+    "category": "gift",
+    "date": "2021-01-01T12:00:00+00:00",
+    "description": "Graduation Gift",
+    "income_id": "income:0c4937de-f5d4-4eff-b127-d49437f2b20b",
+    "source": "other",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 47.25,
+    "category": "tips",
+    "date": "2020-03-27T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:0ceeedd5-78b8-4b8d-9de9-351b8cb62c9b",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 58.59,
+    "category": "return",
+    "date": "2024-04-12T16:00:00+00:00",
+    "description": "Rachel's non-slip shoes",
+    "income_id": "income:0e93cb8c-c379-451c-93bb-f33e7da99b97",
+    "source": "Amazon",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 308,
+    "category": "tips",
+    "date": "2019-06-01T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:0ea89acd-040f-4a0a-85be-7a28979279eb",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 178,
+    "category": "tips",
+    "date": "2019-07-30T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:0f908414-c2f8-4098-bfe0-087f7247c9f9",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 128,
+    "category": "tips",
+    "date": "2019-07-06T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:12a078ab-627e-4e1a-a535-327c6a36bc36",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 293,
+    "category": "tips",
+    "date": "2019-02-23T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:13b06379-b276-4e27-ad94-9b4bfb0d8a1d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 146,
+    "category": "tips",
+    "date": "2019-05-17T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:1435c394-883f-41f9-a0d1-0b549c258c00",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 137.14,
+    "category": "refund",
+    "date": "2022-01-25T12:00:00+00:00",
+    "income_id": "income:14785fa6-c2b8-452c-bb65-e309e66392d4",
+    "source": "Huntington",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 353,
+    "category": "tips",
+    "date": "2020-02-08T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:14fbca31-e593-4f0b-9cb6-c927b5139c3d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 56.92,
+    "category": "tips",
+    "date": "2020-01-31T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:156e06ce-1e06-4e9a-a67c-1699fbbed0d2",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 146,
+    "category": "tips",
+    "date": "2020-01-21T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:16325655-2637-487c-b8a5-d316ea786913",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 309,
+    "category": "tips",
+    "date": "2019-12-03T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:18370bff-e549-46ee-8d57-78263a877a14",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 27.98,
+    "category": "tips",
+    "date": "2020-07-17T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:1885646e-db68-47f2-a3f6-01cd76def392",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 135,
+    "category": "tips",
+    "date": "2018-11-24T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:19467993-4fc9-4450-9568-943ef6bffa18",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 205,
+    "category": "tips",
+    "date": "2019-05-01T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:1a1e078e-6385-4bd1-a656-2f15021e50ae",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 1140,
+    "category": "other",
+    "date": "2020-04-27T12:00:00+00:00",
+    "description": "unemployment",
+    "income_id": "income:1d854745-c707-4919-a9f0-d8cafec9f16f",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 274,
+    "category": "tips",
+    "date": "2019-04-27T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:1e8b4018-6d09-4620-83bf-4849ec609a28",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 50,
+    "category": "tips",
+    "date": "2024-11-09T17:00:00+00:00",
+    "deposit_to_id": "asset:8c4a7955-7fdb-465b-a3bc-c4207b2151ea",
+    "description": "",
+    "income_id": "income:1ecda704-d2ec-4d48-9946-c878c5ace351",
+    "source": "Together & Company",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 75,
+    "category": "refund",
+    "date": "2024-04-12T16:00:00+00:00",
+    "description": "From mom for party",
+    "income_id": "income:20dc4435-f406-4f8d-8cc9-6a325bda65e8",
+    "source": "other",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 4591,
+    "category": "tax refund",
+    "date": "2024-02-27T17:00:00+00:00",
+    "description": "2023 Federal tax refund",
+    "income_id": "income:21d8d755-967e-4d65-a0c6-e61bec8afbc8",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 96.75,
+    "category": "refund",
+    "date": "2020-01-05T12:00:00+00:00",
+    "description": "CC reward",
+    "income_id": "income:221a20d7-7d84-4435-8e65-76103a443d24",
+    "source": "Keybank",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 166,
+    "category": "tips",
+    "date": "2019-04-23T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:22fc00db-f748-4c6e-ac1c-461448efbf0f",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 1203,
+    "category": "refund",
+    "date": "2020-02-20T12:00:00+00:00",
+    "description": "Federal tax return",
+    "income_id": "income:294985e4-c02f-414a-a5d4-1f6fb7586cf8",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 50,
+    "category": "tips",
+    "date": "2024-06-27T16:00:00+00:00",
+    "description": "",
+    "income_id": "income:2a19b5cb-d99d-40e7-8c5c-fd14a8c4b1d4",
+    "source": "together & company",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 339,
+    "category": "tips",
+    "date": "2020-01-04T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:2b0037bd-6f9f-43ad-9c04-55c293cb9c55",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 94.8,
+    "category": "refund",
+    "date": "2022-10-11T12:00:00+00:00",
+    "income_id": "income:2b9b1de3-ed64-4d5e-aced-6fc9907a9411",
+    "source": "Huntington",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 167,
+    "category": "tips",
+    "date": "2019-04-02T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:2bfd5132-f6d1-4d05-99a1-d1ba8085feb3",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 291,
+    "category": "tips",
+    "date": "2018-12-22T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:2c7e6842-ebd3-4fe8-8cbd-faa0f00bf5e1",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 96,
+    "category": "tips",
+    "date": "2018-12-29T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:2c907203-4ddf-457e-afa0-eb00b2c2c447",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 23,
+    "category": "sale",
+    "date": "2021-10-19T12:00:00+00:00",
+    "description": "2012 MacBook Pro",
+    "income_id": "income:2d0515ae-87a2-45c5-82da-b0bfab670262",
+    "source": "Mac Sales",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 156,
+    "category": "tips",
+    "date": "2019-08-06T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:2d2bb563-4f46-4960-b4b0-bf44a4770a1a",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 200,
+    "category": "other",
+    "date": "2022-10-29T12:00:00+00:00",
+    "income_id": "income:2d6e0e3a-ff81-4ee3-ae07-73dc19c04d97",
+    "source": "Mom & Dad",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 200,
+    "category": "credit card reward",
+    "date": "2024-07-25T16:00:00+00:00",
+    "description": "Credit Card bonus",
+    "income_id": "income:2e0e3e65-e41b-48f2-b3d5-e59a1e2ae8f0",
+    "source": "Ally",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 136,
+    "category": "tips",
+    "date": "2019-12-07T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:2ef4a64c-b052-4aaa-baa6-db7030630186",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 105.53,
+    "category": "tips",
+    "date": "2019-09-27T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:2f2e3021-25a0-478d-b401-38a4b517c033",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 133,
+    "category": "tips",
+    "date": "2019-02-05T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:31513a63-24b9-429a-86e8-ad59f53f5baf",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 102,
+    "category": "tips",
+    "date": "2020-07-03T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:330d3304-b7d6-420d-a73b-5e3cd0f7737a",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 175,
+    "category": "tips",
+    "date": "2019-07-05T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:332ba5df-0210-41ad-8778-e9abb10d7862",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 213,
+    "category": "tips",
+    "date": "2019-04-13T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:3558532a-c08c-465e-8ecd-07f22a25402a",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 303,
+    "category": "tips",
+    "date": "2019-03-26T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:3695e2bc-52cc-4be9-a512-80fd60226789",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 304,
+    "category": "tips",
+    "date": "2019-01-26T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:3730f97e-c63b-4422-b924-a9de954f2007",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 181,
+    "category": "tips",
+    "date": "2019-06-18T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:3941142b-6196-40a7-b5aa-7a8a7b14dd9d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 245,
+    "category": "tips",
+    "date": "2019-12-27T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:39aa2c9d-9a6a-49b4-81c6-33657df956a2",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 319,
+    "category": "tips",
+    "date": "2018-12-05T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:3a64f0dd-6022-4036-aa3b-59eb4774d8bb",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 147.44,
+    "category": "refund",
+    "date": "2021-04-08T12:00:00+00:00",
+    "description": "CC rewards",
+    "income_id": "income:3a89dd41-0cbf-42d4-a1f2-92dc7aabea5c",
+    "source": "Keybank",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 99.09,
+    "category": "tips",
+    "date": "2019-02-15T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:3ac0b9da-acb6-4513-9307-33d4e3b1cae6",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 168,
+    "category": "tips",
+    "date": "2019-07-02T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:3b7f6aaf-3348-4e7a-b033-d78e8e9f23b6",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 177,
+    "category": "tips",
+    "date": "2019-05-04T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:3c7bb9b6-1a22-4b06-b3d2-324ad712a372",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 12.79,
+    "category": "tips",
+    "date": "2020-03-13T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:3c9a8311-96d8-4784-874d-393189429b27",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 36.66,
+    "category": "tips",
+    "date": "2019-10-11T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:3df6657e-ab0a-4edc-adff-ab552c330b10",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 790,
+    "category": "other",
+    "date": "2020-05-04T12:00:00+00:00",
+    "description": "unemployment",
+    "income_id": "income:3e5f149d-bc6a-4195-ab72-fe7eeb1b4df8",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 75,
+    "category": "other",
+    "date": "2022-09-28T12:00:00+00:00",
+    "income_id": "income:401b8dcf-1346-42d9-8c43-04779af93142",
+    "source": "Kay & Doug",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 100,
+    "category": "gift",
+    "date": "2024-08-16T16:00:00+00:00",
+    "deposit_to_id": "asset:8c4a7955-7fdb-465b-a3bc-c4207b2151ea",
+    "description": "",
+    "income_id": "income:406accde-1aad-4551-9548-dd73cc4fa191",
+    "source": "Rubelle",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 72.31,
+    "category": "tips",
+    "date": "2019-05-10T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:413fac71-0049-457a-8f97-b1e8f3d9cb92",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 2793.03,
+    "category": "other",
+    "date": "2022-09-09T12:00:00+00:00",
+    "income_id": "income:416fd8a0-5d03-4f61-b06c-7ec4d6f2d27e",
+    "source": "insurance",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 301,
+    "category": "tips",
+    "date": "2020-03-07T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:41a21086-e275-4c73-a03e-44af6463b610",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 258,
+    "category": "tips",
+    "date": "2020-01-11T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:430d4b05-849f-49a6-82ff-686261a580cb",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 46.56,
+    "category": "tips",
+    "date": "2019-12-06T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:448ec2a6-c142-4afb-bb0e-d3d04116a824",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 145,
+    "category": "tips",
+    "date": "2018-11-23T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:44a3aa50-31df-4682-a4ab-b55111ef6135",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 376,
+    "category": "tips",
+    "date": "2019-10-19T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:4502472b-2a85-4f28-a7f7-db86c4c15d27",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 147,
+    "category": "tips",
+    "date": "2019-09-28T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:47ec0885-bf7a-48bb-b306-7f6f6c7d2c61",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 232,
+    "category": "tips",
+    "date": "2019-03-02T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:4a4c11dc-b399-41cd-aca1-2fd0b65a305b",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 165,
+    "category": "tips",
+    "date": "2020-01-25T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:4a9791cd-d750-46b6-badb-7b1f36a60066",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 135.6,
+    "category": "tips",
+    "date": "2019-07-19T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:4b9744a5-e510-4273-8a95-82573a0e5f1b",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 1400,
+    "category": "other",
+    "date": "2021-03-17T12:00:00+00:00",
+    "description": "stimulus check",
+    "income_id": "income:4f638392-135a-4e6a-888c-fb9503538f98",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 92.17,
+    "category": "other",
+    "date": "2024-01-08T17:00:00+00:00",
+    "description": "batterygate settlement",
+    "income_id": "income:52336869-53c6-4881-a644-82aeb4b8b908",
+    "source": "Apple",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 1000,
+    "category": "other",
+    "date": "2022-09-05T12:00:00+00:00",
+    "income_id": "income:5276ae19-df14-4c9a-bd8d-89494435f090",
+    "source": "Mom & Dad",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 880,
+    "category": "other",
+    "date": "2022-10-30T12:00:00+00:00",
+    "income_id": "income:52a09f27-162f-43a4-b9e6-3075906170c7",
+    "source": "",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 42.04,
+    "category": "tips",
+    "date": "2020-02-14T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:53c9715d-c22a-44d9-a2e9-37dafd1d3f2c",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 99.04,
+    "category": "refund",
+    "date": "2023-07-05T12:00:00+00:00",
+    "income_id": "income:5528f232-6171-40cd-84d8-13baf19b288e",
+    "source": "Huntington",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 553.15,
+    "category": "sale",
+    "date": "2023-12-28T17:00:00+00:00",
+    "description": "Shearwater Petrel 2",
+    "income_id": "income:568b7f14-4690-4e6c-928a-6475915d5ab4",
+    "source": "eBay",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 141,
+    "category": "tips",
+    "date": "2019-07-09T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:570e8ed6-84ba-46a2-b63e-57ae799b7266",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 97.29,
+    "category": "refund",
+    "date": "2019-08-08T12:00:00+00:00",
+    "description": "CC reward",
+    "income_id": "income:571b2863-04d3-4919-891c-3e99c1eb0f2d",
+    "source": "Keybank",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 159,
+    "category": "tips",
+    "date": "2019-02-12T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:57d1d323-85ad-4467-a2ee-714007d8dec5",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 314,
+    "category": "tips",
+    "date": "2019-03-09T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:5822c4d1-274c-4c0a-9d53-dd2dc4ae135e",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 143,
+    "category": "tips",
+    "date": "2019-09-17T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:58462120-d3fc-4bd3-af92-6531dd678b08",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 175,
+    "category": "tips",
+    "date": "2019-11-05T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:584a6b14-5f18-49a3-93a9-e23d35e3e10f",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 30.92,
+    "category": "tips",
+    "date": "2019-11-08T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:58ccfea2-d3c2-4ab3-83b1-f800c6f5adb4",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 152,
+    "category": "tips",
+    "date": "2019-06-13T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:5b1dee2d-ffec-409a-a804-f5369b3df936",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 252,
+    "category": "tips",
+    "date": "2019-09-14T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:5b56b96e-d68a-47a4-ae5b-c2e747f3dbe1",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 173,
+    "category": "tips",
+    "date": "2019-03-19T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:5b981ec5-5b71-49e8-b274-6a39d954f97d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 600,
+    "category": "other",
+    "date": "2021-01-01T12:00:00+00:00",
+    "description": "Stimulus check",
+    "income_id": "income:5bd19b44-4cdf-4fcd-a83e-18a45b408fe3",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 120.88,
+    "category": "refund",
+    "date": "2025-01-10T17:00:00+00:00",
+    "description": "CC reward",
+    "income_id": "income:5ccb6476-475d-422e-be1e-414730a0fd06",
+    "source": "Ally",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 124,
+    "category": "tips",
+    "date": "2019-12-28T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:5e77e16c-a459-4a9e-a69a-17511584c3e7",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 50,
+    "category": "refund",
+    "date": "2019-04-23T12:00:00+00:00",
+    "description": "Root bonus",
+    "income_id": "income:5e803995-e909-4767-b79e-6bd984193823",
+    "source": "other",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 501.52,
+    "category": "refund",
+    "date": "2024-07-30T16:00:00+00:00",
+    "description": "Insurance reimbursement",
+    "income_id": "income:5ead7e3e-7ead-490b-be33-ca78c0357733",
+    "source": "Pets Best",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 282,
+    "category": "tips",
+    "date": "2019-06-08T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:6049102f-647d-4baa-90bf-e9d0cd6f92a2",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 165,
+    "category": "tips",
+    "date": "2019-09-21T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:617d47b2-524a-49d9-9c6c-80f8912cb07d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 176,
+    "category": "tips",
+    "date": "2019-05-14T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:628e1749-35cd-4b20-9f4b-05272d1bbf51",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 100,
+    "category": "tips",
+    "date": "2018-12-25T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:62991c6c-9b13-493f-941a-b01142bc6bac",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 300,
+    "category": "other",
+    "date": "2022-10-02T12:00:00+00:00",
+    "income_id": "income:6379a9f6-6ccb-4bfd-8660-7c348bfffc53",
+    "source": "Mom & Dad",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 40,
+    "category": "sale",
+    "date": "2022-06-28T12:00:00+00:00",
+    "income_id": "income:638f4658-c85e-4c61-a253-a2dd6d9967d1",
+    "source": "Morgan",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 134,
+    "category": "tips",
+    "date": "2019-12-20T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:65756f10-2af1-4552-bc5e-e9751420c16e",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 150,
+    "category": "tips",
+    "date": "2019-05-07T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:65997fdd-75dc-4423-b6c3-f3285c1084a7",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 162,
+    "category": "tips",
+    "date": "2019-08-20T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:65a2cf7e-6e38-44ea-844c-f2cbf88fe96b",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 50,
+    "category": "gift",
+    "date": "2023-02-04T12:00:00+00:00",
+    "income_id": "income:65b5edb9-e8a1-4dd9-acc2-f372d96612df",
+    "source": "Heaphys",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 100,
+    "category": "gift",
+    "date": "2023-05-27T12:00:00+00:00",
+    "income_id": "income:65ce29c7-2af6-4126-ba6d-bb861bdeeeaa",
+    "source": "Baby shower",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 176,
+    "category": "tips",
+    "date": "2019-01-29T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:65ec8832-cba6-44dc-a05b-02db4166c910",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 274,
+    "category": "tips",
+    "date": "2019-09-10T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:6796f1a2-4a55-4d41-93ae-7e65bed947f2",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 150,
+    "category": "tips",
+    "date": "2019-01-08T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:69bd31a2-0acd-4b0d-a7b8-479d6b43dcab",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 150,
+    "category": "tips",
+    "date": "2020-04-30T12:00:00+00:00",
+    "description": "quarantine cc sales",
+    "income_id": "income:69c36e06-0acc-40a8-9a6a-d6a228885489",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 247,
+    "category": "tips",
+    "date": "2019-05-25T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:6c91651d-cfbb-47b7-8ceb-9d7969813bcc",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 136,
+    "category": "tips",
+    "date": "2019-08-08T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:6cf90d85-21e1-41d8-85db-b3c2ea0f9bc8",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 321.15,
+    "category": "gift",
+    "date": "2023-08-07T12:00:00+00:00",
+    "income_id": "income:702dc237-27ec-44c2-8876-8525ac5c91fa",
+    "source": "Meal Train",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 320,
+    "category": "tips",
+    "date": "2020-02-15T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:70936d63-a24c-4a10-af1f-94e1bd229789",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 219,
+    "category": "tips",
+    "date": "2020-01-07T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:7214bf22-077a-44e6-9890-ed56c7cb8682",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 2732,
+    "category": "refund",
+    "date": "2023-03-13T12:00:00+00:00",
+    "income_id": "income:734df51c-15df-42b3-a6e3-98ecc9ba0f9a",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 179,
+    "category": "tips",
+    "date": "2019-06-04T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:74604dca-ba64-4cc6-975a-0f156efb168a",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 45.13,
+    "category": "tips",
+    "date": "2019-03-29T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:7559fc98-c8cf-4ed4-826a-05bdfdce4200",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 326,
+    "category": "tips",
+    "date": "2019-05-21T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:758b8d7c-3106-4c9e-bc8c-885b34f59c65",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 35.46,
+    "category": "refund",
+    "date": "2021-11-22T12:00:00+00:00",
+    "description": "",
+    "income_id": "income:75fde65d-f964-4860-b5ca-5c39ef51c09e",
+    "source": "Amazon",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 497,
+    "category": "tax refund",
+    "date": "2024-02-28T17:00:00+00:00",
+    "description": "2023 State tax refund",
+    "income_id": "income:762b2436-9f52-478f-8e30-6f75bc62527e",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 40,
+    "category": "sale",
+    "date": "2021-01-10T12:00:00+00:00",
+    "description": "",
+    "income_id": "income:76e5794b-c3f3-44da-b844-b24b924135bd",
+    "source": "other",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 232,
+    "category": "tips",
+    "date": "2019-02-02T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:7882017b-2c88-4961-bcda-9b239c4d72f3",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 186,
+    "category": "tips",
+    "date": "2019-03-05T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:7da12f2b-0d5d-410e-8e68-f61f62404d8a",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 189,
+    "category": "tips",
+    "date": "2019-04-06T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:7df07482-249c-4522-8eb0-82cd05f2fb05",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 58.43,
+    "category": "credit card reward",
+    "date": "2024-05-31T16:00:00+00:00",
+    "description": "Credit Card rewards",
+    "income_id": "income:7e2aeb38-0997-4e5e-9766-0fc37005706d",
+    "source": "Ally",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 103,
+    "category": "tips",
+    "date": "2019-12-06T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:7e46ffef-29be-4794-880e-47a2af65e41f",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 65.92,
+    "category": "tips",
+    "date": "2019-02-01T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:7f2662ac-21aa-41f7-8e0b-5da219cc5f9c",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 7.9,
+    "category": "tips",
+    "date": "2020-01-03T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:7f72f4f9-269c-416f-bfbd-fc692ee5e071",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 182,
+    "category": "tips",
+    "date": "2019-01-15T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:838ee427-eb60-4706-b7a0-2185f15b14f0",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 289,
+    "category": "tips",
+    "date": "2019-08-13T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:859bf98e-131a-4685-9fef-a122e8596d46",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 10.52,
+    "category": "credit card reward",
+    "date": "2024-09-20T16:00:00+00:00",
+    "description": "Credit Card bonus",
+    "income_id": "income:872044d6-af60-441f-a42c-2bb5c6fccbc9",
+    "source": "Ally",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 50,
+    "category": "gift",
+    "date": "2022-11-15T12:00:00+00:00",
+    "income_id": "income:88a6eee4-78dd-4581-9868-b8b563360886",
+    "source": "The Wrays",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 108.14,
+    "category": "refund",
+    "date": "2019-04-23T12:00:00+00:00",
+    "description": "CC reward",
+    "income_id": "income:8ad1d34d-bea3-4a8a-89c4-a1dccd8c5a81",
+    "source": "Keybank",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 195,
+    "category": "tips",
+    "date": "2019-08-27T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:8ad8b9e9-685d-40b7-b548-3ee96ea2a337",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 193,
+    "category": "tips",
+    "date": "2019-05-31T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:8bf44aaa-0779-4d17-9c9a-8bbd2339698a",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 337,
+    "category": "tips",
+    "date": "2019-10-05T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:8d74728c-8f98-459e-b3a9-86aae405fa24",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 141,
+    "category": "tips",
+    "date": "2019-06-15T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:8d770a3b-acfa-4e07-ac3a-86e8ad50e78f",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 249,
+    "category": "tips",
+    "date": "2018-12-15T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:8f097c67-4ecb-42b4-86af-9eb7d550e5ac",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 67.62,
+    "category": "refund",
+    "date": "2024-06-14T16:00:00+00:00",
+    "description": "Light fixture",
+    "income_id": "income:8f0b8529-73d1-4a20-874d-1c767e602409",
+    "source": "Amazon",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 199,
+    "category": "tips",
+    "date": "2019-06-02T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:8f3ee2c3-71d2-4d6e-bea2-7774140f331c",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 82.1,
+    "category": "tips",
+    "date": "2019-08-02T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:903f5c1a-fb1a-4f4f-8b74-886d78fbcd51",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 146,
+    "category": "tips",
+    "date": "2019-09-07T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:90995370-2a59-4479-a24d-54a6086bb5ff",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 50,
+    "category": "sale",
+    "date": "2024-03-11T16:00:00+00:00",
+    "description": "2x4 bench",
+    "income_id": "income:9122b707-fe2f-4324-b50f-4c7e7f65ae7f",
+    "source": "Zahler's ",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 183.74,
+    "category": "refund",
+    "date": "2022-06-28T12:00:00+00:00",
+    "income_id": "income:9259d43a-ec0e-40a2-ad66-a9ac1f70b102",
+    "source": "Huntington",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 49.9,
+    "category": "tips",
+    "date": "2018-11-23T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:93117358-9cce-42c2-9135-605efb2d41b8",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 29.87,
+    "category": "sale",
+    "date": "2021-07-10T12:00:00+00:00",
+    "description": "PS4 games",
+    "income_id": "income:9367d3ab-c372-4750-9b51-fd209ad3b01b",
+    "source": "Gamestop",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 158,
+    "category": "tips",
+    "date": "2020-03-10T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:967ecbf2-61f0-4787-8afe-6e3d538bbe33",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 259,
+    "category": "tips",
+    "date": "2019-02-09T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:98e24dba-b3ea-4648-9214-03d8b42d3751",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 83,
+    "category": "tips",
+    "date": "2019-01-12T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:990000e4-6025-4453-9284-13c2692585a2",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 211,
+    "category": "tips",
+    "date": "2019-11-12T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:99150e36-2f4f-4b96-94f4-21eb943c2ee6",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 375,
+    "category": "tips",
+    "date": "2019-08-31T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:999fe2bc-fd5b-4591-8ed3-677bed4dbdbd",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 59.49,
+    "category": "tips",
+    "date": "2019-06-07T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:99cd3295-7616-4690-a4f3-febd309b77c7",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 298,
+    "category": "tips",
+    "date": "2019-07-13T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:9b6291b3-3d93-4dcb-a39d-bcae102bb89b",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 257,
+    "category": "tips",
+    "date": "2019-05-11T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:9b6bf27b-9664-4948-b8bf-161a2d029107",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 135,
+    "category": "tips",
+    "date": "2019-09-06T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:9bb0f073-f737-4d11-bfc4-6ed54b08f218",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 294,
+    "category": "tips",
+    "date": "2019-08-16T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:9bb73ec2-e7c4-4297-8bf4-33386d8ec9ce",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 127,
+    "category": "tips",
+    "date": "2019-09-19T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:9dc93f64-41b1-494e-9f20-3d5950d61d5d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 228,
+    "category": "tips",
+    "date": "2019-10-22T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:9ee16421-eb99-4ecf-872f-8973ea49b919",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 152,
+    "category": "tips",
+    "date": "2019-11-01T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:a0af227c-5786-4e46-a896-2381e28c7e5d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 359,
+    "category": "tips",
+    "date": "2020-02-29T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:a2f003ff-9fca-4119-ae59-aafdd88cf77c",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 29.32,
+    "category": "tips",
+    "date": "2019-10-25T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:a3e2b138-16d8-4177-91c7-4358fa65d1ff",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 135.45,
+    "category": "credit card reward",
+    "date": "2024-03-01T17:00:00+00:00",
+    "description": "credit card rewards",
+    "income_id": "income:a42630b9-7c51-46c9-bede-d2b91eb1c84c",
+    "source": "Huntington",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 162,
+    "category": "tips",
+    "date": "2018-12-11T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:a4f010c0-23f5-4536-9e80-b8ac2bd58bd8",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 235,
+    "category": "tips",
+    "date": "2018-11-17T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:a4fd797b-b033-4324-95ac-10b7d13adb4f",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 526.02,
+    "category": "other",
+    "date": "2021-07-10T12:00:00+00:00",
+    "description": "IRS",
+    "income_id": "income:a5c8fe59-e8db-41c9-a26f-98d978354365",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 159,
+    "category": "tips",
+    "date": "2019-03-30T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:a5f22df7-9017-45c8-b524-ac0b30561403",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 1185,
+    "category": "refund",
+    "date": "2019-02-05T12:00:00+00:00",
+    "description": "federal tax refund",
+    "income_id": "income:a95db2d2-cd95-49da-b1ca-ed668abb60ed",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 5.62,
+    "category": "tips",
+    "date": "2019-09-13T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:ad226344-e398-4763-8567-672b546fbb5c",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 22.71,
+    "category": "tips",
+    "date": "2020-01-17T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:ada5c1c5-f805-4fa2-911e-3ed7790440cb",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 178,
+    "category": "tips",
+    "date": "2019-03-12T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:ae5d03fd-5abc-4067-90d6-00c8db9736a1",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 48.13,
+    "category": "refund",
+    "date": "2020-04-06T12:00:00+00:00",
+    "description": "OSU refund",
+    "income_id": "income:af22e5f2-59ba-4bf2-a329-321235124070",
+    "source": "other",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 153,
+    "category": "tips",
+    "date": "2019-01-22T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:af5ee854-3560-469d-85c1-9ccbc392af02",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 173,
+    "category": "tips",
+    "date": "2019-11-14T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:af8bde3d-d79e-4756-8edd-ce5f061d9f65",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 256,
+    "category": "tips",
+    "date": "2019-06-29T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:afd4f83b-490f-49f8-830b-fad023c366f4",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 69.89,
+    "category": "tips",
+    "date": "2019-08-16T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:b06a1242-3d00-4d93-8e2e-e030a105b237",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 331,
+    "category": "tips",
+    "date": "2019-05-03T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:b1aae89f-1a21-4d9b-9484-5ec852b05640",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 53.85,
+    "category": "tips",
+    "date": "2019-04-12T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:b237ba2e-aef3-4ca4-b1db-ce2de14823b5",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 303,
+    "category": "tips",
+    "date": "2019-11-26T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:b59de8f5-7b9b-414a-a3ab-a2160916659d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 243,
+    "category": "refund",
+    "date": "2022-03-09T12:00:00+00:00",
+    "income_id": "income:b5a726d2-ea89-490e-89d3-f38cbc27a07f",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 50,
+    "category": "sale",
+    "date": "2021-06-08T12:00:00+00:00",
+    "description": "ps4",
+    "income_id": "income:b7622320-25c1-4a3e-9f5e-c2cb098e4a69",
+    "source": "other",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 368,
+    "category": "tips",
+    "date": "2019-12-17T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:b7d05294-078c-47ac-8787-d41b62d8f791",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 78,
+    "category": "tips",
+    "date": "2019-06-23T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:b87558be-ca65-4c64-bb77-fde4be1f8480",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 105,
+    "category": "tips",
+    "date": "2019-06-08T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:b88fa2f1-f2f1-48ed-b23a-ce2831041bf4",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 4.07,
+    "category": "refund",
+    "date": "2021-06-28T12:00:00+00:00",
+    "description": "Keybank reimbursement",
+    "income_id": "income:bd094c41-b7cf-42e4-b7a3-7a6a511f2876",
+    "source": "Keybank",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 302,
+    "category": "tips",
+    "date": "2019-11-09T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:be00f3e4-65a1-4bab-a3e8-82a22e5c99a7",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 39.11,
+    "category": "tips",
+    "date": "2020-02-28T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:bf0bb6ae-3aa4-4e44-ada1-3a0c1a9528d9",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 288,
+    "category": "tips",
+    "date": "2019-10-26T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:bfcbbe68-7302-4543-865d-0c284c9dd4ba",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 149,
+    "category": "tips",
+    "date": "2019-09-03T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:c12c69a5-a289-49aa-9737-1d99e82e781e",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 75.11,
+    "category": "tips",
+    "date": "2019-05-24T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:c13f79eb-e381-48d0-95c1-5b735e9cad9d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 159,
+    "category": "tips",
+    "date": "2018-12-08T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:c1569282-ce8e-42a9-a0ec-f143f0dc8cb0",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 117,
+    "category": "tips",
+    "date": "2019-05-28T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:c1f68201-59f1-4e7c-abf9-669de8586340",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 325,
+    "category": "tips",
+    "date": "2019-11-23T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:c32c80df-9957-4035-b33f-a1dcd90114de",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 105.21,
+    "category": "credit card reward",
+    "date": "2024-09-09T16:00:00+00:00",
+    "description": "Credit Card rewards",
+    "income_id": "income:c3d8ae37-2ae7-45f1-bb69-fbacfc7ddf12",
+    "source": "Ally",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 229,
+    "category": "tips",
+    "date": "2018-12-18T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:c5ba3b81-5651-4882-b241-47fbfca63350",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 81,
+    "category": "refund",
+    "date": "2021-03-03T12:00:00+00:00",
+    "description": "state tax refund",
+    "income_id": "income:c71559fb-8c10-4b3e-b430-d1c3c7d473ae",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 30,
+    "category": "sale",
+    "date": "2021-12-05T12:00:00+00:00",
+    "description": "laptop stand",
+    "income_id": "income:c788bc5a-5236-462c-8a6e-9dfff937ce26",
+    "source": "Mom",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 116.36,
+    "category": "refund",
+    "date": "2023-03-17T12:00:00+00:00",
+    "income_id": "income:c97665c2-41ff-493a-a2db-1fdb6e29481a",
+    "source": "Huntington",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 132,
+    "category": "tips",
+    "date": "2019-01-10T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:ca3d8673-b186-48c6-92eb-9ea8464a6773",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 171,
+    "category": "tips",
+    "date": "2019-02-19T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:cc8d8f9a-eb94-42b0-b35a-8c74605fe54a",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 277,
+    "category": "tips",
+    "date": "2020-03-14T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:cd8a0909-925d-4e8d-b7bd-ef6305579ce9",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 196,
+    "category": "tips",
+    "date": "2019-02-26T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:cdf4bd80-e665-49f2-999c-1731eb15f210",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 102,
+    "category": "tips",
+    "date": "2020-01-31T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:cf77564f-721d-4687-8820-e163e081105f",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 288,
+    "category": "tips",
+    "date": "2019-01-19T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:cff9d954-a890-4743-81d7-6e342eb09965",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 143,
+    "category": "tips",
+    "date": "2019-11-02T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:d02cbcf7-5d84-48c8-9bfc-2e353c6a4676",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 235,
+    "category": "tips",
+    "date": "2019-12-14T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:d0a33424-a396-4edd-8c41-4cdcc53a9406",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 61.03,
+    "category": "tips",
+    "date": "2019-03-01T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:d1c482f0-8829-4fc4-9204-2dfd184d3518",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 435,
+    "category": "refund",
+    "date": "2020-04-06T12:00:00+00:00",
+    "description": "City of Columbus",
+    "income_id": "income:d3eb8954-7ca5-4162-bb7e-25fa19ef5fe7",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 329,
+    "category": "tips",
+    "date": "2020-01-18T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:d625dbca-b64f-4155-aab6-89aceff495d8",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 223,
+    "category": "tips",
+    "date": "2019-11-16T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:d658107a-99b3-44c2-8344-2e72081fe4be",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 75,
+    "category": "tips",
+    "date": "2018-11-07T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:d678bd8a-4697-41ce-bc96-ea3b77e01fbd",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 129.21,
+    "category": "tips",
+    "date": "2019-08-30T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:d6a9669d-4ea3-4469-a609-70209f0b9431",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 184,
+    "category": "tips",
+    "date": "2019-03-23T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:d6bb4a7e-89e0-4e39-8ec8-e6c8d44bf8ff",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 282,
+    "category": "tips",
+    "date": "2020-02-01T12:00:00+00:00",
+    "description": "",
+    "income_id": "income:d74bf81f-4c28-4fb6-b387-9befe033c086",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 100,
+    "category": "gift",
+    "date": "2023-03-29T12:00:00+00:00",
+    "income_id": "income:d7c391e2-9bb5-4b8d-bcf0-39153872cd5a",
+    "source": "Gary & Karen Marsh",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 38.2,
+    "category": "tips",
+    "date": "2019-07-04T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:d89ff9ad-c6e1-46c3-8e9f-0d3d929d851b",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 141.63,
+    "category": "refund",
+    "date": "2022-01-05T12:00:00+00:00",
+    "description": "",
+    "income_id": "income:d945dc83-d947-43cb-affe-5220ae1465bb",
+    "source": "Golden Title Agency",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 110,
+    "category": "other",
+    "date": "2022-04-07T12:00:00+00:00",
+    "income_id": "income:d969ced2-f6e9-4041-8ddf-b30553abd2f6",
+    "source": "Kevin Kuntz",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 316,
+    "category": "tips",
+    "date": "2019-04-12T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:d9fd6b35-5c70-4e05-b63e-21e8a5f75ff7",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 715,
+    "category": "refund",
+    "date": "2021-02-26T12:00:00+00:00",
+    "description": "federal tax return",
+    "income_id": "income:dd2e2cd5-11d3-4efe-8f08-62373a082e36",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 204,
+    "category": "tips",
+    "date": "2019-10-08T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:de00a422-9fa1-4c9d-a009-b03b960b41ab",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 100,
+    "category": "labor",
+    "date": "2024-10-26T16:00:00+00:00",
+    "description": "Fix toilets",
+    "income_id": "income:de477368-de5a-4b0e-8b3d-f6e1435e386e",
+    "source": "Gina & Allan Freeman",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 11.28,
+    "category": "refund",
+    "date": "2021-07-21T12:00:00+00:00",
+    "description": "",
+    "income_id": "income:dee37d91-93fb-4dd6-b7e4-c2f95a3028dd",
+    "source": "Allstate",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 89,
+    "category": "tips",
+    "date": "2020-01-10T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:df5779e4-7df2-41e2-8572-cf288b17749a",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 227,
+    "category": "tips",
+    "date": "2019-08-25T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:e48729d5-8aa1-426e-a607-e765d72adc81",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 229,
+    "category": "tips",
+    "date": "2019-01-05T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:e6775a89-19d3-4f05-83c8-9b7fcc979ea6",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 267,
+    "category": "tips",
+    "date": "2020-01-28T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:e6d652fd-592f-4d70-8d8b-12e3bbe25592",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 89,
+    "category": "tips",
+    "date": "2019-06-09T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:e6f4aef1-2752-4680-ade1-b524ce8ff668",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 100,
+    "category": "tips",
+    "date": "2018-12-27T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:e72ebe4d-7d85-4349-93bf-eb24aa656ee3",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 65,
+    "category": "gift",
+    "date": "2021-12-29T12:00:00+00:00",
+    "description": "Christmas",
+    "income_id": "income:e7b20f49-f494-4b2a-9e7d-0765ea1d7f15",
+    "source": "Mom & Dad",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 207,
+    "category": "tips",
+    "date": "2019-06-11T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:e83780f6-08c7-4adc-8302-a7a5f904cd29",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 254,
+    "category": "tips",
+    "date": "2019-07-27T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:e94eca2e-4837-4ec4-a843-3fde427d6398",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 28.68,
+    "category": "tips",
+    "date": "2019-06-21T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:e980b258-61fa-4457-9319-1bcf7ed88745",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 45.75,
+    "category": "gift",
+    "date": "2023-08-08T12:00:00+00:00",
+    "income_id": "income:e9f1f63f-cfb0-425f-b75a-da6c552aa6f2",
+    "source": "Meal Train",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 72.06,
+    "category": "tips",
+    "date": "2018-12-21T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:ea9a86ba-1992-4003-a33d-600d58b5781d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 19.86,
+    "category": "tips",
+    "date": "2019-12-20T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:eb237b90-6adf-40dc-a7c0-145d1f881db9",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 159,
+    "category": "tips",
+    "date": "2019-06-25T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:eb5e1fd6-799c-4a1b-bc45-0a2adce3c4ee",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 136,
+    "category": "tips",
+    "date": "2019-08-09T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:ebbe8a27-8a48-4d6e-b3cf-c6575958cb58",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 200,
+    "category": "refund",
+    "date": "2020-04-17T12:00:00+00:00",
+    "description": "WOW! reward",
+    "income_id": "income:ecc4660c-4b75-447d-93c2-b7e0dba2b797",
+    "source": "WOW!",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 49.16,
+    "category": "tips",
+    "date": "2019-01-04T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:eecf2a5c-2e1d-4e57-be21-fa3137cfd897",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 99,
+    "category": "tips",
+    "date": "2019-06-22T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:eed0fd10-6cf6-4649-9f72-8ad3763fe581",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 152,
+    "category": "tips",
+    "date": "2019-05-16T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:ef9a9aaa-7267-4408-8491-962e3a130cd2",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 2400,
+    "category": "other",
+    "date": "2020-04-27T12:00:00+00:00",
+    "description": "unemployment",
+    "income_id": "income:f11b7536-eead-4d67-ab81-4ac63d810b89",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 200,
+    "category": "gift",
+    "date": "2022-10-21T12:00:00+00:00",
+    "income_id": "income:f179620f-0099-438b-b875-1332e7442f05",
+    "source": "Robert Graham-Jones",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 175,
+    "category": "tips",
+    "date": "2019-07-16T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:f181b4bf-c9a6-48fe-9a6a-0a6e8db32f04",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 1200,
+    "category": "other",
+    "date": "2020-04-15T12:00:00+00:00",
+    "description": "stimulus check",
+    "income_id": "income:f36b67dc-4f97-4625-a2fd-b9ff9725790c",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 64.28,
+    "category": "tips",
+    "date": "2019-04-27T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:f3d4f504-b676-439f-bcfd-09eae374829b",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 111,
+    "category": "tips",
+    "date": "2018-11-13T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:f4849e97-386c-4ef3-8d95-d787784153da",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 103.42,
+    "category": "refund",
+    "date": "2020-06-27T12:00:00+00:00",
+    "description": "CC reward",
+    "income_id": "income:f4874a1a-07ce-433a-b228-db9bf572ac4f",
+    "source": "Keybank",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 412,
+    "category": "tips",
+    "date": "2019-03-16T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:f4bf5ed3-5dd2-46c2-9452-c6180499389c",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 88,
+    "category": "tips",
+    "date": "2019-01-28T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:f6fcd073-2998-4d28-9586-1749e963e57e",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 200,
+    "category": "tips",
+    "date": "2018-11-21T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:f7558fac-fee1-4d69-ada9-ce1b0b624892",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 242,
+    "category": "refund",
+    "date": "2020-02-15T12:00:00+00:00",
+    "description": "State tax refund",
+    "income_id": "income:f758837a-eeba-4499-810a-7db1373fc371",
+    "source": "Government",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 292,
+    "category": "tips",
+    "date": "2019-04-09T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:fa932cef-16d1-4cc4-9295-491871a27a64",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 175,
+    "category": "tips",
+    "date": "2019-07-23T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:fcd81c2d-eb78-4857-a89a-56863eea149b",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 60.32,
+    "category": "tips",
+    "date": "2019-11-22T12:00:00+00:00",
+    "description": "check",
+    "income_id": "income:fce8c60a-3fb0-4042-8a38-beffe221c39d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 81.98,
+    "category": "refund",
+    "date": "2023-02-20T12:00:00+00:00",
+    "income_id": "income:fdc8e3c4-bfef-4a18-b00f-db130b8d9d90",
+    "source": "Root",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 107,
+    "category": "tips",
+    "date": "2020-01-17T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:fdd1b610-2f76-46f7-aba6-75595b686de6",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 213,
+    "category": "tips",
+    "date": "2020-01-02T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:fec96197-4fb7-412c-83dc-de1389eebb32",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 135.38,
+    "category": "refund",
+    "date": "2021-10-03T12:00:00+00:00",
+    "description": "Credit Card",
+    "income_id": "income:fed76549-84aa-40e4-90db-93f131ee9ce4",
+    "source": "Huntington",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 20,
+    "category": "sale",
+    "date": "2021-01-14T12:00:00+00:00",
+    "description": "",
+    "income_id": "income:ff2dade4-89bf-45b0-81fc-c91908d5dd56",
+    "source": "other",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  },
+  {
+    "_type": "income",
+    "amount": 438,
+    "category": "tips",
+    "date": "2019-04-20T12:00:00+00:00",
+    "description": "tips",
+    "income_id": "income:ff95f83b-775f-4e8f-ba85-97849ada8a5d",
+    "source": "Rusty Bucket",
+    "user_id": "user:3b72aad0-e9b9-4c06-86d8-0fb5ca8f6d47"
+  }
+]

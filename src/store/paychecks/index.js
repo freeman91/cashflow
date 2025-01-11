@@ -4,7 +4,6 @@ import { cloneDeep, concat, get, remove, sortBy } from 'lodash';
 
 import {
   deleteResourceAPI,
-  getResourcesAPI,
   getResourcesInRangeAPI,
   postResourceAPI,
   putResourceAPI,
@@ -50,27 +49,6 @@ const getPaychecks = createAsyncThunk(
         start: storeRange.start,
         end: storeRange.end,
       };
-    } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
-    } finally {
-      dispatch(hideLoading());
-    }
-  }
-);
-
-const getPaycheckTemplates = createAsyncThunk(
-  'paychecks/getPaychecks',
-  async ({ user_id }, { dispatch, getState }) => {
-    let allPaychecks = cloneDeep(getState().paychecks.data);
-    let user = getState().user.item;
-    if (!user_id) {
-      user_id = user.user_id;
-    }
-
-    try {
-      dispatch(showLoading());
-      const templates = await getResourcesAPI(user_id, 'paycheck-templates');
-      return { data: concat(allPaychecks, templates) };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
@@ -169,7 +147,6 @@ const { setPaychecks } = actions;
 export {
   postPaycheck,
   getPaychecks,
-  getPaycheckTemplates,
   putPaycheck,
   deletePaycheck,
   setPaychecks,

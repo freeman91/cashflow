@@ -27,7 +27,7 @@ export default function SubAccount(props) {
         </Typography>
       </BoxFlexColumn>
       <BoxFlexCenter>
-        <Typography variant='body1' color='text.secondary'>
+        <Typography variant='body1' color='textSecondary'>
           $
         </Typography>
         <Typography variant='h6' color='white' fontWeight='bold'>

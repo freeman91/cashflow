@@ -45,7 +45,7 @@ const defaultRepayment = {
   _type: 'repayment',
   pending: false,
   account_id: '',
-  bill_id: '',
+  recurring_id: '',
 };
 
 function RepaymentDialog() {

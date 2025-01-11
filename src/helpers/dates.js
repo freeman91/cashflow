@@ -10,6 +10,10 @@ dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
+const isBetweenDjs = (date, start, end) => {
+  return date.isBetween(start, end, 'day');
+};
+
 const dateStringToDayJS = (dateString) => {
   return dayjs(dateString?.substring(0, 19) + dateString?.slice(-6));
 };
@@ -64,4 +68,4 @@ const timeSinceLastUpdate = (lastUpdate) => {
   }
 };
 
-export { dateStringToDayJS, updateRange, timeSinceLastUpdate };
+export { dateStringToDayJS, updateRange, timeSinceLastUpdate, isBetweenDjs };
