@@ -99,13 +99,30 @@ const { reducer, actions } = createSlice({
     setAccounts: (state, action) => {
       state.data = action.payload;
     },
+    updateAccount: (state, action) => {
+      const { data: accounts } = state;
+      let _accounts = [...accounts];
+
+      const index = _accounts.findIndex(
+        (account) => account.account_id === action.payload.account_id
+      );
+      _accounts[index] = action.payload;
+      state.data = _accounts;
+    },
   },
   extraReducers: (builder) => {
     buildAsyncReducers(builder, [getAccounts, postAccount, putAccount]);
   },
 });
 
-const { setAccounts } = actions;
+const { setAccounts, updateAccount } = actions;
 
-export { getAccounts, postAccount, putAccount, deleteAccount, setAccounts };
+export {
+  getAccounts,
+  postAccount,
+  putAccount,
+  deleteAccount,
+  setAccounts,
+  updateAccount,
+};
 export default reducer;

@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import { DatePicker } from '@mui/x-date-pickers';
@@ -21,12 +22,13 @@ export default function RecurringCalendar() {
   const allRepayments = useSelector((state) => state.repayments.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
   const allIncomes = useSelector((state) => state.incomes.data);
+  const allRecurrings = useSelector((state) => state.recurrings.data);
 
   const [days, setDays] = useState([]);
   const [data, setData] = useState([]);
   const [month, setMonth] = useState(dayjs());
   const [expectedIncome, setExpectedIncome] = useState(0);
-  const [recurringExpenses, setRecurringExpenses] = useState(0);
+  const [expectedExpenses, setExpectedExpenses] = useState(0);
 
   useEffect(() => {
     let firstDayOfMonth = month.date(1).hour(12).minute(0).second(0);
@@ -67,15 +69,23 @@ export default function RecurringCalendar() {
       let dayTransactions = _allTransactions.filter((transaction) => {
         return dayjs(transaction.date).isSame(day, 'day');
       });
+      dayTransactions = dayTransactions.map((transaction) => ({
+        ...transaction,
+        _amount: findAmount(transaction),
+      }));
       dayTransactions = dayTransactions.sort((a, b) => {
         return (
           TRANSACTION_ORDER.indexOf(a._type) -
-            TRANSACTION_ORDER.indexOf(b._type) || a._amount - b._amount
+            TRANSACTION_ORDER.indexOf(b._type) || b._amount - a._amount
         );
       });
       return {
         date: day,
         transactions: dayTransactions,
+        recurrings: allRecurrings.filter((recurring) => {
+          if (!recurring?.next_date) return false;
+          return dayjs(recurring?.next_date).isSame(day, 'day');
+        }),
       };
     });
     setData(_data);
@@ -83,18 +93,18 @@ export default function RecurringCalendar() {
 
   useEffect(() => {
     let _expectedIncome = 0;
-    let _recurringExpenses = 0;
+    let _expectedExpenses = 0;
     data.forEach((day) => {
       day.transactions.forEach((transaction) => {
         if (['paycheck', 'income'].includes(transaction._type)) {
           _expectedIncome += findAmount(transaction);
         } else if (['expense', 'repayment'].includes(transaction._type)) {
-          _recurringExpenses += findAmount(transaction);
+          _expectedExpenses += findAmount(transaction);
         }
       });
     });
     setExpectedIncome(_expectedIncome);
-    setRecurringExpenses(_recurringExpenses);
+    setExpectedExpenses(_expectedExpenses);
   }, [data]);
 
   const numWeeks = Math.ceil(days.length / 7);
@@ -129,8 +139,10 @@ export default function RecurringCalendar() {
                 },
                 InputProps: { disableUnderline: true },
               },
+              inputAdornment: {
+                position: 'start',
+              },
             }}
-            sx={{ pr: 2 }}
           />
           <Box sx={{ display: 'flex', gap: 2 }}>
             <Typography variant='body2' color='textSecondary'>
@@ -145,7 +157,7 @@ export default function RecurringCalendar() {
               Recurring Expenses
             </Typography>
             <Typography variant='body1'>
-              {numberToCurrency.format(recurringExpenses)}
+              {numberToCurrency.format(expectedExpenses)}
             </Typography>
           </Box>
         </Stack>
@@ -186,6 +198,7 @@ export default function RecurringCalendar() {
               <Day
                 month={month}
                 date={day.date}
+                recurrings={day.recurrings}
                 transactions={day.transactions}
               />
             </Grid>

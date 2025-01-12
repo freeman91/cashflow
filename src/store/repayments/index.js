@@ -11,8 +11,7 @@ import {
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { setSnackbar } from '../appSettings';
-import { updateAsset } from '../assets';
-import { updateDebt } from '../debts';
+import { updateAccount } from '../accounts';
 
 const getRepayments = createAsyncThunk(
   'repayments/getRepayments',
@@ -38,7 +37,7 @@ const postRepayment = createAsyncThunk(
     try {
       const { data: repayments } = getState().repayments;
       const { user_id } = getState().user.item;
-      const { repayment, subaccount } = await postResourceAPI(
+      const { repayment, account } = await postResourceAPI(
         user_id,
         newRepayment
       );
@@ -47,10 +46,8 @@ const postRepayment = createAsyncThunk(
         dispatch(setSnackbar({ message: 'repayment created' }));
       }
 
-      if (subaccount?._type === 'asset') {
-        dispatch(updateAsset(subaccount));
-      } else if (subaccount?._type === 'debt') {
-        dispatch(updateDebt(subaccount));
+      if (account) {
+        dispatch(updateAccount(account));
       }
 
       return {
@@ -68,7 +65,9 @@ const putRepayment = createAsyncThunk(
     const { data: repayments } = getState().repayments;
 
     try {
-      const { repayment, subaccount } = await putResourceAPI(updatedRepayment);
+      const { repayment, account, liability_account } = await putResourceAPI(
+        updatedRepayment
+      );
 
       if (repayment) {
         dispatch(setSnackbar({ message: 'repayment updated' }));
@@ -78,10 +77,10 @@ const putRepayment = createAsyncThunk(
         repayment_id: get(repayment, 'repayment_id'),
       });
 
-      if (subaccount?._type === 'asset') {
-        dispatch(updateAsset(subaccount));
-      } else if (subaccount?._type === 'debt') {
-        dispatch(updateDebt(subaccount));
+      for (const _account of [account, liability_account]) {
+        if (_account) {
+          dispatch(updateAccount(_account));
+        }
       }
 
       return {

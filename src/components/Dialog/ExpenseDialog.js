@@ -232,7 +232,9 @@ function ExpenseDialog() {
                   tabIndex={-1}
                 />
               </ListItemIcon>
-              <ListItemText primary={expense.pending ? 'pending' : 'paid'} />
+              <ListItemText
+                primary={expense.pending ? 'pending' : 'processed'}
+              />
             </ListItemButton>
           </ListItem>
           <ListItem

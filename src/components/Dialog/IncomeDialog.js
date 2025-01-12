@@ -7,8 +7,12 @@ import isEmpty from 'lodash/isEmpty';
 
 import DescriptionIcon from '@mui/icons-material/Description';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
 import TextFieldListItem from '../List/TextFieldListItem';
@@ -159,6 +163,24 @@ function IncomeDialog() {
               ),
             }}
           />
+          <ListItem key='pending' disableGutters disablePadding>
+            <ListItemButton
+              role={undefined}
+              onClick={() => setIncome({ ...income, pending: !income.pending })}
+              dense
+            >
+              <ListItemIcon>
+                <Checkbox
+                  edge='start'
+                  checked={!income.pending}
+                  tabIndex={-1}
+                />
+              </ListItemIcon>
+              <ListItemText
+                primary={income.pending ? 'pending' : 'processed'}
+              />
+            </ListItemButton>
+          </ListItem>
           <ListItem
             key='buttons'
             disableGutters

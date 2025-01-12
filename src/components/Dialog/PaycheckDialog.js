@@ -7,8 +7,12 @@ import isEmpty from 'lodash/isEmpty';
 
 import DescriptionIcon from '@mui/icons-material/Description';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
 import TextFieldListItem from '../List/TextFieldListItem';
@@ -33,6 +37,7 @@ const defaultPaycheck = {
   date: dayjs().hour(12).minute(0).second(0),
   employer: '',
   _type: 'paycheck',
+  pending: false,
   take_home: '',
   taxes: '',
   retirement_contribution: {
@@ -220,6 +225,26 @@ function PaycheckDialog() {
               ),
             }}
           />
+          <ListItem key='pending' disableGutters disablePadding>
+            <ListItemButton
+              role={undefined}
+              onClick={() =>
+                setPaycheck({ ...paycheck, pending: !paycheck.pending })
+              }
+              dense
+            >
+              <ListItemIcon>
+                <Checkbox
+                  edge='start'
+                  checked={!paycheck.pending}
+                  tabIndex={-1}
+                />
+              </ListItemIcon>
+              <ListItemText
+                primary={paycheck.pending ? 'pending' : 'processed'}
+              />
+            </ListItemButton>
+          </ListItem>
           <ListItem
             key='buttons'
             disableGutters

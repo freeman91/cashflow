@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
+import get from 'lodash/get';
 
 import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
@@ -12,7 +13,7 @@ import { openDialog } from '../../store/dialogs';
 import { findAmount, findColor, findSource } from '../../helpers/transactions';
 import { numberToCurrency } from '../../helpers/currency';
 
-export default function Day({ month, date, transactions }) {
+export default function Day({ month, date, recurrings, transactions }) {
   const theme = useTheme();
   const dispatch = useDispatch();
   const isToday = dayjs().isSame(date, 'day');
@@ -23,6 +24,27 @@ export default function Day({ month, date, transactions }) {
         type: transaction._type,
         mode: 'edit',
         attrs: transaction,
+      })
+    );
+  };
+
+  const handleRecurringClick = (recurring) => {
+    console.log('recurring: ', recurring);
+    // dispatch(
+    //   openDialog({
+    //     type: 'recurring',
+    //     mode: 'edit',
+    //     attrs: recurring,
+    //   })
+    // );
+  };
+
+  const showAll = (transactions) => {
+    dispatch(
+      openDialog({
+        id: date,
+        type: 'transactions',
+        attrs: transactions,
       })
     );
   };
@@ -38,7 +60,7 @@ export default function Day({ month, date, transactions }) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: 150,
+        height: 155,
         py: 0.5,
         px: 0.25,
         position: 'relative',
@@ -54,7 +76,7 @@ export default function Day({ month, date, transactions }) {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'absolute',
-          top: 4,
+          top: 0,
           right: 4,
           mr: 1,
         }}
@@ -70,14 +92,66 @@ export default function Day({ month, date, transactions }) {
           width: '100%',
           display: 'flex',
           alignItems: 'center',
-          marginTop: 4,
+          marginTop: 3,
           gap: 0.25,
         }}
       >
+        {recurrings.map((recurring, idx) => {
+          const color = findColor(recurring.item_type, theme);
+          let source = findSource(
+            get(recurring, `${recurring.item_type}_attributes`)
+          );
+          let amount = findAmount(
+            get(recurring, `${recurring.item_type}_attributes`)
+          );
+          return (
+            <Box
+              key={idx}
+              onClick={() => handleClick(recurring)}
+              sx={{
+                backgroundColor: alpha(color, 0.5),
+                width: '100%',
+                borderRadius: 1,
+                border: '1px solid',
+                cursor: 'pointer',
+                '&:hover': {
+                  backgroundImage: `linear-gradient(to bottom, ${color}, ${theme.palette.surface[300]})`,
+                },
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                px: 0.5,
+              }}
+            >
+              <Typography
+                variant='caption'
+                color='textSecondary'
+                align='left'
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {source}
+              </Typography>
+              <Typography
+                variant='caption'
+                color='textSecondary'
+                align='right'
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
+                {numberToCurrency.format(amount)}
+              </Typography>
+            </Box>
+          );
+        })}
         {transactions.map((transaction, idx) => {
           const color = findColor(transaction._type, theme);
           const merchant = findSource(transaction);
           const amount = findAmount(transaction);
+
+          if (idx > 4 - recurrings.length) return null;
 
           return (
             <Box
@@ -133,6 +207,19 @@ export default function Day({ month, date, transactions }) {
             </Box>
           );
         })}
+        {transactions.length > 5 - recurrings.length && (
+          <Typography
+            variant='caption'
+            color='textSecondary'
+            onClick={() => showAll(transactions)}
+            sx={{
+              '&:hover': { textDecoration: 'underline' },
+              cursor: 'pointer',
+            }}
+          >
+            {transactions.length - (5 - recurrings.length)} more...
+          </Typography>
+        )}
       </Stack>
     </Box>
   );

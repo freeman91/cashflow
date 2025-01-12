@@ -262,7 +262,9 @@ function RepaymentDialog() {
                   tabIndex={-1}
                 />
               </ListItemIcon>
-              <ListItemText primary={repayment.pending ? 'pending' : 'paid'} />
+              <ListItemText
+                primary={repayment.pending ? 'pending' : 'processed'}
+              />
             </ListItemButton>
           </ListItem>
           <ListItem

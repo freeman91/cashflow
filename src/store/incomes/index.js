@@ -13,7 +13,7 @@ import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
 import { updateRange } from '../../helpers/dates';
 import { setSnackbar } from '../appSettings';
-import { updateAsset } from '../assets';
+import { updateAccount } from '../accounts';
 
 const getIncomes = createAsyncThunk(
   'incomes/getIncomes',
@@ -64,14 +64,14 @@ const postIncome = createAsyncThunk(
     try {
       const { data: incomes } = getState().incomes;
       const { user_id } = getState().user.item;
-      const { income, asset } = await postResourceAPI(user_id, newIncome);
+      const { income, account } = await postResourceAPI(user_id, newIncome);
 
       if (income) {
         dispatch(setSnackbar({ message: 'income created' }));
       }
 
-      if (asset) {
-        dispatch(updateAsset(asset));
+      if (account) {
+        dispatch(updateAccount(account));
       }
 
       return {
@@ -87,17 +87,22 @@ const putIncome = createAsyncThunk(
   'incomes/putIncome',
   async (updatedIncome, { dispatch, getState }) => {
     try {
-      const result = await putResourceAPI(updatedIncome);
+      const { income, account } = await putResourceAPI(updatedIncome);
       const { data: incomes } = getState().incomes;
-      if (result) {
+      if (income) {
         dispatch(setSnackbar({ message: 'income updated' }));
       }
+
+      if (account) {
+        dispatch(updateAccount(account));
+      }
+
       let _incomes = [...incomes];
       remove(_incomes, {
-        income_id: get(result, 'income_id'),
+        income_id: get(income, 'income_id'),
       });
       return {
-        data: concat(_incomes, result),
+        data: concat(_incomes, income),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));

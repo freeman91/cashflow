@@ -3,16 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import map from 'lodash/map';
 
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
+import List from '@mui/material/List';
 
-import { findId } from '../../helpers/transactions';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
-import ItemBox from '../ItemBox';
+import TransactionListItem from '../../routes/Transactions/ListItems/TransactionListItem';
+import { findAmount } from '../../helpers/transactions';
 
 function TransactionsDialog() {
   const dispatch = useDispatch();
-  const { id, attrs } = useSelector((state) => state.dialogs.transactions);
+  const { id: date, attrs } = useSelector(
+    (state) => state.dialogs.transactions
+  );
 
   const [transactions, setTransactions] = useState([]);
 
@@ -27,7 +29,7 @@ function TransactionsDialog() {
   return (
     <BaseDialog
       type='transactions'
-      title={id}
+      title={date?.format('MMMM Do, YYYY')}
       handleClose={handleClose}
       disableGutters
     >
@@ -35,20 +37,16 @@ function TransactionsDialog() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          width: '100%',
+          width: '400px',
           pb: 2,
           mt: 1,
-          gap: 1,
         }}
       >
-        {map(transactions, (transaction, idx) => {
-          const key = findId(transaction);
-          return (
-            <Card sx={{ width: '100%', py: 0.5 }} key={key}>
-              <ItemBox item={transaction} />
-            </Card>
-          );
-        })}
+        <List disablePadding>
+          {transactions.map((transaction, idx) => {
+            return <TransactionListItem key={idx} transaction={transaction} />;
+          })}
+        </List>
       </Box>
     </BaseDialog>
   );

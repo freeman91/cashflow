@@ -13,7 +13,7 @@ import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
 import { updateRange } from '../../helpers/dates';
 import { setSnackbar } from '../appSettings';
-import { updateAsset } from '../assets';
+import { updateAccount } from '../accounts';
 
 const getPaychecks = createAsyncThunk(
   'paychecks/getPaychecks',
@@ -63,14 +63,14 @@ const postPaycheck = createAsyncThunk(
     try {
       const { data: paychecks } = getState().paychecks;
       const { user_id } = getState().user.item;
-      const { paycheck, asset } = await postResourceAPI(user_id, newPaycheck);
+      const { paycheck, account } = await postResourceAPI(user_id, newPaycheck);
 
       if (paycheck) {
         dispatch(setSnackbar({ message: 'paycheck created' }));
       }
 
-      if (asset) {
-        dispatch(updateAsset(asset));
+      if (account) {
+        dispatch(updateAccount(account));
       }
 
       return {
@@ -86,17 +86,22 @@ const putPaycheck = createAsyncThunk(
   'paychecks/putPaycheck',
   async (updatedPaycheck, { dispatch, getState }) => {
     try {
-      const result = await putResourceAPI(updatedPaycheck);
+      const { paycheck, account } = await putResourceAPI(updatedPaycheck);
       const { data: paychecks } = getState().paychecks;
-      if (result) {
+      if (paycheck) {
         dispatch(setSnackbar({ message: 'paycheck updated' }));
       }
+
+      if (account) {
+        dispatch(updateAccount(account));
+      }
+
       let _paychecks = [...paychecks];
       remove(_paychecks, {
-        paycheck_id: get(result, 'paycheck_id'),
+        paycheck_id: get(paycheck, 'paycheck_id'),
       });
       return {
-        data: concat(_paychecks, result),
+        data: concat(_paychecks, paycheck),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));

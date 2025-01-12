@@ -6,6 +6,7 @@ import range from 'lodash/range';
 import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 
+import { findAmount } from '../../helpers/transactions';
 import { TRANSACTION_ORDER } from './Table';
 import Day from './Day';
 
@@ -66,12 +67,17 @@ export default function DesktopTransactionsCalendar(props) {
       let dayTransactions = _allTransactions.filter((transaction) => {
         return dayjs(transaction.date).isSame(day, 'day');
       });
+      dayTransactions = dayTransactions.map((transaction) => ({
+        ...transaction,
+        _amount: findAmount(transaction),
+      }));
       dayTransactions = dayTransactions.sort((a, b) => {
         return (
           TRANSACTION_ORDER.indexOf(a._type) -
-            TRANSACTION_ORDER.indexOf(b._type) || a._amount - b._amount
+            TRANSACTION_ORDER.indexOf(b._type) || b._amount - a._amount
         );
       });
+
       return {
         date: day,
         transactions: dayTransactions,
@@ -95,7 +101,11 @@ export default function DesktopTransactionsCalendar(props) {
     <Grid
       container
       columns={7}
-      sx={{ backgroundColor: 'surface.250', borderRadius: 1 }}
+      sx={{
+        backgroundColor: 'surface.250',
+        borderRadius: 1,
+        width: '100%',
+      }}
     >
       {range(7).map((idx) => (
         <Grid

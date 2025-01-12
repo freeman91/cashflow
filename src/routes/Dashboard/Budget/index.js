@@ -134,6 +134,13 @@ export default function Budget() {
     setMonthProgress((today.date() / daysInMonth) * 100);
   }, [today]);
 
+  const cashflow = incomeActual - expensesActual;
+  const cashflowColor = (() => {
+    if (cashflow > 0) return theme.palette.success.main;
+    if (cashflow < 0) return theme.palette.error.main;
+    return theme.palette.text.secondary;
+  })();
+
   return (
     <Grid size={{ xs: 12 }}>
       <Box
@@ -145,17 +152,33 @@ export default function Budget() {
           boxShadow: (theme) => theme.shadows[4],
         }}
       >
-        <Typography
-          variant='body1'
-          fontWeight='bold'
-          color='textSecondary'
-          sx={{ py: 1 }}
-        >
-          BUDGET
-        </Typography>
-        <Typography variant='h5' fontWeight='bold'>
-          January 2025
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography
+            variant='body1'
+            fontWeight='bold'
+            color='textSecondary'
+            sx={{ py: 1 }}
+          >
+            BUDGET
+          </Typography>
+          <Typography
+            variant='body1'
+            fontWeight='bold'
+            color='textSecondary'
+            sx={{ py: 1 }}
+          >
+            CASHFLOW
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant='h5' fontWeight='bold'>
+            {today.format('MMMM YYYY')}
+          </Typography>
+          <Typography variant='h5' fontWeight='bold' color={cashflowColor}>
+            {numberToCurrency.format(cashflow)}
+          </Typography>
+        </Box>
+
         <Divider sx={{ my: 2 }} />
         <Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

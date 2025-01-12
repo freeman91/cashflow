@@ -13,8 +13,7 @@ import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
 import { updateRange } from '../../helpers/dates';
 import { setSnackbar } from '../appSettings';
-import { updateAsset } from '../assets';
-import { updateDebt } from '../debts';
+import { updateAccount } from '../accounts';
 
 const getExpenses = createAsyncThunk(
   'expenses/getExpenses',
@@ -65,19 +64,14 @@ const postExpense = createAsyncThunk(
     try {
       const { data: expenses } = getState().expenses;
       const { user_id } = getState().user.item;
-      const { expense, subaccount } = await postResourceAPI(
-        user_id,
-        newExpense
-      );
+      const { expense, account } = await postResourceAPI(user_id, newExpense);
 
       if (expense) {
         dispatch(setSnackbar({ message: 'expense created' }));
       }
 
-      if (subaccount?._type === 'asset') {
-        dispatch(updateAsset(subaccount));
-      } else if (subaccount?._type === 'debt') {
-        dispatch(updateDebt(subaccount));
+      if (account) {
+        dispatch(updateAccount(account));
       }
 
       return {
@@ -95,7 +89,7 @@ const putExpense = createAsyncThunk(
     const { data: expenses } = getState().expenses;
 
     try {
-      const { expense, subaccount } = await putResourceAPI(updatedExpense);
+      const { expense, account } = await putResourceAPI(updatedExpense);
 
       if (expense) {
         dispatch(setSnackbar({ message: 'expense updated' }));
@@ -105,10 +99,8 @@ const putExpense = createAsyncThunk(
         expense_id: get(expense, 'expense_id'),
       });
 
-      if (subaccount?._type === 'asset') {
-        dispatch(updateAsset(subaccount));
-      } else if (subaccount?._type === 'debt') {
-        dispatch(updateDebt(subaccount));
+      if (account) {
+        dispatch(updateAccount(account));
       }
 
       return {
