@@ -240,7 +240,7 @@ def generate_bill_expenses():
 
     if request.method == "POST":
         count = 0
-        _date = date.today() + timedelta(3, "days")
+        _date = date.today() + timedelta(3, "day")
 
         current_app.logger.info("Generating Expenses for :: %s", _date)
 

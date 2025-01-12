@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -15,12 +14,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { postRecurring, putRecurring } from '../../store/recurrings';
-import TextFieldListItem from '../../components/List/TextFieldListItem';
-import IntegerFieldListItem from '../../components/List/IntegerFieldListItem';
+import { postRecurring, putRecurring } from '../../../store/recurrings';
+import TextFieldListItem from '../../../components/List/TextFieldListItem';
+import IntegerFieldListItem from '../../../components/List/IntegerFieldListItem';
+import ExpenseListItems from './ExpenseListItems';
 
 export default function RecurringDrawer(props) {
-  const { mode, recurring, setSelectedRecurring } = props;
+  const { mode, recurring, setRecurring } = props;
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -30,11 +30,11 @@ export default function RecurringDrawer(props) {
 
   const onClose = () => {
     setOpen(false);
-    setSelectedRecurring(null);
+    setRecurring(null);
   };
 
   const handleChange = (key, value) => {
-    setSelectedRecurring({ ...recurring, [key]: value });
+    setRecurring({ ...recurring, [key]: value });
   };
 
   const handleSubmit = () => {
@@ -128,28 +128,28 @@ export default function RecurringDrawer(props) {
             id='interval'
             label='Interval'
             item={recurring}
-            setItem={setSelectedRecurring}
+            setItem={setRecurring}
             startAdornment={null}
           />
           <IntegerFieldListItem
             id='day_of_week'
             label='Day of Week'
             item={recurring}
-            setItem={setSelectedRecurring}
+            setItem={setRecurring}
             startAdornment={null}
           />
           <IntegerFieldListItem
             id='day_of_month'
             label='Day of Month'
             item={recurring}
-            setItem={setSelectedRecurring}
+            setItem={setRecurring}
             startAdornment={null}
           />
           <IntegerFieldListItem
             id='month_of_year'
             label='Month of Year'
             item={recurring}
-            setItem={setSelectedRecurring}
+            setItem={setRecurring}
             startAdornment={null}
           />
           <ListItem disableGutters>
@@ -160,7 +160,7 @@ export default function RecurringDrawer(props) {
                 field: {
                   clearable: true,
                   onClear: () =>
-                    setSelectedRecurring((prev) => ({
+                    setRecurring((prev) => ({
                       ...prev,
                       next_date: null,
                     })),
@@ -170,11 +170,11 @@ export default function RecurringDrawer(props) {
               onChange={(newValue) => handleChange('next_date', newValue)}
             />
           </ListItem>
-          <Divider sx={{ my: 1 }} />
+          {/* <Divider sx={{ my: 1 }} /> */}
           {recurring?.item_type === 'expense' && (
-            <ListItemText
-              primary='Expense Attributes'
-              slotProps={{ primary: { align: 'center' } }}
+            <ExpenseListItems
+              recurring={recurring}
+              setRecurring={setRecurring}
             />
           )}
           {recurring?.item_type === 'repayment' && (
@@ -196,8 +196,11 @@ export default function RecurringDrawer(props) {
             />
           )}
 
-          <Divider sx={{ mt: 1, mb: 5 }} />
-          <ListItem disableGutters sx={{ justifyContent: 'space-around' }}>
+          {/* <Divider sx={{ mt: 1, mb: 1 }} /> */}
+          <ListItem
+            disableGutters
+            sx={{ justifyContent: 'space-around', mt: 2 }}
+          >
             <Button
               onClick={onClose}
               variant='outlined'

@@ -57,7 +57,7 @@ function ExpenseDialog() {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
 
-  const expenseVendors = find(optionLists, { option_type: 'merchant' });
+  const expenseMerchants = find(optionLists, { option_type: 'merchant' });
 
   useEffect(() => {
     const _recurring = find(recurrings, { recurring_id: expense.recurring_id });
@@ -187,7 +187,7 @@ function ExpenseDialog() {
             id='merchant'
             label='merchant'
             value={expense.merchant}
-            options={get(expenseVendors, 'options', [])}
+            options={get(expenseMerchants, 'options', [])}
             onChange={handleChange}
           />
           <SelectOption

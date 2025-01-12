@@ -8,7 +8,6 @@ import List from '@mui/material/List';
 import { closeDialog } from '../../store/dialogs';
 import BaseDialog from './BaseDialog';
 import TransactionListItem from '../../routes/Transactions/ListItems/TransactionListItem';
-import { findAmount } from '../../helpers/transactions';
 
 function TransactionsDialog() {
   const dispatch = useDispatch();

@@ -17,7 +17,7 @@ export const breakpoints = {
 const PALETTE = {
   primary: { main: PRIMARY },
   success: { main: GREEN },
-  info: { main: 'rgba(255, 255, 255, 0.7)' },
+  // info: { main: 'rgba(255, 255, 255, 0.7)' },
   orange: { main: ORANGE },
   yellow: { main: YELLOW },
   surface: {

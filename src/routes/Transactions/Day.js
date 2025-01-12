@@ -13,7 +13,15 @@ import { openDialog } from '../../store/dialogs';
 import { findAmount, findColor, findSource } from '../../helpers/transactions';
 import { numberToCurrency } from '../../helpers/currency';
 
-export default function Day({ month, date, recurrings, transactions }) {
+export default function Day(props) {
+  const {
+    month,
+    date,
+    recurrings = [],
+    transactions,
+    setMode,
+    setSelectedRecurring,
+  } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
   const isToday = dayjs().isSame(date, 'day');
@@ -29,14 +37,8 @@ export default function Day({ month, date, recurrings, transactions }) {
   };
 
   const handleRecurringClick = (recurring) => {
-    console.log('recurring: ', recurring);
-    // dispatch(
-    //   openDialog({
-    //     type: 'recurring',
-    //     mode: 'edit',
-    //     attrs: recurring,
-    //   })
-    // );
+    setSelectedRecurring(recurring);
+    setMode('edit');
   };
 
   const showAll = (transactions) => {
@@ -107,7 +109,7 @@ export default function Day({ month, date, recurrings, transactions }) {
           return (
             <Box
               key={idx}
-              onClick={() => handleClick(recurring)}
+              onClick={() => handleRecurringClick(recurring)}
               sx={{
                 backgroundColor: alpha(color, 0.5),
                 width: '100%',

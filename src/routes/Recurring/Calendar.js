@@ -3,21 +3,22 @@ import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import range from 'lodash/range';
 
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid2';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-
 import { DatePicker } from '@mui/x-date-pickers';
 
+import { findAmount } from '../../helpers/transactions';
 import { TRANSACTION_ORDER } from '../Transactions/Table';
 import Day from '../Transactions/Day';
-import { findAmount } from '../../helpers/transactions';
-import { numberToCurrency } from '../../helpers/currency';
 
-export default function RecurringCalendar() {
+export default function RecurringCalendar(props) {
+  const { setMode, setSelectedRecurring } = props;
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
@@ -27,8 +28,6 @@ export default function RecurringCalendar() {
   const [days, setDays] = useState([]);
   const [data, setData] = useState([]);
   const [month, setMonth] = useState(dayjs());
-  const [expectedIncome, setExpectedIncome] = useState(0);
-  const [expectedExpenses, setExpectedExpenses] = useState(0);
 
   useEffect(() => {
     let firstDayOfMonth = month.date(1).hour(12).minute(0).second(0);
@@ -89,122 +88,107 @@ export default function RecurringCalendar() {
       };
     });
     setData(_data);
-  }, [allExpenses, allRepayments, allPaychecks, allIncomes, days]);
-
-  useEffect(() => {
-    let _expectedIncome = 0;
-    let _expectedExpenses = 0;
-    data.forEach((day) => {
-      day.transactions.forEach((transaction) => {
-        if (['paycheck', 'income'].includes(transaction._type)) {
-          _expectedIncome += findAmount(transaction);
-        } else if (['expense', 'repayment'].includes(transaction._type)) {
-          _expectedExpenses += findAmount(transaction);
-        }
-      });
-    });
-    setExpectedIncome(_expectedIncome);
-    setExpectedExpenses(_expectedExpenses);
-  }, [data]);
+  }, [
+    allExpenses,
+    allRepayments,
+    allPaychecks,
+    allIncomes,
+    allRecurrings,
+    days,
+  ]);
 
   const numWeeks = Math.ceil(days.length / 7);
   return (
-    <>
-      <Box
+    <Grid
+      container
+      columns={7}
+      sx={{
+        width: '100%',
+        backgroundColor: (theme) => theme.palette.background.paper,
+        borderRadius: 1,
+      }}
+      component={Paper}
+      elevation={8}
+    >
+      <Grid
+        size={{ xs: 12 }}
         sx={{
-          backgroundColor: 'surface.250',
-          borderRadius: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           py: 1,
-          boxShadow: (theme) => theme.shadows[4],
-          width: '100%',
+          px: 2,
         }}
       >
-        <Stack
-          direction='row'
-          sx={{ mx: 2 }}
-          alignItems='center'
-          justifyContent='space-between'
-          divider={<Divider orientation='vertical' flexItem />}
+        <DatePicker
+          openTo='month'
+          views={['year', 'month']}
+          value={month}
+          onChange={(newValue) => setMonth(newValue)}
+          slotProps={{
+            textField: {
+              variant: 'standard',
+              inputProps: {
+                readOnly: true,
+              },
+              InputProps: { disableUnderline: true },
+            },
+            inputAdornment: {
+              position: 'start',
+            },
+          }}
+        />
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <IconButton>
+            <ArrowBack />
+          </IconButton>
+          <IconButton>
+            <ArrowForward />
+          </IconButton>
+        </Box>
+      </Grid>
+      <Grid size={{ xs: 12 }}>
+        <Divider />
+      </Grid>
+      {range(7).map((idx) => (
+        <Grid
+          key={`week-day-letter-${idx}`}
+          size={{ xs: 1 }}
+          py={0.5}
+          sx={{
+            borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+          }}
         >
-          <DatePicker
-            openTo='month'
-            views={['year', 'month']}
-            value={month}
-            onChange={(newValue) => setMonth(newValue)}
-            slotProps={{
-              textField: {
-                variant: 'standard',
-                inputProps: {
-                  readOnly: true,
-                },
-                InputProps: { disableUnderline: true },
-              },
-              inputAdornment: {
-                position: 'start',
-              },
-            }}
-          />
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Typography variant='body2' color='textSecondary'>
-              Expected Income
-            </Typography>
-            <Typography variant='body1'>
-              {numberToCurrency.format(expectedIncome)}
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Typography variant='body2' color='textSecondary'>
-              Recurring Expenses
-            </Typography>
-            <Typography variant='body1'>
-              {numberToCurrency.format(expectedExpenses)}
-            </Typography>
-          </Box>
-        </Stack>
-      </Box>
-      <Grid
-        container
-        columns={7}
-        sx={{ backgroundColor: 'surface.250', borderRadius: 1, width: '100%' }}
-      >
-        {range(7).map((idx) => (
+          <Typography align='center' variant='body2'>
+            {dayjs().day(idx).format('dddd')}
+          </Typography>
+        </Grid>
+      ))}
+      {data.map((day, idx) => {
+        return (
           <Grid
-            key={`week-day-letter-${idx}`}
+            key={`day-${day.date.format('YYYY-MM-DD')}`}
             size={{ xs: 1 }}
-            py={0.5}
             sx={{
-              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+              borderRight: (theme) =>
+                idx % 7 !== 6 ? `1px solid ${theme.palette.divider}` : '',
+              borderBottom: (theme) =>
+                idx / 7 < numWeeks - 1
+                  ? `1px solid ${theme.palette.divider}`
+                  : '',
             }}
           >
-            <Typography align='center' variant='body2'>
-              {dayjs().day(idx).format('dddd')}
-            </Typography>
+            <Day
+              month={month}
+              date={day.date}
+              recurrings={day.recurrings}
+              transactions={day.transactions}
+              setMode={setMode}
+              setSelectedRecurring={setSelectedRecurring}
+            />
           </Grid>
-        ))}
-        {data.map((day, idx) => {
-          return (
-            <Grid
-              key={`day-${day.date.format('YYYY-MM-DD')}`}
-              size={{ xs: 1 }}
-              sx={{
-                borderRight: (theme) =>
-                  idx % 7 !== 6 ? `1px solid ${theme.palette.divider}` : '',
-                borderBottom: (theme) =>
-                  idx / 7 < numWeeks - 1
-                    ? `1px solid ${theme.palette.divider}`
-                    : '',
-              }}
-            >
-              <Day
-                month={month}
-                date={day.date}
-                recurrings={day.recurrings}
-                transactions={day.transactions}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
-    </>
+        );
+      })}
+    </Grid>
   );
 }

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import dayjs from 'dayjs';
 
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -68,7 +67,7 @@ export default function DesktopTransactions() {
               direction='row'
               sx={{ mx: 2 }}
               alignItems='center'
-              divider={<Divider orientation='vertical' flexItem />}
+              justifyContent='space-between'
             >
               <Box
                 sx={{
@@ -94,8 +93,10 @@ export default function DesktopTransactions() {
                         },
                         InputProps: { disableUnderline: true },
                       },
+                      inputAdornment: {
+                        position: 'start',
+                      },
                     }}
-                    sx={{ pr: 2 }}
                   />
                 )}
               </Box>

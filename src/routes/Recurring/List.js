@@ -12,7 +12,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 import { numberToCurrency } from '../../helpers/currency';
-import RecurringDrawer from './RecurringDrawer';
 
 const ORDER = ['paycheck', 'income', 'repayment', 'expense'];
 
@@ -22,12 +21,11 @@ function findAmount(recurring) {
   return get(recurring, `${recurring.item_type}_attributes.amount`);
 }
 
-export default function RecurringList() {
+export default function RecurringList(props) {
+  const { setMode, setSelectedRecurring } = props;
   const parentRef = useRef(null);
   const recurrings = useSelector((state) => state.recurrings.data);
 
-  const [mode, setMode] = useState('edit');
-  const [selectedRecurring, setSelectedRecurring] = useState(null);
   const [groupedRecurrings, setGroupedRecurrings] = useState([]);
   const [width, setWidth] = useState(0);
 
@@ -186,11 +184,6 @@ export default function RecurringList() {
           </Grid>
         );
       })}
-      <RecurringDrawer
-        mode={mode}
-        recurring={selectedRecurring}
-        setSelectedRecurring={setSelectedRecurring}
-      />
     </Grid>
   );
 }

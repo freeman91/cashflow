@@ -87,14 +87,10 @@ export default function DesktopDrawer(props) {
           <Box>
             <IconButton
               onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
-              color='info'
             >
               {mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
             </IconButton>
-            <IconButton
-              onClick={() => dispatch(push('/settings'))}
-              color='info'
-            >
+            <IconButton onClick={() => dispatch(push('/settings'))}>
               <SettingsIcon />
             </IconButton>
           </Box>

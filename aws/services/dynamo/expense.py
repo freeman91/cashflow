@@ -41,8 +41,6 @@ class Expense(BaseModel):
     payment_from_id = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
 
-    bill_id = UnicodeAttribute(null=True)  # TODO: remove
-
     def __repr__(self):
         return f"Expense<{self.user_id}, {self.date}, {self.merchant}, {self.amount}>"
 
