@@ -176,7 +176,12 @@ function ExpenseDialog() {
             />
           </ListItem>
           <ListItem disableGutters>
-            <PaymentFromSelect resource={expense} setResource={setExpense} />
+            <PaymentFromSelect
+              accountId={expense.payment_from_id}
+              onChange={(value) =>
+                handleChange({ target: { id: 'payment_from_id', value } })
+              }
+            />
           </ListItem>
           <DecimalFieldListItem
             id='amount'

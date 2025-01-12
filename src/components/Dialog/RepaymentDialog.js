@@ -174,8 +174,10 @@ function RepaymentDialog() {
           </ListItem>
           <ListItem disableGutters>
             <PaymentFromSelect
-              resource={repayment}
-              setResource={setRepayment}
+              accountId={repayment.payment_from_id}
+              onChange={(value) =>
+                handleChange({ target: { id: 'payment_from_id', value } })
+              }
             />
           </ListItem>
           <ListItem disableGutters>

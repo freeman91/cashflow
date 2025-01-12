@@ -8,11 +8,10 @@ import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-
 import Select from '@mui/material/Select';
 
 function PaymentFromSelect(props) {
-  const { resource, setResource } = props;
+  const { accountId, onChange = null } = props;
 
   const [cashAccounts, creditAccounts] = useSelector((state) => {
     let _accounts = state.accounts.data;
@@ -25,11 +24,8 @@ function PaymentFromSelect(props) {
     return [sortBy(cashAccounts, 'name'), sortBy(creditAccounts, 'name')];
   });
 
-  const handleChangeDebt = (e) => {
-    setResource((prevResource) => ({
-      ...prevResource,
-      payment_from_id: e.target.value,
-    }));
+  const handleChange = (e) => {
+    onChange(e.target.value);
   };
 
   return (
@@ -38,8 +34,8 @@ function PaymentFromSelect(props) {
       <Select
         labelId='payment_from-label'
         id='payment_from'
-        value={get(resource, 'payment_from_id', '')}
-        onChange={handleChangeDebt}
+        value={accountId || ''}
+        onChange={handleChange}
         label='Debt'
         sx={{
           '& .MuiSelect-select': {

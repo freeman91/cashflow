@@ -145,7 +145,8 @@ export default function Budget() {
     <Grid size={{ xs: 12 }}>
       <Box
         sx={{
-          backgroundColor: 'surface.250',
+          backgroundColor: 'background.paper',
+          backgroundImage: 'var(--mui-overlays-8)',
           borderRadius: 1,
           px: 2,
           py: 1,

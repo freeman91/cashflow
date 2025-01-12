@@ -95,7 +95,10 @@ export default function ExpenseListItems(props) {
         onChange={(e) => handleChange('subcategory', e.target.value)}
         options={subcategories}
       />
-      <PaymentFromSelect resource={recurring} setResource={setRecurring} />
+      <PaymentFromSelect
+        accountId={recurring?.expense_attributes?.payment_from_id}
+        onChange={(value) => handleChange('payment_from_id', value)}
+      />
     </>
   );
 }

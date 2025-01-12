@@ -217,7 +217,12 @@ function BillDialog() {
               <DebtSelect mode={mode} resource={bill} setResource={setBill} />
             </ListItem>
           )}
-          <PaymentFromSelect resource={bill} setResource={setBill} />
+          <PaymentFromSelect
+            accountId={bill.payment_from_id}
+            onChange={(value) =>
+              handleChange({ target: { id: 'payment_from_id', value } })
+            }
+          />
           <TextFieldListItem
             id='name'
             label='name'
