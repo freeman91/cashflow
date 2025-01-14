@@ -10,7 +10,6 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid2';
 import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers';
 
@@ -110,8 +109,6 @@ export default function RecurringCalendar() {
         boxShadow: (theme) => theme.shadows[4],
         borderRadius: 1,
       }}
-      component={Paper}
-      elevation={8}
     >
       <Grid
         size={{ xs: 12 }}
@@ -142,10 +139,10 @@ export default function RecurringCalendar() {
           }}
         />
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <IconButton>
+          <IconButton onClick={() => setMonth(month.subtract(1, 'month'))}>
             <ArrowBack />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => setMonth(month.add(1, 'month'))}>
             <ArrowForward />
           </IconButton>
         </Box>

@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import concat from 'lodash/concat';
 import get from 'lodash/get';
 import remove from 'lodash/remove';
@@ -15,7 +14,7 @@ const getBudgets = createAsyncThunk(
   'budgets/getBudgets',
   async (user_id, { dispatch }) => {
     try {
-      dispatch(showLoading());
+      // dispatch(showLoading());
       const budgets = await getResourcesAPI(user_id, 'budgets');
 
       return {
@@ -24,7 +23,7 @@ const getBudgets = createAsyncThunk(
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
     }
   }
 );

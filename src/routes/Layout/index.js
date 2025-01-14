@@ -10,6 +10,7 @@ import { getUser } from '../../store/user';
 import CustomAppBar from './CustomAppBar';
 import CustomDrawer from './CustomDrawer';
 import ItemView from './ItemView';
+import CustomSnackbar from './CustomSnackbar';
 
 const USER_ID = process.env.REACT_APP_USER_ID;
 
@@ -54,6 +55,7 @@ function Layout() {
         <Outlet context={{ toolbarRef }} />
       </Box>
       <ItemView />
+      <CustomSnackbar />
     </Box>
   );
 }

@@ -209,7 +209,7 @@ export default function NetWorth() {
         <ResponsiveContainer
           width='100%'
           height={200}
-          style={{ '& .recharts-surface': { overflow: 'visible' } }}
+          style={{ '& .rechartsSurface': { overflow: 'visible' } }}
         >
           <AreaChart
             width='100%'

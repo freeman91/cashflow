@@ -165,7 +165,10 @@ function AccountForm(props) {
             setAccount((prevAccount) => ({
               ...prevAccount,
               [numberAttribute]: e.target.value,
-              ...otherNumberAttributes.map((attr) => ({ [attr]: '' })),
+              ...otherNumberAttributes.reduce((acc, attr) => {
+                acc[attr] = '';
+                return acc;
+              }, {}),
             }));
           }}
           InputProps={{

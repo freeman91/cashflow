@@ -4,8 +4,9 @@
 import os
 import math
 from datetime import date, datetime, timezone, timedelta
+from dateutil.rrule import rrule, YEARLY, MONTHLY, WEEKLY
 from zoneinfo import ZoneInfo
-from pydash import filter_, map_, find, find_index, sort_by
+from pydash import filter_, find, find_index, last, sort_by, map_
 from flask import request, Blueprint, current_app
 from cryptocompare import cryptocompare
 from yahoo_fin import stock_info
@@ -19,7 +20,11 @@ from services.api.controllers.__util__ import (
 )
 
 CRYPTO_KEY = os.getenv("CRYPTO_COMPARE_KEY")
-
+FREQUENCY_MAP = {
+    "yearly": YEARLY,
+    "monthly": MONTHLY,
+    "weekly": WEEKLY,
+}
 
 cronjobs = Blueprint("cronjobs", __name__)
 
@@ -192,14 +197,10 @@ def save_value_histories():
     utc_now = datetime.now(timezone.utc)
     ny_time = utc_now.astimezone(ZoneInfo("America/New_York"))
 
-    current_app.logger.info(f"UTC: {utc_now}")
-    current_app.logger.info(f"NY: {ny_time}")
+    month_str = ny_time.strftime("%Y-%m")
+    date_str = ny_time.strftime("%Y-%m-%d")
 
-    now = datetime.now(timezone.utc)
-    month_str = now.strftime("%Y-%m")
-    date_str = now.strftime("%Y-%m-%d")
-
-    current_app.logger.info(f"Update Value Histories :: {now}")
+    current_app.logger.info(f"Update Value Histories :: {ny_time}")
     current_app.logger.info(f"{month_str} :: {date_str}")
 
     accounts = Account.scan(Account.active == True)
@@ -227,10 +228,7 @@ def save_value_histories():
         if security.shares > 0:
             value = round(security.shares * security.price)
             value_item = ValueItem(
-                date=date_str,
-                value=value,
-                shares=security.shares,
-                price=security.price,
+                date=date_str, value=value, shares=security.shares, price=security.price
             )
 
             update_or_create_history(
@@ -243,17 +241,17 @@ def save_value_histories():
 
 
 @handle_exception
-@cronjobs.route("/cronjobs/generate_bill_expenses", methods=["POST"])
-def generate_bill_expenses():
+@cronjobs.route("/cronjobs/generate_transactions", methods=["POST"])
+def generate_transactions():
     """
-    0 0 * * * curl -X POST localhost:9000/cronjobs/generate_bill_expenses
+    0 0 * * * curl -X POST localhost:9000/cronjobs/generate_transactions
     """
 
     if request.method == "POST":
         count = 0
         _date = date.today() + timedelta(days=3)
 
-        current_app.logger.info("Generating Expenses for :: %s", _date)
+        current_app.logger.info("Generating Transactions for :: %s", _date)
 
         for recurring in Recurring.scan(Recurring.active == True):
             if recurring.next_date is None:
@@ -264,16 +262,29 @@ def generate_bill_expenses():
                 and recurring.next_date.month == _date.month
                 and recurring.next_date.year == _date.year
             ):
-                expense = recurring.generate(year=_date.year, month=_date.month)
+                transaction = recurring.generate(year=_date.year, month=_date.month)
                 current_app.logger.info(
-                    "Generating :: %s :: %s", recurring.name, expense
+                    "Generating :: %s :: %s", recurring.name, transaction
                 )
 
-                # TODO: update recurring.next_date
+                next_dates = rrule(
+                    FREQUENCY_MAP[recurring.frequency],
+                    dtstart=recurring.next_date,
+                    interval=recurring.interval,
+                    bymonthday=recurring.day_of_month,
+                    byweekday=recurring.day_of_week,
+                    bymonth=recurring.month_of_year,
+                    count=2,
+                )
+                recurring.next_date = last(next_dates)
+                recurring.save()
 
+                current_app.logger.info(
+                    "Next Date :: %s :: %s", recurring.name, recurring.next_date
+                )
                 count += 1
 
-        message = f"{_date} :: {count} expenses generated"
+        message = f"{_date} :: {count} transactions generated"
         current_app.logger.info(message)
         return success_result(message)
 

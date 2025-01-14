@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { concat, get, remove, sortBy } from 'lodash';
 
 import {
@@ -17,14 +16,14 @@ const getSales = createAsyncThunk(
   'sales/getSales',
   async (user_id, { dispatch }) => {
     try {
-      dispatch(showLoading());
+      // dispatch(showLoading());
       const sales = await getResourcesAPI(user_id, 'sales');
 
       return { data: sortBy(sales, 'date') };
     } catch (err) {
       console.error(err);
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
     }
   }
 );

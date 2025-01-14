@@ -191,7 +191,6 @@ function TransactionsAppBar() {
     <Box
       sx={{
         display: 'flex',
-        // flexDirection: isMobile ? 'column' : 'row',
         alignItems: 'center',
         width: '100%',
       }}

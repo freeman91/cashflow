@@ -15,7 +15,7 @@ export default function Recurring() {
       spacing={2}
       justifyContent='center'
       alignItems='flex-start'
-      sx={{ width: '100%', maxWidth: '1500px', margin: 'auto', px: 2, mb: 5 }}
+      sx={{ width: '100%', maxWidth: '1500px', margin: 'auto', px: 1, mb: 5 }}
     >
       {tab === 'list' && <RecurringList />}
       {tab === 'calendar' && <RecurringCalendar />}

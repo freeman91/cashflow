@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { concat, get, remove, sortBy } from 'lodash';
 
 import {
@@ -17,7 +16,7 @@ const getRepayments = createAsyncThunk(
   'repayments/getRepayments',
   async (user_id, { dispatch }) => {
     try {
-      dispatch(showLoading());
+      // dispatch(showLoading());
       const repayments = await getResourcesAPI(user_id, 'repayments');
 
       return {
@@ -26,7 +25,7 @@ const getRepayments = createAsyncThunk(
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
     }
   }
 );

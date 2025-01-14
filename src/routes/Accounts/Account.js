@@ -80,7 +80,10 @@ export default function Account(props) {
       ...allSales,
       ...allBorrows,
     ].filter((transaction) => {
-      return transaction.account_id === account.account_id;
+      return (
+        transaction.account_id === account.account_id ||
+        transaction.payment_from_id === account.account_id
+      );
     });
     accountTransactions = sortBy(accountTransactions, ['date']).reverse();
     setTransactions(accountTransactions);

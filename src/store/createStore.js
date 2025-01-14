@@ -4,11 +4,11 @@ import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
 
 /** MIDDLEWARE **/
-import thunkMiddleware from 'redux-thunk';
-import { loadingBarMiddleware } from 'react-redux-loading-bar';
+import { thunk as thunkMiddleware } from 'redux-thunk';
+// import { loadingBarMiddleware } from 'react-redux-loading-bar';
 
 /** REDUCERS **/
-import { loadingBarReducer } from 'react-redux-loading-bar';
+// import { loadingBarReducer } from 'react-redux-loading-bar';
 import accounts from './accounts';
 import appSettings from './appSettings';
 import borrows from './borrows';
@@ -47,14 +47,14 @@ export const store = configureStore({
     repayments,
     sales,
     securities,
-    loadingBar: loadingBarReducer,
+    // loadingBar: loadingBarReducer,
     router: routerReducer,
     user,
   }),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(routerMiddleware, thunkMiddleware, loadingBarMiddleware()),
+    }).concat(routerMiddleware, thunkMiddleware),
 });
 
 export const history = createReduxHistory(store);

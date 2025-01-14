@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { get, remove, concat } from 'lodash';
 
 import {
@@ -15,14 +14,14 @@ const getOptionLists = createAsyncThunk(
   'option_lists/getOptionLists',
   async (user_id, { dispatch }) => {
     try {
-      dispatch(showLoading());
+      // dispatch(showLoading());
       return {
         data: await getResourcesAPI(user_id, 'option_lists'),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
     }
   }
 );

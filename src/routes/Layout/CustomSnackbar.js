@@ -25,7 +25,6 @@ export default function CustomSnackbar() {
   );
 
   const open = message !== '';
-
   return (
     <Snackbar
       open={open}
@@ -33,8 +32,8 @@ export default function CustomSnackbar() {
       onClose={handleClose}
       message={message}
       action={action}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      sx={{ mb: 8 }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      sx={{ mb: 2 }}
     />
   );
 }

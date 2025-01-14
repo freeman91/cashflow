@@ -6,13 +6,9 @@ from pydash import sort_by, find
 
 from services.dynamo import (
     Account,
-    Asset,
-    Bill,
     Borrow,
-    Debt,
     Expense,
     Income,
-    Networth,
     OptionList,
     Paycheck,
     Purchase,
@@ -64,26 +60,6 @@ def account() -> Account:
     return resource(accounts, "Account")
 
 
-def asset() -> Asset:
-    _user = user()
-    assets = [
-        {"name": f"{asset.name} [{asset.account_id}]", "value": asset}
-        for asset in sort_by(Asset.list(user_id=_user.user_id), "name")
-    ]
-
-    return resource(assets, "Asset")
-
-
-def bill() -> Bill:
-    _user = user()
-    bills = [
-        {"name": f"{bill.name} [{bill.merchant}]", "value": bill}
-        for bill in sort_by(Bill.list(user_id=_user.user_id), "name")
-    ]
-
-    return resource(bills, "Bill")
-
-
 def recurring() -> Recurring:
     _user = user()
     recurrings = [
@@ -102,16 +78,6 @@ def borrow() -> Borrow:
     ]
 
     return resource(borrows, "Borrow")
-
-
-def debt() -> Debt:
-    _user = user()
-    debts = [
-        {"name": f"{debt.name} [{debt.account_id}]", "value": debt}
-        for debt in sort_by(Debt.list(user_id=_user.user_id), "name")
-    ]
-
-    return resource(debts, "Debt")
 
 
 def expense() -> Expense:
@@ -134,24 +100,13 @@ def income() -> Income:
     return resource(incomes, "Income")
 
 
-def networth() -> Networth:
-    _user = user()
-    networths = [
-        {
-            "name": f"{networth.year}/{networth.month} [{networth.networth_id}]",
-            "value": networth,
-        }
-        for networth in sort_by(Networth.list(user_id=_user.user_id), ["year", "month"])
-    ]
-
-    return resource(networths, "Networth")
-
-
 def option_list() -> OptionList:
     _user = user()
     option_lists = [
         {"name": f"{option_list.option_type}", "value": option_list}
-        for option_list in sort_by(OptionList.list(user_id=_user.user_id), "name")
+        for option_list in sort_by(
+            OptionList.list(user_id=_user.user_id), "option_type"
+        )
     ]
 
     return resource(option_lists, "OptionList")

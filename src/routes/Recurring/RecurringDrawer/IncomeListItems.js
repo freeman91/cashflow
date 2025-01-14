@@ -16,8 +16,8 @@ export default function IncomeListItems(props) {
     const incomeSources = find(state.optionLists.data, {
       option_type: 'income_source',
     });
-    const incomeCategories = find(state.categories.data, {
-      category_type: 'income_category',
+    const incomeCategories = find(state.optionLists.data, {
+      option_type: 'income_category',
     });
     return {
       sources: incomeSources?.options,

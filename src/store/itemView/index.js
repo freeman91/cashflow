@@ -19,7 +19,6 @@ const { reducer, actions } = createSlice({
       state.attrs = {};
     },
   },
-  extraReducers: {},
 });
 
 const { openItemView, closeItemView } = actions;

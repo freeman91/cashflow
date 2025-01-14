@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import concat from 'lodash/concat';
 import get from 'lodash/get';
 import remove from 'lodash/remove';
@@ -18,14 +17,14 @@ const getRecurrings = createAsyncThunk(
   'recurrings/getRecurrings',
   async (user_id, { dispatch }) => {
     try {
-      dispatch(showLoading());
+      // dispatch(showLoading());
       return {
         data: await getResourcesAPI(user_id, 'recurrings'),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
     }
   }
 );

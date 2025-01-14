@@ -171,7 +171,7 @@ function RepaymentForm(props) {
         value={repayment.interest}
         onChange={(value) => handleChange('interest', value)}
       />
-      {repayment?.subcateogry === 'mortgage' && (
+      {repayment?.subcategory === 'mortgage' && (
         <DecimalFieldListItem
           id='escrow'
           value={repayment.escrow}

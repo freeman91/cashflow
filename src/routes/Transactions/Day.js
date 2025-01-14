@@ -79,7 +79,7 @@ export default function Day(props) {
         fontWeight={isToday ? 'bold' : 'regular'}
       >
         {date.date() === 1
-          ? date.format(isMobile ? 'M/D' : 'MMM DD')
+          ? date.format(isMobile ? 'M/D' : 'MMM Do')
           : date.date()}
       </Typography>
       <Stack
@@ -134,12 +134,7 @@ export default function Day(props) {
               >
                 {source}
               </Typography>
-              <Typography
-                variant='caption'
-                color='textSecondary'
-                align='right'
-                sx={{ display: 'flex', alignItems: 'center' }}
-              >
+              <Typography variant='caption' color='textSecondary' align='right'>
                 {isMobile
                   ? new Intl.NumberFormat('en-US', {
                       style: 'currency',
@@ -190,11 +185,12 @@ export default function Day(props) {
               >
                 {merchant}
               </Typography>
-              <Typography
-                variant='caption'
-                color='textSecondary'
-                align='right'
-                sx={{ display: 'flex', alignItems: 'center', width: '100%' }}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                }}
               >
                 {transaction?.pending && (
                   <Tooltip title='Pending' placement='top'>
@@ -209,15 +205,21 @@ export default function Day(props) {
                     />
                   </Tooltip>
                 )}
-                {isMobile
-                  ? new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: 'USD',
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    }).format(amount)
-                  : numberToCurrency.format(amount)}
-              </Typography>
+                <Typography
+                  variant='caption'
+                  color='textSecondary'
+                  align='right'
+                >
+                  {isMobile
+                    ? new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      }).format(amount)
+                    : numberToCurrency.format(amount)}
+                </Typography>
+              </Box>
             </Box>
           );
         })}

@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import sortBy from 'lodash/sortBy';
 
 import axios from '../../api/xhr_libs/axios';
@@ -12,7 +11,7 @@ const getHistories = createAsyncThunk(
   'histories/getHistories',
   async ({ user_id, range }, { dispatch }) => {
     try {
-      dispatch(showLoading());
+      // dispatch(showLoading());
       let histories = processResponse(
         await axios.get(`/histories/${user_id}`, {
           params: { start: range.start, end: range.end },
@@ -24,7 +23,7 @@ const getHistories = createAsyncThunk(
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
     }
   }
 );

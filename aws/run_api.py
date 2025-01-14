@@ -12,17 +12,13 @@ class Config:
 
 def blueprints(app):
     app.register_blueprint(controllers.accounts.accounts)
-    app.register_blueprint(controllers.assets.assets)
-    app.register_blueprint(controllers.bills.bills)
     app.register_blueprint(controllers.borrows.borrows)
     app.register_blueprint(controllers.budgets.budgets)
     app.register_blueprint(controllers.categories.categories)
     app.register_blueprint(controllers.cronjobs.cronjobs)
-    app.register_blueprint(controllers.debts.debts)
     app.register_blueprint(controllers.expenses.expenses)
     app.register_blueprint(controllers.histories.histories)
     app.register_blueprint(controllers.incomes.incomes)
-    app.register_blueprint(controllers.networths.networths)
     app.register_blueprint(controllers.paychecks.paychecks)
     app.register_blueprint(controllers.purchases.purchases)
     app.register_blueprint(controllers.recurrings.recurrings)

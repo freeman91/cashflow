@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import dayjs from 'dayjs';
 
 import { getUserAPI, putUserAPI } from '../../api';
@@ -40,7 +39,7 @@ const getUser = createAsyncThunk(
     const historiesStart = dayjs().subtract(6, 'month').format('YYYY-MM');
 
     try {
-      dispatch(showLoading());
+      // dispatch(showLoading());
 
       const user = await getUserAPI(user_id);
       dispatch(getAccounts(user_id));
@@ -67,7 +66,7 @@ const getUser = createAsyncThunk(
     } catch (err) {
       console.error(err);
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
     }
   }
 );
@@ -90,7 +89,7 @@ const refreshAll = createAsyncThunk(
     const historiesStart = dayjs().subtract(6, 'month').format('YYYY-MM');
 
     try {
-      dispatch(showLoading());
+      // dispatch(showLoading());
 
       dispatch(getAccounts(user.user_id));
       dispatch(getBorrows(user.user_id));
@@ -116,7 +115,7 @@ const refreshAll = createAsyncThunk(
     } catch (err) {
       console.error(err);
     } finally {
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
     }
   }
 );
