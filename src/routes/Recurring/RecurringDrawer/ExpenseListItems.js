@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import find from 'lodash/find';
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ClearIcon from '@mui/icons-material/Clear';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 import SelectOption from '../../../components/Selector/SelectOption';
 import PaymentFromSelect from '../../../components/Selector/PaymentFromSelect';
 import AutocompleteListItem from '../../../components/List/AutocompleteListItem';
-import TextFieldListItem from '../../../components/List/TextFieldListItem';
+import DecimalFieldListItem from '../../../components/List/DecimalFieldListItem';
 
 export default function ExpenseListItems(props) {
   const { recurring, setRecurring } = props;
@@ -39,7 +36,6 @@ export default function ExpenseListItems(props) {
   }, [categories, recurring?.expense_attributes?.category]);
 
   const handleChange = (key, value) => {
-    console.log('key: ', key, 'value: ', value);
     setRecurring((prevRecurring) => ({
       ...prevRecurring,
       expense_attributes: { ...prevRecurring.expense_attributes, [key]: value },
@@ -52,27 +48,10 @@ export default function ExpenseListItems(props) {
         primary='Expense Attributes'
         slotProps={{ primary: { align: 'center' } }}
       />
-      <TextFieldListItem
+      <DecimalFieldListItem
         id='amount'
-        label='amount'
-        placeholder='0.00'
-        value={recurring?.expense_attributes?.amount || ''}
-        onChange={handleChange}
-        inputProps={{ inputMode: 'decimal' }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position='start'>
-              <AttachMoneyIcon />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position='end'>
-              <IconButton onClick={() => handleChange('amount', '')}>
-                <ClearIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
+        value={recurring?.expense_attributes?.amount}
+        onChange={(value) => handleChange('amount', value)}
       />
       <AutocompleteListItem
         id='merchant'
@@ -85,20 +64,22 @@ export default function ExpenseListItems(props) {
         id='category'
         label='Category'
         value={recurring?.expense_attributes?.category || ''}
-        onChange={(e) => handleChange('category', e.target.value)}
-        options={categories.map((category) => category.name)}
+        onChange={(value) => handleChange('category', value)}
+        options={categories?.map((category) => category.name)}
       />
       <SelectOption
         id='subcategory'
         label='Subcategory'
         value={recurring?.expense_attributes?.subcategory || ''}
-        onChange={(e) => handleChange('subcategory', e.target.value)}
+        onChange={(value) => handleChange('subcategory', value)}
         options={subcategories}
       />
-      <PaymentFromSelect
-        accountId={recurring?.expense_attributes?.payment_from_id}
-        onChange={(value) => handleChange('payment_from_id', value)}
-      />
+      <ListItem disableGutters>
+        <PaymentFromSelect
+          accountId={recurring?.expense_attributes?.payment_from_id}
+          onChange={(value) => handleChange('payment_from_id', value)}
+        />
+      </ListItem>
     </>
   );
 }

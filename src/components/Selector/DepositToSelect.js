@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import get from 'lodash/get';
 
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -9,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 function DepositToSelect(props) {
-  const { resource, setResource } = props;
+  const { accountId, onChange } = props;
 
   const accounts = useSelector((state) => {
     let _accounts = state.accounts.data;
@@ -17,10 +16,7 @@ function DepositToSelect(props) {
   });
 
   const handleChangeDepositTo = (e) => {
-    setResource((prevResource) => ({
-      ...prevResource,
-      deposit_to_id: e.target.value,
-    }));
+    onChange(e.target.value);
   };
 
   return (
@@ -29,7 +25,7 @@ function DepositToSelect(props) {
       <Select
         labelId='deposit_to-label'
         id='deposit_to'
-        value={get(resource, 'deposit_to_id', '')}
+        value={accountId || ''}
         onChange={handleChangeDepositTo}
         label='Deposit To'
         sx={{

@@ -1,5 +1,4 @@
 import React from 'react';
-import startCase from 'lodash/startCase';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -8,25 +7,25 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextFieldListItem from './TextFieldListItem';
 
 function DecimalFieldListItem(props) {
-  const { id, item, setItem, startAdornment = <AttachMoneyIcon /> } = props;
+  const { id, value, onChange, startAdornment = <AttachMoneyIcon /> } = props;
 
-  const handleClear = () => setItem((_item) => ({ ..._item, [id]: '' }));
+  const handleClear = () => onChange('');
 
   const handleChange = (e) => {
     if (
       e.target.value === '' ||
       (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
     ) {
-      setItem((_item) => ({ ..._item, [id]: e.target.value }));
+      onChange(e.target.value);
     }
   };
 
   return (
     <TextFieldListItem
       id={id}
-      label={startCase(id).toLowerCase()}
+      label={id.toLowerCase()}
       placeholder='0.00'
-      value={item[id] || ''}
+      value={value || ''}
       onChange={handleChange}
       inputProps={{ inputMode: 'decimal' }}
       InputProps={{

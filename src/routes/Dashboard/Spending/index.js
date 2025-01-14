@@ -230,11 +230,12 @@ export default function Spending() {
     <Grid size={{ xs: 12 }}>
       <Box
         sx={{
-          backgroundColor: 'surface.250',
+          backgroundColor: 'background.paper',
+          backgroundImage: (theme) => theme.vars.overlays[8],
+          boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
           px: 2,
           py: 1,
-          boxShadow: (theme) => theme.shadows[4],
         }}
       >
         <Typography
@@ -291,9 +292,8 @@ export default function Spending() {
               y={todayValue}
               label={
                 <Label
-                  // value='Today'
                   value={numberToCurrency.format(todayValue)}
-                  position='top'
+                  position='right'
                   style={{
                     fill: theme.palette.text.secondary,
                   }}

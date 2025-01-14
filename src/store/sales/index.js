@@ -11,8 +11,8 @@ import {
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { setSnackbar } from '../appSettings';
-import { updateAsset } from '../assets';
-
+import { updateAccount } from '../accounts';
+import { updateSecurity } from '../securities';
 const getSales = createAsyncThunk(
   'sales/getSales',
   async (user_id, { dispatch }) => {
@@ -35,20 +35,18 @@ const postSale = createAsyncThunk(
     try {
       const { data: sales } = getState().sales;
       const { user_id } = getState().user.item;
-      const { sale, deposit_asset, withdraw_asset } = await postResourceAPI(
-        user_id,
-        newSale
-      );
+      const { sale, deposit_account, withdraw_security } =
+        await postResourceAPI(user_id, newSale);
 
       if (sale) {
         dispatch(setSnackbar({ message: 'sale created' }));
       }
 
-      if (deposit_asset) {
-        await dispatch(updateAsset(deposit_asset));
+      if (deposit_account) {
+        await dispatch(updateAccount(deposit_account));
       }
-      if (withdraw_asset) {
-        await dispatch(updateAsset(withdraw_asset));
+      if (withdraw_security) {
+        await dispatch(updateSecurity(withdraw_security));
       }
 
       return { data: [sale].concat(sales) };

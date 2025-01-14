@@ -6,28 +6,12 @@ const details = {
   end: null,
 };
 
-export const dialogs = (() => {
-  return [
-    'account',
-    'borrow',
-    'expense',
-    'income',
-    'paycheck',
-    'purchase',
-    'repayment',
-    'sale',
-    'security',
-    'recurring',
-    'transactions',
-  ].reduce((acc, resourceType) => {
-    acc[resourceType] = {
-      open: false,
-      mode: '',
-      attrs: {},
-    };
-    return acc;
-  }, {});
-})();
+export const itemView = {
+  open: false,
+  itemType: null,
+  mode: null,
+  attrs: {},
+};
 
 export const user = {
   ...details,
@@ -40,14 +24,11 @@ export const items = {
 };
 
 export const appSettings = {
-  appBar: {
-    title: 'cashflow',
-    leftAction: null,
-    rightAction: null,
-    menu: null,
+  transactions: {
+    tab: 'calendar',
   },
-  bottomNavigation: {
-    handleCreateClick: null,
+  recurring: {
+    tab: 'calendar',
   },
   snackbar: { message: '' },
 };

@@ -146,11 +146,11 @@ export default function Budget() {
       <Box
         sx={{
           backgroundColor: 'background.paper',
-          backgroundImage: 'var(--mui-overlays-8)',
+          backgroundImage: (theme) => theme.vars.overlays[8],
+          boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
           px: 2,
           py: 1,
-          boxShadow: (theme) => theme.shadows[4],
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

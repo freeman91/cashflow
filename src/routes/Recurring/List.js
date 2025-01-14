@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
+import startCase from 'lodash/startCase';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid2';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,6 +14,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 import { numberToCurrency } from '../../helpers/currency';
+import { openItemView } from '../../store/itemView';
 
 const ORDER = ['paycheck', 'income', 'repayment', 'expense'];
 
@@ -21,9 +24,10 @@ function findAmount(recurring) {
   return get(recurring, `${recurring.item_type}_attributes.amount`);
 }
 
-export default function RecurringList(props) {
-  const { setMode, setSelectedRecurring } = props;
+export default function RecurringList() {
+  const dispatch = useDispatch();
   const parentRef = useRef(null);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const recurrings = useSelector((state) => state.recurrings.data);
 
   const [groupedRecurrings, setGroupedRecurrings] = useState([]);
@@ -72,8 +76,13 @@ export default function RecurringList(props) {
   }, [recurrings]);
 
   const handleClick = (recurring) => {
-    setSelectedRecurring(recurring);
-    setMode('edit');
+    dispatch(
+      openItemView({
+        itemType: 'recurring',
+        mode: 'edit',
+        attrs: recurring,
+      })
+    );
   };
 
   return (
@@ -91,19 +100,26 @@ export default function RecurringList(props) {
               disablePadding
               sx={{
                 width: '100%',
-                backgroundColor: 'surface.250',
-                borderRadius: 1,
+                backgroundColor: 'background.paper',
+                backgroundImage: (theme) => theme.vars.overlays[8],
                 boxShadow: (theme) => theme.shadows[4],
+                borderRadius: 1,
                 overflow: 'hidden',
               }}
             >
-              <ListItem sx={{ backgroundColor: 'surface.300', pl: 2 }}>
+              <ListItem
+                disablePadding
+                sx={{
+                  backgroundImage: (theme) => theme.vars.overlays[8],
+                  px: 2,
+                }}
+              >
                 <ListItemText
-                  primary={group.item_type}
+                  primary={startCase(group.item_type) + 's'}
                   slotProps={{
                     primary: {
                       fontWeight: 'bold',
-                      fontSize: 18,
+                      variant: 'h6',
                     },
                   }}
                 />
@@ -113,8 +129,8 @@ export default function RecurringList(props) {
                     slotProps={{
                       primary: {
                         fontWeight: 'bold',
-                        fontSize: 18,
                         align: 'right',
+                        variant: 'h6',
                       },
                     }}
                   />
@@ -163,7 +179,9 @@ export default function RecurringList(props) {
                     <ListItemText
                       primary={
                         recurring?.next_date &&
-                        dayjs(recurring.next_date).format('MMM Do, YYYY')
+                        dayjs(recurring.next_date).format(
+                          isMobile ? 'M/D/YY' : 'MMM Do, YYYY'
+                        )
                       }
                       slotProps={{
                         primary: { align: 'right' },

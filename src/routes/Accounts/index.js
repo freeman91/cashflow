@@ -3,8 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 
-import Box from '@mui/material/Box';
-
 import AccountsRoot from './Root';
 import Account from './Account';
 
@@ -28,9 +26,6 @@ export default function Accounts() {
     setAccount(null);
   }, [location, accounts]);
 
-  return (
-    <Box sx={{ width: '100%', mb: 5 }}>
-      {!account ? <AccountsRoot /> : <Account account={account} />}
-    </Box>
-  );
+  if (account) return <Account account={account} />;
+  return <AccountsRoot />;
 }

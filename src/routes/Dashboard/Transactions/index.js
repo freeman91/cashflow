@@ -18,10 +18,11 @@ export default function Transactions() {
     <Grid size={{ xs: 12 }}>
       <Box
         sx={{
-          backgroundColor: 'surface.250',
+          backgroundColor: 'background.paper',
+          backgroundImage: (theme) => theme.vars.overlays[8],
+          boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
           pt: 1,
-          boxShadow: (theme) => theme.shadows[4],
         }}
       >
         <Box

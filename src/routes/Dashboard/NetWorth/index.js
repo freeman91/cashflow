@@ -25,7 +25,7 @@ import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../../helpers/currency';
 import { findAmount } from '../../../helpers/transactions';
-import { ASSET, LIABILITY } from '../../../components/Dialog/AccountDialog';
+import { ASSET, LIABILITY } from '../../../components/Forms/AccountForm';
 
 function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
@@ -165,11 +165,12 @@ export default function NetWorth() {
     <Grid size={{ xs: 12 }}>
       <Box
         sx={{
-          backgroundColor: 'surface.250',
+          backgroundColor: 'background.paper',
+          backgroundImage: (theme) => theme.vars.overlays[8],
+          boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
           px: 2,
           py: 1,
-          boxShadow: (theme) => theme.shadows[4],
         }}
       >
         <Typography

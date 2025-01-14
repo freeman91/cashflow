@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import range from 'lodash/range';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
@@ -17,8 +18,8 @@ import { findAmount } from '../../helpers/transactions';
 import { TRANSACTION_ORDER } from '../Transactions/Table';
 import Day from '../Transactions/Day';
 
-export default function RecurringCalendar(props) {
-  const { setMode, setSelectedRecurring } = props;
+export default function RecurringCalendar() {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
@@ -104,7 +105,9 @@ export default function RecurringCalendar(props) {
       columns={7}
       sx={{
         width: '100%',
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: 'background.paper',
+        backgroundImage: (theme) => theme.vars.overlays[8],
+        boxShadow: (theme) => theme.shadows[4],
         borderRadius: 1,
       }}
       component={Paper}
@@ -160,7 +163,9 @@ export default function RecurringCalendar(props) {
           }}
         >
           <Typography align='center' variant='body2'>
-            {dayjs().day(idx).format('dddd')}
+            {dayjs()
+              .day(idx)
+              .format(isMobile ? 'ddd' : 'dddd')}
           </Typography>
         </Grid>
       ))}
@@ -183,8 +188,6 @@ export default function RecurringCalendar(props) {
               date={day.date}
               recurrings={day.recurrings}
               transactions={day.transactions}
-              setMode={setMode}
-              setSelectedRecurring={setSelectedRecurring}
             />
           </Grid>
         );

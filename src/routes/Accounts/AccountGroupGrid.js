@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
-import { alpha } from '@mui/material/styles';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
@@ -15,7 +14,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { timeSinceLastUpdate } from '../../helpers/dates';
-import { LIABILITY } from '../../components/Dialog/AccountDialog';
+import { LIABILITY } from '../../components/Forms/AccountForm';
 
 export default function AccountGroupGrid(props) {
   const { type, sum, items } = props;
@@ -37,13 +36,20 @@ export default function AccountGroupGrid(props) {
         disablePadding
         sx={{
           width: '100%',
-          backgroundColor: 'surface.250',
-          borderRadius: 1,
+          backgroundColor: 'background.paper',
+          backgroundImage: (theme) => theme.vars.overlays[8],
           boxShadow: (theme) => theme.shadows[4],
+          borderRadius: 1,
           overflow: 'hidden',
         }}
       >
-        <ListItem sx={{ backgroundColor: 'surface.300', pl: 0.5 }}>
+        <ListItem
+          sx={{
+            backgroundImage: (theme) => theme.vars.overlays[24],
+            pl: 0.5,
+            py: 0.5,
+          }}
+        >
           <Box
             onClick={handleClick}
             sx={{
@@ -54,11 +60,10 @@ export default function AccountGroupGrid(props) {
               borderRadius: '50%',
               width: 40,
               height: 40,
-              p: 1,
+              p: 0.5,
               mr: 1,
               '&:hover': {
-                backgroundColor: (theme) =>
-                  alpha(theme.palette.surface[500], 0.2),
+                backgroundImage: (theme) => theme.vars.overlays[8],
               },
             }}
           >
@@ -70,11 +75,11 @@ export default function AccountGroupGrid(props) {
             slotProps={{
               primary: {
                 fontWeight: 'bold',
-                fontSize: 18,
+                variant: 'h6',
               },
             }}
           />
-          <ListItemText
+          {/* <ListItemText
             primary='[one month change]'
             sx={{ width: '35%' }}
             slotProps={{
@@ -82,7 +87,7 @@ export default function AccountGroupGrid(props) {
                 align: 'right',
               },
             }}
-          />
+          /> */}
           <ListItemText
             primary={numberToCurrency.format(sum)}
             sx={{ width: '25%', mr: 2 }}
@@ -146,13 +151,13 @@ export default function AccountGroupGrid(props) {
                       },
                     }}
                   />
-                  <ListItemText
+                  {/* <ListItemText
                     primary='[value history past month]'
                     sx={{ width: '35%' }}
                     slotProps={{
                       primary: { align: 'center' },
                     }}
-                  />
+                  /> */}
                   <ListItemText
                     sx={{ width: '25%' }}
                     primary={numberToCurrency.format(amount)}

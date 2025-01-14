@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
@@ -12,18 +12,24 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
+import LoopIcon from '@mui/icons-material/Loop';
+import EditIcon from '@mui/icons-material/Edit';
 import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { findAmount } from '../../helpers/transactions';
-import { ASSET, LIABILITY } from '../../components/Dialog/AccountDialog';
+import { ASSET, LIABILITY } from '../../components/Forms/AccountForm';
+import { openItemView } from '../../store/itemView';
 
 function CustomTooltip({ active, payload, label }) {
   const securities = useSelector((state) => state.securities.data);
@@ -84,6 +90,8 @@ function CustomTooltip({ active, payload, label }) {
 export default function AccountValueHistory(props) {
   const { account } = props;
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   let accountValue = findAmount(account);
   if (account.account_type === LIABILITY && accountValue > 0) {
@@ -154,6 +162,16 @@ export default function AccountValueHistory(props) {
     setDays(_days);
   }, [histories, account, securities]);
 
+  const openAccountDialog = () => {
+    dispatch(
+      openItemView({
+        itemType: 'account',
+        mode: 'edit',
+        attrs: account,
+      })
+    );
+  };
+
   const differenceAttrs = (() => {
     if (difference === 0) {
       return { color: 'textSecondary', symbol: null };
@@ -175,22 +193,44 @@ export default function AccountValueHistory(props) {
     <Grid size={{ xs: 12 }} display='flex' justifyContent='center'>
       <Box
         sx={{
-          backgroundColor: 'surface.250',
+          backgroundColor: 'background.paper',
+          backgroundImage: (theme) => theme.vars.overlays[8],
+          boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
           px: 2,
-          py: 1,
-          boxShadow: (theme) => theme.shadows[4],
+          py: 0.5,
           width: '100%',
         }}
       >
-        <Typography
-          variant='body1'
-          fontWeight='bold'
-          color='textSecondary'
-          sx={{ py: 1 }}
-        >
-          VALUE HISTORY
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
+          <Typography variant='body1' fontWeight='bold' color='textSecondary'>
+            VALUE HISTORY
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            {isMobile ? (
+              <IconButton>
+                <LoopIcon />
+              </IconButton>
+            ) : (
+              <Button variant='outlined' startIcon={<LoopIcon />}>
+                Refresh
+              </Button>
+            )}
+            {isMobile ? (
+              <IconButton onClick={openAccountDialog}>
+                <EditIcon />
+              </IconButton>
+            ) : (
+              <Button
+                variant='contained'
+                startIcon={<EditIcon />}
+                onClick={openAccountDialog}
+              >
+                Edit
+              </Button>
+            )}
+          </Box>
+        </Box>
         <Box
           sx={{
             display: 'flex',
@@ -217,7 +257,7 @@ export default function AccountValueHistory(props) {
             variant='body2'
             fontWeight='bold'
             color='textSecondary'
-            sx={{ mb: 0.25 }}
+            sx={{ mb: 0.25, display: { xs: 'none', md: 'block' } }}
           >
             PAST 6 MONTHS
           </Typography>

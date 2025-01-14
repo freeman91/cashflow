@@ -7,10 +7,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-import { ASSET } from '../Dialog/AccountDialog';
+import { ASSET } from '../Forms/AccountForm';
 
 function AssetSelect(props) {
-  const { resource, setResource } = props;
+  const { accountId, onChange } = props;
 
   const assets = useSelector((state) =>
     state.accounts.data.filter((account) => account.account_type === ASSET)
@@ -18,7 +18,7 @@ function AssetSelect(props) {
 
   const handleChangeAsset = (e) => {
     if (e.target.value === '') return;
-    setResource({ ...resource, account_id: e.target.value });
+    onChange(e.target.value);
   };
 
   return (
@@ -27,7 +27,7 @@ function AssetSelect(props) {
       <Select
         labelId='asset-label'
         id='item_id'
-        value={resource.account_id}
+        value={accountId || ''}
         onChange={handleChangeAsset}
         label='Asset'
         sx={{
@@ -37,6 +37,7 @@ function AssetSelect(props) {
           },
         }}
       >
+        <MenuItem value={''}>none</MenuItem>
         {sortBy(assets, 'name ').map((asset) => (
           <MenuItem
             key={asset.account_id}

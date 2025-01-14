@@ -4,49 +4,43 @@ import dayjs from 'dayjs';
 import get from 'lodash/get';
 
 import { alpha } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import { openDialog } from '../../store/dialogs';
+
+import { openItemView } from '../../store/itemView';
 import { findAmount, findColor, findSource } from '../../helpers/transactions';
 import { numberToCurrency } from '../../helpers/currency';
 
 export default function Day(props) {
-  const {
-    month,
-    date,
-    recurrings = [],
-    transactions,
-    setMode,
-    setSelectedRecurring,
-  } = props;
+  const { month, date, recurrings = [], transactions } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isToday = dayjs().isSame(date, 'day');
 
   const handleClick = (transaction) => {
     dispatch(
-      openDialog({
-        type: transaction._type,
+      openItemView({
+        itemType: transaction._type,
         mode: 'edit',
         attrs: transaction,
       })
     );
   };
 
-  const handleRecurringClick = (recurring) => {
-    setSelectedRecurring(recurring);
-    setMode('edit');
-  };
-
   const showAll = (transactions) => {
     dispatch(
-      openDialog({
-        id: date,
-        type: 'transactions',
-        attrs: transactions,
+      openItemView({
+        itemType: 'transactions',
+        mode: 'view',
+        attrs: {
+          date,
+          transactions,
+        },
       })
     );
   };
@@ -62,7 +56,7 @@ export default function Day(props) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: 155,
+        height: isMobile ? 140 : 155,
         py: 0.5,
         px: 0.25,
         position: 'relative',
@@ -84,7 +78,9 @@ export default function Day(props) {
         }}
         fontWeight={isToday ? 'bold' : 'regular'}
       >
-        {date.date() === 1 ? date.format('MMM D') : date.date()}
+        {date.date() === 1
+          ? date.format(isMobile ? 'M/D' : 'MMM DD')
+          : date.date()}
       </Typography>
       <Stack
         direction='column'
@@ -109,7 +105,7 @@ export default function Day(props) {
           return (
             <Box
               key={idx}
-              onClick={() => handleRecurringClick(recurring)}
+              onClick={() => handleClick(recurring)}
               sx={{
                 backgroundColor: alpha(color, 0.5),
                 width: '100%',
@@ -133,6 +129,7 @@ export default function Day(props) {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
+                  display: { xs: 'none', sm: 'block' },
                 }}
               >
                 {source}
@@ -143,7 +140,14 @@ export default function Day(props) {
                 align='right'
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
-                {numberToCurrency.format(amount)}
+                {isMobile
+                  ? new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    }).format(amount)
+                  : numberToCurrency.format(amount)}
               </Typography>
             </Box>
           );
@@ -181,6 +185,7 @@ export default function Day(props) {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
+                  display: { xs: 'none', sm: 'block' },
                 }}
               >
                 {merchant}
@@ -189,7 +194,7 @@ export default function Day(props) {
                 variant='caption'
                 color='textSecondary'
                 align='right'
-                sx={{ display: 'flex', alignItems: 'center' }}
+                sx={{ display: 'flex', alignItems: 'center', width: '100%' }}
               >
                 {transaction?.pending && (
                   <Tooltip title='Pending' placement='top'>
@@ -204,7 +209,14 @@ export default function Day(props) {
                     />
                   </Tooltip>
                 )}
-                {numberToCurrency.format(amount)}
+                {isMobile
+                  ? new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    }).format(amount)
+                  : numberToCurrency.format(amount)}
               </Typography>
             </Box>
           );

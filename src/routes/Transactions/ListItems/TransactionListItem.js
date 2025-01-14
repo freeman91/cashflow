@@ -10,9 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 
-import { openDialog } from '../../../store/dialogs';
 import { numberToCurrency } from '../../../helpers/currency';
-import { findId } from '../../../helpers/transactions';
 import TypeChip from './TypeChip';
 import BorrowListItem from './BorrowListItem';
 import ExpenseListItem from './ExpenseListItem';
@@ -22,6 +20,7 @@ import PurchaseListItem from './PurchaseListItem';
 import RepaymentListItem from './RepaymentListItem';
 import SaleListItem from './SaleListItem';
 import TransferListItem from './TransferListItem';
+import { openItemView } from '../../../store/itemView';
 
 export default function TransactionListItem(props) {
   const { transaction } = props;
@@ -42,10 +41,9 @@ export default function TransactionListItem(props) {
 
   const openTransaction = (transaction) => {
     dispatch(
-      openDialog({
-        type: transaction._type,
+      openItemView({
+        itemType: transaction._type,
         mode: 'edit',
-        id: findId(transaction),
         attrs: transaction,
       })
     );
@@ -64,7 +62,7 @@ export default function TransactionListItem(props) {
         my: 0.5,
       }}
     >
-      <ListItem sx={{ width: 125 }}>
+      <ListItem sx={{ width: 110, pl: 0.5 }}>
         <TypeChip type={transaction._type} />
       </ListItem>
       {transaction._type === 'borrow' && (

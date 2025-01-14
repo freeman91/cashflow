@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { findAmount } from '../../helpers/transactions';
-import { ASSET, LIABILITY } from '../../components/Dialog/AccountDialog';
+import { ASSET, LIABILITY } from '../../components/Forms/AccountForm';
 
 export default function AccountsSummary(props) {
   const { groupedAccounts } = props;
@@ -83,18 +83,20 @@ export default function AccountsSummary(props) {
   ];
 
   return (
-    <Grid size={{ xs: 4 }} display='flex' justifyContent='center'>
+    <Grid size={{ xs: 12, md: 4 }} display='flex' justifyContent='center'>
       <Box
         sx={{
-          backgroundColor: 'surface.250',
-          borderRadius: 1,
-          py: 1,
+          backgroundColor: 'background.paper',
+          backgroundImage: (theme) => theme.vars.overlays[8],
           boxShadow: (theme) => theme.shadows[4],
+          borderRadius: 1,
           width: '100%',
+          overflow: 'hidden',
         }}
       >
         <Box
           sx={{
+            backgroundImage: (theme) => theme.vars.overlays[24],
             display: 'flex',
             justifyContent: 'space-between',
             px: 2,
@@ -102,23 +104,37 @@ export default function AccountsSummary(props) {
             width: '100%',
           }}
         >
-          <Typography variant='h6' fontWeight='bold'>
+          <Typography variant='h5' fontWeight='bold'>
             Summary
           </Typography>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Chip
               label='Totals'
-              variant={tab === 'totals' ? 'filled' : 'outlined'}
+              variant='filled'
               onClick={() => setTab('totals')}
+              sx={{
+                backgroundImage: (theme) =>
+                  tab === 'totals'
+                    ? theme.vars.overlays[24]
+                    : theme.vars.overlays[8],
+                backgroundColor: tab !== 'totals' ? 'background.paper' : null,
+              }}
             />
             <Chip
               label='Percent'
-              variant={tab === 'percent' ? 'filled' : 'outlined'}
+              variant='filled'
               onClick={() => setTab('percent')}
+              sx={{
+                backgroundImage: (theme) =>
+                  tab === 'percent'
+                    ? theme.vars.overlays[24]
+                    : theme.vars.overlays[8],
+                backgroundColor: tab !== 'percent' ? 'background.paper' : null,
+              }}
             />
           </Box>
         </Box>
-        <Divider sx={{ my: 1 }} />
+        <Divider sx={{ mb: 1 }} />
         <Box
           sx={{
             display: 'flex',

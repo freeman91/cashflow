@@ -105,11 +105,14 @@ export default function RangeSelect(props) {
     <Box
       sx={{
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        width: '100%',
+        // width: '100%',
+        gap: 1,
       }}
     >
+      <IconButton onClick={handleClick} sx={{ height: 25, width: 25 }}>
+        <CalendarMonthIcon />
+      </IconButton>
       <Typography
         variant='body1'
         onClick={handleClick}
@@ -117,9 +120,6 @@ export default function RangeSelect(props) {
       >
         {range.label}
       </Typography>
-      <IconButton onClick={handleClick}>
-        <CalendarMonthIcon />
-      </IconButton>
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}

@@ -16,9 +16,9 @@ import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-import { openDialog } from '../../../store/dialogs';
+import { openItemView } from '../../../store/itemView';
 import { numberToCurrency } from '../../../helpers/currency';
-import { findAmount, findId, findSource } from '../../../helpers/transactions';
+import { findAmount, findSource } from '../../../helpers/transactions';
 
 export default function TransactionsTable(props) {
   const { transactions } = props;
@@ -64,10 +64,9 @@ export default function TransactionsTable(props) {
 
   const openTransaction = (transaction) => {
     dispatch(
-      openDialog({
-        type: transaction._type,
+      openItemView({
+        itemType: transaction._type,
         mode: 'edit',
-        id: findId(transaction),
         attrs: transaction,
       })
     );
@@ -78,17 +77,17 @@ export default function TransactionsTable(props) {
   }
 
   return (
-    (<List disablePadding>
+    <List disablePadding>
       {data.map((day, idx) => {
         return (
-          (<React.Fragment key={idx}>
+          <React.Fragment key={idx}>
             <ListItem key={idx} sx={{ backgroundColor: 'surface.300' }}>
               <ListItemText primary={day.date} />
               {day.transactions.length > 1 && (
                 <ListItemText
                   primary={numberToCurrency.format(day.sum)}
                   slotProps={{
-                    primary: { align: 'right' }
+                    primary: { align: 'right' },
                   }}
                 />
               )}
@@ -101,7 +100,7 @@ export default function TransactionsTable(props) {
                 amount = -amount;
               }
               return (
-                (<ListItemButton
+                <ListItemButton
                   disableGutters
                   key={idx}
                   onClick={() => openTransaction(transaction)}
@@ -126,14 +125,14 @@ export default function TransactionsTable(props) {
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                         },
-                      }
+                      },
                     }}
                   />
                   <ListItemText
                     primary={transaction._type}
                     sx={{ width: '20%' }}
                     slotProps={{
-                      primary: { align: 'left' }
+                      primary: { align: 'left' },
                     }}
                   />
                   <ListItem
@@ -165,12 +164,12 @@ export default function TransactionsTable(props) {
                   <ListItemIcon sx={{ minWidth: 'unset' }}>
                     <ChevronRight />
                   </ListItemIcon>
-                </ListItemButton>)
+                </ListItemButton>
               );
             })}
-          </React.Fragment>)
+          </React.Fragment>
         );
       })}
-    </List>)
+    </List>
   );
 }

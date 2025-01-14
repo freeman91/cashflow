@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import groupBy from 'lodash/groupBy';
 
-import LoopIcon from '@mui/icons-material/Loop';
-import AddIcon from '@mui/icons-material/Add';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
-import { openDialog } from '../../store/dialogs';
 import { findAmount } from '../../helpers/transactions';
-import { ASSET, LIABILITY } from '../../components/Dialog/AccountDialog';
+import { ASSET, LIABILITY } from '../../components/Forms/AccountForm';
 import AccountsSummary from './Summary';
 import AccountGroupGrid from './AccountGroupGrid';
 import NetWorth from './Networth';
 
 export default function AccountsRoot() {
-  const dispatch = useDispatch();
   const accounts = useSelector((state) => state.accounts.data);
 
   const [groupedAccounts, setGroupedAccounts] = useState([]);
@@ -69,61 +62,32 @@ export default function AccountsRoot() {
     setGroupedAccounts([...assetsGrouped, ...liabilitiesGrouped]);
   }, [accounts]);
 
-  const createAccount = () => {
-    dispatch(openDialog({ type: 'account', mode: 'create' }));
-  };
-
   return (
-    <>
-      <Stack
-        direction='row'
-        spacing={1}
-        mt={1.5}
-        pl={2}
-        pr={4}
-        sx={{ width: '100%' }}
-      >
-        <Typography variant='h5' fontWeight='bold' sx={{ flexGrow: 1 }}>
-          Accounts
-        </Typography>
-        <Button color='info' variant='contained' startIcon={<LoopIcon />}>
-          Refresh
-        </Button>
-        <Button
-          variant='contained'
-          startIcon={<AddIcon />}
-          onClick={createAccount}
-        >
-          Add Account
-        </Button>
-      </Stack>
-      <Grid
-        container
-        spacing={2}
-        px={2}
-        justifyContent='center'
-        alignItems='flex-start'
-        sx={{ width: '100%', mt: 1 }}
-      >
-        <NetWorth />
-        <Grid size={{ xs: 8 }} display='flex' justifyContent='center'>
-          <Grid container spacing={2}>
-            {groupedAccounts.map((group, idx) => {
-              const { type, sum, items } = group;
-              return (
-                <AccountGroupGrid
-                  key={idx}
-                  type={type}
-                  sum={sum}
-                  items={items}
-                />
-              );
-            })}
-          </Grid>
+    <Grid
+      container
+      spacing={2}
+      justifyContent='center'
+      alignItems='flex-start'
+      sx={{
+        width: '100%',
+        maxWidth: '1500px',
+        margin: 'auto',
+        px: 1,
+        mb: 5,
+      }}
+    >
+      <NetWorth />
+      <Grid size={{ xs: 12, md: 8 }} display='flex' justifyContent='center'>
+        <Grid container spacing={2}>
+          {groupedAccounts.map((group, idx) => {
+            const { type, sum, items } = group;
+            return (
+              <AccountGroupGrid key={idx} type={type} sum={sum} items={items} />
+            );
+          })}
         </Grid>
-        <AccountsSummary groupedAccounts={groupedAccounts} />
       </Grid>
-      <Grid size={{ xs: 12 }} mb={5} />
-    </>
+      <AccountsSummary groupedAccounts={groupedAccounts} />
+    </Grid>
   );
 }

@@ -13,49 +13,58 @@ export default function RepaymentListItem(props) {
     )
   );
 
-  return (<>
-    <ListItemText
-      primary={transaction.merchant}
-      sx={{ width: '15%' }}
-      slotProps={{
-        primary: {
-          sx: {
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
+  return (
+    <>
+      <ListItemText
+        primary={transaction.merchant}
+        sx={{ width: '15%' }}
+        slotProps={{
+          primary: {
+            sx: {
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
           },
-        }
-      }}
-    />
-    <ListItemText
-      primary={account?.name}
-      sx={{
-        width: '15%',
-        display: parentWidth < 600 ? 'none' : 'block',
-      }}
-      slotProps={{
-        primary: { align: 'left' }
-      }}
-    />
-    <ListItemText
-      primary={numberToCurrency.format(transaction.principal)}
-      sx={{
-        width: '10%',
-        display: parentWidth < 1000 ? 'none' : 'block',
-      }}
-      slotProps={{
-        primary: { align: 'right' }
-      }}
-    />
-    <ListItemText
-      primary={numberToCurrency.format(transaction.interest)}
-      sx={{
-        width: '10%',
-        display: parentWidth < 1000 ? 'none' : 'block',
-      }}
-      slotProps={{
-        primary: { align: 'right' }
-      }}
-    />
-  </>);
+        }}
+      />
+      <ListItemText
+        primary={account?.name}
+        sx={{
+          width: '15%',
+          display: parentWidth < 600 ? 'none' : 'block',
+        }}
+        slotProps={{
+          primary: {
+            align: 'left',
+            sx: {
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
+          },
+        }}
+      />
+      <ListItemText
+        primary={numberToCurrency.format(transaction.principal)}
+        sx={{
+          width: '10%',
+          display: parentWidth < 1000 ? 'none' : 'block',
+        }}
+        slotProps={{
+          primary: { align: 'right' },
+        }}
+      />
+      <ListItemText
+        primary={numberToCurrency.format(transaction.interest)}
+        sx={{
+          width: '10%',
+          display: parentWidth < 1000 ? 'none' : 'block',
+        }}
+        slotProps={{
+          primary: { align: 'right' },
+        }}
+      />
+    </>
+  );
 }

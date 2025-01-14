@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import range from 'lodash/range';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 
@@ -12,6 +13,7 @@ import Day from './Day';
 
 export default function DesktopTransactionsCalendar(props) {
   const { month, types } = props;
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
@@ -102,7 +104,9 @@ export default function DesktopTransactionsCalendar(props) {
       container
       columns={7}
       sx={{
-        backgroundColor: 'surface.250',
+        backgroundColor: 'background.paper',
+        backgroundImage: (theme) => theme.vars.overlays[8],
+        boxShadow: (theme) => theme.shadows[4],
         borderRadius: 1,
         width: '100%',
       }}
@@ -115,7 +119,9 @@ export default function DesktopTransactionsCalendar(props) {
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Typography align='center' variant='body2'>
-            {dayjs().day(idx).format('dddd')}
+            {dayjs()
+              .day(idx)
+              .format(isMobile ? 'ddd' : 'dddd')}
           </Typography>
         </Grid>
       ))}

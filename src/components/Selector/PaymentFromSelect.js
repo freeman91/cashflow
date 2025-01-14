@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import filter from 'lodash/filter';
-import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
 
 import Divider from '@mui/material/Divider';
@@ -11,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 function PaymentFromSelect(props) {
-  const { accountId, onChange = null } = props;
+  const { accountId, onChange } = props;
 
   const [cashAccounts, creditAccounts] = useSelector((state) => {
     let _accounts = state.accounts.data;

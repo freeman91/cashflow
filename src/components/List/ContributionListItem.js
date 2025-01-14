@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -20,7 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import TextFieldListItem from './TextFieldListItem';
 
 const ContributionListItem = (props) => {
-  const { paycheck, setPaycheck, attr } = props;
+  const { label, attributes, onChange } = props;
 
   const allAccounts = useSelector((state) => state.accounts.data);
   const [open, setOpen] = useState(false);
@@ -39,21 +38,17 @@ const ContributionListItem = (props) => {
 
   const handleChange = (event) => {
     const { id, value } = event.target;
-    const attrValues = get(paycheck, attr, {});
-    setPaycheck((prevPaycheck) => ({
-      ...prevPaycheck,
-      [attr]: { ...attrValues, [id]: value },
-    }));
+    onChange(id, value);
   };
 
-  const employee = get(paycheck, `${attr}.employee`, '');
-  const employer = get(paycheck, `${attr}.employer`, '');
-  const account_id = get(paycheck, `${attr}.account_id`, '');
+  const employee = attributes?.employee || '';
+  const employer = attributes?.employer || '';
+  const account_id = attributes?.account_id || '';
 
   return (
     <>
       <ListItemButton sx={{ borderRadius: 1 }} onClick={handleClick}>
-        <ListItemText primary={attr.replace('_', ' ')} />
+        <ListItemText primary={label} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout='auto' unmountOnExit>
@@ -91,7 +86,7 @@ const ContributionListItem = (props) => {
             label='employee'
             placeholder='0.00'
             value={employee || ''}
-            onChange={handleChange}
+            onChange={(e) => handleChange('employee', e.target.value)}
             inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
@@ -106,7 +101,7 @@ const ContributionListItem = (props) => {
             label='employer'
             placeholder='0.00'
             value={employer || ''}
-            onChange={handleChange}
+            onChange={(e) => handleChange('employer', e.target.value)}
             inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (

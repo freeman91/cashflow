@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 
 const AutocompleteListItem = ({ label, ...props }) => {
   return (
-    (<ListItem disableGutters>
+    <ListItem disableGutters>
       <Autocomplete
         fullWidth
         data-lpignore='true'
@@ -20,9 +20,10 @@ const AutocompleteListItem = ({ label, ...props }) => {
         )}
         {...props}
         slotProps={{
-          listbox: { sx: { bgcolor: 'surface.300', p: 0 } }
-        }} />
-    </ListItem>)
+          listbox: { sx: { bgcolor: 'surface.300', p: 0 } },
+        }}
+      />
+    </ListItem>
   );
 };
 

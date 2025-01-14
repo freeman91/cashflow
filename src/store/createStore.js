@@ -14,11 +14,11 @@ import appSettings from './appSettings';
 import borrows from './borrows';
 import budgets from './budgets';
 import categories from './categories';
-import dialogs from './dialogs';
 import user from './user';
 import expenses from './expenses';
 import histories from './histories';
 import incomes from './incomes';
+import itemView from './itemView';
 import optionLists from './optionLists';
 import paychecks from './paychecks';
 import purchases from './purchases';
@@ -36,9 +36,9 @@ export const store = configureStore({
     borrows,
     budgets,
     categories,
-    dialogs,
     expenses,
     incomes,
+    itemView,
     histories,
     optionLists,
     paychecks,

@@ -3,8 +3,8 @@ import React from 'react';
 import ListItemText from '@mui/material/ListItemText';
 import { numberToCurrency } from '../../../helpers/currency';
 
-export default function RepaymentListItem(props) {
-  const { transaction } = props;
+export default function PaycheckListItem(props) {
+  const { transaction, parentWidth } = props;
 
   const retirementContributionEe =
     transaction?.retirement_contribution?.employee || 0;
@@ -19,41 +19,43 @@ export default function RepaymentListItem(props) {
     retirementContributionEe + retirementContributionEr;
   const benefitsContribution = benefitsContributionEe + benefitsContributionEr;
 
-  return (<>
-    <ListItemText
-      primary={transaction.employer}
-      sx={{ width: '20%' }}
-      slotProps={{
-        primary: {
-          sx: {
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
+  return (
+    <>
+      <ListItemText
+        primary={transaction.employer}
+        sx={{ width: '20%' }}
+        slotProps={{
+          primary: {
+            sx: {
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
           },
+        }}
+      />
+      <ListItemText
+        primary={
+          retirementContribution
+            ? numberToCurrency.format(retirementContribution)
+            : '-'
         }
-      }}
-    />
-    <ListItemText
-      primary={
-        retirementContribution
-          ? numberToCurrency.format(retirementContribution)
-          : '-'
-      }
-      sx={{ width: '15%' }}
-      slotProps={{
-        primary: { align: 'right' }
-      }}
-    />
-    <ListItemText
-      primary={
-        benefitsContribution
-          ? numberToCurrency.format(benefitsContribution)
-          : '-'
-      }
-      sx={{ width: '15%' }}
-      slotProps={{
-        primary: { align: 'right' }
-      }}
-    />
-  </>);
+        sx={{ width: '15%', display: parentWidth < 600 ? 'none' : 'block' }}
+        slotProps={{
+          primary: { align: 'right' },
+        }}
+      />
+      <ListItemText
+        primary={
+          benefitsContribution
+            ? numberToCurrency.format(benefitsContribution)
+            : '-'
+        }
+        sx={{ width: '15%', display: parentWidth < 1000 ? 'none' : 'block' }}
+        slotProps={{
+          primary: { align: 'right' },
+        }}
+      />
+    </>
+  );
 }

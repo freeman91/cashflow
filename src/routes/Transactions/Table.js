@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid2';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -22,7 +21,7 @@ export const TRANSACTION_ORDER = [
   'sale',
 ];
 
-export default function DesktopTransactionsTable(props) {
+export default function TransactionsTable(props) {
   const { range, types, borderRadius = 1 } = props;
 
   const allExpenses = useSelector((state) => state.expenses.data);
@@ -75,50 +74,53 @@ export default function DesktopTransactionsTable(props) {
   ]);
 
   return (
-    <Grid size={{ xs: 12 }}>
-      <Box
-        sx={{
-          backgroundColor: 'surface.250',
-          borderRadius,
-          boxShadow: (theme) => theme.shadows[4],
-          overflow: 'hidden',
-        }}
-      >
-        <List disablePadding>
-          {days.map((day, idx) => {
-            if (day.transactions.length === 0) return null;
-            let dayTransactions = day.transactions;
-            dayTransactions = dayTransactions.map((transaction) => ({
-              ...transaction,
-              _amount: findAmount(transaction),
-            }));
+    <Box
+      sx={{
+        backgroundColor: 'background.paper',
+        backgroundImage: (theme) => theme.vars.overlays[8],
+        borderRadius,
+        overflow: 'hidden',
+      }}
+    >
+      <List disablePadding>
+        {days.map((day, idx) => {
+          if (day.transactions.length === 0) return null;
+          let dayTransactions = day.transactions;
+          dayTransactions = dayTransactions.map((transaction) => ({
+            ...transaction,
+            _amount: findAmount(transaction),
+          }));
 
-            dayTransactions = dayTransactions.sort(
-              (a, b) =>
-                TRANSACTION_ORDER.indexOf(a._type) -
-                  TRANSACTION_ORDER.indexOf(b._type) || a._amount - b._amount
-            );
+          dayTransactions = dayTransactions.sort(
+            (a, b) =>
+              TRANSACTION_ORDER.indexOf(a._type) -
+                TRANSACTION_ORDER.indexOf(b._type) || a._amount - b._amount
+          );
 
-            return (
-              <React.Fragment key={idx}>
-                <ListItem key={idx} sx={{ backgroundColor: 'surface.300' }}>
-                  <ListItemText
-                    primary={day.date.format('MMM Do, YYYY')}
-                    slotProps={{
-                      primary: { fontWeight: 'bold' },
-                    }}
-                  />
-                </ListItem>
-                {dayTransactions.map((transaction, idx) => {
-                  return (
-                    <TransactionListItem key={idx} transaction={transaction} />
-                  );
-                })}
-              </React.Fragment>
-            );
-          })}
-        </List>
-      </Box>
-    </Grid>
+          return (
+            <React.Fragment key={idx}>
+              <ListItem
+                key={idx}
+                sx={{
+                  backgroundImage: (theme) => theme.vars.overlays[8],
+                }}
+              >
+                <ListItemText
+                  primary={day.date.format('MMM Do, YYYY')}
+                  slotProps={{
+                    primary: { fontWeight: 'bold' },
+                  }}
+                />
+              </ListItem>
+              {dayTransactions.map((transaction, idx) => {
+                return (
+                  <TransactionListItem key={idx} transaction={transaction} />
+                );
+              })}
+            </React.Fragment>
+          );
+        })}
+      </List>
+    </Box>
   );
 }

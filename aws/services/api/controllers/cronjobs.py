@@ -4,7 +4,7 @@
 import os
 import math
 from datetime import date, datetime, timezone, timedelta
-
+from zoneinfo import ZoneInfo
 from pydash import filter_, map_, find, find_index, sort_by
 from flask import request, Blueprint, current_app
 from cryptocompare import cryptocompare
@@ -40,6 +40,25 @@ def get_stock_price(ticker: str):
         value = result.close.iloc[-2]
 
     return value
+
+
+def update_or_create_history(
+    month_str: str, item_id: str, user_id: str, account_type: str, value_item: dict
+):
+    history = History.get_(item_id, month_str)
+    if history:
+        idx = find_index(history.values, lambda v: v["date"] == value_item["date"])
+        if idx > -1:
+            history.values[idx] = value_item
+        else:
+            history.values.append(value_item)
+
+        history.values = sort_by(history.values, "date")
+        history.last_update = datetime.now(timezone.utc)
+        history.save()
+
+    else:
+        History.create(item_id, month_str, account_type, user_id, [value_item])
 
 
 @handle_exception
@@ -170,30 +189,18 @@ def save_value_histories():
     if request.method != "POST":
         return failure_result("Invalid method")
 
-    _date = date.today()
-    month_str = _date.strftime("%Y-%m")
-    date_str = _date.strftime("%Y-%m-%d")
+    utc_now = datetime.now(timezone.utc)
+    ny_time = utc_now.astimezone(ZoneInfo("America/New_York"))
+
+    current_app.logger.info(f"UTC: {utc_now}")
+    current_app.logger.info(f"NY: {ny_time}")
+
     now = datetime.now(timezone.utc)
+    month_str = now.strftime("%Y-%m")
+    date_str = now.strftime("%Y-%m-%d")
 
-    def update_or_create_history(
-        item_id: str, user_id: str, account_type: str, value_item: dict
-    ):
-        history = History.get_(item_id, month_str)
-        if history:
-            idx = find_index(history.values, lambda v: v["date"] == value_item["date"])
-            if idx > -1:
-                history.values[idx] = value_item
-            else:
-                history.values.append(value_item)
-
-            history.values = sort_by(history.values, "date")
-            history.last_update = now
-            history.save()
-
-        else:
-            History.create(item_id, month_str, account_type, user_id, [value_item])
-
-    current_app.logger.info(f"Update Value Histories :: {_date}")
+    current_app.logger.info(f"Update Value Histories :: {now}")
+    current_app.logger.info(f"{month_str} :: {date_str}")
 
     accounts = Account.scan(Account.active == True)
     securities = Security.scan(Security.active == True)
@@ -209,7 +216,11 @@ def save_value_histories():
 
         value_item = ValueItem(date=date_str, value=value)
         update_or_create_history(
-            account.account_id, account.user_id, account.account_type, value_item
+            month_str,
+            account.account_id,
+            account.user_id,
+            account.account_type,
+            value_item,
         )
 
     for security in securities:
@@ -223,7 +234,7 @@ def save_value_histories():
             )
 
             update_or_create_history(
-                security.security_id, security.user_id, "Asset", value_item
+                month_str, security.security_id, security.user_id, "Asset", value_item
             )
 
     message = "Value Histories created/updated successfully"
@@ -240,7 +251,7 @@ def generate_bill_expenses():
 
     if request.method == "POST":
         count = 0
-        _date = date.today() + timedelta(3, "day")
+        _date = date.today() + timedelta(days=3)
 
         current_app.logger.info("Generating Expenses for :: %s", _date)
 

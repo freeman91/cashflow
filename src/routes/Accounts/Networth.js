@@ -24,7 +24,7 @@ import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { findAmount } from '../../helpers/transactions';
-import { ASSET, LIABILITY } from '../../components/Dialog/AccountDialog';
+import { ASSET, LIABILITY } from '../../components/Forms/AccountForm';
 
 function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
@@ -158,11 +158,12 @@ export default function NetWorth() {
     <Grid size={{ xs: 12 }} display='flex' justifyContent='center'>
       <Box
         sx={{
-          backgroundColor: 'surface.250',
+          backgroundColor: 'background.paper',
+          backgroundImage: (theme) => theme.vars.overlays[8],
+          boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
           px: 2,
-          py: 1,
-          boxShadow: (theme) => theme.shadows[4],
+          py: 0.5,
           width: '100%',
         }}
       >
@@ -170,7 +171,7 @@ export default function NetWorth() {
           variant='body1'
           fontWeight='bold'
           color='textSecondary'
-          sx={{ py: 1 }}
+          sx={{ mt: 1 }}
         >
           NET WORTH
         </Typography>
@@ -200,7 +201,7 @@ export default function NetWorth() {
             variant='body2'
             fontWeight='bold'
             color='textSecondary'
-            sx={{ mb: 0.25 }}
+            sx={{ mb: 0.25, display: { xs: 'none', md: 'block' } }}
           >
             PAST 6 MONTHS
           </Typography>
