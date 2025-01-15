@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime, timezone
-from typing import Optional
+from typing import List, Optional, Union
 from uuid import uuid4
 from pprint import pformat
 from pynamodb.attributes import (
@@ -13,6 +13,7 @@ from pynamodb.attributes import (
     UTCDateTimeAttribute,
 )
 
+from services import dynamo
 from .base import BaseModel
 
 
@@ -100,3 +101,11 @@ class Account(BaseModel):
         cls, user_id: Optional[str] = None, account_id: Optional[str] = None
     ) -> list["Account"]:
         return super().list(user_id, account_id)
+
+    def get_histories(
+        self, month: Optional[str] = None
+    ) -> Union[List["dynamo.History"], "dynamo.History"]:
+        if month:
+            return dynamo.History.get_(item_id=self.account_id, month=month)
+
+        return dynamo.History.list(item_id=self.account_id, month=month)

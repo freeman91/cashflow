@@ -6,11 +6,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Box from '@mui/material/Box';
 import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 
 import { openItemView } from '../../../store/itemView';
@@ -89,9 +89,18 @@ export default function CreateTransactionButton(props) {
                 placement === 'bottom' ? 'center top' : 'center bottom',
             }}
           >
-            <Paper>
+            <Box>
               <ClickAwayListener onClickAway={handleClose}>
-                <MenuList id='split-button-menu' autoFocusItem>
+                <MenuList
+                  id='split-button-menu'
+                  autoFocusItem
+                  disablePadding
+                  sx={{
+                    bgcolor: 'surface.300',
+                    borderRadius: '0 0 4px 4px',
+                    overflow: 'hidden',
+                  }}
+                >
                   {types.map((type) => (
                     <MenuItem
                       key={type}
@@ -102,7 +111,7 @@ export default function CreateTransactionButton(props) {
                   ))}
                 </MenuList>
               </ClickAwayListener>
-            </Paper>
+            </Box>
           </Grow>
         )}
       </Popper>

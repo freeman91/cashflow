@@ -41,8 +41,26 @@ function SecuritySelect(props) {
             alignItems: 'center',
           },
         }}
+        MenuProps={{
+          MenuListProps: {
+            disablePadding: true,
+            sx: {
+              bgcolor: 'surface.300',
+              '& .MuiPaper-root': { minWidth: 'unset' },
+            },
+          },
+          slotProps: {
+            paper: {
+              sx: {
+                minWidth: 'unset !important',
+              },
+            },
+          },
+        }}
       >
-        <MenuItem value='' />
+        <MenuItem value=''>
+          <em>None</em>
+        </MenuItem>
         {sortBy(securities, 'name ').map((security) => (
           <MenuItem
             key={security.security_id}

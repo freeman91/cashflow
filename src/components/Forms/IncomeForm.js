@@ -23,6 +23,21 @@ import AutocompleteListItem from '../List/AutocompleteListItem';
 import DepositToSelect from '../Selector/DepositToSelect';
 import SelectOption from '../Selector/SelectOption';
 
+export const INCOME_CATEGORIES = [
+  'credit card reward',
+  'dividend',
+  'gift',
+  'interest',
+  'inheritance',
+  'other',
+  'refund',
+  'rental',
+  'royalties',
+  'sale',
+  'tax refund',
+  'tips',
+];
+
 const defaultIncome = {
   income_id: '',
   date: dayjs().hour(12).minute(0).second(0),
@@ -38,12 +53,6 @@ function IncomeForm(props) {
   const dispatch = useDispatch();
   const sources = useIncomeSources();
   const incomes = useSelector((state) => state.incomes.data);
-  const categories = useSelector((state) => {
-    const incomeCategories = find(state.optionLists.data, {
-      option_type: 'income_category',
-    });
-    return incomeCategories?.options;
-  });
 
   const [income, setIncome] = useState(defaultIncome);
 
@@ -122,7 +131,7 @@ function IncomeForm(props) {
         id='category'
         label='category'
         value={income.category}
-        options={categories}
+        options={INCOME_CATEGORIES}
         onChange={(value) => handleChange('category', value)}
       />
       <TextFieldListItem

@@ -1,10 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import find from 'lodash/find';
 
 import ListItemText from '@mui/material/ListItemText';
 
 import useIncomeSources from '../../store/hooks/useIncomeSources';
+import { INCOME_CATEGORIES } from '../Forms/IncomeForm';
 import SelectOption from '../Selector/SelectOption';
 import AutocompleteListItem from './AutocompleteListItem';
 import DecimalFieldListItem from './DecimalFieldListItem';
@@ -13,12 +12,6 @@ import DepositToSelect from '../Selector/DepositToSelect';
 export default function IncomeListItems(props) {
   const { recurring, setRecurring } = props;
   const sources = useIncomeSources();
-  const categories = useSelector((state) => {
-    const incomeCategories = find(state.optionLists.data, {
-      option_type: 'income_category',
-    });
-    return incomeCategories?.options;
-  });
 
   const handleChange = (key, value) => {
     setRecurring((prevRecurring) => ({
@@ -50,7 +43,7 @@ export default function IncomeListItems(props) {
         label='Category'
         value={recurring?.income_attributes?.category || ''}
         onChange={(value) => handleChange('category', value)}
-        options={categories?.map((category) => category.name)}
+        options={INCOME_CATEGORIES}
       />
       <DepositToSelect
         accountId={recurring?.income_attributes?.deposit_to_id}

@@ -25,7 +25,21 @@ export default function SelectOption({ label, value, onChange, options = [] }) {
           MenuProps={{
             MenuListProps: {
               disablePadding: true,
-              sx: { bgcolor: 'surface.300' },
+              sx: {
+                bgcolor: 'surface.300',
+                '& .MuiPaper-root': {
+                  minWidth: 'unset',
+                  borderRadius: 1,
+                  overflow: 'hidden',
+                },
+              },
+            },
+            slotProps: {
+              paper: {
+                sx: {
+                  minWidth: 'unset !important',
+                },
+              },
             },
           }}
           sx={{
@@ -36,7 +50,9 @@ export default function SelectOption({ label, value, onChange, options = [] }) {
             },
           }}
         >
-          <MenuItem value=''>none</MenuItem>
+          <MenuItem value=''>
+            <em>none</em>
+          </MenuItem>
           {sortedOptions.map((option) => (
             <MenuItem key={option} value={option}>
               {option}

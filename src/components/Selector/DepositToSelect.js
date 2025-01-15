@@ -41,12 +41,22 @@ function DepositToSelect(props) {
         MenuProps={{
           MenuListProps: {
             disablePadding: true,
-            sx: { bgcolor: 'surface.300' },
+            sx: {
+              bgcolor: 'surface.300',
+              '& .MuiPaper-root': { minWidth: 'unset' },
+            },
+          },
+          slotProps: {
+            paper: {
+              sx: {
+                minWidth: 'unset !important',
+              },
+            },
           },
         }}
       >
         <MenuItem key='none' id='none-menu-item' value=''>
-          none
+          <em>None</em>
         </MenuItem>
         {cashAccounts.map((account) => (
           <MenuItem

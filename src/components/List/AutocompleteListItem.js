@@ -20,12 +20,22 @@ const AutocompleteListItem = ({ label, options, ...props }) => {
           return option;
         }}
         renderInput={(params) => (
-          <TextField label={label} {...params} fullWidth variant='standard' />
+          <TextField label={label} {...params} variant='standard' />
         )}
         options={_options}
         {...props}
         slotProps={{
-          listbox: { sx: { bgcolor: 'surface.300', p: 0 } },
+          listbox: {
+            sx: {
+              bgcolor: 'surface.300',
+              p: 0,
+            },
+          },
+          paper: {
+            sx: {
+              minWidth: 'unset !important',
+            },
+          },
         }}
       />
     </ListItem>

@@ -6,10 +6,10 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextFieldListItem from './TextFieldListItem';
 
 function SharesFieldListItem(props) {
-  const { id, item, setItem, shares, mode } = props;
+  const { id, value, onChange, shares, mode } = props;
 
   const handleMax = () => {
-    setItem((_item) => ({ ..._item, [id]: shares }));
+    onChange(shares);
   };
 
   const handleChange = (e) => {
@@ -17,7 +17,7 @@ function SharesFieldListItem(props) {
       e.target.value === '' ||
       (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
     ) {
-      setItem((_item) => ({ ..._item, [id]: e.target.value }));
+      onChange(e.target.value);
     }
   };
 
@@ -26,16 +26,15 @@ function SharesFieldListItem(props) {
       id={id}
       label={startCase(id).toLowerCase()}
       placeholder='0.00'
-      value={item[id] || ''}
+      value={value || ''}
       onChange={handleChange}
       inputProps={{ inputMode: 'decimal' }}
       InputProps={{
-        endAdornment:
-          mode === 'create' ? (
-            <InputAdornment position='end'>
-              <Button onClick={handleMax}>MAX</Button>
-            </InputAdornment>
-          ) : null,
+        endAdornment: mode === 'create' && (
+          <InputAdornment position='end'>
+            <Button onClick={handleMax}>MAX</Button>
+          </InputAdornment>
+        ),
       }}
     />
   );

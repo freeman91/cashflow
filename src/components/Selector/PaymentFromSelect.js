@@ -44,12 +44,23 @@ function PaymentFromSelect(props) {
         }}
         MenuProps={{
           MenuListProps: {
-            sx: { bgcolor: 'surface.300' },
+            disablePadding: true,
+            sx: {
+              bgcolor: 'surface.300',
+              '& .MuiPaper-root': { minWidth: 'unset' },
+            },
+          },
+          slotProps: {
+            paper: {
+              sx: {
+                minWidth: 'unset !important',
+              },
+            },
           },
         }}
       >
-        <MenuItem key='none' id='none-menu-item' value=''>
-          None
+        <MenuItem key='none' value=''>
+          <em>None</em>
         </MenuItem>
         <Divider sx={{ mx: 1 }} />
         {creditAccounts.map((account) => (
