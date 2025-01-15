@@ -3,10 +3,10 @@ import React from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-import AutocompleteListItem from '../../../components/List/AutocompleteListItem';
-import DecimalFieldListItem from '../../../components/List/DecimalFieldListItem';
-import DepositToSelect from '../../../components/Selector/DepositToSelect';
-import ContributionListItem from '../../../components/List/ContributionListItem';
+import AutocompleteListItem from './AutocompleteListItem';
+import DecimalFieldListItem from './DecimalFieldListItem';
+import DepositToSelect from '../Selector/DepositToSelect';
+import ContributionListItem from './ContributionListItem';
 
 export default function PaycheckListItems(props) {
   const { recurring, setRecurring } = props;

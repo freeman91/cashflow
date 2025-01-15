@@ -2,9 +2,7 @@ import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { HistoryRouter } from 'redux-first-history/rr6';
-// import LoadingBar from 'react-redux-loading-bar';
 
-// import styled from '@mui/material/styles/styled';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -21,14 +19,6 @@ import Layout from './routes/Layout';
 import './styles/index.css';
 
 console.log('_package.version: ', _package.version);
-
-// const ReduxLoader = styled(LoadingBar)(({ theme }) => ({
-//   backgroundColor: theme.palette.primary.main,
-//   height: '3px',
-//   position: 'absolute',
-//   zIndex: 99999,
-//   top: 0,
-// }));
 
 const AppRoutes = () => {
   return (
@@ -56,9 +46,8 @@ function App() {
     <React.StrictMode>
       <ReduxProvider store={store}>
         <HistoryRouter history={history}>
-          <ThemeProvider theme={muiTheme} defaultMode='dark'>
+          <ThemeProvider theme={muiTheme} defaultMode='dark' noSsr>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              {/* <ReduxLoader /> */}
               <div className='App'>{<AppRoutes />}</div>
             </LocalizationProvider>
           </ThemeProvider>

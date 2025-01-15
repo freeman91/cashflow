@@ -8,20 +8,20 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { setSnackbar } from '../appSettings';
+import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 
 const getOptionLists = createAsyncThunk(
   'option_lists/getOptionLists',
   async (user_id, { dispatch }) => {
     try {
-      // dispatch(showLoading());
+      dispatch(showLoading());
       return {
         data: await getResourcesAPI(user_id, 'option_lists'),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      // dispatch(hideLoading());
+      dispatch(hideLoading());
     }
   }
 );

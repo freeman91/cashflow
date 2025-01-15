@@ -9,14 +9,14 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { setSnackbar } from '../appSettings';
 import { updateAccount } from '../accounts';
+import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 
 const getRepayments = createAsyncThunk(
   'repayments/getRepayments',
   async (user_id, { dispatch }) => {
     try {
-      // dispatch(showLoading());
+      dispatch(showLoading());
       const repayments = await getResourcesAPI(user_id, 'repayments');
 
       return {
@@ -25,7 +25,7 @@ const getRepayments = createAsyncThunk(
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      // dispatch(hideLoading());
+      dispatch(hideLoading());
     }
   }
 );

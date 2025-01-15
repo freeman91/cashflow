@@ -8,13 +8,13 @@ import axios from '../../api/xhr_libs/axios';
 import { deleteResourceAPI, getResourcesAPI, processResponse } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { setSnackbar } from '../appSettings';
+import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 
 const getBudgets = createAsyncThunk(
   'budgets/getBudgets',
   async (user_id, { dispatch }) => {
     try {
-      // dispatch(showLoading());
+      dispatch(showLoading());
       const budgets = await getResourcesAPI(user_id, 'budgets');
 
       return {
@@ -23,7 +23,7 @@ const getBudgets = createAsyncThunk(
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      // dispatch(hideLoading());
+      dispatch(hideLoading());
     }
   }
 );

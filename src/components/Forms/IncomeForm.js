@@ -15,12 +15,13 @@ import TextFieldListItem from '../List/TextFieldListItem';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import { closeItemView } from '../../store/itemView';
 import { postIncome, putIncome } from '../../store/incomes';
+import useIncomeSources from '../../store/hooks/useIncomeSources';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import DepositToSelect from '../Selector/DepositToSelect';
 import SelectOption from '../Selector/SelectOption';
-import { closeItemView } from '../../store/itemView';
 
 const defaultIncome = {
   income_id: '',
@@ -35,18 +36,13 @@ const defaultIncome = {
 function IncomeForm(props) {
   const { mode, attrs } = props;
   const dispatch = useDispatch();
+  const sources = useIncomeSources();
   const incomes = useSelector((state) => state.incomes.data);
-  const { sources, categories } = useSelector((state) => {
-    const incomeSources = find(state.optionLists.data, {
-      option_type: 'income_source',
-    });
+  const categories = useSelector((state) => {
     const incomeCategories = find(state.optionLists.data, {
       option_type: 'income_category',
     });
-    return {
-      sources: incomeSources?.options,
-      categories: incomeCategories?.options,
-    };
+    return incomeCategories?.options;
   });
 
   const [income, setIncome] = useState(defaultIncome);

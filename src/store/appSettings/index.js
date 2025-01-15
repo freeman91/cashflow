@@ -12,9 +12,17 @@ const { reducer, actions } = createSlice({
     setTab: (state, action) => {
       state[action.payload.type].tab = action.payload.tab;
     },
+    showLoading: (state) => {
+      state.loading += 1;
+    },
+    hideLoading: (state) => {
+      if (state.loading > 0) {
+        state.loading -= 1;
+      }
+    },
   },
 });
 
-const { setSnackbar, setTab } = actions;
-export { setSnackbar, setTab };
+const { setSnackbar, setTab, showLoading, hideLoading } = actions;
+export { setSnackbar, setTab, showLoading, hideLoading };
 export default reducer;

@@ -36,7 +36,7 @@ export default function SelectOption({ label, value, onChange, options = [] }) {
             },
           }}
         >
-          <MenuItem value='none'>none</MenuItem>
+          <MenuItem value=''>none</MenuItem>
           {sortedOptions.map((option) => (
             <MenuItem key={option} value={option}>
               {option}

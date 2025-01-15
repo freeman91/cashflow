@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import FormControl from '@mui/material/FormControl';
@@ -9,11 +9,15 @@ import Select from '@mui/material/Select';
 
 function DepositToSelect(props) {
   const { accountId, onChange } = props;
+  const allAccounts = useSelector((state) => state.accounts.data);
 
-  const accounts = useSelector((state) => {
-    let _accounts = state.accounts.data;
-    return _accounts.filter((account) => account?.asset_type === 'Cash');
-  });
+  const [cashAccounts, setCashAccounts] = useState([]);
+
+  useEffect(() => {
+    setCashAccounts(
+      allAccounts.filter((account) => account?.asset_type === 'Cash')
+    );
+  }, [allAccounts]);
 
   const handleChangeDepositTo = (e) => {
     onChange(e.target.value);
@@ -42,9 +46,9 @@ function DepositToSelect(props) {
         }}
       >
         <MenuItem key='none' id='none-menu-item' value=''>
-          None
+          none
         </MenuItem>
-        {accounts.map((account) => (
+        {cashAccounts.map((account) => (
           <MenuItem
             key={account.account_id}
             id={`${account.account_id}-menu-item`}

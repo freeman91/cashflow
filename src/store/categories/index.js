@@ -5,20 +5,20 @@ import { getResourcesAPI } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { putCategoryAPI } from '../../api/categories';
-import { setSnackbar } from '../appSettings';
+import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 
 const getCategories = createAsyncThunk(
   'categories/getCategories',
   async (user_id, { dispatch }) => {
     try {
-      // dispatch(showLoading());
+      dispatch(showLoading());
       return {
         data: await getResourcesAPI(user_id, 'categories'),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      // dispatch(hideLoading());
+      dispatch(hideLoading());
     }
   }
 );

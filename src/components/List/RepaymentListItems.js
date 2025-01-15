@@ -5,13 +5,14 @@ import find from 'lodash/find';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-import SelectOption from '../../../components/Selector/SelectOption';
-import PaymentFromSelect from '../../../components/Selector/PaymentFromSelect';
-import AutocompleteListItem from '../../../components/List/AutocompleteListItem';
-import DecimalFieldListItem from '../../../components/List/DecimalFieldListItem';
+import SelectOption from '../Selector/SelectOption';
+import PaymentFromSelect from '../Selector/PaymentFromSelect';
+import AutocompleteListItem from './AutocompleteListItem';
+import DecimalFieldListItem from './DecimalFieldListItem';
+import LiabilitySelect from '../Selector/LiabilitySelect';
 
-export default function ExpenseListItems(props) {
-  const { recurring, setRecurring } = props;
+export default function RepaymentListItems(props) {
+  const { mode, recurring, setRecurring } = props;
 
   const merchants = useSelector((state) => {
     const expenseMerchants = find(state.optionLists.data, {
@@ -30,53 +31,70 @@ export default function ExpenseListItems(props) {
 
   useEffect(() => {
     const _subcategories = find(categories, {
-      name: recurring?.expense_attributes?.category,
+      name: recurring?.repayment_attributes?.category,
     });
     setSubcategories(_subcategories?.subcategories || []);
-  }, [categories, recurring?.expense_attributes?.category]);
+  }, [categories, recurring?.repayment_attributes?.category]);
 
   const handleChange = (key, value) => {
     setRecurring((prevRecurring) => ({
       ...prevRecurring,
-      expense_attributes: { ...prevRecurring.expense_attributes, [key]: value },
+      repayment_attributes: {
+        ...prevRecurring.repayment_attributes,
+        [key]: value,
+      },
     }));
   };
 
   return (
     <>
       <ListItemText
-        primary='Expense Attributes'
+        primary='Repayment Attributes'
         slotProps={{ primary: { align: 'center' } }}
       />
       <DecimalFieldListItem
         id='amount'
-        value={recurring?.expense_attributes?.amount}
+        value={recurring?.repayment_attributes?.amount}
         onChange={(value) => handleChange('amount', value)}
       />
+      {recurring?.repayment_attributes?.subcategory === 'mortgage' && (
+        <DecimalFieldListItem
+          id='escrow'
+          value={recurring?.repayment_attributes?.escrow}
+          onChange={(value) => handleChange('escrow', value)}
+        />
+      )}
       <AutocompleteListItem
         id='merchant'
         label='merchant'
-        value={recurring?.expense_attributes?.merchant || ''}
+        value={recurring?.repayment_attributes?.merchant || ''}
         options={merchants}
-        onChange={handleChange}
+        onChange={(e, value) => handleChange('merchant', value || '')}
       />
       <SelectOption
         id='category'
         label='Category'
-        value={recurring?.expense_attributes?.category || ''}
+        value={recurring?.repayment_attributes?.category || ''}
         onChange={(value) => handleChange('category', value)}
         options={categories?.map((category) => category.name)}
       />
       <SelectOption
         id='subcategory'
         label='Subcategory'
-        value={recurring?.expense_attributes?.subcategory || ''}
+        value={recurring?.repayment_attributes?.subcategory || ''}
         onChange={(value) => handleChange('subcategory', value)}
         options={subcategories}
       />
       <ListItem disableGutters>
+        <LiabilitySelect
+          mode={mode}
+          accountId={recurring?.repayment_attributes?.account_id}
+          setAccountId={(value) => handleChange('account_id', value)}
+        />
+      </ListItem>
+      <ListItem disableGutters>
         <PaymentFromSelect
-          accountId={recurring?.expense_attributes?.payment_from_id}
+          accountId={recurring?.repayment_attributes?.payment_from_id}
           onChange={(value) => handleChange('payment_from_id', value)}
         />
       </ListItem>

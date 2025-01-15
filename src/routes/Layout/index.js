@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { getUser } from '../../store/user';
 import CustomAppBar from './CustomAppBar';
@@ -18,6 +19,7 @@ function Layout() {
   const toolbarRef = useRef();
   const dispatch = useDispatch();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const loading = useSelector((state) => state.appSettings.loading);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [drawerExpanded, setDrawerExpanded] = useState(true);
@@ -39,6 +41,18 @@ function Layout() {
         height: '100vh',
       }}
     >
+      {loading > 0 && (
+        <Box
+          sx={{
+            width: '100%',
+            position: 'absolute',
+            height: 5,
+            zIndex: 1500,
+          }}
+        >
+          <LinearProgress />
+        </Box>
+      )}
       <CssBaseline />
       <CustomAppBar
         ref={toolbarRef}

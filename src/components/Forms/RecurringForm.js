@@ -17,10 +17,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { closeItemView } from '../../store/itemView';
 import { postRecurring, putRecurring } from '../../store/recurrings';
 import SelectOption from '../Selector/SelectOption';
-import ExpenseListItems from '../../routes/Recurring/RecurringDrawer/ExpenseListItems';
-import RepaymentListItems from '../../routes/Recurring/RecurringDrawer/RepaymentListItems';
-import PaycheckListItems from '../../routes/Recurring/RecurringDrawer/PaycheckListItems';
-import IncomeListItems from '../../routes/Recurring/RecurringDrawer/IncomeListItems';
+import ExpenseListItems from '../List/ExpenseListItems';
+import RepaymentListItems from '../List/RepaymentListItems';
+import PaycheckListItems from '../List/PaycheckListItems';
+import IncomeListItems from '../List/IncomeListItems';
 import IntegerFieldListItem from '../List/IntegerFieldListItem';
 
 const defaultRecurring = {

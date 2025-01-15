@@ -4,25 +4,20 @@ import find from 'lodash/find';
 
 import ListItemText from '@mui/material/ListItemText';
 
-import SelectOption from '../../../components/Selector/SelectOption';
-import AutocompleteListItem from '../../../components/List/AutocompleteListItem';
-import DecimalFieldListItem from '../../../components/List/DecimalFieldListItem';
-import DepositToSelect from '../../../components/Selector/DepositToSelect';
+import useIncomeSources from '../../store/hooks/useIncomeSources';
+import SelectOption from '../Selector/SelectOption';
+import AutocompleteListItem from './AutocompleteListItem';
+import DecimalFieldListItem from './DecimalFieldListItem';
+import DepositToSelect from '../Selector/DepositToSelect';
 
 export default function IncomeListItems(props) {
   const { recurring, setRecurring } = props;
-
-  const { sources, categories } = useSelector((state) => {
-    const incomeSources = find(state.optionLists.data, {
-      option_type: 'income_source',
-    });
+  const sources = useIncomeSources();
+  const categories = useSelector((state) => {
     const incomeCategories = find(state.optionLists.data, {
       option_type: 'income_category',
     });
-    return {
-      sources: incomeSources?.options,
-      categories: incomeCategories?.options,
-    };
+    return incomeCategories?.options;
   });
 
   const handleChange = (key, value) => {

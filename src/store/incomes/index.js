@@ -11,8 +11,8 @@ import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { mergeResources } from '../../helpers';
 import { updateRange } from '../../helpers/dates';
-import { setSnackbar } from '../appSettings';
 import { updateAccount } from '../accounts';
+import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 
 const getIncomes = createAsyncThunk(
   'incomes/getIncomes',
@@ -35,7 +35,7 @@ const getIncomes = createAsyncThunk(
     }
 
     try {
-      // dispatch(showLoading());
+      dispatch(showLoading());
       const newIncomes = await getResourcesInRangeAPI(
         user_id,
         'incomes',
@@ -52,7 +52,7 @@ const getIncomes = createAsyncThunk(
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      // dispatch(hideLoading());
+      dispatch(hideLoading());
     }
   }
 );

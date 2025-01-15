@@ -9,21 +9,22 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { setSnackbar } from '../appSettings';
+import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 import { updateAccount } from '../accounts';
 import { updateSecurity } from '../securities';
+
 const getSales = createAsyncThunk(
   'sales/getSales',
   async (user_id, { dispatch }) => {
     try {
-      // dispatch(showLoading());
+      dispatch(showLoading());
       const sales = await getResourcesAPI(user_id, 'sales');
 
       return { data: sortBy(sales, 'date') };
     } catch (err) {
       console.error(err);
     } finally {
-      // dispatch(hideLoading());
+      dispatch(hideLoading());
     }
   }
 );

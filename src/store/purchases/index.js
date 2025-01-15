@@ -9,13 +9,13 @@ import {
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
-import { setSnackbar } from '../appSettings';
+import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 
 const getPurchases = createAsyncThunk(
   'purchases/getPurchases',
   async (user_id, { dispatch }) => {
     try {
-      // dispatch(showLoading());
+      dispatch(showLoading());
       const purchases = await getResourcesAPI(user_id, 'purchases');
 
       return {
@@ -24,7 +24,7 @@ const getPurchases = createAsyncThunk(
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
-      // dispatch(hideLoading());
+      dispatch(hideLoading());
     }
   }
 );

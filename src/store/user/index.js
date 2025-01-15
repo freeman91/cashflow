@@ -17,7 +17,7 @@ import { getSales } from '../sales';
 import { getSecurities } from '../securities';
 import { getOptionLists } from '../optionLists';
 import { getCategories } from '../categories';
-import { setSnackbar } from '../appSettings';
+import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 import { getRecurrings } from '../recurrings';
 
 const getUser = createAsyncThunk(
@@ -39,7 +39,7 @@ const getUser = createAsyncThunk(
     const historiesStart = dayjs().subtract(6, 'month').format('YYYY-MM');
 
     try {
-      // dispatch(showLoading());
+      dispatch(showLoading());
 
       const user = await getUserAPI(user_id);
       dispatch(getAccounts(user_id));
@@ -66,56 +66,7 @@ const getUser = createAsyncThunk(
     } catch (err) {
       console.error(err);
     } finally {
-      // dispatch(hideLoading());
-    }
-  }
-);
-
-const refreshAll = createAsyncThunk(
-  'user/refreshAll',
-  async (_, { dispatch, getState, requestId }) => {
-    const { item: user, currentRequestId } = getState().user;
-
-    if (requestId !== currentRequestId) return;
-
-    const start = dayjs()
-      .date(1)
-      .subtract(1, 'month')
-      .hour(0)
-      .minute(0)
-      .second(0);
-    const end = start.add(3, 'month').date(0).hour(0).minute(0).second(0);
-    const historiesEnd = dayjs().format('YYYY-MM');
-    const historiesStart = dayjs().subtract(6, 'month').format('YYYY-MM');
-
-    try {
-      // dispatch(showLoading());
-
-      dispatch(getAccounts(user.user_id));
-      dispatch(getBorrows(user.user_id));
-      dispatch(getBudgets(user.user_id));
-      dispatch(
-        getHistories({
-          user_id: user.user_id,
-          range: { start: historiesStart, end: historiesEnd },
-        })
-      );
-      dispatch(getExpenses({ user_id: user.user_id, range: { start, end } }));
-      dispatch(getIncomes({ user_id: user.user_id, range: { start, end } }));
-      dispatch(getPaychecks({ user_id: user.user_id, range: { start, end } }));
-      dispatch(getPurchases(user.user_id));
-      dispatch(getRecurrings(user.user_id));
-      dispatch(getRepayments(user.user_id));
-      dispatch(getSales(user.user_id));
-      dispatch(getSecurities(user.user_id));
-      dispatch(getOptionLists(user.user_id));
-      dispatch(getCategories(user.user_id));
-
-      return {};
-    } catch (err) {
-      console.error(err);
-    } finally {
-      // dispatch(hideLoading());
+      dispatch(hideLoading());
     }
   }
 );
@@ -140,9 +91,9 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    buildAsyncReducers(builder, [getUser, refreshAll, putUser]);
+    buildAsyncReducers(builder, [getUser, putUser]);
   },
 });
 
-export { getUser, refreshAll, putUser };
+export { getUser, putUser };
 export default reducer;

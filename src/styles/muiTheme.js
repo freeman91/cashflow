@@ -48,8 +48,8 @@ const PALETTE = {
 
 export const muiTheme = createTheme({
   colorSchemes: {
-    dark: { palette: PALETTE },
     light: { palette: PALETTE },
+    dark: { palette: PALETTE },
   },
   cssVariables: {
     colorSchemeSelector: 'class',
