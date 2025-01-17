@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from flask import Blueprint, request
 
 from services.dynamo import Sale
@@ -58,7 +58,16 @@ def _sales(user_id: str):
 @sales.route("/sales/<user_id>/<sale_id>", methods=["GET", "PUT", "DELETE"])
 def _sale(user_id: str, sale_id: str):
     if request.method == "GET":
-        return success_result(Sale.get_(user_id=user_id, sale_id=sale_id).as_dict())
+        start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
+        end = datetime.strptime(request.args.get("end"), "%Y-%m-%d") + timedelta(
+            hours=24
+        )
+        return success_result(
+            [
+                sale.as_dict()
+                for sale in Sale.search(user_id=user_id, start=start, end=end)
+            ]
+        )
 
     if request.method == "PUT":
         sale = Sale.get_(user_id=user_id, sale_id=sale_id)
@@ -71,6 +80,7 @@ def _sale(user_id: str, sale_id: str):
         for attr in ["account_id", "security_id", "merchant", "deposit_to_id"]:
             setattr(sale, attr, request.json.get(attr))
 
+        sale.last_update = datetime.now(timezone.utc)
         sale.save()
         return success_result(sale.as_dict())
 

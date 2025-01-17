@@ -13,7 +13,7 @@ export default function TypeChip(props) {
     <Chip
       label={type}
       sx={{
-        width: '100%',
+        width: 100,
         fontWeight: 'bold',
         backgroundImage: `linear-gradient(to bottom, ${alpha(
           color,

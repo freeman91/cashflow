@@ -8,10 +8,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid2';
 
-import { findAmount } from '../../helpers/transactions';
-import TransactionListItem from './ListItems/TransactionListItem';
-import TransactionTypeSelect from '../../components/Selector/TransactionTypeSelect';
-import RangeSelect from '../../components/Selector/RangeSelect';
+import { findAmount } from '../helpers/transactions';
+import TransactionListItem from '../routes/Transactions/ListItems/TransactionListItem';
+import TransactionTypeSelect from './Selector/TransactionTypeSelect';
+import RangeSelect from './Selector/RangeSelect';
 
 export const TRANSACTION_ORDER = [
   'recurring',

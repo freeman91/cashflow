@@ -36,8 +36,26 @@ function AssetSelect(props) {
             alignItems: 'center',
           },
         }}
+        MenuProps={{
+          MenuListProps: {
+            disablePadding: true,
+            sx: {
+              bgcolor: 'surface.300',
+              '& .MuiPaper-root': { minWidth: 'unset' },
+            },
+          },
+          slotProps: {
+            paper: {
+              sx: {
+                minWidth: 'unset !important',
+              },
+            },
+          },
+        }}
       >
-        <MenuItem value={''}>none</MenuItem>
+        <MenuItem value=''>
+          <em>None</em>
+        </MenuItem>
         {sortBy(assets, 'name ').map((asset) => (
           <MenuItem
             key={asset.account_id}

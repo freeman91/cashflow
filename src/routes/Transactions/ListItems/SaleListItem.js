@@ -6,52 +6,46 @@ import { numberToCurrency } from '../../../helpers/currency';
 export default function RepaymentListItem(props) {
   const { transaction, parentWidth } = props;
 
-  return (<>
-    <ListItemText
-      primary={transaction.merchant}
-      sx={{ width: '20%' }}
-      slotProps={{
-        primary: {
-          sx: {
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
+  return (
+    <>
+      <ListItemText
+        primary={transaction.merchant}
+        sx={{ maxWidth: 250, flex: 1 }}
+        slotProps={{
+          primary: {
+            sx: {
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
           },
-        }
-      }}
-    />
-    <ListItemText
-      primary={new Intl.NumberFormat('en-US', {
-        maximumFractionDigits: 5,
-        minimumFractionDigits: 1,
-      }).format(transaction.shares)}
-      sx={{
-        width: '15%',
-        display: parentWidth < 600 ? 'none' : 'block',
-      }}
-      slotProps={{
-        primary: { align: 'right' }
-      }}
-    />
-    <ListItemText
-      primary={numberToCurrency.format(transaction.price)}
-      sx={{
-        width: '15%',
-        display: parentWidth < 1000 ? 'none' : 'block',
-      }}
-      slotProps={{
-        primary: { align: 'right' }
-      }}
-    />
-    <ListItemText
-      primary={numberToCurrency.format(transaction.fee)}
-      sx={{
-        width: '15%',
-        display: parentWidth < 1000 ? 'none' : 'block',
-      }}
-      slotProps={{
-        primary: { align: 'right' }
-      }}
-    />
-  </>);
+        }}
+      />
+      <ListItemText
+        primary={new Intl.NumberFormat('en-US', {
+          maximumFractionDigits: 5,
+          minimumFractionDigits: 1,
+        }).format(transaction.shares)}
+        sx={{
+          maxWidth: 250,
+          flex: 1,
+          display: parentWidth < 600 ? 'none' : 'block',
+        }}
+        slotProps={{
+          primary: { align: 'left' },
+        }}
+      />
+      <ListItemText
+        primary={numberToCurrency.format(transaction.price)}
+        sx={{
+          maxWidth: 250,
+          flex: 1,
+          display: parentWidth < 900 ? 'none' : 'block',
+        }}
+        slotProps={{
+          primary: { align: 'left' },
+        }}
+      />
+    </>
+  );
 }

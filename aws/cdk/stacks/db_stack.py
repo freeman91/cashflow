@@ -32,7 +32,9 @@ class DynamoDBTable:
         )
 
     def add_gsi(self, type_: str, partition_key: str, sort_key: str):
-        print(f"\tDynamoDBTable.GSI: {self.table.table_name}{partition_key}/{sort_key}")
+        print(
+            f"\tDynamoDBTable.GSI: {self.table.to_string().split('/')[-1]} :: {partition_key}/{sort_key}"
+        )
 
         self.table.add_global_secondary_index(
             index_name=f"{APP_ID}-{ENV}-{type_}s-{partition_key}-index",
@@ -68,7 +70,6 @@ class DyanmoDbStack(NestedStack):
         DynamoDBTable(self, "expense", "user_id", "expense_id")
         DynamoDBTable(self, "categories", "user_id", "category_type")
         DynamoDBTable(self, "income", "user_id", "income_id")
-        DynamoDBTable(self, "option_list", "user_id", "option_type")
         DynamoDBTable(self, "paycheck", "user_id", "paycheck_id")
         DynamoDBTable(self, "user", "user_id", "email")
         DynamoDBTable(self, "budget", "user_id", "month")

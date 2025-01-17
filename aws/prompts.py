@@ -9,7 +9,6 @@ from services.dynamo import (
     Borrow,
     Expense,
     Income,
-    OptionList,
     Paycheck,
     Purchase,
     Recurring,
@@ -98,18 +97,6 @@ def income() -> Income:
     ]
 
     return resource(incomes, "Income")
-
-
-def option_list() -> OptionList:
-    _user = user()
-    option_lists = [
-        {"name": f"{option_list.option_type}", "value": option_list}
-        for option_list in sort_by(
-            OptionList.list(user_id=_user.user_id), "option_type"
-        )
-    ]
-
-    return resource(option_lists, "OptionList")
 
 
 def paycheck() -> Paycheck:

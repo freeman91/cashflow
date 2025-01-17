@@ -11,39 +11,43 @@ export default function RepaymentListItem(props) {
     )
   );
 
-  return (<>
-    <ListItemText
-      primary={transaction.source}
-      sx={{ width: '20%' }}
-      slotProps={{
-        primary: {
-          sx: {
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
+  return (
+    <>
+      <ListItemText
+        primary={transaction.source}
+        sx={{ maxWidth: 250, flex: 1 }}
+        slotProps={{
+          primary: {
+            sx: {
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
           },
-        }
-      }}
-    />
-    <ListItemText
-      primary={transaction.category}
-      sx={{
-        width: '15%',
-        display: parentWidth < 600 ? 'none' : 'block',
-      }}
-      slotProps={{
-        primary: { align: 'left' }
-      }}
-    />
-    <ListItemText
-      primary={account?.name}
-      sx={{
-        width: '15%',
-        display: parentWidth < 1000 ? 'none' : 'block',
-      }}
-      slotProps={{
-        primary: { align: 'left' }
-      }}
-    />
-  </>);
+        }}
+      />
+      <ListItemText
+        primary={transaction.category}
+        sx={{
+          maxWidth: 250,
+          flex: 1,
+          display: parentWidth < 600 ? 'none' : 'block',
+        }}
+        slotProps={{
+          primary: { align: 'left' },
+        }}
+      />
+      <ListItemText
+        primary={account?.name}
+        sx={{
+          maxWidth: 250,
+          flex: 1,
+          display: parentWidth < 900 ? 'none' : 'block',
+        }}
+        slotProps={{
+          primary: { align: 'left' },
+        }}
+      />
+    </>
+  );
 }

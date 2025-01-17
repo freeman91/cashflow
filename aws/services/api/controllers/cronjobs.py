@@ -4,8 +4,9 @@
 import os
 import math
 from datetime import date, datetime, timezone, timedelta
-from dateutil.rrule import rrule, YEARLY, MONTHLY, WEEKLY
 from zoneinfo import ZoneInfo
+
+from dateutil.rrule import rrule, YEARLY, MONTHLY, WEEKLY
 from pydash import filter_, find, find_index, last, sort_by, map_
 from flask import request, Blueprint, current_app
 from cryptocompare import cryptocompare
@@ -132,7 +133,6 @@ def update_stock_prices():
     """
 
     stock_types = ["Stock", "Mutual Fund", "Index Fund", "ETF"]
-
     if request.method == "PUT":
         now = datetime.now(timezone.utc)
         accounts = {}
@@ -186,12 +186,12 @@ def update_stock_prices():
 
 
 @handle_exception
-@cronjobs.route("/cronjobs/save_value_histories", methods=["POST"])
+@cronjobs.route("/cronjobs/save_value_histories", methods=["PUT"])
 def save_value_histories():
     """
-    45 18 * * * curl -X POST localhost:9000/cronjobs/save_value_histories > /dev/null
+    45 18 * * * curl -X PUT localhost:9000/cronjobs/save_value_histories > /dev/null
     """
-    if request.method != "POST":
+    if request.method != "PUT":
         return failure_result("Invalid method")
 
     utc_now = datetime.now(timezone.utc)
@@ -262,7 +262,9 @@ def generate_transactions():
                 and recurring.next_date.month == _date.month
                 and recurring.next_date.year == _date.year
             ):
-                transaction = recurring.generate(year=_date.year, month=_date.month)
+                transaction = recurring.generate(
+                    year=_date.year, month=_date.month, day=_date.day
+                )
                 current_app.logger.info(
                     "Generating :: %s :: %s", recurring.name, transaction
                 )

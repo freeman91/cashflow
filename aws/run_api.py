@@ -25,7 +25,6 @@ def blueprints(app):
     app.register_blueprint(controllers.repayments.repayments)
     app.register_blueprint(controllers.sales.sales)
     app.register_blueprint(controllers.securities.securities)
-    app.register_blueprint(controllers.option_lists.option_lists)
     app.register_blueprint(controllers.users.users)
     return app
 

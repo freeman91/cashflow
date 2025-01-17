@@ -1,9 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { concat, get, remove, sortBy } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import concat from 'lodash/concat';
+import get from 'lodash/get';
+import remove from 'lodash/remove';
+import sortBy from 'lodash/sortBy';
 
 import {
   deleteResourceAPI,
-  getResourcesAPI,
+  getResourcesInRangeAPI,
   postResourceAPI,
   putResourceAPI,
 } from '../../api';
@@ -12,17 +16,46 @@ import { items as initialState } from '../initialState';
 import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 import { updateAccount } from '../accounts';
 import { updateSecurity } from '../securities';
+import { updateRange } from '../../helpers/dates';
+import { mergeResources } from '../../helpers';
 
 const getSales = createAsyncThunk(
   'sales/getSales',
-  async (user_id, { dispatch }) => {
+  async ({ user_id, range }, { dispatch, getState }) => {
+    let {
+      data: oldSales,
+      start: oldStart,
+      end: oldEnd,
+    } = cloneDeep(getState().sales);
+    let user = getState().user.item;
+
+    if (!user_id) {
+      user_id = user.user_id;
+    }
+
+    const [fetchRange, storeRange] = updateRange(range, oldStart, oldEnd);
+
+    if (!fetchRange || !user_id) {
+      return;
+    }
+
     try {
       dispatch(showLoading());
-      const sales = await getResourcesAPI(user_id, 'sales');
+      const newSales = await getResourcesInRangeAPI(
+        user_id,
+        'sales',
+        fetchRange
+      );
 
-      return { data: sortBy(sales, 'date') };
+      let sales = mergeResources('sale_id', oldSales, newSales);
+
+      return {
+        data: sortBy(sales, 'date'),
+        start: storeRange.start,
+        end: storeRange.end,
+      };
     } catch (err) {
-      console.error(err);
+      dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());
     }

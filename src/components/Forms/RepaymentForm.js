@@ -17,6 +17,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postRepayment, putRepayment } from '../../store/repayments';
 import { closeItemView } from '../../store/itemView';
+import useMerchants from '../../store/hooks/useMerchants';
 import { _numberToCurrency } from '../../helpers/currency';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import LiabilitySelect from '../Selector/LiabilitySelect';
@@ -43,13 +44,8 @@ function RepaymentForm(props) {
   const { mode, attrs } = props;
   const dispatch = useDispatch();
 
+  const merchants = useMerchants();
   const repayments = useSelector((state) => state.repayments.data);
-  const merchants = useSelector((state) => {
-    const expenseMerchants = find(state.optionLists.data, {
-      option_type: 'merchant',
-    });
-    return expenseMerchants?.options;
-  });
   const categories = useSelector((state) => {
     const categories = find(state.categories.data, {
       category_type: 'expense',

@@ -23,7 +23,7 @@ export default function PaycheckListItem(props) {
     <>
       <ListItemText
         primary={transaction.employer}
-        sx={{ width: '20%' }}
+        sx={{ maxWidth: 250, flex: 1 }}
         slotProps={{
           primary: {
             sx: {
@@ -40,9 +40,13 @@ export default function PaycheckListItem(props) {
             ? numberToCurrency.format(retirementContribution)
             : '-'
         }
-        sx={{ width: '15%', display: parentWidth < 600 ? 'none' : 'block' }}
+        sx={{
+          maxWidth: 250,
+          flex: 1,
+          display: parentWidth < 600 ? 'none' : 'block',
+        }}
         slotProps={{
-          primary: { align: 'right' },
+          primary: { align: 'left' },
         }}
       />
       <ListItemText
@@ -51,9 +55,13 @@ export default function PaycheckListItem(props) {
             ? numberToCurrency.format(benefitsContribution)
             : '-'
         }
-        sx={{ width: '15%', display: parentWidth < 1000 ? 'none' : 'block' }}
+        sx={{
+          maxWidth: 250,
+          flex: 1,
+          display: parentWidth < 900 ? 'none' : 'block',
+        }}
         slotProps={{
-          primary: { align: 'right' },
+          primary: { align: 'left' },
         }}
       />
     </>

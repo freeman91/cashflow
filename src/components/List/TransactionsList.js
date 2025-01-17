@@ -9,7 +9,14 @@ function TransactionsList(props) {
 
   return (
     <>
-      <ListItemText primary={date?.format('MMMM Do, YYYY')} />
+      <ListItemText
+        primary={date?.format('MMMM Do, YYYY')}
+        slotProps={{
+          primary: {
+            align: 'center',
+          },
+        }}
+      />
       {transactions.map((transaction, idx) => {
         return <TransactionListItem key={idx} transaction={transaction} />;
       })}

@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import find from 'lodash/find';
 import startCase from 'lodash/startCase';
 
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextFieldListItem from './TextFieldListItem';
+import { useSelector } from 'react-redux';
 
 function SharesFieldListItem(props) {
-  const { id, value, onChange, shares, mode } = props;
+  const { id, value, onChange, securityId, mode } = props;
+
+  const [shares, setShares] = useState(0);
+  const securities = useSelector((state) => state.securities.data);
+
+  useEffect(() => {
+    const security = find(securities, { security_id: securityId });
+    setShares(security?.shares);
+  }, [securities, securityId]);
 
   const handleMax = () => {
     onChange(shares);
   };
 
   const handleChange = (e) => {
-    if (
-      e.target.value === '' ||
-      (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value)))
-    ) {
-      onChange(e.target.value);
+    const _value = e.target.value;
+    if (_value === '' || (!isNaN(_value) && !isNaN(parseFloat(_value)))) {
+      if (Number(_value) <= shares) {
+        onChange(e.target.value);
+      }
     }
   };
 

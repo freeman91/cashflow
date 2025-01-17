@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from flask import Blueprint, request
 
 from services.dynamo import Purchase
@@ -29,9 +29,18 @@ def _purchases(user_id: str):
         return success_result(purchase.as_dict())
 
     if request.method == "GET":
-        return success_result(
-            [purchase.as_dict() for purchase in Purchase.list(user_id=user_id)]
+        start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
+        end = datetime.strptime(request.args.get("end"), "%Y-%m-%d") + timedelta(
+            hours=24
         )
+
+        return success_result(
+            [
+                purchase.as_dict()
+                for purchase in Purchase.search(user_id=user_id, start=start, end=end)
+            ]
+        )
+
     return failure_result()
 
 
@@ -55,6 +64,7 @@ def _purchase(user_id: str, purchase_id: str):
         for attr in ["account_id", "merchant"]:
             setattr(purchase, attr, request.json.get(attr))
 
+        purchase.last_update = datetime.now(timezone.utc)
         purchase.save()
         return success_result(purchase.as_dict())
 

@@ -9,7 +9,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import LayersIcon from '@mui/icons-material/Layers';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import ScheduleIcon from '@mui/icons-material/Schedule';
 import SettingsIcon from '@mui/icons-material/Settings';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 
@@ -150,11 +149,6 @@ const DrawerContent = () => {
         pageName='Budgets'
         currentPage={page}
         icon={<AssignmentIcon />}
-      />
-      <PageButton
-        pageName='Recurring'
-        currentPage={page}
-        icon={<ScheduleIcon />}
       />
     </List>
   );

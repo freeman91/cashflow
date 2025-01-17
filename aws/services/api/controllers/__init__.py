@@ -13,6 +13,5 @@ from . import (
     repayments,
     sales,
     securities,
-    option_lists,
     users,
 )

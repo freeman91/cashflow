@@ -162,7 +162,7 @@ export default function NetWorth() {
           backgroundImage: (theme) => theme.vars.overlays[8],
           boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
-          px: 2,
+          px: 1,
           py: 0.5,
           width: '100%',
         }}
@@ -171,7 +171,7 @@ export default function NetWorth() {
           variant='body1'
           fontWeight='bold'
           color='textSecondary'
-          sx={{ mt: 1 }}
+          sx={{ mt: 1, mx: 1 }}
         >
           NET WORTH
         </Typography>
@@ -181,6 +181,7 @@ export default function NetWorth() {
             justifyContent: 'flex-start',
             alignItems: 'flex-end',
             gap: 1,
+            mx: 1,
           }}
         >
           <Typography variant='h5' fontWeight='bold'>
@@ -216,9 +217,9 @@ export default function NetWorth() {
             height={200}
             data={days}
             margin={{
-              top: 5,
-              right: 5,
-              left: 5,
+              top: 2,
+              right: 2,
+              left: 2,
               bottom: 0,
             }}
           >

@@ -31,10 +31,9 @@ function SecuritySelect(props) {
       <Select
         labelId='security-label'
         id='security_id'
-        value={resource.security_id}
+        value={resource.security_id || ''}
         onChange={handleChangeSecurity}
         label='Security'
-        displayEmpty
         sx={{
           '& .MuiSelect-select': {
             display: 'flex',

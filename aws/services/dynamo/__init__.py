@@ -7,7 +7,6 @@ from .categories import Categories
 from .expense import Expense
 from .history import History
 from .income import Income
-from .option_list import OptionList
 from .paycheck import Paycheck, ContributionItemAttribute
 from .purchase import Purchase
 from .recurring import (

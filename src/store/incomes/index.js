@@ -41,9 +41,7 @@ const getIncomes = createAsyncThunk(
         'incomes',
         fetchRange
       );
-
       let incomes = mergeResources('income_id', oldIncomes, newIncomes);
-
       return {
         data: sortBy(incomes, 'date'),
         start: storeRange.start,

@@ -14,7 +14,6 @@ import { history, store } from './store/createStore';
 import Accounts from './routes/Accounts';
 import Dashboard from './routes/Dashboard';
 import Transactions from './routes/Transactions';
-import Recurring from './routes/Recurring';
 import Layout from './routes/Layout';
 import './styles/index.css';
 
@@ -30,7 +29,6 @@ const AppRoutes = () => {
         <Route path='/transactions' element={<Transactions />} />
         <Route path='/reports' element={<></>} />
         <Route path='/budgets' element={<></>} />
-        <Route path='/recurring' element={<Recurring />} />
         {/* <Route path='/settings' element={<></>} /> */}
         {/* <Route path='/profile' element={<></>} /> */}
       </Route>

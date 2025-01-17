@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 
 import CreateTransactionButton from './CreateTransactionButton';
-import TransactionsTable from '../../Transactions/Table';
+import TransactionsTable from '../../../components/TransactionsTable';
 
 export default function Transactions() {
   const [range] = useState({
@@ -47,7 +47,7 @@ export default function Transactions() {
         <Typography variant='h5' fontWeight='bold' sx={{ px: 2, pb: 2 }}>
           Recent
         </Typography>
-        <TransactionsTable range={range} types={[]} borderRadius={0} />
+        <TransactionsTable range={range} types={[]} />
       </Box>
     </Grid>
   );

@@ -96,6 +96,8 @@ export default function TransactionListItem(props) {
           alignItems: 'center',
           justifyContent: 'flex-end',
           flexDirection: 'row',
+          minWidth: 150,
+          flex: 1,
         }}
       >
         {transaction?.pending && (
@@ -115,7 +117,7 @@ export default function TransactionListItem(props) {
           {numberToCurrency.format(transaction._amount)}
         </Typography>
       </ListItemText>
-      <ListItemIcon sx={{ minWidth: 'unset' }}>
+      <ListItemIcon sx={{ minWidth: 'unset', ml: 1 }}>
         <ChevronRight />
       </ListItemIcon>
     </ListItemButton>

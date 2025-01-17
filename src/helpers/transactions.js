@@ -1,5 +1,5 @@
 import find from 'lodash/find';
-
+import get from 'lodash/get';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
@@ -18,9 +18,25 @@ const findAmount = (transaction) => {
     return (
       transaction.principal +
       transaction.interest +
-      (transaction.escrow ? transaction.escrow : 0)
+      get(transaction, 'escrow', 0)
     );
   if (transaction.take_home) return transaction.take_home;
+
+  if (transaction._type === 'recurring') {
+    if (transaction.item_type === 'income') {
+      return transaction.income_attributes.amount;
+    } else if (transaction.item_type === 'expense') {
+      return transaction.expense_attributes.amount;
+    } else if (transaction.item_type === 'paycheck') {
+      return transaction.paycheck_attributes.take_home;
+    } else if (transaction.item_type === 'repayment') {
+      return (
+        transaction.repayment_attributes.principal +
+        transaction.repayment_attributes.interest +
+        get(transaction, 'repayment_attributes.escrow', 0)
+      );
+    }
+  }
   return 0;
 };
 
@@ -28,6 +44,14 @@ const findSource = (transaction) => {
   if (transaction.merchant) return transaction.merchant;
   if (transaction.employer) return transaction.employer;
   if (transaction.source) return transaction.source;
+  if (transaction.item_type === 'income')
+    return transaction.income_attributes.source;
+  if (transaction.item_type === 'expense')
+    return transaction.expense_attributes.merchant;
+  if (transaction.item_type === 'paycheck')
+    return transaction.paycheck_attributes.employer;
+  if (transaction.item_type === 'repayment')
+    return transaction.repayment_attributes.merchant;
   return '';
 };
 
@@ -46,6 +70,16 @@ const findId = (transaction) => {
       return transaction.repayment_id;
     case 'paycheck':
       return transaction.paycheck_id;
+    case 'purchase':
+      return transaction.purchase_id;
+    case 'sale':
+      return transaction.sale_id;
+    case 'borrow':
+      return transaction.borrow_id;
+    case 'transfer':
+      return transaction.transfer_id;
+    case 'recurring':
+      return transaction.recurring_id;
     default:
       return 'none';
   }

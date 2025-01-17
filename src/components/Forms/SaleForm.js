@@ -14,7 +14,7 @@ import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import SharesFieldListItem from '../List/SharesFieldListItem';
 import DepositToSelect from '../Selector/DepositToSelect';
 import SecuritySelect from '../Selector/SecuritySelect';
-import AutocompleteListItem from '../List/AutocompleteListItem';
+import TextFieldListItem from '../List/TextFieldListItem';
 
 const defaultSale = {
   sale_id: '',
@@ -36,29 +36,8 @@ function SaleForm(props) {
 
   const accounts = useSelector((state) => state.accounts.data);
   const sales = useSelector((state) => state.sales.data);
-  const merchants = useSelector((state) => {
-    const expenseMerchants = find(state.optionLists.data, {
-      option_type: 'merchant',
-    });
-    return expenseMerchants?.options;
-  });
 
   const [sale, setSale] = useState(defaultSale);
-  const [account, setAccount] = useState({});
-
-  useEffect(() => {
-    if (mode === 'create' && sale.account_id) {
-      const account = find(accounts, { account_id: sale.account_id });
-      setAccount(account);
-      setSale((e) => ({
-        ...e,
-        merchant: account.institution,
-      }));
-    }
-    return () => {
-      setAccount({});
-    };
-  }, [sale.account_id, accounts, mode]);
 
   useEffect(() => {
     if (attrs?.sale_id) {
@@ -70,12 +49,20 @@ function SaleForm(props) {
         });
       }
     } else {
-      setSale((e) => ({ ...e, ...attrs }));
+      if (attrs.account_id) {
+        const account = find(accounts, { account_id: attrs.account_id });
+        setSale((e) => ({
+          ...defaultSale,
+          ...attrs,
+          merchant: account.institution,
+          date: dayjs().hour(12).minute(0).second(0),
+        }));
+      }
     }
     return () => {
       setSale(defaultSale);
     };
-  }, [attrs, sales]);
+  }, [attrs, accounts, sales]);
 
   const handleChange = (id, value) => {
     setSale((prevSale) => ({ ...prevSale, [id]: value }));
@@ -95,11 +82,13 @@ function SaleForm(props) {
 
   return (
     <>
-      <SecuritySelect
-        accountId={sale.account_id}
-        resource={sale}
-        setResource={setSale}
-      />
+      <ListItem disableGutters>
+        <SecuritySelect
+          accountId={sale.account_id}
+          resource={sale}
+          setResource={setSale}
+        />
+      </ListItem>
       <ListItem disableGutters>
         <DatePicker
           label='date'
@@ -132,17 +121,15 @@ function SaleForm(props) {
         id='shares'
         value={sale.shares}
         onChange={(value) => handleChange('shares', value)}
-        shares={account?.shares}
+        securityId={sale.security_id}
         mode={mode}
       />
-
-      <AutocompleteListItem
+      <TextFieldListItem
         id='merchant'
         label='merchant'
         value={sale.merchant}
-        options={merchants}
-        onChange={(e, value) => {
-          handleChange('merchant', value || '');
+        inputProps={{
+          readOnly: true,
         }}
       />
       <ListItem disableGutters>

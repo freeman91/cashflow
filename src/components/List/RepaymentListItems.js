@@ -5,6 +5,7 @@ import find from 'lodash/find';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
+import useMerchants from '../../store/hooks/useMerchants';
 import SelectOption from '../Selector/SelectOption';
 import PaymentFromSelect from '../Selector/PaymentFromSelect';
 import AutocompleteListItem from './AutocompleteListItem';
@@ -14,12 +15,7 @@ import LiabilitySelect from '../Selector/LiabilitySelect';
 export default function RepaymentListItems(props) {
   const { mode, recurring, setRecurring } = props;
 
-  const merchants = useSelector((state) => {
-    const expenseMerchants = find(state.optionLists.data, {
-      option_type: 'merchant',
-    });
-    return expenseMerchants?.options;
-  });
+  const merchants = useMerchants();
   const categories = useSelector((state) => {
     const categories = find(state.categories.data, {
       category_type: 'expense',

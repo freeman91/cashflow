@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from flask import Blueprint, request
 
 from services.dynamo import Borrow
@@ -27,9 +27,17 @@ def _borrows(user_id: str):
         return success_result(borrow.as_dict())
 
     if request.method == "GET":
-        return success_result(
-            [borrow.as_dict() for borrow in Borrow.list(user_id=user_id)]
+        start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
+        end = datetime.strptime(request.args.get("end"), "%Y-%m-%d") + timedelta(
+            hours=24
         )
+        return success_result(
+            [
+                borrow.as_dict()
+                for borrow in Borrow.search(user_id=user_id, start=start, end=end)
+            ]
+        )
+
     return failure_result()
 
 
@@ -49,6 +57,7 @@ def _borrow(user_id: str, borrow_id: str):
         for attr in ["merchant", "pending", "account_id"]:
             setattr(borrow, attr, request.json.get(attr))
 
+        borrow.last_update = datetime.now(timezone.utc)
         borrow.save()
         return success_result(borrow.as_dict())
 

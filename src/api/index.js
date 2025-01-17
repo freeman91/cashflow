@@ -14,5 +14,4 @@ export const putUserAPI = async (user) => {
   return processResponse(await axios.put(`/users/${user.user_id}`, user));
 };
 
-export * from './optionLists';
 export * from './resources';

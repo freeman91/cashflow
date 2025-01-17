@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import get from 'lodash/get';
 
 import { alpha } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -16,7 +15,7 @@ import { findAmount, findColor, findSource } from '../../helpers/transactions';
 import { numberToCurrency } from '../../helpers/currency';
 
 export default function Day(props) {
-  const { month, date, recurrings = [], transactions } = props;
+  const { month, date, transactions } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -94,78 +93,29 @@ export default function Day(props) {
           gap: 0.25,
         }}
       >
-        {recurrings.map((recurring, idx) => {
-          const color = findColor(recurring.item_type, theme);
-          let source = findSource(
-            get(recurring, `${recurring.item_type}_attributes`)
-          );
-          let amount = findAmount(
-            get(recurring, `${recurring.item_type}_attributes`)
-          );
-          return (
-            <Box
-              key={idx}
-              onClick={() => handleClick(recurring)}
-              sx={{
-                backgroundColor: alpha(color, 0.5),
-                width: '100%',
-                borderRadius: 1,
-                border: '1px solid',
-                cursor: 'pointer',
-                '&:hover': {
-                  backgroundImage: `linear-gradient(to bottom, ${color}, ${theme.palette.surface[300]})`,
-                },
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                px: 0.5,
-              }}
-            >
-              <Typography
-                variant='caption'
-                color='textSecondary'
-                align='left'
-                sx={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  display: { xs: 'none', sm: 'block' },
-                }}
-              >
-                {source}
-              </Typography>
-              <Typography variant='caption' color='textSecondary' align='right'>
-                {isMobile
-                  ? new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: 'USD',
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    }).format(amount)
-                  : numberToCurrency.format(amount)}
-              </Typography>
-            </Box>
-          );
-        })}
         {transactions.map((transaction, idx) => {
-          const color = findColor(transaction._type, theme);
+          const color = findColor(
+            transaction?.item_type || transaction._type,
+            theme
+          );
           const merchant = findSource(transaction);
           const amount = findAmount(transaction);
 
-          if (idx > 4 - recurrings.length) return null;
-
+          if (idx > 4) return null;
           return (
             <Box
               key={idx}
               onClick={() => handleClick(transaction)}
               sx={{
-                backgroundColor: alpha(color, 0.5),
+                backgroundColor: alpha(color, 0.35),
                 width: '100%',
                 borderRadius: 1,
                 cursor: 'pointer',
                 '&:hover': {
                   backgroundImage: `linear-gradient(to bottom, ${color}, ${theme.palette.surface[300]})`,
                 },
+                border:
+                  transaction._type === 'recurring' ? '1px solid' : 'none',
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -223,7 +173,7 @@ export default function Day(props) {
             </Box>
           );
         })}
-        {transactions.length > 5 - recurrings.length && (
+        {transactions.length > 5 && (
           <Typography
             variant='caption'
             color='textSecondary'
@@ -233,7 +183,7 @@ export default function Day(props) {
               cursor: 'pointer',
             }}
           >
-            {transactions.length - (5 - recurrings.length)} more...
+            {transactions.length - 5} more...
           </Typography>
         )}
       </Stack>

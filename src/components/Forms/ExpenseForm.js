@@ -17,6 +17,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postExpense, putExpense } from '../../store/expenses';
 import { closeItemView } from '../../store/itemView';
+import useMerchants from '../../store/hooks/useMerchants';
 import AutocompleteListItem from '../List/AutocompleteListItem';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import PaymentFromSelect from '../Selector/PaymentFromSelect';
@@ -40,14 +41,9 @@ function ExpenseForm(props) {
   const { mode, attrs } = props;
   const dispatch = useDispatch();
 
+  const merchants = useMerchants();
   const recurrings = useSelector((state) => state.recurrings.data);
   const expenses = useSelector((state) => state.expenses.data);
-  const merchants = useSelector((state) => {
-    const expenseMerchants = find(state.optionLists.data, {
-      option_type: 'merchant',
-    });
-    return expenseMerchants?.options;
-  });
   const categories = useSelector((state) => {
     const categories = find(state.categories.data, {
       category_type: 'expense',

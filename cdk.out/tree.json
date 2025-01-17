@@ -1,0 +1,969 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "cashflow-production-root-stack": {
+        "id": "cashflow-production-root-stack",
+        "path": "cashflow-production-root-stack",
+        "children": {
+          "cashflow-production-dynamdb-stack": {
+            "id": "cashflow-production-dynamdb-stack",
+            "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack",
+            "children": {
+              "cashflow-production-accounts": {
+                "id": "cashflow-production-accounts",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-accounts",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-accounts/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "account_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "account_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-accounts"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-accounts/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-purchases": {
+                "id": "cashflow-production-purchases",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-purchases",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-purchases/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "purchase_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "purchase_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-purchases"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-purchases/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-sales": {
+                "id": "cashflow-production-sales",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-sales",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-sales/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "sale_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "sale_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-sales"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-sales/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-borrows": {
+                "id": "cashflow-production-borrows",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-borrows",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-borrows/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "borrow_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "borrow_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-borrows"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-borrows/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-recurrings": {
+                "id": "cashflow-production-recurrings",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-recurrings",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-recurrings/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "recurring_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "recurring_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-recurrings"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-recurrings/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-repayments": {
+                "id": "cashflow-production-repayments",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-repayments",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-repayments/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "repayment_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "repayment_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-repayments"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-repayments/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-securitys": {
+                "id": "cashflow-production-securitys",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-securitys",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-securitys/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "security_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "security_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-securitys"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-securitys/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-transfers": {
+                "id": "cashflow-production-transfers",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-transfers",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-transfers/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "transfer_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "transfer_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-transfers"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-transfers/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-historys": {
+                "id": "cashflow-production-historys",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-historys",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-historys/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "item_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "month",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "globalSecondaryIndexes": [
+                          {
+                            "indexName": "cashflow-production-historys-user_id-index",
+                            "keySchema": [
+                              {
+                                "attributeName": "user_id",
+                                "keyType": "HASH"
+                              },
+                              {
+                                "attributeName": "month",
+                                "keyType": "RANGE"
+                              }
+                            ],
+                            "projection": {
+                              "projectionType": "ALL"
+                            }
+                          }
+                        ],
+                        "keySchema": [
+                          {
+                            "attributeName": "item_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "month",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-historys"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-historys/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-expenses": {
+                "id": "cashflow-production-expenses",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-expenses",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-expenses/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "expense_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "expense_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-expenses"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-expenses/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-categoriess": {
+                "id": "cashflow-production-categoriess",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-categoriess",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-categoriess/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "category_type",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "category_type",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-categoriess"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-categoriess/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-incomes": {
+                "id": "cashflow-production-incomes",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-incomes",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-incomes/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "income_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "income_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-incomes"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-incomes/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-paychecks": {
+                "id": "cashflow-production-paychecks",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-paychecks",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-paychecks/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "paycheck_id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "paycheck_id",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-paychecks"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-paychecks/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-users": {
+                "id": "cashflow-production-users",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-users",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-users/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "email",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "email",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-users"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-users/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "cashflow-production-budgets": {
+                "id": "cashflow-production-budgets",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-budgets",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-budgets/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "user_id",
+                            "attributeType": "S"
+                          },
+                          {
+                            "attributeName": "month",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "user_id",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "month",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "tableName": "cashflow-production-budgets"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/cashflow-production-budgets/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.102.0"
+                }
+              },
+              "CDKMetadata": {
+                "id": "CDKMetadata",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/CDKMetadata",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/CDKMetadata/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.102.0"
+                    }
+                  },
+                  "Condition": {
+                    "id": "Condition",
+                    "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack/CDKMetadata/Condition",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.102.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.3.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.NestedStack",
+              "version": "2.102.0"
+            }
+          },
+          "cashflow-production-dynamdb-stack.NestedStack": {
+            "id": "cashflow-production-dynamdb-stack.NestedStack",
+            "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack.NestedStack",
+            "children": {
+              "cashflow-production-dynamdb-stack.NestedStackResource": {
+                "id": "cashflow-production-dynamdb-stack.NestedStackResource",
+                "path": "cashflow-production-root-stack/cashflow-production-dynamdb-stack.NestedStack/cashflow-production-dynamdb-stack.NestedStackResource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFormation::Stack",
+                  "aws:cdk:cloudformation:props": {
+                    "templateUrl": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "https://s3.",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          ".",
+                          {
+                            "Ref": "AWS::URLSuffix"
+                          },
+                          "/",
+                          {
+                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                          },
+                          "/ec5512d95ba30ceeea463f3978b69bd256d6e73089688780ed8133fa4a9e6ad3.json"
+                        ]
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnStack",
+                  "version": "2.102.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "cashflow-production-root-stack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "cashflow-production-root-stack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.102.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "cashflow-production-root-stack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.102.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "cashflow-production-root-stack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.102.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "cashflow-production-root-stack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.102.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.102.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.3.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.102.0"
+    }
+  }
+}

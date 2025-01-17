@@ -26,10 +26,10 @@ import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import { numberToCurrency } from '../../helpers/currency';
-import { findAmount } from '../../helpers/transactions';
-import { ASSET, LIABILITY } from '../../components/Forms/AccountForm';
-import { openItemView } from '../../store/itemView';
+import { numberToCurrency } from '../../../helpers/currency';
+import { findAmount } from '../../../helpers/transactions';
+import { ASSET, LIABILITY } from '../../../components/Forms/AccountForm';
+import { openItemView } from '../../../store/itemView';
 
 function CustomTooltip({ active, payload, label }) {
   const securities = useSelector((state) => state.securities.data);

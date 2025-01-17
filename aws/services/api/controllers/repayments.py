@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from flask import Blueprint, request
 
 from services.dynamo import Repayment
@@ -42,8 +42,15 @@ def _repayments(user_id: str):
         return success_result({"repayment": repayment.as_dict(), "account": account})
 
     if request.method == "GET":
+        start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
+        end = datetime.strptime(request.args.get("end"), "%Y-%m-%d") + timedelta(
+            hours=24
+        )
         return success_result(
-            [repayment.as_dict() for repayment in Repayment.list(user_id=user_id)]
+            [
+                repayment.as_dict()
+                for repayment in Repayment.search(user_id=user_id, start=start, end=end)
+            ]
         )
 
     return failure_result()

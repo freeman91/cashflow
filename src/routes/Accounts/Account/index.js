@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 
-import { alpha } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -14,15 +13,15 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { openItemView } from '../../store/itemView';
-import { numberToCurrency } from '../../helpers/currency';
-import { timeSinceLastUpdate } from '../../helpers/dates';
-import { LIABILITY } from '../../components/Forms/AccountForm';
-import { StyledTab, StyledTabs } from '../../components/StyledTabs';
-import TransactionsTable from './Account/TransactionsTable';
-import CreateTransactionButton from '../Dashboard/Transactions/CreateTransactionButton';
-import AccountValueHistory from './Account/AccountValueHistory';
-import ReactiveButton from '../../components/ReactiveButton';
+import { openItemView } from '../../../store/itemView';
+import { numberToCurrency } from '../../../helpers/currency';
+import { timeSinceLastUpdate } from '../../../helpers/dates';
+import { LIABILITY } from '../../../components/Forms/AccountForm';
+import { StyledTab, StyledTabs } from '../../../components/StyledTabs';
+import TransactionsTable from '../../Dashboard/Transactions/Table';
+import CreateTransactionButton from '../../Dashboard/Transactions/CreateTransactionButton';
+import AccountValueHistory from './AccountValueHistory';
+import ReactiveButton from '../../../components/ReactiveButton';
 
 export default function Account(props) {
   const { account } = props;
@@ -139,20 +138,22 @@ export default function Account(props) {
       <Grid size={{ xs: 12, md: 8 }} display='flex' justifyContent='center'>
         <Box
           sx={{
-            backgroundColor: 'background.paper',
-            backgroundImage: (theme) => theme.vars.overlays[8],
-            boxShadow: (theme) => theme.shadows[4],
-            borderRadius: 1,
+            display: 'flex',
+            flexDirection: 'column',
             width: '100%',
+            gap: 1,
           }}
         >
           <Box
             sx={{
+              backgroundColor: 'background.paper',
+              backgroundImage: (theme) => theme.vars.overlays[8],
+              boxShadow: (theme) => theme.shadows[4],
+              borderRadius: 1,
               display: 'flex',
               justifyContent: 'space-between',
               px: 2,
-              py: 1,
-              my: 1,
+              py: 2,
               width: '100%',
             }}
           >
@@ -173,15 +174,20 @@ export default function Account(props) {
             {tab === 'Transactions' && (
               <CreateTransactionButton
                 types={transactionTypes}
-                attrs={{
-                  account_id: account.account_id,
-                }}
+                attrs={{ account_id: account.account_id }}
               />
             )}
           </Box>
           {tab === 'Holdings' && (
-            <List disablePadding sx={{ width: '100%' }}>
-              <Divider sx={{ my: 1 }} />
+            <List
+              disablePadding
+              sx={{
+                width: '100%',
+                backgroundColor: 'surface.250',
+                borderRadius: 1,
+                overflow: 'hidden',
+              }}
+            >
               <ListItem>
                 <ListItemText primary='Security' />
                 <ListItemText
@@ -240,10 +246,6 @@ export default function Account(props) {
                           key={idx}
                           onClick={() => openSecurityDialog(security)}
                           sx={{
-                            '&:hover': {
-                              backgroundColor: (theme) =>
-                                alpha(theme.palette.primary.main, 0.05),
-                            },
                             borderRadius: 1,
                             mx: 0.5,
                             px: 1.5,

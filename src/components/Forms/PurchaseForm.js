@@ -11,23 +11,26 @@ import { postPurchase, putPurchase } from '../../store/purchases';
 import { closeItemView } from '../../store/itemView';
 import AssetSelect from '../Selector/AssetSelect';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
-import AutocompleteListItem from '../List/AutocompleteListItem';
+import TextFieldListItem from '../List/TextFieldListItem';
+import SecuritySelect from '../Selector/SecuritySelect';
 
 const defaultPurchase = {
   purchase_id: '',
+  account_id: '',
+  security_id: '',
   date: dayjs().hour(12).minute(0).second(0),
   amount: '',
   merchant: '',
   shares: '',
   price: '',
   _type: 'purchase',
-  account_id: '',
 };
 
 function PurchaseDialog(props) {
   const { mode, attrs } = props;
   const dispatch = useDispatch();
 
+  const accounts = useSelector((state) => state.accounts.data);
   const purchases = useSelector((state) => state.purchases.data);
   const [purchase, setPurchase] = useState(defaultPurchase);
 
@@ -41,12 +44,20 @@ function PurchaseDialog(props) {
         });
       }
     } else {
-      setPurchase((prevPurchase) => ({ ...prevPurchase, ...attrs }));
+      if (attrs.account_id) {
+        const account = find(accounts, { account_id: attrs.account_id });
+        setPurchase({
+          ...defaultPurchase,
+          ...attrs,
+          merchant: account.institution,
+          date: dayjs().hour(12).minute(0).second(0),
+        });
+      }
     }
     return () => {
       setPurchase(defaultPurchase);
     };
-  }, [attrs, purchases]);
+  }, [attrs, accounts, purchases]);
 
   const handleChange = (id, value) => {
     setPurchase({ ...purchase, [id]: value });
@@ -70,6 +81,13 @@ function PurchaseDialog(props) {
         <AssetSelect
           accountId={purchase.account_id}
           onChange={(value) => handleChange('account_id', value)}
+        />
+      </ListItem>
+      <ListItem disableGutters>
+        <SecuritySelect
+          accountId={purchase.account_id}
+          resource={purchase}
+          setResource={setPurchase}
         />
       </ListItem>
       <ListItem disableGutters>
@@ -102,13 +120,12 @@ function PurchaseDialog(props) {
         onChange={(value) => handleChange('price', value)}
         startAdornment={null}
       />
-      <AutocompleteListItem
+      <TextFieldListItem
         id='merchant'
         label='merchant'
         value={purchase.merchant}
-        options={[]}
-        onChange={(e, value) => {
-          handleChange('merchant', value || '');
+        inputProps={{
+          readOnly: true,
         }}
       />
       <ListItem

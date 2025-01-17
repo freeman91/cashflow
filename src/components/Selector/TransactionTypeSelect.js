@@ -2,7 +2,6 @@ import React from 'react';
 import startCase from 'lodash/startCase';
 
 import FilterIcon from '@mui/icons-material/FilterList';
-import useTheme from '@mui/material/styles/useTheme';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -15,19 +14,11 @@ export const TRANSACTION_TYPES = [
   'expense',
   'income',
   'paycheck',
+  'recurring',
 ];
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight: TRANSACTION_TYPES.includes(name)
-      ? theme.typography.fontWeightMedium
-      : theme.typography.fontWeightRegular,
-  };
-}
 
 export default function TransactionTypeSelect(props) {
   const { types, setTypes } = props;
-  const theme = useTheme();
 
   const handleChange = (event) => {
     const {
@@ -44,7 +35,6 @@ export default function TransactionTypeSelect(props) {
       value={types}
       onChange={handleChange}
       variant='standard'
-      sx={{ px: 2, width: 300, ml: 1 }}
       disableUnderline
       displayEmpty
       renderValue={(selected) => {
@@ -52,9 +42,36 @@ export default function TransactionTypeSelect(props) {
         return selected.join(', ');
       }}
       IconComponent={() => <FilterIcon />}
+      MenuProps={{
+        MenuListProps: {
+          disablePadding: true,
+          sx: {
+            bgcolor: 'surface.300',
+            '& .MuiPaper-root': {
+              minWidth: 'unset',
+              borderRadius: 1,
+              overflow: 'hidden',
+            },
+          },
+        },
+        slotProps: {
+          paper: {
+            sx: {
+              minWidth: 'unset !important',
+            },
+          },
+        },
+      }}
+      sx={{
+        backgroundColor: 'unset',
+        '& .MuiSelect-select': {
+          display: 'flex',
+          alignItems: 'center',
+        },
+      }}
     >
       {TRANSACTION_TYPES.map((type) => (
-        <MenuItem key={type} value={type} style={getStyles(type, types, theme)}>
+        <MenuItem key={type} value={type}>
           {startCase(type)}
         </MenuItem>
       ))}

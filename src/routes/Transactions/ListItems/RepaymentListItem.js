@@ -17,7 +17,7 @@ export default function RepaymentListItem(props) {
     <>
       <ListItemText
         primary={transaction.merchant}
-        sx={{ width: '15%' }}
+        sx={{ maxWidth: 250, flex: 1 }}
         slotProps={{
           primary: {
             sx: {
@@ -31,7 +31,8 @@ export default function RepaymentListItem(props) {
       <ListItemText
         primary={account?.name}
         sx={{
-          width: '15%',
+          maxWidth: 250,
+          flex: 1,
           display: parentWidth < 600 ? 'none' : 'block',
         }}
         slotProps={{
@@ -48,21 +49,12 @@ export default function RepaymentListItem(props) {
       <ListItemText
         primary={numberToCurrency.format(transaction.principal)}
         sx={{
-          width: '10%',
-          display: parentWidth < 1000 ? 'none' : 'block',
+          maxWidth: 250,
+          flex: 1,
+          display: parentWidth < 900 ? 'none' : 'block',
         }}
         slotProps={{
-          primary: { align: 'right' },
-        }}
-      />
-      <ListItemText
-        primary={numberToCurrency.format(transaction.interest)}
-        sx={{
-          width: '10%',
-          display: parentWidth < 1000 ? 'none' : 'block',
-        }}
-        slotProps={{
-          primary: { align: 'right' },
+          primary: { align: 'left' },
         }}
       />
     </>

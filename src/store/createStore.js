@@ -5,10 +5,8 @@ import { createBrowserHistory } from 'history';
 
 /** MIDDLEWARE **/
 import { thunk as thunkMiddleware } from 'redux-thunk';
-// import { loadingBarMiddleware } from 'react-redux-loading-bar';
 
 /** REDUCERS **/
-// import { loadingBarReducer } from 'react-redux-loading-bar';
 import accounts from './accounts';
 import appSettings from './appSettings';
 import borrows from './borrows';
@@ -19,7 +17,6 @@ import expenses from './expenses';
 import histories from './histories';
 import incomes from './incomes';
 import itemView from './itemView';
-import optionLists from './optionLists';
 import paychecks from './paychecks';
 import purchases from './purchases';
 import recurrings from './recurrings';
@@ -40,7 +37,6 @@ export const store = configureStore({
     incomes,
     itemView,
     histories,
-    optionLists,
     paychecks,
     purchases,
     recurrings,
