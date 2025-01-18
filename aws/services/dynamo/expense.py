@@ -111,6 +111,7 @@ class Expense(BaseModel):
                     account.amount = round(account.amount, 2)
             elif account.account_type == "Liability":
                 account.amount += self.amount
+                account.amount = round(account.amount, 2)
 
             account.save()
 

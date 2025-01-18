@@ -45,6 +45,7 @@ const defaultIncome = {
   source: '',
   _type: 'income',
   category: '',
+  pending: false,
   description: '',
 };
 

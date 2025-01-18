@@ -15,12 +15,13 @@ incomes = Blueprint("incomes", __name__)
 @incomes.route("/incomes/<user_id>", methods=["POST", "GET"])
 def _incomes(user_id: str):
     if request.method == "POST":
+        account = None
         body = request.json
         _date = datetime.strptime(body["date"][:19], "%Y-%m-%dT%H:%M:%S")
         income = Income.create(
             user_id=user_id,
             _date=_date,
-            pending=body.get("pending"),
+            pending=body.get("pending", True),
             amount=float(body.get("amount")),
             source=body.get("source"),
             category=body.get("category"),

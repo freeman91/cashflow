@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { getUser } from '../../../store/user';
+import { refreshAllData } from '../../../store/user';
 import ReactiveButton from '../../../components/ReactiveButton';
 import AccountsAppBar from './AccountsAppBar';
 import TransactionsAppBar from './TransactionsAppBar';
@@ -71,7 +71,7 @@ const CustomAppBar = forwardRef((props, ref) => {
   };
 
   const handleRefresh = () => {
-    dispatch(getUser(user.user_id));
+    dispatch(refreshAllData(user.user_id));
   };
 
   const drawerWidth = drawerExpanded ? theme.drawerWidth : 0;

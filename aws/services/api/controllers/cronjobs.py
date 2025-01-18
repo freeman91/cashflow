@@ -189,7 +189,7 @@ def update_stock_prices():
 @cronjobs.route("/cronjobs/save_value_histories", methods=["PUT"])
 def save_value_histories():
     """
-    45 18 * * * curl -X PUT localhost:9000/cronjobs/save_value_histories > /dev/null
+    50 10,23 * * * curl -X PUT localhost:9000/cronjobs/save_value_histories > /dev/null
     """
     if request.method != "PUT":
         return failure_result("Invalid method")

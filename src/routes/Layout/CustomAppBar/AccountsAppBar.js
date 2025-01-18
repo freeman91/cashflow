@@ -14,6 +14,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
 import { getAccounts } from '../../../store/accounts';
+import { getHistories } from '../../../store/histories';
 import { openItemView } from '../../../store/itemView';
 import ReactiveButton from '../../../components/ReactiveButton';
 
@@ -55,6 +56,7 @@ export default function AccountsAppBar(props) {
 
   const handleRefresh = () => {
     dispatch(getAccounts());
+    dispatch(getHistories());
   };
 
   return (

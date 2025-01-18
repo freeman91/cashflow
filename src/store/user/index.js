@@ -19,56 +19,50 @@ import { getCategories } from '../categories';
 import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 import { getRecurrings } from '../recurrings';
 
+const fetchAllData = async (user_id, dispatch) => {
+  const start = dayjs()
+    .date(1)
+    .subtract(3, 'month')
+    .hour(0)
+    .minute(0)
+    .second(0);
+  const end = start.add(5, 'month').date(0).hour(0).minute(0).second(0);
+
+  try {
+    dispatch(showLoading());
+
+    // NOT IN RANGE
+    const user = await getUserAPI(user_id);
+    dispatch(getAccounts(user_id));
+    dispatch(getBudgets(user_id));
+    dispatch(getCategories(user_id));
+    dispatch(getRecurrings(user_id));
+    dispatch(getSecurities(user_id));
+
+    //  IN RANGE
+    dispatch(getHistories({ user_id }));
+    dispatch(getExpenses({ user_id, range: { start, end } }));
+    dispatch(getIncomes({ user_id, range: { start, end } }));
+    dispatch(getPaychecks({ user_id, range: { start, end } }));
+    dispatch(getRepayments({ user_id, range: { start, end } }));
+    dispatch(getPurchases({ user_id, range: { start, end } }));
+    dispatch(getSales({ user_id, range: { start, end } }));
+    dispatch(getBorrows({ user_id, range: { start, end } }));
+
+    return { item: user };
+  } catch (err) {
+    console.error(err);
+  } finally {
+    dispatch(hideLoading());
+  }
+};
+
 const getUser = createAsyncThunk(
   'user/getUser',
   async (user_id, { dispatch, getState, requestId }) => {
     const { item: user, currentRequestId } = getState().user;
-
     if (user?.user_id || requestId !== currentRequestId) return;
-
-    const start = dayjs()
-      .date(1)
-      .subtract(3, 'month')
-      .hour(0)
-      .minute(0)
-      .second(0);
-    const end = start.add(5, 'month').date(0).hour(0).minute(0).second(0);
-
-    const historiesEnd = dayjs().format('YYYY-MM');
-    const historiesStart = dayjs().subtract(6, 'month').format('YYYY-MM');
-
-    try {
-      dispatch(showLoading());
-
-      // NOT IN RANGE
-      const user = await getUserAPI(user_id);
-      dispatch(getAccounts(user_id));
-      dispatch(getBudgets(user_id));
-      dispatch(getCategories(user_id));
-      dispatch(getRecurrings(user_id));
-      dispatch(getSecurities(user_id));
-
-      //  IN RANGE
-      dispatch(
-        getHistories({
-          user_id,
-          range: { start: historiesStart, end: historiesEnd },
-        })
-      );
-      dispatch(getExpenses({ user_id, range: { start, end } }));
-      dispatch(getIncomes({ user_id, range: { start, end } }));
-      dispatch(getPaychecks({ user_id, range: { start, end } }));
-      dispatch(getRepayments({ user_id, range: { start, end } }));
-      dispatch(getPurchases({ user_id, range: { start, end } }));
-      dispatch(getSales({ user_id, range: { start, end } }));
-      dispatch(getBorrows({ user_id, range: { start, end } }));
-
-      return { item: user };
-    } catch (err) {
-      console.error(err);
-    } finally {
-      dispatch(hideLoading());
-    }
+    return fetchAllData(user_id, dispatch);
   }
 );
 
@@ -84,6 +78,17 @@ const putUser = createAsyncThunk(
     } catch (err) {
       dispatch(setSnackbar({ message: `error: ${err}` }));
     }
+  }
+);
+
+const refreshAllData = createAsyncThunk(
+  'user/refreshAllData',
+  async (_, { dispatch, getState, requestId }) => {
+    const { item: user, currentRequestId } = getState().user;
+
+    if (requestId !== currentRequestId) return;
+    console.log('refresh all data');
+    return fetchAllData(user.user_id, dispatch);
   }
 );
 
@@ -128,9 +133,14 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    buildAsyncReducers(builder, [getUser, putUser, refreshTransactions]);
+    buildAsyncReducers(builder, [
+      getUser,
+      putUser,
+      refreshTransactions,
+      refreshAllData,
+    ]);
   },
 });
 
-export { getUser, putUser, refreshTransactions };
+export { getUser, putUser, refreshTransactions, refreshAllData };
 export default reducer;

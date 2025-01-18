@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import dayjs from 'dayjs';
 import concat from 'lodash/concat';
 import get from 'lodash/get';
 import remove from 'lodash/remove';
@@ -13,7 +12,6 @@ import {
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { hideLoading, setSnackbar, showLoading } from '../appSettings';
-import { getHistories } from '../histories';
 
 const getAccounts = createAsyncThunk(
   'accounts/getAccounts',
@@ -24,15 +22,6 @@ const getAccounts = createAsyncThunk(
 
     try {
       dispatch(showLoading());
-      dispatch(
-        getHistories({
-          user_id,
-          range: {
-            start: dayjs().subtract(6, 'month').format('YYYY-MM'),
-            end: dayjs().format('YYYY-MM'),
-          },
-        })
-      );
       return {
         data: await getResourcesAPI(user_id, 'accounts'),
       };

@@ -94,10 +94,19 @@ class Income(BaseModel):
 
     def update_account(self) -> dynamo.Account:
         account = None
+        if self.deposit_to_id is None:
+            return account
+
         if self.deposit_to_id.startswith("account"):
             account = dynamo.Account.get_(self.user_id, self.deposit_to_id)
-            account.value += self.amount
+
+            if account.balance:
+                account.balance += self.amount
+                account.balance = round(account.balance, 2)
+            if account.amount:
+                account.amount += self.amount
+                account.amount = round(account.amount, 2)
+
             account.save()
 
-        account.save()
         return account
