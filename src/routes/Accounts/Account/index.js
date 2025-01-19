@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 import groupBy from 'lodash/groupBy';
-import sortBy from 'lodash/sortBy';
 
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
@@ -18,28 +18,23 @@ import { numberToCurrency } from '../../../helpers/currency';
 import { timeSinceLastUpdate } from '../../../helpers/dates';
 import { LIABILITY } from '../../../components/Forms/AccountForm';
 import { StyledTab, StyledTabs } from '../../../components/StyledTabs';
-import TransactionsTable from '../../Dashboard/Transactions/Table';
 import CreateTransactionButton from '../../Dashboard/Transactions/CreateTransactionButton';
 import AccountValueHistory from './AccountValueHistory';
 import ReactiveButton from '../../../components/ReactiveButton';
+import TransactionsTable from '../../../components/TransactionsTable';
 
 export default function Account(props) {
   const { account } = props;
   const dispatch = useDispatch();
-
   const securities = useSelector((state) => state.securities.data);
-  const allExpenses = useSelector((state) => state.expenses.data);
-  const allRepayments = useSelector((state) => state.repayments.data);
-  const allIncomes = useSelector((state) => state.incomes.data);
-  const allPaychecks = useSelector((state) => state.paychecks.data);
-  const allPurchases = useSelector((state) => state.purchases.data);
-  const allSales = useSelector((state) => state.sales.data);
-  const allBorrows = useSelector((state) => state.borrows.data);
 
+  const [range] = useState({
+    start: dayjs().date(1).subtract(3, 'month').hour(0),
+    end: dayjs().add(3, 'day'),
+  });
   const [tab, setTab] = useState('Transactions');
   const [holdings, setHoldings] = useState([]);
   const [groupedHoldings, setGroupedHoldings] = useState([]);
-  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     let _holdings = securities.filter(
@@ -65,34 +60,6 @@ export default function Account(props) {
     _groupedHoldings.sort((a, b) => b.sum - a.sum);
     setGroupedHoldings(_groupedHoldings);
   }, [account, securities]);
-
-  useEffect(() => {
-    let accountTransactions = [
-      ...allExpenses,
-      ...allRepayments,
-      ...allIncomes,
-      ...allPaychecks,
-      ...allPurchases,
-      ...allSales,
-      ...allBorrows,
-    ].filter((transaction) => {
-      return (
-        transaction.account_id === account.account_id ||
-        transaction.payment_from_id === account.account_id
-      );
-    });
-    accountTransactions = sortBy(accountTransactions, ['date']).reverse();
-    setTransactions(accountTransactions);
-  }, [
-    account,
-    allExpenses,
-    allRepayments,
-    allIncomes,
-    allPaychecks,
-    allPurchases,
-    allSales,
-    allBorrows,
-  ]);
 
   const openSecurityDialog = (security) => {
     dispatch(
@@ -314,9 +281,8 @@ export default function Account(props) {
               })}
             </List>
           )}
-          {tab === 'Transactions' && (
-            <TransactionsTable transactions={transactions} />
-          )}
+          {tab === 'Transactions' && null}
+          <TransactionsTable range={range} types={transactionTypes} />
         </Box>
       </Grid>
       <Grid size={{ xs: 12, md: 4 }} display='flex' justifyContent='center'>

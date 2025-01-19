@@ -21,6 +21,7 @@ import RepaymentListItem from './RepaymentListItem';
 import SaleListItem from './SaleListItem';
 import TransferListItem from './TransferListItem';
 import { openItemView } from '../../../store/itemView';
+import RecurringListItem from './RecurringListItem';
 
 export default function TransactionListItem(props) {
   const { transaction } = props;
@@ -88,6 +89,9 @@ export default function TransactionListItem(props) {
       )}
       {transaction._type === 'transfer' && (
         <TransferListItem transaction={transaction} parentWidth={width} />
+      )}
+      {transaction._type === 'recurring' && (
+        <RecurringListItem transaction={transaction} parentWidth={width} />
       )}
       <ListItemText
         disableTypography

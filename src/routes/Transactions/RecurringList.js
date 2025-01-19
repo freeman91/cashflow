@@ -91,7 +91,7 @@ export default function RecurringList() {
       spacing={2}
       size={{ xs: 12 }}
       ref={parentRef}
-      sx={{ width: '100%' }}
+      sx={{ width: '100%', mb: 5 }}
     >
       {groupedRecurrings.map((group, idx) => {
         return (
@@ -151,7 +151,8 @@ export default function RecurringList() {
                   >
                     <ListItemText
                       primary={recurring.name}
-                      sx={{ width: '25%' }}
+                      secondary={recurring.frequency}
+                      sx={{ width: '30%' }}
                       slotProps={{
                         primary: {
                           sx: {
@@ -163,16 +164,10 @@ export default function RecurringList() {
                       }}
                     />
                     <ListItemText
-                      primary={recurring.frequency}
-                      sx={{
-                        width: '20%',
-                        display: width < 600 ? 'none' : 'block',
-                      }}
-                    />
-                    <ListItemText
                       primary={recurring.interval}
+                      secondary='interval'
                       sx={{
-                        width: '20%',
+                        width: '15%',
                         display: width < 600 ? 'none' : 'block',
                       }}
                     />
@@ -183,15 +178,13 @@ export default function RecurringList() {
                           isMobile ? 'M/D/YY' : 'MMM Do, YYYY'
                         )
                       }
-                      slotProps={{
-                        primary: { align: 'right' },
-                      }}
-                      sx={{ width: '20%' }}
+                      secondary='next date'
+                      sx={{ width: '25%' }}
                     />
                     <ListItemText
                       primary={numberToCurrency.format(findAmount(recurring))}
                       slotProps={{
-                        primary: { align: 'right' },
+                        primary: { align: 'right', variant: 'h6' },
                       }}
                       sx={{ width: '20%' }}
                     />

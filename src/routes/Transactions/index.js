@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 
 import Grid from '@mui/material/Grid2';
 
-import TransactionsTable from '../../components/TransactionsTable';
 import TransactionsCalendar from './Calendar';
 import RecurringList from './RecurringList';
+import TransactionsList from './List';
 
 export default function Transactions() {
   const tab = useSelector((state) => state.appSettings.transactions.tab);
@@ -18,7 +18,7 @@ export default function Transactions() {
       sx={{ width: '100%', maxWidth: '1000px', margin: 'auto', px: 1 }}
     >
       {tab === 'calendar' && <TransactionsCalendar />}
-      {tab === 'list' && <TransactionsTable />}
+      {tab === 'list' && <TransactionsList />}
       {tab === 'recurring' && <RecurringList />}
     </Grid>
   );

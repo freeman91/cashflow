@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import range from 'lodash/range';
+import _range from 'lodash/range';
 
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
@@ -13,119 +12,25 @@ import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { findAmount } from '../../helpers/transactions';
-import { TRANSACTION_ORDER } from './Table';
+import useTransactionsInRange from '../../store/hooks/useTransactions';
 import Day from './Day';
 import TransactionTypeSelect from '../../components/Selector/TransactionTypeSelect';
 
-export default function DesktopTransactionsCalendar() {
+export default function TransactionsCalendar() {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-  const allExpenses = useSelector((state) => state.expenses.data);
-  const allRepayments = useSelector((state) => state.repayments.data);
-  const allIncomes = useSelector((state) => state.incomes.data);
-  const allPaychecks = useSelector((state) => state.paychecks.data);
-  const allPurchases = useSelector((state) => state.purchases.data);
-  const allSales = useSelector((state) => state.sales.data);
-  const allBorrows = useSelector((state) => state.borrows.data);
-  const allRecurrings = useSelector((state) => state.recurrings.data);
-
   const [month, setMonth] = useState(dayjs());
+  const [range, setRange] = useState({ start: null, end: null });
   const [types, setTypes] = useState([]);
-  const [days, setDays] = useState([]);
-  const [data, setData] = useState([]);
+  const days = useTransactionsInRange(types, range);
 
   useEffect(() => {
     let firstDayOfMonth = month.date(1).hour(12).minute(0).second(0);
-    let firstDayOfWeek = firstDayOfMonth.day(0).hour(12).minute(0).second(0);
-
-    let _days = [];
-    let currentDay = firstDayOfWeek;
-
-    while (currentDay.isBefore(firstDayOfMonth, 'month')) {
-      _days.push(currentDay);
-      currentDay = currentDay.add(1, 'day');
-    }
-
-    while (currentDay.isSame(firstDayOfMonth, 'month')) {
-      _days.push(currentDay);
-      currentDay = currentDay.add(1, 'day');
-    }
-
-    let lastDayOfMonth = currentDay.subtract(1, 'day');
-    while (currentDay.isSame(lastDayOfMonth, 'week')) {
-      _days.push(currentDay);
-      currentDay = currentDay.add(1, 'day');
-    }
-
-    setDays(_days);
+    setRange({
+      start: firstDayOfMonth.day(0).hour(12).minute(0).second(0),
+      end: firstDayOfMonth.add(1, 'month').subtract(1, 'day').day(6),
+    });
   }, [month]);
-
-  useEffect(() => {
-    let _allTransactions = [
-      ...allExpenses,
-      ...allRepayments,
-      ...allIncomes,
-      ...allPaychecks,
-      ...allPurchases,
-      ...allSales,
-      ...allBorrows,
-    ].filter((transaction) => {
-      if (types.length > 0 && !types.includes(transaction._type)) return false;
-      return true;
-    });
-
-    let _allRecurrings = allRecurrings.filter((recurring) => {
-      if (
-        types.length > 0 &&
-        (!types.includes(recurring._type) ||
-          !types.includes(recurring.item_type))
-      ) {
-        return false;
-      }
-      if (recurring.active) {
-        return true;
-      }
-      return false;
-    });
-
-    _allTransactions = _allTransactions.concat(_allRecurrings);
-    let _data = days.map((day) => {
-      let dayTransactions = _allTransactions.filter((transaction) => {
-        return dayjs(transaction.date || transaction.next_date).isSame(
-          day,
-          'day'
-        );
-      });
-      dayTransactions = dayTransactions.map((transaction) => ({
-        ...transaction,
-        _amount: findAmount(transaction),
-      }));
-      dayTransactions = dayTransactions.sort((a, b) => {
-        return (
-          TRANSACTION_ORDER.indexOf(a._type) -
-            TRANSACTION_ORDER.indexOf(b._type) || b._amount - a._amount
-        );
-      });
-
-      return {
-        date: day,
-        transactions: dayTransactions,
-      };
-    });
-    setData(_data);
-  }, [
-    allExpenses,
-    allRepayments,
-    allIncomes,
-    allPaychecks,
-    allPurchases,
-    allSales,
-    allBorrows,
-    allRecurrings,
-    types,
-    days,
-  ]);
 
   const numWeeks = Math.ceil(days.length / 7);
   return (
@@ -183,7 +88,7 @@ export default function DesktopTransactionsCalendar() {
         <Grid size={{ xs: 12 }}>
           <Divider />
         </Grid>
-        {range(7).map((idx) => (
+        {_range(7).map((idx) => (
           <Grid
             key={`week-day-letter-${idx}`}
             size={{ xs: 1 }}
@@ -199,7 +104,7 @@ export default function DesktopTransactionsCalendar() {
             </Typography>
           </Grid>
         ))}
-        {data.map((day, idx) => {
+        {days.map((day, idx) => {
           return (
             <Grid
               key={`day-${day.date.format('YYYY-MM-DD')}`}

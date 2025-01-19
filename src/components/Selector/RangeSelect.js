@@ -106,7 +106,6 @@ export default function RangeSelect(props) {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        // width: '100%',
         gap: 1,
       }}
     >
@@ -129,7 +128,12 @@ export default function RangeSelect(props) {
           horizontal: 'right',
         }}
       >
-        <List disablePadding>
+        <List
+          disablePadding
+          sx={{
+            bgcolor: 'surface.300',
+          }}
+        >
           {map(RANGE_OPTIONS, (option) => (
             <ListItemButton
               key={option.id}
