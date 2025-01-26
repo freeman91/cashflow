@@ -30,11 +30,7 @@ const findAmount = (transaction) => {
     } else if (transaction.item_type === 'paycheck') {
       return transaction.paycheck_attributes.take_home;
     } else if (transaction.item_type === 'repayment') {
-      return (
-        transaction.repayment_attributes.principal +
-        transaction.repayment_attributes.interest +
-        get(transaction, 'repayment_attributes.escrow', 0)
-      );
+      return transaction.repayment_attributes.amount;
     }
   }
   return 0;

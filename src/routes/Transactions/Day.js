@@ -99,7 +99,10 @@ export default function Day(props) {
             theme
           );
           const merchant = findSource(transaction);
-          const amount = findAmount(transaction);
+          if (merchant === 'NelNet') {
+            console.log('transaction: ', transaction);
+          }
+          // const amount = findAmount(transaction);
 
           if (idx > 4) return null;
           return (
@@ -166,8 +169,8 @@ export default function Day(props) {
                         currency: 'USD',
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0,
-                      }).format(amount)
-                    : numberToCurrency.format(amount)}
+                      }).format(transaction._amount)
+                    : numberToCurrency.format(transaction._amount)}
                 </Typography>
               </Box>
             </Box>

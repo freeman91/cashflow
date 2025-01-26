@@ -2,7 +2,7 @@
 """Recurring pynamodb model"""
 
 import os
-from typing import Optional
+from typing import Optional, List
 from uuid import uuid4
 from datetime import datetime, timezone
 
@@ -199,7 +199,7 @@ class Recurring(BaseModel):
     @classmethod
     def list(
         cls, user_id: Optional[str] = None, recurring_id: Optional[str] = None
-    ) -> list["Recurring"]:
+    ) -> List["Recurring"]:
         return super().list(user_id, recurring_id)
 
     def generate(self, year: int, month: int, day: int):
