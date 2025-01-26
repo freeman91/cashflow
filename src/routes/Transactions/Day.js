@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 
 import { openItemView } from '../../store/itemView';
-import { findAmount, findColor, findSource } from '../../helpers/transactions';
+import { findColor, findSource } from '../../helpers/transactions';
 import { numberToCurrency } from '../../helpers/currency';
 
 export default function Day(props) {
@@ -99,11 +99,6 @@ export default function Day(props) {
             theme
           );
           const merchant = findSource(transaction);
-          if (merchant === 'NelNet') {
-            console.log('transaction: ', transaction);
-          }
-          // const amount = findAmount(transaction);
-
           if (idx > 4) return null;
           return (
             <Box
