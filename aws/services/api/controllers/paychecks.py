@@ -91,7 +91,6 @@ def _paycheck(user_id: str, paycheck_id: str):
 
         for attr in [
             "employer",
-            "take_home",
             "pending",
             "deposit_to_id",
             "recurring_id",

@@ -13,6 +13,7 @@ import { history, store } from './store/createStore';
 
 import Accounts from './routes/Accounts';
 import Dashboard from './routes/Dashboard';
+import Settings from './routes/Settings';
 import Transactions from './routes/Transactions';
 import Layout from './routes/Layout';
 import './styles/index.css';
@@ -29,7 +30,7 @@ const AppRoutes = () => {
         <Route path='/transactions' element={<Transactions />} />
         <Route path='/reports' element={<></>} />
         <Route path='/budgets' element={<></>} />
-        {/* <Route path='/settings' element={<></>} /> */}
+        <Route path='/settings' element={<Settings />} />
         {/* <Route path='/profile' element={<></>} /> */}
       </Route>
       <Route path='*'>

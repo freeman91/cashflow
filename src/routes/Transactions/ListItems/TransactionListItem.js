@@ -61,9 +61,10 @@ export default function TransactionListItem(props) {
         pr: 2,
         py: 0.5,
         my: 0.5,
+        gap: 0.5,
       }}
     >
-      <ListItem sx={{ width: 110, pl: 0.5 }}>
+      <ListItem sx={{ width: 110, px: 0.5 }}>
         <TypeChip type={transaction._type} />
       </ListItem>
       {transaction._type === 'borrow' && (
@@ -100,11 +101,11 @@ export default function TransactionListItem(props) {
           alignItems: 'center',
           justifyContent: 'flex-end',
           flexDirection: 'row',
-          maxWidth: 75,
+          // maxWidth: 75,
           flex: 1,
         }}
       >
-        {transaction?.pending && (
+        {(transaction?.pending || transaction._type === 'recurring') && (
           <Tooltip title='Pending' placement='top'>
             <Box
               sx={{

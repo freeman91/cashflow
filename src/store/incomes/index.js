@@ -16,7 +16,7 @@ import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 
 const getIncomes = createAsyncThunk(
   'incomes/getIncomes',
-  async ({ user_id, range }, { dispatch, getState }) => {
+  async ({ user_id, range, force = false }, { dispatch, getState }) => {
     let {
       data: oldIncomes,
       start: oldStart,
@@ -28,12 +28,14 @@ const getIncomes = createAsyncThunk(
       user_id = user.user_id;
     }
 
-    const [fetchRange, storeRange] = updateRange(range, oldStart, oldEnd);
+    let [fetchRange, storeRange] = updateRange(range, oldStart, oldEnd);
+    if (force) {
+      fetchRange = range;
+    }
 
     if (!fetchRange || !user_id) {
       return;
     }
-
     try {
       dispatch(showLoading());
       const newIncomes = await getResourcesInRangeAPI(
@@ -48,6 +50,7 @@ const getIncomes = createAsyncThunk(
         end: storeRange.end,
       };
     } catch (err) {
+      console.error(err);
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());

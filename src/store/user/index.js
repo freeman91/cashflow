@@ -41,13 +41,13 @@ const fetchAllData = async (user_id, dispatch) => {
 
     //  IN RANGE
     dispatch(getHistories({ user_id }));
-    dispatch(getExpenses({ user_id, range: { start, end } }));
-    dispatch(getIncomes({ user_id, range: { start, end } }));
-    dispatch(getPaychecks({ user_id, range: { start, end } }));
-    dispatch(getRepayments({ user_id, range: { start, end } }));
-    dispatch(getPurchases({ user_id, range: { start, end } }));
-    dispatch(getSales({ user_id, range: { start, end } }));
-    dispatch(getBorrows({ user_id, range: { start, end } }));
+    dispatch(getExpenses({ user_id, range: { start, end }, force: true }));
+    dispatch(getIncomes({ user_id, range: { start, end }, force: true }));
+    dispatch(getPaychecks({ user_id, range: { start, end }, force: true }));
+    dispatch(getRepayments({ user_id, range: { start, end }, force: true }));
+    dispatch(getPurchases({ user_id, range: { start, end }, force: true }));
+    dispatch(getSales({ user_id, range: { start, end }, force: true }));
+    dispatch(getBorrows({ user_id, range: { start, end }, force: true }));
 
     return { item: user };
   } catch (err) {
@@ -87,7 +87,6 @@ const refreshAllData = createAsyncThunk(
     const { item: user, currentRequestId } = getState().user;
 
     if (requestId !== currentRequestId) return;
-    console.log('refresh all data');
     return fetchAllData(user.user_id, dispatch);
   }
 );
@@ -111,13 +110,13 @@ const refreshTransactions = createAsyncThunk(
     try {
       dispatch(showLoading());
       dispatch(getRecurrings(user_id));
-      dispatch(getExpenses({ user_id, range: { start, end } }));
-      dispatch(getIncomes({ user_id, range: { start, end } }));
-      dispatch(getPaychecks({ user_id, range: { start, end } }));
-      dispatch(getRepayments({ user_id, range: { start, end } }));
-      dispatch(getPurchases({ user_id, range: { start, end } }));
-      dispatch(getSales({ user_id, range: { start, end } }));
-      dispatch(getBorrows({ user_id, range: { start, end } }));
+      dispatch(getExpenses({ user_id, range: { start, end }, force: true }));
+      dispatch(getIncomes({ user_id, range: { start, end }, force: true }));
+      dispatch(getPaychecks({ user_id, range: { start, end }, force: true }));
+      dispatch(getRepayments({ user_id, range: { start, end }, force: true }));
+      dispatch(getPurchases({ user_id, range: { start, end }, force: true }));
+      dispatch(getSales({ user_id, range: { start, end }, force: true }));
+      dispatch(getBorrows({ user_id, range: { start, end }, force: true }));
 
       return {};
     } catch (err) {

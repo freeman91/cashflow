@@ -36,11 +36,6 @@ const ContributionListItem = (props) => {
     setOpen(!open);
   };
 
-  const handleChange = (event) => {
-    const { id, value } = event.target;
-    onChange(id, value);
-  };
-
   const employee = attributes?.employee || '';
   const employer = attributes?.employer || '';
   const account_id = attributes?.account_id || '';
@@ -60,7 +55,7 @@ const ContributionListItem = (props) => {
                 labelId='account-label'
                 id='account_id'
                 value={account_id || ''}
-                onChange={handleChange}
+                onChange={(e) => onChange('account_id', e.target.value)}
                 label='Account'
                 sx={{
                   '& .MuiSelect-select': {
@@ -86,7 +81,7 @@ const ContributionListItem = (props) => {
             label='employee'
             placeholder='0.00'
             value={employee || ''}
-            onChange={(e) => handleChange('employee', e.target.value)}
+            onChange={(e) => onChange('employee', e.target.value)}
             inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (
@@ -101,7 +96,7 @@ const ContributionListItem = (props) => {
             label='employer'
             placeholder='0.00'
             value={employer || ''}
-            onChange={(e) => handleChange('employer', e.target.value)}
+            onChange={(e) => onChange('employer', e.target.value)}
             inputProps={{ inputMode: 'decimal' }}
             InputProps={{
               startAdornment: (

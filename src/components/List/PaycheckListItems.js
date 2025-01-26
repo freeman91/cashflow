@@ -14,7 +14,10 @@ export default function PaycheckListItems(props) {
   const handleChange = (key, value) => {
     setRecurring((prevRecurring) => ({
       ...prevRecurring,
-      expense_attributes: { ...prevRecurring.expense_attributes, [key]: value },
+      paycheck_attributes: {
+        ...prevRecurring.paycheck_attributes,
+        [key]: value,
+      },
     }));
   };
 

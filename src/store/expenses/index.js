@@ -16,7 +16,7 @@ import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 
 const getExpenses = createAsyncThunk(
   'expenses/getExpenses',
-  async ({ user_id, range }, { dispatch, getState }) => {
+  async ({ user_id, range, force = false }, { dispatch, getState }) => {
     let {
       data: oldExpenses,
       start: oldStart,
@@ -28,7 +28,10 @@ const getExpenses = createAsyncThunk(
       user_id = user.user_id;
     }
 
-    const [fetchRange, storeRange] = updateRange(range, oldStart, oldEnd);
+    let [fetchRange, storeRange] = updateRange(range, oldStart, oldEnd);
+    if (force) {
+      fetchRange = range;
+    }
 
     if (!fetchRange || !user_id) {
       return;
@@ -41,15 +44,14 @@ const getExpenses = createAsyncThunk(
         'expenses',
         fetchRange
       );
-
       let expenses = mergeResources('expense_id', oldExpenses, newExpenses);
-
       return {
         data: sortBy(expenses, 'date'),
         start: storeRange.start,
         end: storeRange.end,
       };
     } catch (err) {
+      console.error(err);
       dispatch(setSnackbar({ message: `error: ${err}` }));
     } finally {
       dispatch(hideLoading());

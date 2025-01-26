@@ -86,7 +86,7 @@ function PaycheckForm(props) {
     if (mode === 'create') {
       dispatch(postPaycheck(paycheck));
     } else dispatch(putPaycheck(paycheck));
-    handleClose();
+    // handleClose();
   };
 
   return (
@@ -130,15 +130,15 @@ function PaycheckForm(props) {
       <ContributionListItem
         label='Retirement Contribution'
         attributes={paycheck?.retirement_contribution}
-        onChange={(id, value) =>
+        onChange={(id, value) => {
           setPaycheck((prevPaycheck) => ({
             ...prevPaycheck,
             retirement_contribution: {
               ...prevPaycheck.retirement_contribution,
               [id]: value,
             },
-          }))
-        }
+          }));
+        }}
       />
       <ContributionListItem
         label='Benefits Contribution'

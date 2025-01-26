@@ -253,7 +253,7 @@ export default function Spending() {
         <ResponsiveContainer width='100%' height={200}>
           <ComposedChart
             data={chartData}
-            margin={{ top: 2, right: 0, bottom: 0 }}
+            margin={{ top: 5, right: 0, bottom: 0 }}
           >
             <XAxis
               dataKey='day'
@@ -265,7 +265,13 @@ export default function Spending() {
               width={50}
               tickFormatter={(value) => {
                 if (value === 0) return '';
-                return '$' + (value / 1000).toFixed(1) + 'k';
+                return new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  maximumSignificantDigits: 3,
+                  minimumSignificantDigits: 2,
+                  notation: 'compact',
+                }).format(value);
               }}
             />
             <Tooltip content={<CustomTooltip />} />
