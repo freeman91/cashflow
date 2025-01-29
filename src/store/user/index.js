@@ -22,11 +22,11 @@ import { getRecurrings } from '../recurrings';
 const fetchAllData = async (user_id, dispatch) => {
   const start = dayjs()
     .date(1)
-    .subtract(3, 'month')
+    .subtract(6, 'month')
     .hour(0)
     .minute(0)
     .second(0);
-  const end = start.add(5, 'month').date(0).hour(0).minute(0).second(0);
+  const end = dayjs().add(1, 'month').date(0).hour(0).minute(0).second(0);
 
   try {
     dispatch(showLoading());
@@ -101,11 +101,11 @@ const refreshTransactions = createAsyncThunk(
 
     const start = dayjs()
       .date(1)
-      .subtract(3, 'month')
+      .subtract(6, 'month')
       .hour(0)
       .minute(0)
       .second(0);
-    const end = start.add(5, 'month').date(0).hour(0).minute(0).second(0);
+    const end = dayjs().add(1, 'month').date(0).hour(0).minute(0).second(0);
 
     try {
       dispatch(showLoading());

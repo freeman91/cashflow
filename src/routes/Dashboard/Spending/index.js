@@ -299,9 +299,17 @@ export default function Spending() {
               label={
                 <Label
                   value={numberToCurrency.format(todayValue)}
-                  position='right'
+                  position={(() => {
+                    if (today.date() < 15) {
+                      return 'right';
+                    } else if (today.date() < 28) {
+                      return 'top';
+                    } else {
+                      return 'left';
+                    }
+                  })()}
                   style={{
-                    fill: theme.palette.text.secondary,
+                    fill: theme.palette.text.primary,
                   }}
                 />
               }
