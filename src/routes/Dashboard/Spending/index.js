@@ -300,9 +300,7 @@ export default function Spending() {
                 <Label
                   value={numberToCurrency.format(todayValue)}
                   position={(() => {
-                    if (today.date() < 15) {
-                      return 'right';
-                    } else if (today.date() < 28) {
+                    if (today.date() < 5) {
                       return 'top';
                     } else {
                       return 'left';
@@ -310,6 +308,7 @@ export default function Spending() {
                   })()}
                   style={{
                     fill: theme.palette.text.primary,
+                    fontWeight: 'bold',
                   }}
                 />
               }

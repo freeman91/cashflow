@@ -82,7 +82,11 @@ function ExpenseForm(props) {
         date: dayjs(_expense.date),
       });
     } else {
-      setExpense((e) => ({ ...e, ...attrs }));
+      setExpense((e) => ({
+        ...e,
+        date: dayjs().hour(12).minute(0).second(0),
+        ...attrs,
+      }));
     }
     return () => {
       setExpense(defaultExpense);

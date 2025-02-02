@@ -4,10 +4,8 @@ import dayjs from 'dayjs';
 import find from 'lodash/find';
 
 import DescriptionIcon from '@mui/icons-material/Description';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -17,11 +15,7 @@ import TextFieldListItem from '../List/TextFieldListItem';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import {
-  postPaycheck,
-  putPaycheck,
-  deletePaycheck,
-} from '../../store/paychecks';
+import { postPaycheck, putPaycheck } from '../../store/paychecks';
 import { closeItemView } from '../../store/itemView';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import DepositToSelect from '../Selector/DepositToSelect';
@@ -92,11 +86,6 @@ function PaycheckForm(props) {
     if (mode === 'create') {
       dispatch(postPaycheck(paycheck));
     } else dispatch(putPaycheck(paycheck));
-    handleClose();
-  };
-
-  const handleDelete = () => {
-    dispatch(deletePaycheck(paycheck.paycheck_id));
     handleClose();
   };
 
@@ -228,9 +217,6 @@ function PaycheckForm(props) {
         >
           submit
         </Button>
-        <IconButton onClick={handleDelete}>
-          <DeleteIcon color='error' />
-        </IconButton>
       </ListItem>
     </>
   );
