@@ -65,7 +65,7 @@ function CustomTooltip({ compareType, active, payload, label }) {
           ? lastMonthDate?.format('MMM Do')
           : 'Average',
     });
-  }, [payload, label]);
+  }, [payload, label, compareType]);
 
   if (active && payload && payload.length) {
     return (
@@ -194,7 +194,7 @@ export default function Spending() {
     } else {
       setCompareExpenses([]);
     }
-  }, [label, currentMonthExpenses]);
+  }, [label, allExpenses, allRepayments]);
 
   useEffect(() => {
     const _todayDate = dayjs().date();
@@ -264,7 +264,7 @@ export default function Spending() {
     });
 
     setChartData(_chartData);
-  }, [currentMonthExpenses, compareExpenses]);
+  }, [currentMonthExpenses, compareExpenses, label, allRecurrings]);
 
   return (
     <Grid size={{ xs: 12 }}>
@@ -365,7 +365,6 @@ export default function Spending() {
                     fill: theme.palette.text.primary,
                     fontWeight: 'bold',
                   }}
-                  // filter={`drop-shadow(0 0 10px ${theme.palette.surface[600]})`}
                 />
               }
               r={4}
