@@ -5,13 +5,16 @@ import filter from 'lodash/filter';
 import map from 'lodash/map';
 import range from 'lodash/range';
 import reduce from 'lodash/reduce';
+import startCase from 'lodash/startCase';
 
 import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid2';
+import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import Select from '@mui/material/Select';
 
 import {
   Bar,
@@ -29,10 +32,11 @@ import {
 import { numberToCurrency } from '../../../helpers/currency';
 import { findAmount } from '../../../helpers/transactions';
 
-function CustomTooltip({ active, payload, label }) {
-  const [currentMonth, setCurrentMonth] = useState({});
-  const [lastMonth, setLastMonth] = useState({});
+function CustomTooltip({ compareType, active, payload, label }) {
+  const [currentLabel, setCurrentLabel] = useState({});
+  const [compareLabel, setCompareLabel] = useState({});
   const [currentDayPending, setCurrentDayPending] = useState({});
+
   useEffect(() => {
     if (!label) return;
     const currentMonthDate = dayjs().date(label);
@@ -48,15 +52,18 @@ function CustomTooltip({ active, payload, label }) {
       color: currentDayPendingValue?.color,
       value: currentDayPendingValue?.value,
     });
-    setCurrentMonth({
+    setCurrentLabel({
       color: value?.color,
       value: value?.value,
       date: currentMonthDate,
     });
-    setLastMonth({
+    setCompareLabel({
       color: 'textSecondary',
       value: lastValue?.value,
-      date: lastMonthDate,
+      date:
+        compareType === 'last-month'
+          ? lastMonthDate?.format('MMM Do')
+          : 'Average',
     });
   }, [payload, label]);
 
@@ -72,16 +79,16 @@ function CustomTooltip({ active, payload, label }) {
         }}
       >
         <Typography variant='body1' align='center'>
-          {currentMonth.date?.format('MMM Do') || ''}
+          {currentLabel.date?.format('MMM Do') || ''}
         </Typography>
-        {currentMonth.value > 0 && (
+        {currentLabel.value > 0 && (
           <Typography
             variant='h6'
             fontWeight='bold'
             align='right'
-            sx={{ color: currentMonth.color }}
+            sx={{ color: currentLabel.color }}
           >
-            {numberToCurrency.format(currentMonth.value)}
+            {numberToCurrency.format(currentLabel.value)}
           </Typography>
         )}
         {currentDayPending.value > 0 && (
@@ -96,7 +103,7 @@ function CustomTooltip({ active, payload, label }) {
             <Typography
               variant='body1'
               align='left'
-              sx={{ color: lastMonth.color }}
+              sx={{ color: compareLabel.color }}
             >
               Pending
             </Typography>
@@ -110,11 +117,11 @@ function CustomTooltip({ active, payload, label }) {
             </Typography>
           </Box>
         )}
-        {lastMonth.value > 0 && (
+        {compareLabel.value > 0 && (
           <Box
             sx={{
               display: 'flex',
-              justifyContent: 'flex-end',
+              justifyContent: 'space-between',
               alignItems: 'center',
               gap: 1,
             }}
@@ -122,17 +129,17 @@ function CustomTooltip({ active, payload, label }) {
             <Typography
               variant='body1'
               align='left'
-              sx={{ color: lastMonth.color }}
+              sx={{ color: compareLabel.color }}
             >
-              {lastMonth.date?.format('MMM Do') || ''}
+              {compareLabel.date || ''}
             </Typography>
             <Typography
               variant='h6'
               fontWeight='bold'
               align='right'
-              sx={{ color: lastMonth.color }}
+              sx={{ color: compareLabel.color }}
             >
-              {numberToCurrency.format(lastMonth.value)}
+              {numberToCurrency.format(compareLabel.value)}
             </Typography>
           </Box>
         )}
@@ -146,34 +153,53 @@ export default function Spending() {
   const theme = useTheme();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
+  const allRecurrings = useSelector((state) => state.recurrings.data);
   const today = dayjs();
 
+  const [label, setLabel] = useState('last-month');
   const [todayValue, setTodayValue] = useState(0);
   const [currentMonthExpenses, setCurrentMonthExpenses] = useState([]);
-  const [lastMonthExpenses, setLastMonthExpenses] = useState([]);
+  const [compareExpenses, setCompareExpenses] = useState([]);
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     const currentMonth = dayjs();
-    const lastMonth = dayjs().subtract(1, 'month');
     const currentMonthExpenses = filter(
       [...allExpenses, ...allRepayments],
       (expense) => {
         return dayjs(expense.date).isSame(currentMonth, 'month');
       }
     );
-    const lastMonthExpenses = filter(
-      [...allExpenses, ...allRepayments],
-      (expense) => dayjs(expense.date).isSame(lastMonth, 'month')
-    );
     setCurrentMonthExpenses(currentMonthExpenses);
-    setLastMonthExpenses(lastMonthExpenses);
   }, [allExpenses, allRepayments]);
+
+  useEffect(() => {
+    if (label === 'last-month') {
+      const lastMonth = dayjs().subtract(1, 'month');
+      const lastMonthExpenses = filter(
+        [...allExpenses, ...allRepayments],
+        (expense) => dayjs(expense.date).isSame(lastMonth, 'month')
+      );
+      setCompareExpenses(lastMonthExpenses);
+    } else if (label === 'past-6-months') {
+      const sevenMonthsAgo = dayjs().subtract(7, 'month');
+      const oneMonthAgo = dayjs().subtract(1, 'month');
+      const _expenses = filter(
+        [...allExpenses, ...allRepayments],
+        (expense) =>
+          dayjs(expense.date).isAfter(sevenMonthsAgo, 'month') &&
+          dayjs(expense.date).isBefore(oneMonthAgo, 'month')
+      );
+      setCompareExpenses(_expenses);
+    } else {
+      setCompareExpenses([]);
+    }
+  }, [label, currentMonthExpenses]);
 
   useEffect(() => {
     const _todayDate = dayjs().date();
     const _chartData = [];
-    let lastMonthCumSum = 0;
+    let compareCumSum = 0;
     let currentMonthCumSum = 0;
 
     map(range(1, 32), (day) => {
@@ -188,12 +214,15 @@ export default function Spending() {
           );
         }
       );
-      const lastMonthCurrentDayExpenses = filter(
-        lastMonthExpenses,
-        (expense) => {
-          return dayjs(expense.date).date() === day;
-        }
-      );
+      const currentDayRecurring = filter(allRecurrings, (recurring) => {
+        return (
+          dayjs(recurring.next_date).isSame(dayjs().date(day), 'day') &&
+          ['expense', 'repayment'].includes(recurring.item_type)
+        );
+      });
+      const compareCurrentDayExpenses = filter(compareExpenses, (expense) => {
+        return dayjs(expense.date).date() === day;
+      });
 
       currentMonthCumSum += reduce(
         currentDayExpenses,
@@ -202,29 +231,40 @@ export default function Spending() {
         },
         0
       );
-      lastMonthCumSum += reduce(
-        lastMonthCurrentDayExpenses,
+
+      let _compareDaySum = reduce(
+        compareCurrentDayExpenses,
         (sum, expense) => {
           return sum + findAmount(expense);
         },
         0
       );
+      if (label === 'last-month') {
+        compareCumSum += _compareDaySum;
+      } else if (label === 'past-6-months') {
+        compareCumSum += _compareDaySum / 6;
+      }
       if (day === _todayDate) {
         setTodayValue(currentMonthCumSum);
       }
       _chartData.push({
         day,
         currentMonth: day <= _todayDate ? currentMonthCumSum : null,
-        lastMonth: lastMonthCumSum,
-        currentDayPending: currentDayPendingExpenses.reduce(
-          (sum, expense) => sum + findAmount(expense),
-          0
-        ),
+        lastMonth: compareCumSum,
+        currentDayPending:
+          currentDayPendingExpenses.reduce(
+            (sum, expense) => sum + findAmount(expense),
+            0
+          ) +
+          currentDayRecurring.reduce(
+            (sum, recurring) => sum + findAmount(recurring),
+            0
+          ),
       });
     });
 
     setChartData(_chartData);
-  }, [currentMonthExpenses, lastMonthExpenses]);
+  }, [currentMonthExpenses, compareExpenses]);
 
   return (
     <Grid size={{ xs: 12 }}>
@@ -238,16 +278,30 @@ export default function Spending() {
           py: 1,
         }}
       >
-        <Typography
-          variant='body1'
-          fontWeight='bold'
-          color='textSecondary'
-          sx={{ py: 1 }}
-        >
-          SPENDING
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography
+            variant='body1'
+            fontWeight='bold'
+            color='textSecondary'
+            sx={{ py: 1 }}
+          >
+            SPENDING
+          </Typography>
+          <Select
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            sx={{ width: 150 }}
+            size='small'
+          >
+            <MenuItem value='none'>
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value='last-month'>Last Month</MenuItem>
+            <MenuItem value='past-6-months'>Past 6 Months</MenuItem>
+          </Select>
+        </Box>
         <Typography variant='h5' fontWeight='bold'>
-          This Month vs. Last Month
+          This Month vs. {startCase(label)}
         </Typography>
         <Divider sx={{ my: 2 }} />
         <ResponsiveContainer width='100%' height={200}>
@@ -274,7 +328,7 @@ export default function Spending() {
                 }).format(value);
               }}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip compareType={label} />} />
             <Bar
               dataKey='currentDayPending'
               fill={theme.palette.warning.main}
@@ -306,10 +360,12 @@ export default function Spending() {
                       return 'left';
                     }
                   })()}
+                  offset={20}
                   style={{
                     fill: theme.palette.text.primary,
                     fontWeight: 'bold',
                   }}
+                  // filter={`drop-shadow(0 0 10px ${theme.palette.surface[600]})`}
                 />
               }
               r={4}
