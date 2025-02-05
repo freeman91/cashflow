@@ -73,7 +73,7 @@ export default function AccountsRoot() {
         maxWidth: '1500px',
         margin: 'auto',
         px: 1,
-        mb: 5,
+        pb: 5,
       }}
     >
       <NetWorth />
