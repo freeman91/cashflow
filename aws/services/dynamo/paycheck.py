@@ -2,7 +2,7 @@
 """Paycheck pynamodb model"""
 
 import os
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 from datetime import datetime
 
 from uuid import uuid4
@@ -109,7 +109,7 @@ class Paycheck(BaseModel):
     @classmethod
     def list(
         cls, user_id: Optional[str] = None, paycheck_id: Optional[str] = None
-    ) -> list["Paycheck"]:
+    ) -> List["Paycheck"]:
         return super().list(user_id, paycheck_id)
 
     @classmethod

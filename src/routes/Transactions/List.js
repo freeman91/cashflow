@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 
+import useTransactionsInRange from '../../store/hooks/useTransactions';
 import TransactionsTable from '../../components/TransactionsTable';
 import RangeSelect from '../../components/Selector/RangeSelect';
 import TransactionTypeSelect from '../../components/Selector/TransactionTypeSelect';
@@ -16,6 +17,7 @@ export default function TransactionsList() {
     start: dayjs().subtract(1, 'month').startOf('month'),
     end: dayjs().add(3, 'day'),
   });
+  const transactionsByDay = useTransactionsInRange([], range, true);
 
   return (
     <>
@@ -36,7 +38,7 @@ export default function TransactionsList() {
           <TransactionTypeSelect types={types} setTypes={setTypes} />
         </Box>
       </Grid>
-      <TransactionsTable range={range} types={[]} />
+      <TransactionsTable transactionsByDay={transactionsByDay} />
     </>
   );
 }

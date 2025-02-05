@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import React from 'react';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -8,9 +7,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid2';
 
 import TransactionListItem from '../routes/Transactions/ListItems/TransactionListItem';
-import TransactionTypeSelect from './Selector/TransactionTypeSelect';
-import RangeSelect from './Selector/RangeSelect';
-import useTransactionsInRange from '../store/hooks/useTransactions';
 
 export const TRANSACTION_ORDER = [
   'recurring',
@@ -25,28 +21,7 @@ export const TRANSACTION_ORDER = [
 ];
 
 export default function TransactionsTable(props) {
-  const { range: rangeProps, types: typesProps } = props;
-
-  const [types, setTypes] = useState([]);
-  const [range, setRange] = useState({
-    id: 2,
-    label: 'Custom Range',
-    start: dayjs().subtract(1, 'month').startOf('month'),
-    end: dayjs().add(3, 'day'),
-  });
-  const days = useTransactionsInRange(types, range, true);
-
-  useEffect(() => {
-    if (rangeProps) {
-      setRange(rangeProps);
-    }
-  }, [rangeProps]);
-
-  useEffect(() => {
-    if (typesProps) {
-      setTypes(typesProps);
-    }
-  }, [typesProps]);
+  const { transactionsByDay } = props;
 
   return (
     <Grid size={{ xs: 12 }} sx={{ width: '100%', mb: 5 }}>
@@ -59,13 +34,7 @@ export default function TransactionsTable(props) {
         }}
       >
         <List disablePadding>
-          {!rangeProps && !typesProps && (
-            <ListItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <RangeSelect range={range} setRange={setRange} />
-              <TransactionTypeSelect types={types} setTypes={setTypes} />
-            </ListItem>
-          )}
-          {days.map((day, idx) => {
+          {transactionsByDay.map((day, idx) => {
             if (day.transactions.length === 0) return null;
             return (
               <React.Fragment key={idx}>

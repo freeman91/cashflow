@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 from uuid import uuid4
 from pynamodb.attributes import (
     BooleanAttribute,
@@ -79,7 +79,7 @@ class Income(BaseModel):
     @classmethod
     def list(
         cls, user_id: Optional[str] = None, income_id: Optional[str] = None
-    ) -> list["Income"]:
+    ) -> List["Income"]:
         return super().list(user_id, income_id)
 
     @classmethod

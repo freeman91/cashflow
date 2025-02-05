@@ -14,8 +14,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
 import { openItemView } from '../../../store/itemView';
+import { TRANSACTION_ORDER } from '../../../store/hooks/useTransactions';
 import { numberToCurrency } from '../../../helpers/currency';
 import { timeSinceLastUpdate } from '../../../helpers/dates';
+import { findAmount } from '../../../helpers/transactions';
 import { LIABILITY } from '../../../components/Forms/AccountForm';
 import { StyledTab, StyledTabs } from '../../../components/StyledTabs';
 import CreateTransactionButton from '../../Dashboard/Transactions/CreateTransactionButton';
@@ -27,14 +29,69 @@ export default function Account(props) {
   const { account } = props;
   const dispatch = useDispatch();
   const securities = useSelector((state) => state.securities.data);
+  const allBorrows = useSelector((state) => state.borrows.data);
+  const allExpenses = useSelector((state) => state.expenses.data);
+  const allIncomes = useSelector((state) => state.incomes.data);
+  const allPaychecks = useSelector((state) => state.paychecks.data);
+  const allRepayments = useSelector((state) => state.repayments.data);
+  const allPurchases = useSelector((state) => state.purchases.data);
+  const allSales = useSelector((state) => state.sales.data);
 
   const [range] = useState({
     start: dayjs().date(1).subtract(3, 'month').hour(0),
     end: dayjs().add(3, 'day'),
   });
   const [tab, setTab] = useState('Transactions');
+  const [transactionsByDay, setTransactionsByDay] = useState([]);
   const [holdings, setHoldings] = useState([]);
   const [groupedHoldings, setGroupedHoldings] = useState([]);
+
+  useEffect(() => {
+    if (!range?.start || !range?.end) return;
+    let _days = [];
+    let _allTransactions = [
+      ...allBorrows,
+      ...allExpenses,
+      ...allIncomes,
+      ...allPaychecks,
+      ...allRepayments,
+      ...allPurchases,
+      ...allSales,
+    ].filter((transaction) => {
+      if (
+        transaction.payment_from_id === account.account_id ||
+        transaction.account_id === account.account_id ||
+        transaction.deposit_to_id === account.account_id
+      )
+        return true;
+      return false;
+    });
+
+    let currentDate = range.start;
+    while (currentDate <= range.end) {
+      const stableDate = currentDate;
+      let dayTransactions = _allTransactions.filter((transaction) => {
+        if (!transaction.date) return false;
+        return dayjs(transaction.date).isSame(stableDate, 'day');
+      });
+      dayTransactions = dayTransactions.map((transaction) => ({
+        ...transaction,
+        _amount: findAmount(transaction),
+      }));
+      dayTransactions = dayTransactions.sort((a, b) => {
+        return (
+          TRANSACTION_ORDER.indexOf(a._type) -
+            TRANSACTION_ORDER.indexOf(b._type) || b._amount - a._amount
+        );
+      });
+      _days.push({
+        date: currentDate,
+        transactions: dayTransactions,
+      });
+      currentDate = dayjs(currentDate).add(1, 'day');
+    }
+    setTransactionsByDay(_days.reverse());
+  }, [allRepayments, allPurchases, allSales, allBorrows, range]);
 
   useEffect(() => {
     let _holdings = securities.filter(
@@ -281,8 +338,9 @@ export default function Account(props) {
               })}
             </List>
           )}
-          {tab === 'Transactions' && null}
-          <TransactionsTable range={range} types={transactionTypes} />
+          {tab === 'Transactions' && (
+            <TransactionsTable transactionsByDay={transactionsByDay} />
+          )}
         </Box>
       </Grid>
       <Grid size={{ xs: 12, md: 4 }} display='flex' justifyContent='center'>

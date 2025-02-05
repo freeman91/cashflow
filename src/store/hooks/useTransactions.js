@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 import { findAmount } from '../../helpers/transactions';
 
-const TRANSACTION_ORDER = [
+export const TRANSACTION_ORDER = [
   'recurring',
   'income',
   'paycheck',

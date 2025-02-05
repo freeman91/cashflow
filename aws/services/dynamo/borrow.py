@@ -3,7 +3,7 @@
 
 import os
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 from uuid import uuid4
 from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
 
@@ -59,7 +59,7 @@ class Borrow(BaseModel):
     @classmethod
     def list(
         cls, user_id: Optional[str] = None, borrow_id: Optional[str] = None
-    ) -> list["Borrow"]:
+    ) -> List["Borrow"]:
         return super().list(user_id, borrow_id)
 
     @classmethod
