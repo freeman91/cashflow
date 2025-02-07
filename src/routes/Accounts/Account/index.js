@@ -91,7 +91,17 @@ export default function Account(props) {
       currentDate = dayjs(currentDate).add(1, 'day');
     }
     setTransactionsByDay(_days.reverse());
-  }, [allRepayments, allPurchases, allSales, allBorrows, range]);
+  }, [
+    allBorrows,
+    allExpenses,
+    allIncomes,
+    allPaychecks,
+    allRepayments,
+    allPurchases,
+    allSales,
+    range,
+    account.account_id,
+  ]);
 
   useEffect(() => {
     let _holdings = securities.filter(
@@ -149,6 +159,8 @@ export default function Account(props) {
   if (account.account_type === LIABILITY) {
     transactionTypes = ['borrow', 'repayment'];
   }
+
+  console.log('account: ', account);
 
   return (
     <Grid
@@ -216,21 +228,21 @@ export default function Account(props) {
                 <ListItemText primary='Security' />
                 <ListItemText
                   primary='Shares'
-                  sx={{ width: '20%' }}
+                  sx={{ maxWidth: 200 }}
                   slotProps={{
                     primary: { align: 'right' },
                   }}
                 />
                 <ListItemText
                   primary='Price'
-                  sx={{ width: '20%' }}
+                  sx={{ maxWidth: 200 }}
                   slotProps={{
                     primary: { align: 'right' },
                   }}
                 />
                 <ListItemText
                   primary='Value'
-                  sx={{ width: '20%' }}
+                  sx={{ maxWidth: 200 }}
                   slotProps={{
                     primary: { align: 'right' },
                   }}
@@ -296,9 +308,17 @@ export default function Account(props) {
                           <ListItemText
                             primary={security.ticker}
                             secondary={security.name}
+                            sx={{ maxWidth: 250 }}
                             slotProps={{
                               primary: {
                                 fontWeight: 'bold',
+                              },
+                              secondary: {
+                                sx: {
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap',
+                                },
                               },
                             }}
                           />
@@ -307,14 +327,14 @@ export default function Account(props) {
                               minimumFractionDigits: 0,
                               maximumFractionDigits: 5,
                             }).format(security.shares)}
-                            sx={{ width: '20%' }}
+                            sx={{ maxWidth: 200 }}
                             slotProps={{
                               primary: { align: 'right' },
                             }}
                           />
                           <ListItemText
                             primary={numberToCurrency.format(security.price)}
-                            sx={{ width: '20%' }}
+                            sx={{ maxWidth: 200 }}
                             slotProps={{
                               primary: { align: 'right' },
                             }}
@@ -324,7 +344,7 @@ export default function Account(props) {
                             secondary={timeSinceLastUpdate(
                               security.last_update
                             )}
-                            sx={{ width: '20%' }}
+                            sx={{ maxWidth: 200 }}
                             slotProps={{
                               primary: { align: 'right' },
                               secondary: { align: 'right' },

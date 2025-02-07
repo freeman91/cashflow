@@ -29,13 +29,16 @@ import RepaymentForm from '../../../components/Forms/RepaymentForm';
 import SaleForm from '../../../components/Forms/SaleForm';
 import SecurityForm from '../../../components/Forms/SecurityForm';
 import TransactionsList from '../../../components/List/TransactionsList';
+import { deactivateAccount } from '../../../store/accounts';
 import { deleteBorrow } from '../../../store/borrows';
 import { deleteExpense } from '../../../store/expenses';
 import { deleteIncome } from '../../../store/incomes';
 import { deletePaycheck } from '../../../store/paychecks';
 import { deletePurchase } from '../../../store/purchases';
+import { deactivateRecurring } from '../../../store/recurrings';
 import { deleteRepayment } from '../../../store/repayments';
 import { deleteSale } from '../../../store/sales';
+import { deactivateSecurity } from '../../../store/securities';
 
 export function getForm(itemType) {
   switch (itemType) {
@@ -103,7 +106,13 @@ const OptionsButton = (props) => {
   };
 
   const handleDeactivate = () => {
-    console.log('deactivate');
+    if (itemType === 'security') {
+      dispatch(deactivateSecurity(attrs.security_id));
+    } else if (itemType === 'recurring') {
+      dispatch(deactivateRecurring(attrs.recurring_id));
+    } else if (itemType === 'account') {
+      dispatch(deactivateAccount(attrs.account_id));
+    }
     handleCloseDrawer();
   };
 
@@ -173,9 +182,12 @@ const OptionsButton = (props) => {
                     </MenuItem>
                   )}
                   {['account', 'recurring', 'security'].includes(itemType) && (
-                    <MenuItem onClick={() => handleDeactivate()}>
+                    <MenuItem
+                      onClick={() => handleDeactivate()}
+                      sx={{ gap: 2 }}
+                    >
                       Deactivate
-                      <RemoveCircleOutlineIcon />
+                      <RemoveCircleOutlineIcon color='error' />
                     </MenuItem>
                   )}
                 </MenuList>

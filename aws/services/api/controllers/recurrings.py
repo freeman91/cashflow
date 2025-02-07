@@ -91,8 +91,9 @@ def _recurring(user_id: str, recurring_id: str):
                 payload.get("income_attributes") or {}
             )
 
-        for attr in ["item_type", "name", "day", "months", "frequency"]:
-            setattr(recurring, attr, payload.get(attr))
+        for attr in ["active", "item_type", "name", "day", "months", "frequency"]:
+            if attr in payload:
+                setattr(recurring, attr, payload.get(attr))
 
         for attr in [
             "interval",

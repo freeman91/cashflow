@@ -97,6 +97,10 @@ class Account(BaseModel):
         return super().get_(user_id, account_id)
 
     @classmethod
+    def name_exists(cls, user_id: str, name: str) -> bool:
+        return len(list(cls.query(user_id, Account.name == name))) > 0
+
+    @classmethod
     def list(
         cls, user_id: Optional[str] = None, account_id: Optional[str] = None
     ) -> list["Account"]:

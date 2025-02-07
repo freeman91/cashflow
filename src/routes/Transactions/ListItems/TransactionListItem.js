@@ -101,7 +101,7 @@ export default function TransactionListItem(props) {
           alignItems: 'center',
           justifyContent: 'flex-end',
           flexDirection: 'row',
-          // maxWidth: 75,
+          maxWidth: 100,
           flex: 1,
         }}
       >

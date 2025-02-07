@@ -1,5 +1,6 @@
 """Securities controller"""
 
+from datetime import datetime, timezone
 from flask import Blueprint, request
 
 from services.dynamo import Security
@@ -49,12 +50,22 @@ def _security(user_id: str, security_id: str):
     if request.method == "PUT":
         security = Security.get_(user_id=user_id, security_id=security_id)
 
-        security.shares = float(request.json.get("shares") or 0)
-        security.price = float(request.json.get("price") or 0)
+        for attr in ["shares", "price"]:
+            if attr in request.json:
+                setattr(security, attr, float(request.json.get(attr) or 0))
 
-        for attr in ["account_id", "name", "ticker", "security_type", "icon_url"]:
-            setattr(security, attr, request.json.get(attr))
+        for attr in [
+            "account_id",
+            "name",
+            "ticker",
+            "security_type",
+            "icon_url",
+            "active",
+        ]:
+            if attr in request.json:
+                setattr(security, attr, request.json.get(attr))
 
+        security.last_update = datetime.now(timezone.utc)
         security.save()
         return success_result(security.as_dict())
 

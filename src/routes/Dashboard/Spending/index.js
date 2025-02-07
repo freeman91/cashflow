@@ -216,6 +216,7 @@ export default function Spending() {
       );
       const currentDayRecurring = filter(allRecurrings, (recurring) => {
         return (
+          recurring.next_date &&
           dayjs(recurring.next_date).isSame(dayjs().date(day), 'day') &&
           ['expense', 'repayment'].includes(recurring.item_type)
         );

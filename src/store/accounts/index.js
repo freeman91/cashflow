@@ -3,10 +3,12 @@ import concat from 'lodash/concat';
 import get from 'lodash/get';
 import remove from 'lodash/remove';
 
+import axios from '../../api/xhr_libs/axios';
 import {
   deleteResourceAPI,
   getResourcesAPI,
   postResourceAPI,
+  processResponse,
   putResourceAPI,
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
@@ -97,6 +99,34 @@ const deleteAccount = createAsyncThunk(
   }
 );
 
+const deactivateAccount = createAsyncThunk(
+  'accounts/deactivateAccount',
+  async (id, { dispatch, getState }) => {
+    try {
+      const { data: accounts } = getState().accounts;
+      const { user_id } = getState().user.item;
+      const result = processResponse(
+        await axios.put(`/accounts/${user_id}/${id}`, {
+          active: false,
+        })
+      );
+
+      if (result) {
+        dispatch(setSnackbar({ message: 'account deactivated' }));
+      }
+      let _accounts = [...accounts];
+      remove(_accounts, {
+        account_id: get(result, 'account_id'),
+      });
+      return {
+        data: concat(_accounts, result),
+      };
+    } catch (err) {
+      dispatch(setSnackbar({ message: `error: ${err}` }));
+    }
+  }
+);
+
 const { reducer, actions } = createSlice({
   name: 'accounts',
   initialState,
@@ -116,7 +146,13 @@ const { reducer, actions } = createSlice({
     },
   },
   extraReducers: (builder) => {
-    buildAsyncReducers(builder, [getAccounts, postAccount, putAccount]);
+    buildAsyncReducers(builder, [
+      getAccounts,
+      postAccount,
+      putAccount,
+      deleteAccount,
+      deactivateAccount,
+    ]);
   },
 });
 
@@ -127,6 +163,7 @@ export {
   postAccount,
   putAccount,
   deleteAccount,
+  deactivateAccount,
   setAccounts,
   updateAccount,
 };

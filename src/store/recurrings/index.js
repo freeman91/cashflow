@@ -3,10 +3,12 @@ import concat from 'lodash/concat';
 import get from 'lodash/get';
 import remove from 'lodash/remove';
 
+import axios from '../../api/xhr_libs/axios';
 import {
   deleteResourceAPI,
   getResourcesAPI,
   postResourceAPI,
+  processResponse,
   putResourceAPI,
 } from '../../api';
 import { buildAsyncReducers } from '../thunkTemplate';
@@ -93,6 +95,34 @@ const deleteRecurring = createAsyncThunk(
   }
 );
 
+const deactivateRecurring = createAsyncThunk(
+  'recurrings/deactivateRecurring',
+  async (id, { dispatch, getState }) => {
+    try {
+      const { data: recurrings } = getState().recurrings;
+      const { user_id } = getState().user.item;
+      const result = processResponse(
+        await axios.put(`/recurrings/${user_id}/${id}`, {
+          active: false,
+        })
+      );
+
+      if (result) {
+        dispatch(setSnackbar({ message: 'recurring deactivated' }));
+      }
+      let _recurrings = [...recurrings];
+      remove(_recurrings, {
+        recurring_id: get(result, 'recurring_id'),
+      });
+      return {
+        data: concat(_recurrings, result),
+      };
+    } catch (err) {
+      dispatch(setSnackbar({ message: `error: ${err}` }));
+    }
+  }
+);
+
 const { reducer, actions } = createSlice({
   name: 'recurrings',
   initialState,
@@ -107,6 +137,7 @@ const { reducer, actions } = createSlice({
       postRecurring,
       putRecurring,
       deleteRecurring,
+      deactivateRecurring,
     ]);
   },
 });
@@ -119,5 +150,6 @@ export {
   deleteRecurring,
   getRecurrings,
   setRecurrings,
+  deactivateRecurring,
 };
 export default reducer;

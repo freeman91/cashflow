@@ -94,6 +94,34 @@ const deleteSecurity = createAsyncThunk(
   }
 );
 
+const deactivateSecurity = createAsyncThunk(
+  'securities/deactivateSecurity',
+  async (id, { dispatch, getState }) => {
+    try {
+      const { data: securities } = getState().securities;
+      const { user_id } = getState().user.item;
+      const result = processResponse(
+        await axios.put(`/securities/${user_id}/${id}`, {
+          active: false,
+        })
+      );
+
+      if (result) {
+        dispatch(setSnackbar({ message: 'security deactivated' }));
+      }
+      let _securities = [...securities];
+      remove(_securities, {
+        security_id: get(result, 'security_id'),
+      });
+      return {
+        data: concat(_securities, result),
+      };
+    } catch (err) {
+      dispatch(setSnackbar({ message: `error: ${err}` }));
+    }
+  }
+);
+
 const { reducer, actions } = createSlice({
   name: 'securities',
   initialState,
@@ -118,6 +146,7 @@ const { reducer, actions } = createSlice({
       postSecurity,
       putSecurity,
       deleteSecurity,
+      deactivateSecurity,
     ]);
   },
 });
@@ -129,6 +158,7 @@ export {
   putSecurity,
   postSecurity,
   deleteSecurity,
+  deactivateSecurity,
   setSecurities,
   updateSecurity,
 };
