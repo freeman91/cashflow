@@ -17,7 +17,7 @@ export default function TransactionsList() {
     start: dayjs().subtract(1, 'month').startOf('month'),
     end: dayjs().add(3, 'day'),
   });
-  const transactionsByDay = useTransactionsInRange([], range, true);
+  const transactionsByDay = useTransactionsInRange(types, range, true);
 
   return (
     <>

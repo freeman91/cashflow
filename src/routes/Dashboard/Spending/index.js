@@ -197,12 +197,16 @@ export default function Spending() {
   }, [label, allExpenses, allRepayments]);
 
   useEffect(() => {
-    const _todayDate = dayjs().date();
+    const _today = dayjs();
+    const _todayDate = _today.date();
     const _chartData = [];
     let compareCumSum = 0;
     let currentMonthCumSum = 0;
 
     map(range(1, 32), (day) => {
+      const currentDay = dayjs().date(day);
+      if (currentDay.isAfter(_today, 'month')) return;
+
       const currentDayExpenses = filter(currentMonthExpenses, (expense) => {
         return dayjs(expense.date).date() === day && expense?.pending === false;
       });
@@ -217,7 +221,7 @@ export default function Spending() {
       const currentDayRecurring = filter(allRecurrings, (recurring) => {
         return (
           recurring.next_date &&
-          dayjs(recurring.next_date).isSame(dayjs().date(day), 'day') &&
+          dayjs(recurring.next_date).isSame(currentDay, 'day') &&
           ['expense', 'repayment'].includes(recurring.item_type)
         );
       });

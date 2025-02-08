@@ -7,7 +7,7 @@ import Spending from './Spending';
 import Budget from './Budget';
 import NetWorth from './NetWorth';
 
-export default function DesktopDashboard() {
+export default function Dashboard() {
   return (
     <Grid
       container

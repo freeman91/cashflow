@@ -14,7 +14,9 @@ export default function Transactions() {
     start: dayjs().subtract(7, 'day'),
     end: dayjs(),
   });
-  const transactionsByDay = useTransactionsInRange([], range, true);
+  const [types] = useState([]);
+
+  const transactionsByDay = useTransactionsInRange(types, range, true);
 
   return (
     <Grid size={{ xs: 12 }}>

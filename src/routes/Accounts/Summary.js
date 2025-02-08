@@ -257,7 +257,7 @@ export default function AccountsSummary(props) {
             {creditLiabilities.length > 0 && (
               <Box
                 sx={{
-                  width: `${(creditSum / -liabilitySum) * 100}%`,
+                  width: `${(creditSum / liabilitySum) * 100}%`,
                   height: '100%',
                   bgcolor: theme.chartColors[13],
                 }}
@@ -307,7 +307,7 @@ export default function AccountsSummary(props) {
                 primary={
                   tab === 'totals'
                     ? numberToCurrency.format(creditSum)
-                    : `${((-creditSum / liabilitySum) * 100).toFixed(2)}%`
+                    : `${((creditSum / liabilitySum) * 100).toFixed(2)}%`
                 }
                 sx={{ textAlign: 'right' }}
               />

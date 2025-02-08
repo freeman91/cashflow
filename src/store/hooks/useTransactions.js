@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-
+import filter from 'lodash/filter';
 import { findAmount } from '../../helpers/transactions';
 
 export const TRANSACTION_ORDER = [
@@ -30,20 +30,13 @@ export const useTransactionsInRange = (types, range, reverse = false) => {
   const [recurrings, setRecurrings] = useState([]);
 
   useEffect(() => {
-    let _recurrings = allRecurrings.filter((recurring) => {
-      if (
-        types.length > 0 &&
-        (!types.includes(recurring._type) ||
-          !types.includes(recurring.item_type))
-      ) {
+    const filteredRecurrings = filter(allRecurrings, (recurring) => {
+      if (types.length > 0 && !types.includes(recurring.item_type)) {
         return false;
       }
-      if (recurring.active) {
-        return true;
-      }
-      return false;
+      return recurring.active;
     });
-    setRecurrings(_recurrings);
+    setRecurrings(filteredRecurrings);
   }, [allRecurrings, types]);
 
   useEffect(() => {
