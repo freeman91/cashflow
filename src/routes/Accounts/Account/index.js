@@ -160,8 +160,6 @@ export default function Account(props) {
     transactionTypes = ['borrow', 'repayment'];
   }
 
-  console.log('account: ', account);
-
   return (
     <Grid
       container
@@ -306,7 +304,10 @@ export default function Account(props) {
                             </Box>
                           )}
                           <ListItemText
-                            primary={security.ticker}
+                            primary={
+                              security.ticker +
+                              (security.active ? '' : ' (Inactive)')
+                            }
                             secondary={security.name}
                             sx={{ maxWidth: 250 }}
                             slotProps={{

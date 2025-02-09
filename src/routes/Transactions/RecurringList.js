@@ -8,10 +8,12 @@ import startCase from 'lodash/startCase';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid2';
+import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { openItemView } from '../../store/itemView';
@@ -30,6 +32,7 @@ export default function RecurringList() {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const recurrings = useSelector((state) => state.recurrings.data);
 
+  const [showInactive, setShowInactive] = useState(false);
   const [groupedRecurrings, setGroupedRecurrings] = useState([]);
   const [width, setWidth] = useState(0);
 
@@ -137,6 +140,7 @@ export default function RecurringList() {
                 )}
               </ListItem>
               {group.recurrings.map((recurring, idx) => {
+                if (!showInactive && !recurring.active) return null;
                 return (
                   <ListItemButton
                     key={idx}
@@ -150,7 +154,9 @@ export default function RecurringList() {
                     }}
                   >
                     <ListItemText
-                      primary={recurring.name}
+                      primary={
+                        recurring.name + (recurring.active ? '' : ' (Inactive)')
+                      }
                       secondary={recurring.frequency}
                       sx={{ width: '30%' }}
                       slotProps={{
@@ -195,6 +201,19 @@ export default function RecurringList() {
           </Grid>
         );
       })}
+      <Grid size={{ xs: 12 }} display='flex' justifyContent='center'>
+        <Link
+          underline='hover'
+          color='text.secondary'
+          onClick={() => {
+            setShowInactive(!showInactive);
+          }}
+        >
+          <Typography variant='h6' sx={{ mr: 1 }}>
+            {showInactive ? 'Hide Inactive' : 'Show Inactive'}
+          </Typography>
+        </Link>
+      </Grid>
     </Grid>
   );
 }

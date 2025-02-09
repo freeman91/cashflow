@@ -5,11 +5,13 @@ import { push } from 'redux-first-history';
 import get from 'lodash/get';
 
 import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LoopIcon from '@mui/icons-material/Loop';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import styled from '@mui/material/styles/styled';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
@@ -96,8 +98,14 @@ export default function AccountsAppBar(props) {
                   mx: 1,
                   display: 'flex',
                   justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
+                {isMobile && (
+                  <IconButton onClick={() => dispatch(push('/accounts'))}>
+                    <ArrowBackIcon />
+                  </IconButton>
+                )}
                 <img
                   src={account.icon_url}
                   alt={`${account.name} icon`}
@@ -114,7 +122,7 @@ export default function AccountsAppBar(props) {
                 whiteSpace: 'nowrap',
               }}
             >
-              {account.name}
+              {account.name + (!account.active ? ' (Inactive)' : '')}
             </Typography>
           </Box>
         )}

@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import groupBy from 'lodash/groupBy';
 
 import Grid from '@mui/material/Grid2';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 
 import { findAmount } from '../../helpers/transactions';
 import { ASSET, LIABILITY } from '../../components/Forms/AccountForm';
@@ -13,6 +15,7 @@ import NetWorth from './Networth';
 export default function AccountsRoot() {
   const accounts = useSelector((state) => state.accounts.data);
 
+  const [showInactive, setShowInactive] = useState(false);
   const [groupedAccounts, setGroupedAccounts] = useState([]);
 
   useEffect(() => {
@@ -82,9 +85,28 @@ export default function AccountsRoot() {
           {groupedAccounts.map((group, idx) => {
             const { type, sum, items } = group;
             return (
-              <AccountGroupGrid key={idx} type={type} sum={sum} items={items} />
+              <AccountGroupGrid
+                key={idx}
+                type={type}
+                sum={sum}
+                items={items}
+                showInactive={showInactive}
+              />
             );
           })}
+          <Grid size={{ xs: 12 }} display='flex' justifyContent='center'>
+            <Link
+              underline='hover'
+              color='text.secondary'
+              onClick={() => {
+                setShowInactive(!showInactive);
+              }}
+            >
+              <Typography variant='h6' sx={{ mr: 1 }}>
+                {showInactive ? 'Hide Inactive' : 'Show Inactive'}
+              </Typography>
+            </Link>
+          </Grid>
         </Grid>
       </Grid>
       <AccountsSummary groupedAccounts={groupedAccounts} />

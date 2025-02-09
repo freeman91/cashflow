@@ -17,7 +17,7 @@ import { timeSinceLastUpdate } from '../../helpers/dates';
 import { LIABILITY } from '../../components/Forms/AccountForm';
 
 export default function AccountGroupGrid(props) {
-  const { type, sum, items } = props;
+  const { type, sum, items, showInactive } = props;
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(true);
@@ -103,6 +103,7 @@ export default function AccountGroupGrid(props) {
         {open && (
           <Collapse in={open} timeout='auto' unmountOnExit>
             {items.map((account, idx) => {
+              if (!showInactive && !account.active) return null;
               let amount = account._amount;
               if (account.account_type === LIABILITY && amount > 0) {
                 amount = -amount;
@@ -139,15 +140,25 @@ export default function AccountGroupGrid(props) {
                   </Box>
                   <ListItemText
                     sx={{ width: '40%' }}
-                    primary={account.name}
+                    primary={
+                      account.name + (!account.active ? ' (Inactive)' : '')
+                    }
                     secondary={account.subtype}
                     slotProps={{
                       primary: {
+                        color: !account.active
+                          ? 'text.disabled'
+                          : 'text.primary',
                         sx: {
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
                         },
+                      },
+                      secondary: {
+                        color: !account.active
+                          ? 'text.disabled'
+                          : 'text.secondary',
                       },
                     }}
                   />
