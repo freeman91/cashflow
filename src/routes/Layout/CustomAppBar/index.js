@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import { refreshAllData } from '../../../store/user';
 import ReactiveButton from '../../../components/ReactiveButton';
 import AccountsAppBar from './AccountsAppBar';
+import ReportsAppBar from './ReportsAppBar';
 import TransactionsAppBar from './TransactionsAppBar';
 
 const DASHBOARD = 'dashboard';
@@ -97,6 +98,7 @@ const CustomAppBar = forwardRef((props, ref) => {
         )}
         {route === 'accounts' && <AccountsAppBar />}
         {route === 'transactions' && <TransactionsAppBar />}
+        {route === 'reports' && <ReportsAppBar />}
         {[DASHBOARD].includes(route) && (
           <ReactiveButton
             label='Refresh'

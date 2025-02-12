@@ -14,7 +14,7 @@ function kill_pid() {
 # function that pulls in the latest changes and logs how many changes
 function pull_changes() {
   git pull origin $(git branch --show-current)
-  echo "Pulled $(git log --oneline | wc -l) changes"
+  echo "Pulled $(git log --oneline | wc -l) line changes"
 }
 
 

@@ -10,7 +10,8 @@ import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../../helpers/currency';
-import { findAmount } from '../../../helpers/transactions';
+import { useMonthInflows } from '../../../store/hooks/useMonthInflows';
+import { useMonthOutflows } from '../../../store/hooks/useMonthOutflows';
 
 function FullBar({ children }) {
   return (
@@ -73,46 +74,17 @@ export default function Budget() {
   const theme = useTheme();
   const today = dayjs();
 
-  const allExpenses = useSelector((state) => state.expenses.data);
-  const allRepayments = useSelector((state) => state.repayments.data);
-  const allIncomes = useSelector((state) => state.incomes.data);
-  const allPaychecks = useSelector((state) => state.paychecks.data);
   const allBudgets = useSelector((state) => state.budgets.data);
+  const { earnedIncomes, passiveIncomes, otherIncomes } = useMonthInflows(
+    today.year(),
+    today.month()
+  );
+  const { principalSum, interestSum, escrowSum, otherExpenseSum } =
+    useMonthOutflows(today.year(), today.month());
 
   const [incomeBudget, setIncomeBudget] = useState(0);
-  const [incomeActual, setIncomeActual] = useState(0);
   const [expensesBudget, setExpensesBudget] = useState(0);
-  const [expensesActual, setExpensesActual] = useState(0);
   const [monthProgress, setMonthProgress] = useState(0);
-
-  useEffect(() => {
-    const expenseTotal = [...allExpenses, ...allRepayments].reduce(
-      (acc, expense) => {
-        const eDate = dayjs(expense.date);
-        if (eDate.isSame(today, 'month') && expense?.pending === false) {
-          return acc + findAmount(expense);
-        }
-        return acc;
-      },
-      0
-    );
-    setExpensesActual(expenseTotal);
-  }, [allExpenses, allRepayments, today]);
-
-  useEffect(() => {
-    const incomeTotal = [...allIncomes, ...allPaychecks].reduce(
-      (acc, income) => {
-        const iDate = dayjs(income.date);
-        if (iDate.isSame(today, 'month') && !income?.pending) {
-          return acc + findAmount(income);
-        }
-        return acc;
-      },
-      0
-    );
-
-    setIncomeActual(incomeTotal);
-  }, [allIncomes, allPaychecks, today]);
 
   useEffect(() => {
     const monthBudget = allBudgets.find(
@@ -134,7 +106,9 @@ export default function Budget() {
     setMonthProgress((today.date() / daysInMonth) * 100);
   }, [today]);
 
-  const cashflow = incomeActual - expensesActual;
+  const totalIncome = earnedIncomes.sum + passiveIncomes.sum + otherIncomes.sum;
+  const totalExpense = principalSum + interestSum + escrowSum + otherExpenseSum;
+  const cashflow = totalIncome - totalExpense;
   const cashflowColor = (() => {
     if (cashflow > 0) return theme.palette.success.main;
     if (cashflow < 0) return theme.palette.error.main;
@@ -203,7 +177,7 @@ export default function Budget() {
 
           <FullBar>
             <FillBar
-              fillValue={incomeActual}
+              fillValue={totalIncome}
               goalSum={incomeBudget}
               color={theme.palette.success.main}
             />
@@ -217,7 +191,7 @@ export default function Budget() {
             }}
           >
             <Typography variant='h6'>
-              {numberToCurrency.format(incomeActual)}
+              {numberToCurrency.format(totalIncome)}
             </Typography>
             <Box
               sx={{
@@ -231,7 +205,7 @@ export default function Budget() {
                 Remaining
               </Typography>
               <Typography variant='h6'>
-                {numberToCurrency.format(incomeBudget - incomeActual)}
+                {numberToCurrency.format(incomeBudget - totalIncome)}
               </Typography>
             </Box>
           </Box>
@@ -258,7 +232,7 @@ export default function Budget() {
           </Box>
           <FullBar>
             <FillBar
-              fillValue={expensesActual}
+              fillValue={totalExpense}
               goalSum={expensesBudget}
               color={theme.palette.error.main}
             />
@@ -272,7 +246,7 @@ export default function Budget() {
             }}
           >
             <Typography variant='h6 '>
-              {numberToCurrency.format(expensesActual)}
+              {numberToCurrency.format(totalExpense)}
             </Typography>
             <Box
               sx={{
@@ -286,7 +260,7 @@ export default function Budget() {
                 Remaining
               </Typography>
               <Typography variant='h6'>
-                {numberToCurrency.format(expensesBudget - expensesActual)}
+                {numberToCurrency.format(expensesBudget - totalExpense)}
               </Typography>
             </Box>
           </Box>
