@@ -68,7 +68,7 @@ export default function NetValuesCard(props) {
               slotProps={{ secondary: { variant: 'h6' } }}
             />
             <ListItemText
-              primary={`${Math.round(netPercent * 100) / 100}%`}
+              primary={`${Math.round(netPercent * 1000) / 10}%`}
               slotProps={{ primary: { align: 'right', variant: 'h6' } }}
             />
           </ListItem>

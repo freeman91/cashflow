@@ -7,9 +7,9 @@ import Chip from '@mui/material/Chip';
 import { ReportsViewContext } from '../../../store/contexts/ReportsViewContext';
 
 const MONTH = 'month';
-const QUARTER = 'quarter';
+// const QUARTER = 'quarter';
 const YEAR = 'year';
-const VIEWS = [MONTH, QUARTER, YEAR];
+const VIEWS = [MONTH, YEAR];
 
 export default function ReportsAppBar() {
   const { view, selectView } = useContext(ReportsViewContext);

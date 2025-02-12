@@ -1,10 +1,8 @@
 import React, { useContext, useState } from 'react';
+import dayjs from 'dayjs';
 
 import Grid from '@mui/material/Grid2';
 
-import dayjs from 'dayjs';
-
-import ByMonthChart from './ByMonthChart';
 import MonthReport from './MonthReport';
 import YearReport from './YearReport';
 import { ReportsViewContext } from '../../store/contexts/ReportsViewContext';
@@ -26,7 +24,6 @@ export default function Reports() {
         pb: 6,
       }}
     >
-      <ByMonthChart year={date.year()} month={date.month()} />
       {view === 'month' && <MonthReport date={date} setDate={setDate} />}
       {view === 'year' && <YearReport date={date} setDate={setDate} />}
     </Grid>

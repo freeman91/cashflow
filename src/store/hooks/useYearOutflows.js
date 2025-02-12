@@ -12,11 +12,11 @@ import { getRepayments } from '../repayments';
 const filterByData = (data, date) => {
   return filter(data, (item) => {
     const itemDate = dayjs(item.date);
-    return itemDate.isSame(date, 'month') && !item.pending;
+    return itemDate.isSame(date, 'year') && !item.pending;
   });
 };
 
-export const useMonthOutflows = (year, month) => {
+export const useYearOutflows = (year) => {
   const dispatch = useDispatch();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
@@ -32,29 +32,28 @@ export const useMonthOutflows = (year, month) => {
   const [otherExpenseSum, setOtherExpenseSum] = useState(0);
 
   useEffect(() => {
-    if (!year || !month) return;
+    if (!year) return;
 
     let _start = null;
     let _end = null;
     let date = dayjs().set('year', year);
 
-    date = date.set('month', month);
-    _start = date.startOf('month');
-    _end = date.endOf('month');
+    _start = date.startOf('year');
+    _end = date.endOf('year');
 
     setStart(_start);
     setEnd(_end);
     dispatch(getExpenses({ range: { start: _start, end: _end } }));
     dispatch(getRepayments({ range: { start: _start, end: _end } }));
-  }, [dispatch, year, month]);
+  }, [dispatch, year]);
 
   useEffect(() => {
     if (!start || !end) return;
-    const midMonth = start.date(15);
+    const midYear = start.month(6).date(15);
 
-    let _repayments = filterByData(allRepayments, midMonth);
-    let _expenses = filterByData(allExpenses, midMonth);
-    let _sales = filterByData(allSales, midMonth);
+    let _repayments = filterByData(allRepayments, midYear);
+    let _expenses = filterByData(allExpenses, midYear);
+    let _sales = filterByData(allSales, midYear);
 
     let {
       principalSum: _principalSum,
@@ -107,4 +106,4 @@ export const useMonthOutflows = (year, month) => {
   };
 };
 
-export default useMonthOutflows;
+export default useYearOutflows;

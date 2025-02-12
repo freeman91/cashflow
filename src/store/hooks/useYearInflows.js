@@ -24,7 +24,7 @@ const getPaycheckContributionSum = (paycheck, type) => {
   return bContribution + rContribution;
 };
 
-export const useMonthInflows = (year, month) => {
+export const useYearInflows = (year) => {
   const dispatch = useDispatch();
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
@@ -48,44 +48,43 @@ export const useMonthInflows = (year, month) => {
   });
 
   useEffect(() => {
-    if (!year || !month) return;
+    if (!year) return;
 
     let _start = null;
     let _end = null;
     let date = dayjs().set('year', year);
 
-    date = date.set('month', month);
-    _start = date.startOf('month');
-    _end = date.endOf('month');
+    _start = date.startOf('year');
+    _end = date.endOf('year');
 
     setStart(_start);
     setEnd(_end);
     dispatch(getIncomes({ range: { start: _start, end: _end } }));
     dispatch(getPaychecks({ range: { start: _start, end: _end } }));
     dispatch(getSales({ range: { start: _start, end: _end } }));
-  }, [dispatch, year, month]);
+  }, [dispatch, year]);
 
   useEffect(() => {
     if (!start || !end) return;
-    const midMonth = start.date(15);
-    const monthIncomes = filter(
+    const midYear = start.month(6).date(15);
+    const yearIncomes = filter(
       [...allIncomes, ...allPaychecks, ...allSales],
       (income) => {
         const incomeDate = dayjs(income.date);
-        return incomeDate.isSame(midMonth, 'month') && !income.pending;
+        return incomeDate.isSame(midYear, 'year') && !income.pending;
       }
     );
     let _earnedIncomes = remove(
-      monthIncomes,
+      yearIncomes,
       (income) => income._type === 'paycheck'
     );
-    let _passiveIncomes = remove(monthIncomes, (income) => {
+    let _passiveIncomes = remove(yearIncomes, (income) => {
       if (income._type === 'sale') return true;
       if (income.category && PASSIVE_CATEGORIES.includes(income.category))
         return true;
       return false;
     });
-    let _otherIncomes = monthIncomes;
+    let _otherIncomes = yearIncomes;
 
     let _takeHomeSum = reduce(
       _earnedIncomes,
@@ -138,4 +137,4 @@ export const useMonthInflows = (year, month) => {
   };
 };
 
-export default useMonthInflows;
+export default useYearInflows;

@@ -145,7 +145,7 @@ export default function ByMonthChart(props) {
                 dot={false}
                 type='monotone'
                 dataKey='net'
-                stroke={theme.palette.primary.main}
+                stroke={theme.chartColors[8]}
                 strokeWidth={2}
               />
             </ComposedChart>
