@@ -5,11 +5,12 @@ import find from 'lodash/find';
 
 import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
-
+import ListItemText from '@mui/material/ListItemText';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postSale, putSale } from '../../store/sales';
 import { closeItemView } from '../../store/itemView';
+import { numberToCurrency } from '../../helpers/currency';
 import DecimalFieldListItem from '../List/DecimalFieldListItem';
 import SharesFieldListItem from '../List/SharesFieldListItem';
 import DepositToSelect from '../Selector/DepositToSelect';
@@ -64,6 +65,24 @@ function SaleForm(props) {
     };
   }, [attrs, accounts, sales]);
 
+  useEffect(() => {
+    const salePricePerShare = sale.amount / sale.shares;
+    const gainLossPerShare = salePricePerShare - sale.cost_basis_per_share;
+    if (gainLossPerShare > 0) {
+      setSale((prevSale) => ({
+        ...prevSale,
+        gains: Math.round(gainLossPerShare * sale.shares * 100) / 100,
+        losses: null,
+      }));
+    } else {
+      setSale((prevSale) => ({
+        ...prevSale,
+        losses: Math.round(gainLossPerShare * sale.shares * 100) / 100,
+        gains: null,
+      }));
+    }
+  }, [sale.cost_basis_per_share, sale.amount, sale.shares]);
+
   const handleChange = (id, value) => {
     setSale((prevSale) => ({ ...prevSale, [id]: value }));
   };
@@ -87,6 +106,22 @@ function SaleForm(props) {
           accountId={sale.account_id}
           resource={sale}
           setResource={setSale}
+        />
+      </ListItem>
+      <TextFieldListItem
+        id='merchant'
+        label='merchant'
+        value={sale.merchant}
+        inputProps={{
+          readOnly: true,
+        }}
+      />
+      <ListItem disableGutters>
+        <DepositToSelect
+          accountId={sale.deposit_to_id}
+          onChange={(value) =>
+            handleChange({ target: { id: 'deposit_to_id', value } })
+          }
         />
       </ListItem>
       <ListItem disableGutters>
@@ -124,22 +159,51 @@ function SaleForm(props) {
         securityId={sale.security_id}
         mode={mode}
       />
-      <TextFieldListItem
-        id='merchant'
-        label='merchant'
-        value={sale.merchant}
-        inputProps={{
-          readOnly: true,
-        }}
+      <DecimalFieldListItem
+        id='cost_basis_per_share'
+        value={sale.cost_basis_per_share}
+        onChange={(value) => handleChange('cost_basis_per_share', value)}
       />
-      <ListItem disableGutters>
-        <DepositToSelect
-          accountId={sale.deposit_to_id}
-          onChange={(value) =>
-            handleChange({ target: { id: 'deposit_to_id', value } })
-          }
+
+      <ListItem disablePadding>
+        <ListItemText
+          primary='Sale Price Per Share'
+          secondary='sale amount / sale shares'
+        />
+        <ListItemText
+          primary={numberToCurrency.format(
+            Math.round((sale.amount / sale.shares) * 100) / 100
+          )}
+          slotProps={{ primary: { align: 'right' } }}
         />
       </ListItem>
+
+      <ListItem disablePadding>
+        <ListItemText
+          primary='Gain/Loss Per Share'
+          secondary='sale price - cost basis per share'
+        />
+        <ListItemText
+          primary={numberToCurrency.format(
+            Math.round((sale.gains / sale.shares) * 100) / 100
+          )}
+          slotProps={{ primary: { align: 'right' } }}
+        />
+      </ListItem>
+
+      <ListItem disablePadding>
+        <ListItemText
+          primary={sale.gains ? 'Gains' : 'Losses'}
+          secondary={`${sale.gains ? 'gain' : 'loss'} per share * sale shares`}
+        />
+        <ListItemText
+          primary={numberToCurrency.format(
+            sale.gains ? sale.gains : sale.losses
+          )}
+          slotProps={{ primary: { align: 'right' } }}
+        />
+      </ListItem>
+
       <ListItem
         key='buttons'
         disableGutters

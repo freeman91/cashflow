@@ -5,12 +5,15 @@ import os
 from typing import Optional
 from uuid import uuid4
 from datetime import datetime, timezone
+from pydash import filter_
 from pynamodb.attributes import (
     BooleanAttribute,
     NumberAttribute,
     UnicodeAttribute,
     UTCDateTimeAttribute,
 )
+
+from services import dynamo
 from .base import BaseModel
 
 
@@ -89,3 +92,25 @@ class Security(BaseModel):
         cls, user_id: Optional[str] = None, security_id: Optional[str] = None
     ) -> list["Security"]:
         return super().list(user_id, security_id)
+
+    def avg_cost_basis(self) -> float:
+        purchases = filter_(
+            dynamo.Purchase.list(user_id=self.user_id),
+            lambda purchase: purchase.security_id == self.security_id,
+        )
+
+        total_cost = sum(purchase.amount for purchase in purchases)
+
+        sales = filter_(
+            dynamo.Sale.list(user_id=self.user_id),
+            lambda sale: sale.security_id == self.security_id,
+        )
+        total_sales = sum(sale.amount for sale in sales) + sum(
+            sale.fee for sale in sales
+        )
+
+        if self.shares == 0:
+            return 0
+
+        cost_basis_per_share = (total_cost - total_sales) / self.shares
+        return round(cost_basis_per_share, 2)

@@ -228,12 +228,14 @@ export default function ItemViewDrawer(props) {
         <List sx={{ px: 2 }}>
           <ListItem
             secondaryAction={
-              <OptionsButton
-                itemType={itemType}
-                mode={mode}
-                attrs={attrs}
-                handleCloseDrawer={onClose}
-              />
+              itemType !== 'transactions' && (
+                <OptionsButton
+                  itemType={itemType}
+                  mode={mode}
+                  attrs={attrs}
+                  handleCloseDrawer={onClose}
+                />
+              )
             }
           >
             <ListItemText

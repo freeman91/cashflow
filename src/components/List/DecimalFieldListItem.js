@@ -23,7 +23,7 @@ function DecimalFieldListItem(props) {
   return (
     <TextFieldListItem
       id={id}
-      label={id.toLowerCase()}
+      label={id.toLowerCase().replace(/_/g, ' ')}
       placeholder='0.00'
       value={value || ''}
       onChange={handleChange}

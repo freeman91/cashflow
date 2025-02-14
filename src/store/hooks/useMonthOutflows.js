@@ -32,7 +32,7 @@ export const useMonthOutflows = (year, month) => {
   const [otherExpenseSum, setOtherExpenseSum] = useState(0);
 
   useEffect(() => {
-    if (!year || !month) return;
+    if (!year || isNaN(month)) return;
 
     let _start = null;
     let _end = null;
@@ -83,7 +83,7 @@ export const useMonthOutflows = (year, month) => {
     let saleLosses = reduce(
       _sales,
       (acc, sale) => {
-        return acc + get(sale, 'loss', 0);
+        return acc + get(sale, 'losses', 0);
       },
       0
     );

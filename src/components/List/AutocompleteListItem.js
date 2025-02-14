@@ -16,7 +16,7 @@ const AutocompleteListItem = ({ label, options, ...props }) => {
         autoSelect
         freeSolo
         getOptionLabel={(option) => {
-          if (option === '') return 'none';
+          if (option === '') return '';
           return option;
         }}
         renderInput={(params) => (

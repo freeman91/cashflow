@@ -5,17 +5,13 @@ import TransactionListItem from '../../routes/Transactions/ListItems/Transaction
 
 function TransactionsList(props) {
   const { attrs } = props;
-  const { date, transactions } = attrs;
+  const { label, transactions } = attrs;
 
   return (
     <>
       <ListItemText
-        primary={date?.format('MMMM Do, YYYY')}
-        slotProps={{
-          primary: {
-            align: 'center',
-          },
-        }}
+        primary={label}
+        slotProps={{ primary: { align: 'center', variant: 'h6' } }}
       />
       {transactions.map((transaction, idx) => {
         return <TransactionListItem key={idx} transaction={transaction} />;

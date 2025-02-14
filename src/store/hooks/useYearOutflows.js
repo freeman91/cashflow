@@ -82,7 +82,7 @@ export const useYearOutflows = (year) => {
     let saleLosses = reduce(
       _sales,
       (acc, sale) => {
-        return acc + get(sale, 'loss', 0);
+        return acc + get(sale, 'losses', 0);
       },
       0
     );

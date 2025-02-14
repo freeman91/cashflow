@@ -78,18 +78,31 @@ function CustomTooltip({ compareType, active, payload, label }) {
           py: 0.5,
         }}
       >
-        <Typography variant='body1' align='center'>
-          {currentLabel.date?.format('MMM Do') || ''}
-        </Typography>
         {currentLabel.value > 0 && (
-          <Typography
-            variant='h6'
-            fontWeight='bold'
-            align='right'
-            sx={{ color: currentLabel.color }}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 1,
+            }}
           >
-            {numberToCurrency.format(currentLabel.value)}
-          </Typography>
+            <Typography
+              variant='body1'
+              align='left'
+              sx={{ color: compareLabel.color }}
+            >
+              {currentLabel.date?.format('MMM Do') || ''}
+            </Typography>
+            <Typography
+              variant='h6'
+              fontWeight='bold'
+              align='right'
+              sx={{ color: currentLabel.color }}
+            >
+              {numberToCurrency.format(currentLabel.value)}
+            </Typography>
+          </Box>
         )}
         {currentDayPending.value > 0 && (
           <Box
@@ -105,7 +118,7 @@ function CustomTooltip({ compareType, active, payload, label }) {
               align='left'
               sx={{ color: compareLabel.color }}
             >
-              Pending
+              {currentLabel.date?.format('MMM Do') || ''}
             </Typography>
             <Typography
               variant='h6'
@@ -308,11 +321,11 @@ export default function Spending() {
         <Typography variant='h5' fontWeight='bold'>
           This Month vs. {startCase(label)}
         </Typography>
-        <Divider sx={{ my: 2 }} />
+        <Divider sx={{ mt: 2 }} />
         <ResponsiveContainer width='100%' height={200}>
           <ComposedChart
             data={chartData}
-            margin={{ top: 5, right: 0, bottom: 0 }}
+            margin={{ top: 15, right: 0, bottom: 0 }}
           >
             <XAxis
               dataKey='day'
@@ -344,6 +357,7 @@ export default function Spending() {
               stroke={theme.palette.surface[500]}
               strokeWidth={3}
               dot={false}
+              type='monotone'
             />
             <Area
               dataKey='currentMonth'
@@ -351,25 +365,39 @@ export default function Spending() {
               fill={alpha(theme.palette.primary.main, 0.2)}
               strokeWidth={3}
               dot={false}
+              type='monotone'
             />
             <ReferenceDot
               x={today.date()}
               y={todayValue}
               label={
                 <Label
-                  value={numberToCurrency.format(todayValue)}
-                  position={(() => {
-                    if (today.date() < 5) {
-                      return 'top';
-                    } else {
-                      return 'left';
-                    }
-                  })()}
-                  offset={20}
-                  style={{
-                    fill: theme.palette.text.primary,
-                    fontWeight: 'bold',
+                  content={({ viewBox, value, ...restProps }) => {
+                    return (
+                      <g transform={`translate(${viewBox.x}, ${viewBox.y})`}>
+                        <rect
+                          x={value.length * -5}
+                          y={-25}
+                          width={value.length * 10}
+                          height={20}
+                          fill={alpha(theme.palette.surface[150], 0.45)}
+                          rx={4}
+                        />
+                        <text
+                          x={0}
+                          y={-10}
+                          fill={theme.palette.text.primary}
+                          fontWeight='bold'
+                          fontSize={14}
+                          textAnchor='middle'
+                          alignmentBaseline='middle'
+                        >
+                          {value}
+                        </text>
+                      </g>
+                    );
                   }}
+                  value={numberToCurrency.format(todayValue)}
                 />
               }
               r={4}

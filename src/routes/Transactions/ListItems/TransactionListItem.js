@@ -22,6 +22,7 @@ import SaleListItem from './SaleListItem';
 import TransferListItem from './TransferListItem';
 import { openItemView } from '../../../store/itemView';
 import RecurringListItem from './RecurringListItem';
+import { findAmount } from '../../../helpers/transactions';
 
 export default function TransactionListItem(props) {
   const { transaction } = props;
@@ -119,7 +120,7 @@ export default function TransactionListItem(props) {
           </Tooltip>
         )}
         <Typography variant='body1'>
-          {numberToCurrency.format(transaction._amount)}
+          {numberToCurrency.format(findAmount(transaction))}
         </Typography>
       </ListItemText>
       <ListItemIcon sx={{ minWidth: 'unset', ml: 1 }}>

@@ -11,6 +11,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SellIcon from '@mui/icons-material/Sell';
 
 const findAmount = (transaction) => {
+  if (transaction._amount) return transaction._amount;
   if (transaction.amount) return transaction.amount;
   if (transaction.balance) return transaction.balance;
   if (transaction.value) return transaction.value;
@@ -144,6 +145,12 @@ const findAccount = (transaction, accounts) => {
   return '';
 };
 
+const findPaycheckContributionSum = (paycheck, type) => {
+  const bContribution = get(paycheck, `benefits_contribution.${type}`, 0);
+  const rContribution = get(paycheck, `retirement_contribution.${type}`, 0);
+  return bContribution + rContribution;
+};
+
 export {
   findAmount,
   findCategory,
@@ -152,4 +159,5 @@ export {
   findColor,
   findIcon,
   findAccount,
+  findPaycheckContributionSum,
 };

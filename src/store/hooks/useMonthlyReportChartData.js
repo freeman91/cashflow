@@ -5,18 +5,15 @@ import filter from 'lodash/filter';
 import get from 'lodash/get';
 import reduce from 'lodash/reduce';
 
-import { findAmount } from '../../helpers/transactions';
+import {
+  findAmount,
+  findPaycheckContributionSum,
+} from '../../helpers/transactions';
 import { getIncomes } from '../incomes';
 import { getPaychecks } from '../paychecks';
 import { getSales } from '../sales';
 import { getExpenses } from '../expenses';
 import { getRepayments } from '../repayments';
-
-const getPaycheckContributionSum = (paycheck, type) => {
-  const bContribution = get(paycheck, `benefits_contribution.${type}`, 0);
-  const rContribution = get(paycheck, `retirement_contribution.${type}`, 0);
-  return bContribution + rContribution;
-};
 
 const findMonthIncomeSum = (incomes, paychecks, sales, month) => {
   const _transactions = [...incomes, ...paychecks, ...sales];
@@ -31,12 +28,12 @@ const findMonthIncomeSum = (incomes, paychecks, sales, month) => {
         return (
           acc +
           findAmount(transaction) +
-          getPaycheckContributionSum(transaction, 'employee') +
-          getPaycheckContributionSum(transaction, 'employer')
+          findPaycheckContributionSum(transaction, 'employee') +
+          findPaycheckContributionSum(transaction, 'employer')
         );
       }
       if (transaction._type === 'sale') {
-        return acc + get(transaction, 'gain', 0);
+        return acc + get(transaction, 'gains', 0);
       }
       return acc + findAmount(transaction);
     },
@@ -54,7 +51,7 @@ const findMonthExpenseSum = (expenses, repayments, sales, month) => {
     _transactionsInMonth,
     (acc, transaction) => {
       if (transaction._type === 'sale') {
-        return acc + get(transaction, 'loss', 0);
+        return acc + get(transaction, 'losses', 0);
       }
       return acc + findAmount(transaction);
     },
@@ -76,7 +73,7 @@ export const useMonthlyReportChartData = (year, month) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    if (!year || !month) return;
+    if (!year || isNaN(month)) return;
 
     let _end = dayjs()
       .set('year', year)

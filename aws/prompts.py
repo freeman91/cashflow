@@ -132,8 +132,8 @@ def repayment() -> Repayment:
 def sale() -> Sale:
     _user = user()
     sales = [
-        {"name": f"{sale.name} [{sale.account_id}]", "value": sale}
-        for sale in sort_by(Sale.list(user_id=_user.user_id), "name")
+        {"name": f"{sale.security_id} [{sale.date}]", "value": sale}
+        for sale in sort_by(Sale.list(user_id=_user.user_id), "date")
     ]
 
     return resource(sales, "Sale")

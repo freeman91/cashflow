@@ -6,7 +6,10 @@ import get from 'lodash/get';
 import reduce from 'lodash/reduce';
 import remove from 'lodash/remove';
 
-import { findAmount } from '../../helpers/transactions';
+import {
+  findAmount,
+  findPaycheckContributionSum,
+} from '../../helpers/transactions';
 import { getIncomes } from '../incomes';
 import { getPaychecks } from '../paychecks';
 import { getSales } from '../sales';
@@ -17,12 +20,6 @@ export const PASSIVE_CATEGORIES = [
   'rental',
   'royalties',
 ];
-
-const getPaycheckContributionSum = (paycheck, type) => {
-  const bContribution = get(paycheck, `benefits_contribution.${type}`, 0);
-  const rContribution = get(paycheck, `retirement_contribution.${type}`, 0);
-  return bContribution + rContribution;
-};
 
 export const useYearInflows = (year) => {
   const dispatch = useDispatch();
@@ -94,13 +91,13 @@ export const useYearInflows = (year) => {
 
     let _employeeContributionsSum = reduce(
       _earnedIncomes,
-      (acc, income) => acc + getPaycheckContributionSum(income, 'employee'),
+      (acc, income) => acc + findPaycheckContributionSum(income, 'employee'),
       0
     );
 
     let _employerContributionsSum = reduce(
       _earnedIncomes,
-      (acc, income) => acc + getPaycheckContributionSum(income, 'employer'),
+      (acc, income) => acc + findPaycheckContributionSum(income, 'employer'),
       0
     );
 
@@ -117,7 +114,7 @@ export const useYearInflows = (year) => {
       sum: reduce(
         _passiveIncomes,
         (acc, income) => {
-          if (income._type === 'sale') return acc + get(income, 'gain', 0);
+          if (income._type === 'sale') return acc + get(income, 'gains', 0);
           return acc + findAmount(income);
         },
         0

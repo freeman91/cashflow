@@ -81,7 +81,7 @@ export default function CreateTransactionButton(props) {
                   autoFocusItem
                   disablePadding
                   sx={{
-                    bgcolor: 'surface.250',
+                    bgcolor: 'surface.350',
                     borderRadius: 1,
                     overflow: 'hidden',
                     boxShadow: (theme) => theme.shadows[4],

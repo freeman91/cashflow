@@ -37,7 +37,7 @@ export default function Day(props) {
         itemType: 'transactions',
         mode: 'view',
         attrs: {
-          date,
+          label: date.format('MMMM Do, YYYY'),
           transactions,
         },
       })

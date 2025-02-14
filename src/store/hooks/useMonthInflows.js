@@ -6,7 +6,10 @@ import get from 'lodash/get';
 import reduce from 'lodash/reduce';
 import remove from 'lodash/remove';
 
-import { findAmount } from '../../helpers/transactions';
+import {
+  findAmount,
+  findPaycheckContributionSum,
+} from '../../helpers/transactions';
 import { getIncomes } from '../incomes';
 import { getPaychecks } from '../paychecks';
 import { getSales } from '../sales';
@@ -17,12 +20,6 @@ export const PASSIVE_CATEGORIES = [
   'rental',
   'royalties',
 ];
-
-const getPaycheckContributionSum = (paycheck, type) => {
-  const bContribution = get(paycheck, `benefits_contribution.${type}`, 0);
-  const rContribution = get(paycheck, `retirement_contribution.${type}`, 0);
-  return bContribution + rContribution;
-};
 
 export const useMonthInflows = (year, month) => {
   const dispatch = useDispatch();
@@ -48,7 +45,7 @@ export const useMonthInflows = (year, month) => {
   });
 
   useEffect(() => {
-    if (!year || !month) return;
+    if (!year || isNaN(month)) return;
 
     let _start = null;
     let _end = null;
@@ -72,15 +69,19 @@ export const useMonthInflows = (year, month) => {
       [...allIncomes, ...allPaychecks, ...allSales],
       (income) => {
         const incomeDate = dayjs(income.date);
-        return incomeDate.isSame(midMonth, 'month') && !income.pending;
+        return (
+          incomeDate.isSame(midMonth, 'month') && !get(income, 'pending', false)
+        );
       }
     );
+
     let _earnedIncomes = remove(
       monthIncomes,
       (income) => income._type === 'paycheck'
     );
+
     let _passiveIncomes = remove(monthIncomes, (income) => {
-      if (income._type === 'sale') return true;
+      if (income._type === 'sale' && get(income, 'gains', 0) > 0) return true;
       if (income.category && PASSIVE_CATEGORIES.includes(income.category))
         return true;
       return false;
@@ -95,13 +96,13 @@ export const useMonthInflows = (year, month) => {
 
     let _employeeContributionsSum = reduce(
       _earnedIncomes,
-      (acc, income) => acc + getPaycheckContributionSum(income, 'employee'),
+      (acc, income) => acc + findPaycheckContributionSum(income, 'employee'),
       0
     );
 
     let _employerContributionsSum = reduce(
       _earnedIncomes,
-      (acc, income) => acc + getPaycheckContributionSum(income, 'employer'),
+      (acc, income) => acc + findPaycheckContributionSum(income, 'employer'),
       0
     );
 
@@ -118,7 +119,7 @@ export const useMonthInflows = (year, month) => {
       sum: reduce(
         _passiveIncomes,
         (acc, income) => {
-          if (income._type === 'sale') return acc + get(income, 'gain', 0);
+          if (income._type === 'sale') return acc + get(income, 'gains', 0);
           return acc + findAmount(income);
         },
         0

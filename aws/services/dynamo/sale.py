@@ -33,6 +33,9 @@ class Sale(BaseModel):
     shares = NumberAttribute(null=True)
     price = NumberAttribute(null=True)
     fee = NumberAttribute(null=True)
+    gains = NumberAttribute(null=True)
+    losses = NumberAttribute(null=True)
+    cost_basis_per_share = NumberAttribute(null=True)
     deposit_to_id = UnicodeAttribute(null=True)
 
     def __repr__(self):
@@ -65,6 +68,17 @@ class Sale(BaseModel):
             fee=fee,
             deposit_to_id=deposit_to_id,
         )
+
+        security = dynamo.Security.get_(user_id, security_id)
+        sale.cost_basis_per_share = security.avg_cost_basis()
+        sale_price_per_share = sale.amount / sale.shares
+        gain_loss_per_share = sale_price_per_share - sale.cost_basis_per_share
+
+        if gain_loss_per_share > 0:
+            sale.gains = round(gain_loss_per_share * sale.shares, 2)
+        else:
+            sale.losses = round(gain_loss_per_share * sale.shares, 2)
+
         sale.save()
         return sale
 
