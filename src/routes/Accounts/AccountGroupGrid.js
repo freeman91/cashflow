@@ -4,20 +4,24 @@ import { push } from 'redux-first-history';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import TrendingUp from '@mui/icons-material/TrendingUp';
+import TrendingDown from '@mui/icons-material/TrendingDown';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid2';
+import Icon from '@mui/material/Icon';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
+import Tooltip from '@mui/material/Tooltip';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { timeSinceLastUpdate } from '../../helpers/dates';
-import { LIABILITY } from '../../components/Forms/AccountForm';
+import { LIABILITY, LIABILITY_TYPES } from '../../components/Forms/AccountForm';
 
 export default function AccountGroupGrid(props) {
-  const { type, sum, items, showInactive } = props;
+  const { type, sum, items, lastMonthSum, showInactive } = props;
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(true);
@@ -29,6 +33,23 @@ export default function AccountGroupGrid(props) {
   const openAccount = (account) => {
     dispatch(push(`/accounts/${account.name}`));
   };
+
+  const [monthDiff, diffPercent, color] = (() => {
+    let _monthDiff = sum - lastMonthSum;
+    let _diffPercent = ((sum - lastMonthSum) / lastMonthSum) * 100;
+    if (Object.keys(LIABILITY_TYPES).includes(type)) {
+      return [
+        _monthDiff * -1,
+        _diffPercent.toFixed(2),
+        _monthDiff > 0 ? 'success.main' : 'error.main',
+      ];
+    }
+    return [
+      _monthDiff,
+      _diffPercent.toFixed(2),
+      _monthDiff > 0 ? 'success.main' : 'error.main',
+    ];
+  })();
 
   return (
     <Grid size={{ xs: 12 }}>
@@ -79,18 +100,36 @@ export default function AccountGroupGrid(props) {
               },
             }}
           />
-          {/* <ListItemText
-            primary='[one month change]'
-            sx={{ width: '35%' }}
-            slotProps={{
-              primary: {
-                align: 'right',
-              },
-            }}
-          /> */}
+          <Tooltip title='one month difference'>
+            <ListItem
+              sx={{
+                width: 'fit-content',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 1,
+                backgroundColor: 'background.paper',
+                backgroundImage: (theme) => theme.vars.overlays[4],
+                borderRadius: 1,
+                py: 0,
+                px: 1,
+              }}
+            >
+              <ListItemText
+                secondary={`${numberToCurrency.format(
+                  monthDiff
+                )} (${diffPercent}%)`}
+                slotProps={{ secondary: { align: 'right', sx: { color } } }}
+              />
+              <Icon sx={{ color }}>
+                {monthDiff > 0 ? <TrendingUp /> : <TrendingDown />}
+              </Icon>
+            </ListItem>
+          </Tooltip>
+
           <ListItemText
             primary={numberToCurrency.format(sum)}
-            sx={{ width: '25%', mr: 2 }}
+            sx={{ width: 'fit-content' }}
             slotProps={{
               primary: {
                 align: 'right',
@@ -108,6 +147,7 @@ export default function AccountGroupGrid(props) {
               if (account.account_type === LIABILITY && amount > 0) {
                 amount = -amount;
               }
+
               return (
                 <ListItemButton
                   disableGutters
@@ -162,13 +202,6 @@ export default function AccountGroupGrid(props) {
                       },
                     }}
                   />
-                  {/* <ListItemText
-                    primary='[value history past month]'
-                    sx={{ width: '35%' }}
-                    slotProps={{
-                      primary: { align: 'center' },
-                    }}
-                  /> */}
                   <ListItemText
                     sx={{ width: '25%' }}
                     primary={numberToCurrency.format(amount)}
