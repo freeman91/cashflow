@@ -24,7 +24,7 @@ export default function TransactionsTable(props) {
   const { transactionsByDay } = props;
 
   return (
-    <Grid size={{ xs: 12 }} sx={{ width: '100%', mb: 5 }}>
+    <Grid size={{ xs: 12 }} sx={{ width: '100%' }}>
       <Box
         sx={{
           backgroundColor: 'background.paper',

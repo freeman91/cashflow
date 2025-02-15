@@ -4,8 +4,9 @@ import { push } from 'redux-first-history';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import TrendingUp from '@mui/icons-material/TrendingUp';
 import TrendingDown from '@mui/icons-material/TrendingDown';
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import TrendingUp from '@mui/icons-material/TrendingUp';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid2';
@@ -35,8 +36,10 @@ export default function AccountGroupGrid(props) {
   };
 
   const [monthDiff, diffPercent, color] = (() => {
+    if (lastMonthSum === 0) return [0, 0, 'text.disabled'];
     let _monthDiff = sum - lastMonthSum;
     let _diffPercent = ((sum - lastMonthSum) / lastMonthSum) * 100;
+    if (_monthDiff === 0) return [0, 0, 'text.disabled'];
     if (Object.keys(LIABILITY_TYPES).includes(type)) {
       return [
         _monthDiff * -1,
@@ -92,16 +95,19 @@ export default function AccountGroupGrid(props) {
           </Box>
           <ListItemText
             primary={type}
-            sx={{ width: '40%' }}
+            sx={{ flexGrow: 1, mr: 1 }}
             slotProps={{
               primary: {
                 fontWeight: 'bold',
                 variant: 'h6',
+                sx: {
+                  whiteSpace: 'nowrap',
+                },
               },
             }}
           />
           <Tooltip title='one month difference'>
-            <ListItem
+            <Box
               sx={{
                 width: 'fit-content',
                 display: 'flex',
@@ -116,25 +122,45 @@ export default function AccountGroupGrid(props) {
               }}
             >
               <ListItemText
-                secondary={`${numberToCurrency.format(
-                  monthDiff
-                )} (${diffPercent}%)`}
+                secondary={new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  maximumSignificantDigits: 3,
+                  minimumSignificantDigits: 2,
+                  notation: 'compact',
+                }).format(monthDiff)}
+                slotProps={{
+                  secondary: {
+                    sx: { color, whiteSpace: 'nowrap' },
+                  },
+                }}
+              />
+              <ListItemText
+                secondary={`(${diffPercent}%)`}
                 slotProps={{ secondary: { align: 'right', sx: { color } } }}
+                sx={{
+                  display: {
+                    xs: 'none',
+                    md: 'block',
+                  },
+                }}
               />
               <Icon sx={{ color }}>
+                {monthDiff === 0 && <TrendingFlatIcon />}
                 {monthDiff > 0 ? <TrendingUp /> : <TrendingDown />}
               </Icon>
-            </ListItem>
+            </Box>
           </Tooltip>
 
           <ListItemText
             primary={numberToCurrency.format(sum)}
-            sx={{ width: 'fit-content' }}
+            sx={{ ml: 1, width: 'fit-content', flex: 'unset' }}
             slotProps={{
               primary: {
                 align: 'right',
                 fontWeight: 'bold',
                 fontSize: 18,
+                sx: { whiteSpace: 'nowrap', width: 'fit-content' },
               },
             }}
           />

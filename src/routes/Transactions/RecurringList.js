@@ -94,7 +94,7 @@ export default function RecurringList() {
       spacing={2}
       size={{ xs: 12 }}
       ref={parentRef}
-      sx={{ width: '100%', mb: 5 }}
+      sx={{ width: '100%', pb: 5 }}
     >
       {groupedRecurrings.map((group, idx) => {
         return (
