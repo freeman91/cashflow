@@ -308,8 +308,37 @@ export default function Spending() {
           <Select
             value={label}
             onChange={(e) => setLabel(e.target.value)}
-            sx={{ width: 150 }}
+            sx={{
+              // width: 150,
+              backgroundColor: 'unset',
+              '& .MuiSelect-select': {
+                display: 'flex',
+                alignItems: 'center',
+              },
+            }}
             size='small'
+            variant='standard'
+            disableUnderline
+            MenuProps={{
+              MenuListProps: {
+                disablePadding: true,
+                sx: {
+                  bgcolor: 'surface.300',
+                  '& .MuiPaper-root': {
+                    minWidth: 'unset',
+                    borderRadius: 1,
+                    overflow: 'hidden',
+                  },
+                },
+              },
+              slotProps: {
+                paper: {
+                  sx: {
+                    minWidth: 'unset !important',
+                  },
+                },
+              },
+            }}
           >
             <MenuItem value='none'>
               <em>None</em>

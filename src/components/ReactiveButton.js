@@ -12,14 +12,10 @@ const ReactiveButton = forwardRef((props, ref) => {
       <IconButton
         ref={ref}
         onClick={handleClick}
-        sx={{
-          backgroundColor: 'primary.main',
-          borderRadius: '50%',
-          ...restProps.sx,
-        }}
+        sx={{ ...restProps.sx }}
         {...restProps}
       >
-        <Icon sx={{ color: 'background.paper' }} />
+        <Icon sx={{ color: 'primary.main' }} />
       </IconButton>
     );
   } else {

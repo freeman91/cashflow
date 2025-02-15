@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import groupBy from 'lodash/groupBy';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -27,6 +28,7 @@ import TransactionsTable from '../../../components/TransactionsTable';
 
 export default function Account(props) {
   const { account } = props;
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const dispatch = useDispatch();
   const securities = useSelector((state) => state.securities.data);
   const allBorrows = useSelector((state) => state.borrows.data);
@@ -166,7 +168,7 @@ export default function Account(props) {
       spacing={2}
       justifyContent='center'
       alignItems='flex-start'
-      sx={{ width: '100%', px: 1, mb: 5 }}
+      sx={{ width: '100%', px: 1, pb: 5 }}
     >
       <AccountValueHistory account={account} />
       <Grid size={{ xs: 12, md: 8 }} display='flex' justifyContent='center'>
@@ -324,17 +326,35 @@ export default function Account(props) {
                             }}
                           />
                           <ListItemText
-                            primary={new Intl.NumberFormat('en-US', {
-                              minimumFractionDigits: 0,
-                              maximumFractionDigits: 5,
-                            }).format(security.shares)}
+                            primary={
+                              isMobile
+                                ? new Intl.NumberFormat('en-US', {
+                                    maximumSignificantDigits: 3,
+                                    minimumSignificantDigits: 2,
+                                    notation: 'compact',
+                                  }).format(security.shares)
+                                : new Intl.NumberFormat('en-US', {
+                                    maximumSignificantDigits: 5,
+                                    notation: 'compact',
+                                  }).format(security.shares)
+                            }
                             sx={{ maxWidth: 200 }}
                             slotProps={{
                               primary: { align: 'right' },
                             }}
                           />
                           <ListItemText
-                            primary={numberToCurrency.format(security.price)}
+                            primary={
+                              isMobile
+                                ? new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD',
+                                    maximumSignificantDigits: 3,
+                                    minimumSignificantDigits: 2,
+                                    notation: 'compact',
+                                  }).format(security.price)
+                                : numberToCurrency.format(security.price)
+                            }
                             sx={{ maxWidth: 200 }}
                             slotProps={{
                               primary: { align: 'right' },
@@ -348,7 +368,10 @@ export default function Account(props) {
                             sx={{ maxWidth: 200 }}
                             slotProps={{
                               primary: { align: 'right' },
-                              secondary: { align: 'right' },
+                              secondary: {
+                                align: 'right',
+                                sx: { whiteSpace: 'nowrap' },
+                              },
                             }}
                           />
                         </ListItemButton>
