@@ -13,7 +13,7 @@ export default function IncomeSummary(props) {
     <Box
       sx={{
         backgroundColor: 'background.paper',
-        backgroundImage: (theme) => theme.vars.overlays[12],
+        backgroundImage: (theme) => theme.vars.overlays[24],
         boxShadow: (theme) => theme.shadows[4],
         borderRadius: 1,
         p: 1,

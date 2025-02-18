@@ -66,7 +66,12 @@ export default function MonthReport() {
             }}
           />
 
-          <IconButton onClick={() => setDate(date.add(1, 'month'))}>
+          <IconButton
+            onClick={() => {
+              setDate(date.add(1, 'month'));
+            }}
+            disabled={dayjs().isSame(date, 'month')}
+          >
             <ArrowForwardIos />
           </IconButton>
         </Box>
@@ -120,14 +125,7 @@ export default function MonthReport() {
       </Grid>
       <Grid
         size={{ xs: 12 }}
-        sx={{
-          px: 2,
-          pb: 10,
-          display: {
-            xs: 'none',
-            md: 'block',
-          },
-        }}
+        sx={{ px: 2, pb: 10, display: { xs: 'none', md: 'block' } }}
       >
         <SankeyChart
           earnedIncomes={earnedIncomes}

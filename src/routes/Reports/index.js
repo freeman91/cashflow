@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import dayjs from 'dayjs';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Grid from '@mui/material/Grid2';
 
 import MonthReport from './MonthReport';
@@ -10,10 +11,11 @@ import { ReportsViewContext } from '../../store/contexts/ReportsViewContext';
 export default function Reports() {
   const [date, setDate] = useState(dayjs());
   const { view } = useContext(ReportsViewContext);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   return (
     <Grid
       container
-      spacing={2}
+      spacing={isMobile ? 1 : 2}
       justifyContent='center'
       alignItems='flex-start'
       sx={{

@@ -38,6 +38,10 @@ export default function IncomeValuesCard(props) {
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
+          '&:hover': {
+            backgroundColor: 'background.paper',
+            backgroundImage: (theme) => theme.vars.overlays[24],
+          },
         }}
         onClick={handleClick}
       >
