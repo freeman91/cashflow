@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import find from 'lodash/find';
-
+import map from 'lodash/map';
 import DescriptionIcon from '@mui/icons-material/Description';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -45,10 +45,9 @@ function ExpenseForm(props) {
   const recurrings = useSelector((state) => state.recurrings.data);
   const expenses = useSelector((state) => state.expenses.data);
   const categories = useSelector((state) => {
-    const categories = find(state.categories.data, {
+    return find(state.categories.data, {
       category_type: 'expense',
-    });
-    return categories?.categories;
+    })?.categories;
   });
 
   const [recurring, setRecurring] = useState({ name: '' });
@@ -68,10 +67,12 @@ function ExpenseForm(props) {
   }, [expense.recurring_id, recurrings]);
 
   useEffect(() => {
-    const _subcategories = find(categories, {
+    let _category = find(categories, {
       name: expense?.category,
     });
-    setSubcategories(_subcategories?.subcategories || []);
+    setSubcategories(
+      map(_category?.subcategories, (subcategory) => subcategory.name)
+    );
   }, [categories, expense?.category]);
 
   useEffect(() => {

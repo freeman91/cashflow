@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import TrendingDown from '@mui/icons-material/TrendingDown';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import TrendingUp from '@mui/icons-material/TrendingUp';
@@ -69,33 +67,19 @@ export default function AccountGroupGrid(props) {
       >
         <ListItem
           sx={{
-            backgroundImage: (theme) => theme.vars.overlays[24],
+            backgroundImage: (theme) => theme.vars.overlays[8],
             pl: 0.5,
             py: 0.5,
+            '&:hover': {
+              backgroundImage: (theme) => theme.vars.overlays[24],
+            },
+            cursor: 'pointer',
           }}
+          onClick={handleClick}
         >
-          <Box
-            onClick={handleClick}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              borderRadius: '50%',
-              width: 40,
-              height: 40,
-              p: 0.5,
-              mr: 1,
-              '&:hover': {
-                backgroundImage: (theme) => theme.vars.overlays[8],
-              },
-            }}
-          >
-            {open ? <ExpandLess /> : <ExpandMore />}
-          </Box>
           <ListItemText
             primary={type}
-            sx={{ flexGrow: 1, mr: 1 }}
+            sx={{ flexGrow: 1, mx: 1 }}
             slotProps={{
               primary: {
                 fontWeight: 'bold',
@@ -115,7 +99,7 @@ export default function AccountGroupGrid(props) {
                 alignItems: 'center',
                 gap: 1,
                 backgroundColor: 'background.paper',
-                backgroundImage: (theme) => theme.vars.overlays[4],
+                backgroundImage: (theme) => theme.vars.overlays[8],
                 borderRadius: 1,
                 py: 0,
                 px: 1,
@@ -154,13 +138,13 @@ export default function AccountGroupGrid(props) {
 
           <ListItemText
             primary={numberToCurrency.format(sum)}
-            sx={{ ml: 1, width: 'fit-content', flex: 'unset' }}
+            sx={{ ml: 1, minWidth: 110, width: 'fit-content', flex: 'unset' }}
             slotProps={{
               primary: {
                 align: 'right',
                 fontWeight: 'bold',
                 fontSize: 18,
-                sx: { whiteSpace: 'nowrap', width: 'fit-content' },
+                sx: { whiteSpace: 'nowrap', width: '100%' },
               },
             }}
           />

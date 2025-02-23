@@ -91,7 +91,10 @@ const CustomAppBar = forwardRef((props, ref) => {
           <Typography
             variant='h5'
             fontWeight='bold'
-            sx={{ flexGrow: 1, ml: 1 }}
+            sx={{
+              flexGrow: isMobile ? 0.5 : 1,
+              ml: 1,
+            }}
           >
             {startCase(route)}
           </Typography>

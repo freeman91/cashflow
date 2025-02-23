@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import find from 'lodash/find';
-
+import map from 'lodash/map';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -58,10 +58,12 @@ function RepaymentForm(props) {
   const [repayment, setRepayment] = useState(defaultRepayment);
 
   useEffect(() => {
-    const _subcategories = find(categories, {
+    let _category = find(categories, {
       name: repayment?.category,
     });
-    setSubcategories(_subcategories?.subcategories || []);
+    setSubcategories(
+      map(_category?.subcategories, (subcategory) => subcategory.name)
+    );
   }, [categories, repayment?.category]);
 
   useEffect(() => {

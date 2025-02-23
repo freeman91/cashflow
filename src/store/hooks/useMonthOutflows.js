@@ -26,6 +26,7 @@ export const useMonthOutflows = (year, month) => {
   const [end, setEnd] = useState(null);
   const [expenses, setExpenses] = useState([]);
   const [repayments, setRepayments] = useState([]);
+  const [sales, setSales] = useState([]);
   const [principalSum, setPrincipalSum] = useState(0);
   const [interestSum, setInterestSum] = useState(0);
   const [escrowSum, setEscrowSum] = useState(0);
@@ -90,6 +91,7 @@ export const useMonthOutflows = (year, month) => {
 
     setExpenses(_expenses);
     setRepayments(_repayments);
+    setSales(_sales);
 
     setPrincipalSum(_principalSum);
     setInterestSum(_interestSum);
@@ -100,6 +102,7 @@ export const useMonthOutflows = (year, month) => {
   return {
     expenses,
     repayments,
+    lossSales: sales,
     principalSum,
     interestSum,
     escrowSum,

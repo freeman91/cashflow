@@ -249,8 +249,8 @@ export default function NetWorth() {
                 dot={false}
                 type='monotone'
                 dataKey='networth'
-                stroke={theme.palette.success.main}
-                fill={alpha(theme.palette.success.main, 0.2)}
+                stroke={theme.palette.primary.main}
+                fill={alpha(theme.palette.primary.main, 0.2)}
                 strokeWidth={2}
                 connectNulls
               />

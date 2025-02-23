@@ -6,7 +6,9 @@ import json
 import csv
 from datetime import date, datetime, timedelta, timezone
 from pprint import pprint
+from typing import List
 from uuid import uuid4
+import inquirer
 from pydash import (
     find,
     group_by,
@@ -24,6 +26,7 @@ from pydash import (
 
 import prompts
 from services import dynamo
+from services.dynamo.categories import Subcategory, LABELS
 from services.dynamo import *
 
 ENV = os.getenv("ENV")

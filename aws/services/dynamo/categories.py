@@ -12,11 +12,27 @@ ENV: str = os.getenv("ENV")
 REGION: str = os.getenv("REGION")
 APP_ID: str = os.getenv("APP_ID")
 
+NEEDS = "needs"  # absolute necessities
+WANTS = "wants"  # improve quality of life
+LUXURIES = "luxuries"  # pure indulgences
+LABELS = [NEEDS, WANTS, LUXURIES]
+
+
+class Subcategory(MapAttribute):
+    name = UnicodeAttribute(default="")
+    label = UnicodeAttribute(default=WANTS)
+
+    def __repr__(self):
+        return f"Subcategory<{self.name}, {self.label}>"
+
 
 class Category(MapAttribute):
     name = UnicodeAttribute()
-    subcategories = ListAttribute(of=UnicodeAttribute)
+    subcategories = ListAttribute(of=Subcategory)
     color = UnicodeAttribute(null=True)
+
+    def __repr__(self):
+        return f"Category<{self.name}>"
 
 
 class Categories(BaseModel):

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import find from 'lodash/find';
-
+import map from 'lodash/map';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
@@ -25,10 +25,12 @@ export default function ExpenseListItems(props) {
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
-    const _subcategories = find(categories, {
+    let _category = find(categories, {
       name: recurring?.expense_attributes?.category,
     });
-    setSubcategories(_subcategories?.subcategories || []);
+    setSubcategories(
+      map(_category?.subcategories, (subcategory) => subcategory.name)
+    );
   }, [categories, recurring?.expense_attributes?.category]);
 
   const handleChange = (key, value) => {

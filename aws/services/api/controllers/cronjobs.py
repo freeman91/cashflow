@@ -2,15 +2,15 @@
 """Cronjob controller"""
 
 import os
-import math
 from datetime import date, datetime, timezone, timedelta
+from typing import List
 from zoneinfo import ZoneInfo
 
 from dateutil.rrule import rrule, YEARLY, MONTHLY, WEEKLY
-from pydash import filter_, find, find_index, last, sort_by, map_
+from pydash import filter_, find_index, last, sort_by, map_
 from flask import request, Blueprint, current_app
 from cryptocompare import cryptocompare
-from yahoo_fin import stock_info
+import yfinance
 
 from services.dynamo import Account, History, Recurring, Security
 from services.dynamo.history import ValueItem
@@ -21,11 +21,7 @@ from services.api.controllers.__util__ import (
 )
 
 CRYPTO_KEY = os.getenv("CRYPTO_COMPARE_KEY")
-FREQUENCY_MAP = {
-    "yearly": YEARLY,
-    "monthly": MONTHLY,
-    "weekly": WEEKLY,
-}
+FREQUENCY_MAP = {"yearly": YEARLY, "monthly": MONTHLY, "weekly": WEEKLY}
 
 cronjobs = Blueprint("cronjobs", __name__)
 
@@ -37,15 +33,11 @@ def get_crypto_prices(tickers: set):
     return cryptocompare.get_price(list(tickers), currency="USD")
 
 
-def get_stock_price(ticker: str):
+def get_stock_prices(tickers: List):
     """get current stock prices"""
 
-    result = stock_info.get_data(ticker.upper())
-    value = result.close.iloc[-1]
-    if math.isnan(value):
-        value = result.close.iloc[-2]
-
-    return value
+    data = yfinance.Tickers(" ".join(tickers))
+    return data.tickers
 
 
 def update_or_create_history(
@@ -145,14 +137,10 @@ def update_stock_prices():
         )
 
         tickers = map_(stock_securities, lambda securities: securities.ticker.upper())
-        ticker_prices = map_(
-            tickers, lambda ticker: {"ticker": ticker, "price": get_stock_price(ticker)}
-        )
+        ticker_prices = get_stock_prices(tickers)
         for security in stock_securities:
-            ticker = find(
-                ticker_prices, lambda t: t["ticker"] == security.ticker.upper()
-            )
-            ticker_price = ticker["price"]
+            ticker = ticker_prices[security.ticker.upper()]
+            ticker_price = ticker.fast_info.last_price
             security.price = round(float(ticker_price), 2)
 
             current_app.logger.info("%s: %s", security.ticker, security.price)

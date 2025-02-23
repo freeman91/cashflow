@@ -90,8 +90,7 @@ export default function ByMonthChart(props) {
           backgroundImage: (theme) => theme.vars.overlays[8],
           boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
-          px: 2,
-          py: 1,
+          pt: 1,
         }}
       >
         <Box sx={{ width: '100%' }}>

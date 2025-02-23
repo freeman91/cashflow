@@ -2,30 +2,30 @@ import React, { useState } from 'react';
 import dayjs from 'dayjs';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
-import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
-import Box from '@mui/material/Box';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import Grid from '@mui/material/Grid2';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import useMonthInflows from '../../store/hooks/useMonthInflows';
-import useMonthOutflows from '../../store/hooks/useMonthOutflows';
-import IncomeValuesCard from './IncomeValuesCard';
-import ExpenseValuesCard from './ExpenseValuesCard';
-import NetValuesCard from './NetValuesCard';
-import ByMonthChart from './ByMonthChart';
-import IncomeBreakdown from './IncomeBreakdown';
-import ExpenseBreakdown from './ExpenseBreakdown';
-import SankeyChart from './SankeyChart';
+import useYearInflows from '../../../store/hooks/useYearInflows';
+import useYearOutflows from '../../../store/hooks/useYearOutflows';
+import ByMonthChart from '../ByMonthChart';
+import IncomeValuesCard from '../IncomeValuesCard';
+import ExpenseValuesCard from '../ExpenseValuesCard';
+import NetValuesCard from '../NetValuesCard';
+import IncomeBreakdown from '../IncomeBreakdown';
+import ExpenseBreakdown from '../ExpenseBreakdown';
+import SankeyChart from '../SankeyChart';
 
-export default function MonthReport() {
-  const [date, setDate] = useState(dayjs());
+export default function YearReport() {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  const { earnedIncomes, passiveIncomes, otherIncomes } = useMonthInflows(
-    date.year(),
-    date.month()
+  const [date, setDate] = useState(dayjs().month(11).date(15));
+  const { earnedIncomes, passiveIncomes, otherIncomes } = useYearInflows(
+    date.year()
   );
+
   const {
     principalSum,
     interestSum,
@@ -33,49 +33,59 @@ export default function MonthReport() {
     otherExpenseSum,
     expenses,
     repayments,
-  } = useMonthOutflows(date.year(), date.month());
+  } = useYearOutflows(date.year());
 
   const totalIncome = earnedIncomes.sum + passiveIncomes.sum + otherIncomes.sum;
   const totalExpense = principalSum + interestSum + escrowSum + otherExpenseSum;
+
   return (
     <>
-      <ByMonthChart year={date.year()} month={date.month()} />
       <Grid size={{ xs: 12 }}>
         <Box
           sx={{
             display: 'flex',
-            justifyContent: isMobile ? 'space-between' : 'flex-start',
+            justifyContent: isMobile ? 'center' : 'flex-start',
+            alignItems: 'center',
             gap: 2,
+            mx: 2,
           }}
         >
-          <IconButton onClick={() => setDate(date.subtract(1, 'month'))}>
-            <ArrowBackIosNew />
-          </IconButton>
           <DatePicker
             size='medium'
             value={date}
             onChange={(value) => {
-              setDate(value.date(15));
+              setDate(value.month(11).date(15));
             }}
-            format='MMMM YYYY'
-            views={['month', 'year']}
+            format='YYYY'
+            views={['year']}
+            sx={{ width: 160 }}
             slotProps={{
               textField: {
                 variant: 'standard',
+                InputProps: { disableUnderline: true },
+                inputProps: { style: { fontSize: 20 } },
+              },
+              inputAdornment: {
+                position: 'start',
               },
             }}
           />
-
-          <IconButton
-            onClick={() => {
-              setDate(date.add(1, 'month'));
-            }}
-            disabled={dayjs().isSame(date, 'month')}
-          >
-            <ArrowForwardIos />
-          </IconButton>
+          <Box>
+            <IconButton onClick={() => setDate(date.subtract(1, 'year'))}>
+              <ArrowBack />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                setDate(date.add(1, 'year'));
+              }}
+              disabled={dayjs().year() === date.year()}
+            >
+              <ArrowForward />
+            </IconButton>
+          </Box>
         </Box>
       </Grid>
+      <ByMonthChart year={date.year()} month={date.month()} />
       <Grid size={{ md: 4, xs: 6 }}>
         <IncomeValuesCard
           earnedIncomes={earnedIncomes}
@@ -83,15 +93,7 @@ export default function MonthReport() {
           otherIncomes={otherIncomes}
         />
       </Grid>
-      <Grid
-        size={{ md: 4 }}
-        sx={{
-          display: {
-            xs: 'none',
-            md: 'block',
-          },
-        }}
-      >
+      <Grid size={{ md: 4 }} sx={{ display: { xs: 'none', md: 'block' } }}>
         <NetValuesCard totalIncome={totalIncome} totalExpense={totalExpense} />
       </Grid>
       <Grid size={{ md: 4, xs: 6 }}>
@@ -102,15 +104,7 @@ export default function MonthReport() {
           otherExpenseSum={otherExpenseSum}
         />
       </Grid>
-      <Grid
-        size={{ xs: 12 }}
-        sx={{
-          display: {
-            xs: 'block',
-            md: 'none',
-          },
-        }}
-      >
+      <Grid size={{ xs: 12 }} sx={{ display: { xs: 'block', md: 'none' } }}>
         <NetValuesCard totalIncome={totalIncome} totalExpense={totalExpense} />
       </Grid>
       <Grid size={{ md: 6, xs: 12 }}>

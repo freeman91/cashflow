@@ -3,7 +3,7 @@
 
 import os
 from typing import Dict, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from uuid import uuid4
 from pynamodb.attributes import (
@@ -137,6 +137,7 @@ class Paycheck(BaseModel):
                 account.amount += self.take_home
                 account.amount = round(account.amount, 2)
 
+            account.last_update = datetime.now(timezone.utc)
             account.save()
 
         return account

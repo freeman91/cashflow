@@ -2,7 +2,7 @@
 """Income pynamodb model"""
 
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 from uuid import uuid4
 from pynamodb.attributes import (
@@ -107,6 +107,7 @@ class Income(BaseModel):
                 account.amount += self.amount
                 account.amount = round(account.amount, 2)
 
+            account.last_update = datetime.now(timezone.utc)
             account.save()
 
         return account

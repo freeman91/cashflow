@@ -9,9 +9,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-import { openItemView } from '../../store/itemView';
-import { numberToCurrency } from '../../helpers/currency';
-import { findAmount } from '../../helpers/transactions';
+import { openItemView } from '../../../store/itemView';
+import { numberToCurrency } from '../../../helpers/currency';
+import { findAmount } from '../../../helpers/transactions';
 import ExpenseSubcategoryBreakdown from './ExpenseSubcategoryBreakdown';
 
 export default function ExpenseCategoryBreakdown(props) {

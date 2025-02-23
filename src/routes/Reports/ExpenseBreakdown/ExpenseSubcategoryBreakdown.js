@@ -8,9 +8,9 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-import { openItemView } from '../../store/itemView';
-import { numberToCurrency } from '../../helpers/currency';
-import { findAmount } from '../../helpers/transactions';
+import { openItemView } from '../../../store/itemView';
+import { numberToCurrency } from '../../../helpers/currency';
+import { findAmount } from '../../../helpers/transactions';
 
 export default function ExpenseSubcategoryBreakdown(props) {
   const { expenses } = props;

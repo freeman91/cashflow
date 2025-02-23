@@ -2,7 +2,7 @@
 """Repayment pynamodb model"""
 
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 from uuid import uuid4
 from pynamodb.attributes import (
@@ -126,6 +126,7 @@ class Repayment(BaseModel):
                 account.amount += total
                 account.amount = round(account.amount, 2)
 
+            account.last_update = datetime.now(timezone.utc)
             account.save()
 
         return account

@@ -96,7 +96,7 @@ export default function AccountsSummary(props) {
       >
         <Box
           sx={{
-            backgroundImage: (theme) => theme.vars.overlays[24],
+            backgroundImage: (theme) => theme.vars.overlays[8],
             display: 'flex',
             justifyContent: 'space-between',
             px: 2,

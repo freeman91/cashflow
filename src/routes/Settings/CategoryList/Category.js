@@ -28,6 +28,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 
+import { LUXURIES } from './Subcategory';
 import Subcategory from './Subcategory';
 
 export default function Category(props) {
@@ -55,7 +56,10 @@ export default function Category(props) {
     setCategories((prevCategories) => {
       let _categories = cloneDeep(prevCategories);
       let categoryIdx = findIndex(_categories, { name: expandedCategory });
-      _categories[categoryIdx].subcategories.push('');
+      _categories[categoryIdx].subcategories.push({
+        name: '',
+        label: LUXURIES,
+      });
       return _categories;
     });
     setSelectedSubcategory('');
@@ -67,16 +71,19 @@ export default function Category(props) {
     handleSaveCategory(idx, _category);
   };
 
-  const updateSubactegory = (subcategory, subIdx) => {
+  const updateSubactegory = (subcategory, subcategoryLabel, subIdx) => {
     let _category = cloneDeep(category);
-    _category.subcategories[subIdx] = subcategory;
+    _category.subcategories[subIdx] = {
+      name: subcategory,
+      label: subcategoryLabel,
+    };
     handleSaveCategory(idx, _category);
   };
 
-  const deleteSubcategory = (subcategory) => {
+  const deleteSubcategory = (subcategoryName) => {
     let _category = cloneDeep(category);
     _category.subcategories = _category.subcategories.filter(
-      (item) => item !== subcategory
+      (item) => item.name !== subcategoryName
     );
     handleSaveCategory(idx, _category);
     setSelectedSubcategory(null);
@@ -191,7 +198,7 @@ export default function Category(props) {
           <Divider sx={{ mx: 1 }} />
           {sortBy(category.subcategories).map((subcategory, subIdx) => (
             <Subcategory
-              key={subcategory + subIdx}
+              key={subcategory.name + subIdx}
               subcategory={subcategory}
               selectedSubcategory={selectedSubcategory}
               setSelectedSubcategory={setSelectedSubcategory}

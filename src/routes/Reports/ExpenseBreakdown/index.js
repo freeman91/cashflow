@@ -14,19 +14,23 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { openItemView } from '../../store/itemView';
-import { numberToCurrency } from '../../helpers/currency';
-import { findAmount } from '../../helpers/transactions';
+import { openItemView } from '../../../store/itemView';
+import { numberToCurrency } from '../../../helpers/currency';
+import { findAmount } from '../../../helpers/transactions';
+import {
+  CATEGORIES,
+  MERCHANTS,
+  REPAYMENTS,
+} from '../../Layout/CustomAppBar/ReportsAppBar';
 import ExpenseCategoryBreakdown from './ExpenseCategoryBreakdown';
+import OptionsButton from './OptionsButton';
 
-const REPAYMENTS = 'repayments';
-const CATEGORY = 'category';
-const MERCHANT = 'merchant';
-const TABS = [REPAYMENTS, CATEGORY, MERCHANT];
+const TABS = [REPAYMENTS, CATEGORIES, MERCHANTS];
 
 export default function ExpenseBreakdown(props) {
-  const dispatch = useDispatch();
   const { expenses, repayments } = props;
+  const dispatch = useDispatch();
+
   const accounts = useSelector((state) => state.accounts.data);
   const [selectedTab, setSelectedTab] = useState(REPAYMENTS);
 
@@ -129,23 +133,11 @@ export default function ExpenseBreakdown(props) {
             </Typography>
           </Box>
         ))}
-        <IconButton
-          onClick={() =>
-            dispatch(
-              openItemView({
-                itemType: 'transactions',
-                mode: 'view',
-                attrs: {
-                  label: 'All Expenses',
-                  transactions: [...expenses, ...repayments],
-                },
-              })
-            )
-          }
-          sx={{ height: 35, width: 35 }}
-        >
-          <ListIcon />
-        </IconButton>
+        <OptionsButton
+          expenses={expenses}
+          repayments={repayments}
+          selectedTab={selectedTab}
+        />
       </Stack>
       <Divider sx={{ width: '100%', mt: 1.5 }} />
       {selectedTab === REPAYMENTS && (
@@ -211,10 +203,10 @@ export default function ExpenseBreakdown(props) {
           )}
         </List>
       )}
-      {selectedTab === CATEGORY && (
+      {selectedTab === CATEGORIES && (
         <ExpenseCategoryBreakdown expenses={expenses} repayments={repayments} />
       )}
-      {selectedTab === MERCHANT && (
+      {selectedTab === MERCHANTS && (
         <List disablePadding sx={{ width: '100%' }}>
           {expensesByMerchant.map(({ merchant, sum, expenses }) => (
             <ListItem key={merchant}>

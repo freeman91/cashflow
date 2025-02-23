@@ -18,7 +18,6 @@ import Reports from './routes/Reports';
 import Settings from './routes/Settings';
 import Transactions from './routes/Transactions';
 import Layout from './routes/Layout';
-import ReportsViewProvider from './store/contexts/ReportsViewContext';
 import './styles/index.css';
 
 console.log('_package.version: ', _package.version);
@@ -32,6 +31,8 @@ const AppRoutes = () => {
         <Route path='/accounts/:accountName' element={<Accounts />} />
         <Route path='/transactions' element={<Transactions />} />
         <Route path='/reports' element={<Reports />} />
+        <Route path='/reports/:type' element={<Reports />} />
+        <Route path='/reports/:type/:view' element={<Reports />} />
         <Route path='/budgets' element={<Budgets />} />
         <Route path='/settings' element={<Settings />} />
         {/* <Route path='/profile' element={<></>} /> */}
@@ -49,11 +50,9 @@ function App() {
       <ReduxProvider store={store}>
         <HistoryRouter history={history}>
           <ThemeProvider theme={muiTheme} defaultMode='dark' noSsr>
-            <ReportsViewProvider>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <div className='App'>{<AppRoutes />}</div>
-              </LocalizationProvider>
-            </ReportsViewProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <div className='App'>{<AppRoutes />}</div>
+            </LocalizationProvider>
           </ThemeProvider>
         </HistoryRouter>
       </ReduxProvider>
