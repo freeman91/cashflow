@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cashflow2"
+name = "cashflow"
 version = "1.1.0"
 description = ""
 authors = ["Addison Freeman <addisonfreeman91@gmail.com>"]
