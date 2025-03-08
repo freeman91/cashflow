@@ -40,6 +40,13 @@ def get_stock_prices(tickers: List):
     return data.tickers
 
 
+def get_ticker_price(ticker: yfinance.Ticker):
+    try:
+        return ticker.fast_info.last_price
+    except Exception as e:
+        return ticker.info["regularMarketPrice"]
+
+
 def update_or_create_history(
     month_str: str, item_id: str, user_id: str, account_type: str, value_item: dict
 ):
@@ -140,7 +147,7 @@ def update_stock_prices():
         ticker_prices = get_stock_prices(tickers)
         for security in stock_securities:
             ticker = ticker_prices[security.ticker.upper()]
-            ticker_price = ticker.fast_info.last_price
+            ticker_price = get_ticker_price(ticker)
             security.price = round(float(ticker_price), 2)
 
             current_app.logger.info("%s: %s", security.ticker, security.price)

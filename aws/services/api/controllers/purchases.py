@@ -24,6 +24,7 @@ def _purchases(user_id: str):
             shares=float(body.get("shares")),
             price=float(body.get("price")),
             merchant=body.get("merchant"),
+            security_id=body.get("security_id"),
             account_id=body.get("account_id"),
         )
         return success_result(purchase.as_dict())
@@ -61,7 +62,7 @@ def _purchase(user_id: str, purchase_id: str):
         purchase.shares = float(request.json.get("shares"))
         purchase.price = float(request.json.get("price"))
 
-        for attr in ["account_id", "merchant"]:
+        for attr in ["account_id", "merchant", "security_id"]:
             setattr(purchase, attr, request.json.get(attr))
 
         purchase.last_update = datetime.now(timezone.utc)

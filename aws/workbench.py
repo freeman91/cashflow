@@ -9,6 +9,7 @@ from pprint import pprint
 from typing import List
 from uuid import uuid4
 import inquirer
+import yfinance
 from pydash import (
     find,
     group_by,
@@ -26,6 +27,7 @@ from pydash import (
 
 import prompts
 from services import dynamo
+from services.api.controllers.cronjobs import get_stock_prices
 from services.dynamo.categories import Subcategory, LABELS
 from services.dynamo import *
 
@@ -37,7 +39,7 @@ USER_ID = os.getenv("REACT_APP_USER_ID")
 
 def test():
     pass
-
+    
 
 def main():
     pass
