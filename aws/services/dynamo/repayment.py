@@ -135,5 +135,6 @@ class Repayment(BaseModel):
         account = dynamo.Account.get_(self.user_id, self.account_id)
         account.amount -= self.principal
         account.amount = round(account.amount, 2)
+        account.last_update = datetime.now(timezone.utc)
         account.save()
         return account
