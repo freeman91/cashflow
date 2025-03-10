@@ -6,13 +6,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 purchases = Blueprint("purchases", __name__)
 
 
-@handle_exception
 @purchases.route("/purchases/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _purchases(user_id: str):
     if request.method == "POST":
         body = request.json
@@ -27,6 +28,7 @@ def _purchases(user_id: str):
             security_id=body.get("security_id"),
             account_id=body.get("account_id"),
         )
+        log_action(user_id, f"Purchase created: {purchase.merchant}")
         return success_result(purchase.as_dict())
 
     if request.method == "GET":
@@ -45,8 +47,8 @@ def _purchases(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @purchases.route("/purchases/<user_id>/<purchase_id>", methods=["GET", "PUT", "DELETE"])
+@handle_exception
 def _purchase(user_id: str, purchase_id: str):
     if request.method == "GET":
         return success_result(
@@ -67,10 +69,12 @@ def _purchase(user_id: str, purchase_id: str):
 
         purchase.last_update = datetime.now(timezone.utc)
         purchase.save()
+        log_action(user_id, f"Purchase updated: {purchase.merchant}")
         return success_result(purchase.as_dict())
 
     if request.method == "DELETE":
         Purchase.get_(user_id=user_id, purchase_id=purchase_id).delete()
+        log_action(user_id, f"Purchase deleted: {purchase_id}")
         return success_result(f"{purchase_id} deleted")
 
     return failure_result()

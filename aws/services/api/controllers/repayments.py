@@ -6,13 +6,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 repayments = Blueprint("repayments", __name__)
 
 
-@handle_exception
 @repayments.route("/repayments/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _repayments(user_id: str):
     if request.method == "POST":
         account = None
@@ -33,6 +34,7 @@ def _repayments(user_id: str):
             account_id=body.get("account_id"),
             payment_from_id=body.get("payment_from_id"),
         )
+        log_action(user_id, f"Repayment created: {repayment.merchant}")
 
         if repayment.payment_from_id and not repayment.pending:
             account = repayment.update_account()
@@ -56,10 +58,10 @@ def _repayments(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @repayments.route(
     "/repayments/<user_id>/<repayment_id>", methods=["GET", "PUT", "DELETE"]
 )
+@handle_exception
 def _repayment(user_id: str, repayment_id: str):
     if request.method == "GET":
         return success_result(
@@ -104,6 +106,7 @@ def _repayment(user_id: str, repayment_id: str):
             liability_account = repayment.update_account_principal()
             liability_account = liability_account.as_dict()
 
+        log_action(user_id, f"Repayment updated: {repayment.merchant}")
         return success_result(
             {
                 "repayment": repayment.as_dict(),
@@ -114,6 +117,7 @@ def _repayment(user_id: str, repayment_id: str):
 
     if request.method == "DELETE":
         Repayment.get_(user_id=user_id, repayment_id=repayment_id).delete()
+        log_action(user_id, f"Repayment deleted: {repayment_id}")
         return success_result(f"{repayment_id} deleted")
 
     return failure_result()

@@ -6,13 +6,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 categories = Blueprint("categories", __name__)
 
 
-@handle_exception
 @categories.route("/categories/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _categories(user_id: str):
     if request.method == "POST":
         pass
@@ -27,10 +28,10 @@ def _categories(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @categories.route(
     "/categories/<user_id>/<category_type>", methods=["GET", "POST", "PUT", "DELETE"]
 )
+@handle_exception
 def _category_data(user_id: str, category_type: str):
     if request.method == "GET":
         result = Categories.get_(user_id=user_id, category_type=category_type)
@@ -42,7 +43,7 @@ def _category_data(user_id: str, category_type: str):
             category_type=category_type,
             categories=request.json.get("categories"),
         )
-
+        log_action(user_id, f"Category created: {category_type}")
         return success_result(category_data.as_dict())
 
     if request.method == "PUT":
@@ -51,7 +52,7 @@ def _category_data(user_id: str, category_type: str):
         updated_categories = sort_by(request.json.get("categories"), "name")
         category_data.categories = updated_categories
         category_data.save()
-
+        log_action(user_id, f"Category updated: {category_type}")
         return success_result(category_data.as_dict())
 
     if request.method == "DELETE":

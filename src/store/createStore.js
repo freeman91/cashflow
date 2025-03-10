@@ -8,6 +8,7 @@ import { thunk as thunkMiddleware } from 'redux-thunk';
 
 /** REDUCERS **/
 import accounts from './accounts';
+import audits from './audits';
 import appSettings from './appSettings';
 import borrows from './borrows';
 import budgets from './budgets';
@@ -29,6 +30,7 @@ const { createReduxHistory, routerMiddleware, routerReducer } =
 export const store = configureStore({
   reducer: combineReducers({
     accounts,
+    audits,
     appSettings,
     borrows,
     budgets,
@@ -43,7 +45,6 @@ export const store = configureStore({
     repayments,
     sales,
     securities,
-    // loadingBar: loadingBarReducer,
     router: routerReducer,
     user,
   }),

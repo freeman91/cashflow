@@ -16,7 +16,7 @@ const getSecurities = createAsyncThunk(
         data: await getResourcesAPI(user_id, 'securities'),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -40,7 +40,7 @@ const postSecurity = createAsyncThunk(
         data: [result].concat(securities),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -67,7 +67,7 @@ const putSecurity = createAsyncThunk(
         data: concat(_securities, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -89,7 +89,7 @@ const deleteSecurity = createAsyncThunk(
         data: _securities,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -117,7 +117,7 @@ const deactivateSecurity = createAsyncThunk(
         data: concat(_securities, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

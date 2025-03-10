@@ -8,13 +8,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 securities = Blueprint("securities", __name__)
 
 
-@handle_exception
 @securities.route("/securities/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _securities(user_id: str):
     if request.method == "POST":
         body = request.json
@@ -28,6 +29,7 @@ def _securities(user_id: str):
             price=body.get("price"),
             icon_url=body.get("icon_url"),
         )
+        log_action(user_id, f"Security created: {security.name}")
         return success_result(security.as_dict())
 
     if request.method == "GET":
@@ -37,10 +39,10 @@ def _securities(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @securities.route(
     "/securities/<user_id>/<security_id>", methods=["GET", "PUT", "DELETE"]
 )
+@handle_exception
 def _security(user_id: str, security_id: str):
     if request.method == "GET":
         return success_result(
@@ -67,10 +69,12 @@ def _security(user_id: str, security_id: str):
 
         security.last_update = datetime.now(timezone.utc)
         security.save()
+        log_action(user_id, f"Security updated: {security.name}")
         return success_result(security.as_dict())
 
     if request.method == "DELETE":
         Security.get_(user_id=user_id, security_id=security_id).delete()
+        log_action(user_id, f"Security deleted: {security_id}")
         return success_result(f"{security_id} deleted")
 
     return failure_result()

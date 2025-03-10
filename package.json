@@ -2,6 +2,7 @@
   "name": "cashflow",
   "author": "Addison Freeman <addisonfreeman91@gmail.com>",
   "version": "1.1.0",
+  "license": "UNLICENSED",
   "scripts": {
     "start": "HOST=0.0.0.0 react-scripts start",
     "build": "react-scripts build",

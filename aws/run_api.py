@@ -12,6 +12,7 @@ class Config:
 
 def blueprints(app):
     app.register_blueprint(controllers.accounts.accounts)
+    app.register_blueprint(controllers.audits.audits)
     app.register_blueprint(controllers.borrows.borrows)
     app.register_blueprint(controllers.budgets.budgets)
     app.register_blueprint(controllers.categories.categories)

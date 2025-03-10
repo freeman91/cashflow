@@ -6,13 +6,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 paychecks = Blueprint("paychecks", __name__)
 
 
-@handle_exception
 @paychecks.route("/paychecks/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _paychecks(user_id: str):
     if request.method == "POST":
         body = request.json
@@ -39,7 +40,7 @@ def _paychecks(user_id: str):
             recurring_id=body.get("recurring_id"),
             description=body.get("description"),
         )
-
+        log_action(user_id, f"Paycheck created: {paycheck.employer}")
         if paycheck.deposit_to_id and not paycheck.pending:
             account = paycheck.update_account()
             if account:
@@ -61,8 +62,8 @@ def _paychecks(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @paychecks.route("/paychecks/<user_id>/<paycheck_id>", methods=["GET", "PUT", "DELETE"])
+@handle_exception
 def _paycheck(user_id: str, paycheck_id: str):
     if request.method == "GET":
         return success_result(
@@ -106,10 +107,12 @@ def _paycheck(user_id: str, paycheck_id: str):
             if account:
                 account = account.as_dict()
 
+        log_action(user_id, f"Paycheck updated: {paycheck.employer}")
         return success_result({"paycheck": paycheck.as_dict(), "account": account})
 
     if request.method == "DELETE":
         Paycheck.get_(user_id=user_id, paycheck_id=paycheck_id).delete()
+        log_action(user_id, f"Paycheck deleted: {paycheck_id}")
         return success_result(f"{paycheck_id} deleted")
 
     return failure_result()

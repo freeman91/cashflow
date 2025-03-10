@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import dayjs from 'dayjs';
 import sortBy from 'lodash/sortBy';
 
 import axios from '../../api/xhr_libs/axios';
@@ -8,26 +7,16 @@ import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 
-const getHistories = createAsyncThunk(
-  'histories/getHistories',
-  async ({ user_id, range }, { dispatch, getState }) => {
+const getAudits = createAsyncThunk(
+  'audits/getAudits',
+  async (_, { dispatch, getState }) => {
     const { item: user } = getState().user;
-    if (!user_id) user_id = user.user_id;
-
-    let start = range?.start;
-    let end = range?.end;
-    if (!start) start = dayjs().subtract(6, 'month').format('YYYY-MM');
-    if (!end) end = dayjs().format('YYYY-MM');
 
     try {
       dispatch(showLoading());
-      let histories = processResponse(
-        await axios.get(`/histories/${user_id}`, {
-          params: { start, end },
-        })
-      );
+      let audits = processResponse(await axios.get(`/audits/${user.user_id}`));
       return {
-        data: sortBy(histories, 'month'),
+        data: sortBy(audits, 'timestamp').reverse(),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: err.message }));
@@ -38,13 +27,13 @@ const getHistories = createAsyncThunk(
 );
 
 const { reducer } = createSlice({
-  name: 'histories',
+  name: 'audits',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    buildAsyncReducers(builder, [getHistories]);
+    buildAsyncReducers(builder, [getAudits]);
   },
 });
 
-export { getHistories };
+export { getAudits };
 export default reducer;

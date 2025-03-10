@@ -1,5 +1,6 @@
 from . import (
     accounts,
+    audits,
     borrows,
     budgets,
     categories,

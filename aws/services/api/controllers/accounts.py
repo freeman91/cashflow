@@ -8,14 +8,15 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 
 accounts = Blueprint("accounts", __name__)
 
 
-@handle_exception
 @accounts.route("/accounts/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _accounts(user_id: str):
     if request.method == "POST":
         body = request.json
@@ -46,6 +47,7 @@ def _accounts(user_id: str):
             interest_rate=body.get("interest_rate"),
             icon_url=body.get("icon_url"),
         )
+        log_action(user_id, f"Account created: {account.name}")
         return success_result(account.as_dict())
 
     if request.method == "GET":
@@ -55,8 +57,8 @@ def _accounts(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @accounts.route("/accounts/<user_id>/<account_id>", methods=["GET", "PUT", "DELETE"])
+@handle_exception
 def _account(user_id: str, account_id: str):
     if request.method == "GET":
         return success_result(
@@ -96,10 +98,12 @@ def _account(user_id: str, account_id: str):
 
         account.last_update = datetime.now(timezone.utc)
         account.save()
+        log_action(user_id, f"Account updated: {account.name}")
         return success_result(account.as_dict())
 
     if request.method == "DELETE":
         Account.get_(user_id=user_id, account_id=account_id).delete()
+        log_action(user_id, f"Account deleted: {account_id}")
         return success_result(f"{account_id} deleted")
 
     return failure_result()

@@ -5,6 +5,7 @@ import { push } from 'redux-first-history';
 
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import GradingIcon from '@mui/icons-material/Grading';
 import HomeIcon from '@mui/icons-material/Home';
 import LayersIcon from '@mui/icons-material/Layers';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -69,7 +70,7 @@ const PageButton = (props) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(push(`/${pageName.toLowerCase()}`, {}));
+    dispatch(push(`/${pageName.toLowerCase().replace(' ', '-')}`, {}));
   };
 
   return (
@@ -149,6 +150,11 @@ const DrawerContent = () => {
         pageName='Budgets'
         currentPage={page}
         icon={<AssignmentIcon />}
+      />
+      <PageButton
+        pageName='Audit Log'
+        currentPage={page}
+        icon={<GradingIcon />}
       />
     </List>
   );

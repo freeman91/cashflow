@@ -28,7 +28,7 @@ const getAccounts = createAsyncThunk(
         data: await getResourcesAPI(user_id, 'accounts'),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -50,7 +50,7 @@ const postAccount = createAsyncThunk(
         data: [result].concat(accounts),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -72,7 +72,7 @@ const putAccount = createAsyncThunk(
         data: concat(_accounts, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -94,7 +94,7 @@ const deleteAccount = createAsyncThunk(
         data: _accounts,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -122,7 +122,7 @@ const deactivateAccount = createAsyncThunk(
         data: concat(_accounts, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

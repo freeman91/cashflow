@@ -10,8 +10,8 @@ from services.api.controllers.__util__ import (
 histories = Blueprint("histories", __name__)
 
 
-@handle_exception
 @histories.route("/histories/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _histories(user_id: str):
     if request.method == "POST":
         pass
@@ -28,8 +28,8 @@ def _histories(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @histories.route("/histories/<user_id>/<networth_id>", methods=["GET", "PUT", "DELETE"])
+@handle_exception
 def _networth(user_id: str, networth_id: str):
     if request.method == "GET":
         pass

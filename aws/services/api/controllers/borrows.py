@@ -6,13 +6,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 borrows = Blueprint("borrows", __name__)
 
 
-@handle_exception
 @borrows.route("/borrows/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _borrows(user_id: str):
     if request.method == "POST":
         body = request.json
@@ -24,6 +25,7 @@ def _borrows(user_id: str):
             merchant=body.get("merchant"),
             account_id=body.get("account_id"),
         )
+        log_action(user_id, f"Borrow created: {borrow.merchant}")
         return success_result(borrow.as_dict())
 
     if request.method == "GET":
@@ -41,8 +43,8 @@ def _borrows(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @borrows.route("/borrows/<user_id>/<borrow_id>", methods=["GET", "PUT", "DELETE"])
+@handle_exception
 def _borrow(user_id: str, borrow_id: str):
     if request.method == "GET":
         return success_result(
@@ -59,10 +61,12 @@ def _borrow(user_id: str, borrow_id: str):
 
         borrow.last_update = datetime.now(timezone.utc)
         borrow.save()
+        log_action(user_id, f"Borrow updated: {borrow.merchant}")
         return success_result(borrow.as_dict())
 
     if request.method == "DELETE":
         Borrow.get_(user_id=user_id, borrow_id=borrow_id).delete()
+        log_action(user_id, f"Borrow deleted: {borrow_id}")
         return success_result(f"{borrow_id} deleted")
 
     return failure_result()

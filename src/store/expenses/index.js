@@ -52,7 +52,7 @@ const getExpenses = createAsyncThunk(
       };
     } catch (err) {
       console.error(err);
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -79,7 +79,7 @@ const postExpense = createAsyncThunk(
         data: [expense].concat(expenses),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -108,7 +108,7 @@ const putExpense = createAsyncThunk(
         data: concat(_expenses, expense),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -129,7 +129,7 @@ const deleteExpense = createAsyncThunk(
         data: _expenses,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

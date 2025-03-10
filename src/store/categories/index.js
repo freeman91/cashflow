@@ -16,7 +16,7 @@ const getCategories = createAsyncThunk(
         data: await getResourcesAPI(user_id, 'categories'),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -43,7 +43,7 @@ const putCategories = createAsyncThunk(
         data: concat(_categories, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

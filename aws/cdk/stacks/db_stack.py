@@ -1,6 +1,7 @@
 """DyanmoDbStack Stack definition"""
 
 import os
+from typing import Optional
 from aws_cdk import NestedStack, Stack
 from aws_cdk import aws_dynamodb as dynamodb
 
@@ -13,7 +14,7 @@ class DynamoDBTable:
     """Create a DynamoDB table construct"""
 
     def __init__(
-        self, scope, item_type: str, partition_key: str, sort_key: str
+        self, scope, item_type: str, partition_key: str, sort_key: str, time_to_live_attribute: Optional[str] = None
     ) -> None:
         self.id = f"{APP_ID}-{ENV}-{item_type}s"
         print(f"\tDynamoDBTable: {self.id}")
@@ -29,6 +30,7 @@ class DynamoDBTable:
                 name=sort_key, type=dynamodb.AttributeType.STRING
             ),
             billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
+            time_to_live_attribute=time_to_live_attribute,
         )
 
     def add_gsi(self, type_: str, partition_key: str, sort_key: str):
@@ -73,3 +75,4 @@ class DyanmoDbStack(NestedStack):
         DynamoDBTable(self, "paycheck", "user_id", "paycheck_id")
         DynamoDBTable(self, "user", "user_id", "email")
         DynamoDBTable(self, "budget", "user_id", "month")
+        DynamoDBTable(self, "audit", "user_id", "timestamp", "ttl")

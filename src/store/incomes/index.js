@@ -51,7 +51,7 @@ const getIncomes = createAsyncThunk(
       };
     } catch (err) {
       console.error(err);
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -78,7 +78,7 @@ const postIncome = createAsyncThunk(
         data: [income].concat(incomes),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -105,7 +105,7 @@ const putIncome = createAsyncThunk(
         data: concat(_incomes, income),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -127,7 +127,7 @@ const deleteIncome = createAsyncThunk(
         data: _incomes,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

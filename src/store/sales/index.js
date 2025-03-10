@@ -58,7 +58,7 @@ const getSales = createAsyncThunk(
       };
     } catch (err) {
       console.error(err);
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -87,7 +87,7 @@ const postSale = createAsyncThunk(
 
       return { data: [sale].concat(sales) };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -109,7 +109,7 @@ const putSale = createAsyncThunk(
         data: concat(_sales, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -131,7 +131,7 @@ const deleteSale = createAsyncThunk(
         data: _sales,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

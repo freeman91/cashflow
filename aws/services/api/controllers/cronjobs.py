@@ -18,6 +18,7 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 CRYPTO_KEY = os.getenv("CRYPTO_COMPARE_KEY")
@@ -66,8 +67,8 @@ def update_or_create_history(
         History.create(item_id, month_str, account_type, user_id, [value_item])
 
 
-@handle_exception
 @cronjobs.route("/cronjobs/update_crypto_prices", methods=["PUT"])
+@handle_exception
 def update_crypto_prices():
     """
     30 18,6 * * * curl -X PUT localhost:9000/cronjobs/update_crypto_prices
@@ -119,13 +120,14 @@ def update_crypto_prices():
 
         message = "crypto securities updated"
         current_app.logger.info(message)
+        log_action("SYSTEM", f"Crypto securities updated")
         return success_result(message)
 
     return failure_result()
 
 
-@handle_exception
 @cronjobs.route("/cronjobs/update_stock_prices", methods=["PUT"])
+@handle_exception
 def update_stock_prices():
     """
     30 18 * * * curl -X PUT localhost:9000/cronjobs/update_stock_prices
@@ -175,13 +177,14 @@ def update_stock_prices():
 
         message = "stock securities updated"
         current_app.logger.info(message)
+        log_action("SYSTEM", f"Stock securities updated")
         return success_result(message)
 
     return failure_result()
 
 
-@handle_exception
 @cronjobs.route("/cronjobs/save_value_histories", methods=["PUT"])
+@handle_exception
 def save_value_histories():
     """
     50 10,23 * * * curl -X PUT localhost:9000/cronjobs/save_value_histories > /dev/null
@@ -232,11 +235,12 @@ def save_value_histories():
 
     message = "Value Histories created/updated successfully"
     current_app.logger.info(message)
+    log_action("SYSTEM", f"Value Histories created/updated successfully")
     return success_result(message)
 
 
-@handle_exception
 @cronjobs.route("/cronjobs/generate_transactions", methods=["POST"])
+@handle_exception
 def generate_transactions():
     """
     0 0 * * * curl -X POST localhost:9000/cronjobs/generate_transactions
@@ -283,6 +287,7 @@ def generate_transactions():
 
         message = f"{_date} :: {count} transactions generated"
         current_app.logger.info(message)
+        log_action("SYSTEM", message)
         return success_result(message)
 
     return failure_result()

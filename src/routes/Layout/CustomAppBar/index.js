@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+import { getAudits } from '../../../store/audits';
 import { refreshAllData } from '../../../store/user';
 import ReactiveButton from '../../../components/ReactiveButton';
 import AccountsAppBar from './AccountsAppBar';
@@ -25,7 +26,8 @@ const REPORTS = 'reports';
 const BUDGETS = 'budgets';
 const SETTINGS = 'settings';
 const PROFILE = 'profile';
-const ROUTES = [DASHBOARD, REPORTS, BUDGETS, SETTINGS, PROFILE];
+const AUDIT_LOG = 'audit-log';
+const ROUTES = [DASHBOARD, REPORTS, BUDGETS, SETTINGS, PROFILE, AUDIT_LOG];
 
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => !['expanded', 'drawerWidth'].includes(prop),
@@ -75,6 +77,10 @@ const CustomAppBar = forwardRef((props, ref) => {
     dispatch(refreshAllData(user.user_id));
   };
 
+  const handleRefreshAuditLog = () => {
+    dispatch(getAudits());
+  };
+
   const drawerWidth = drawerExpanded ? theme.drawerWidth : 0;
   return (
     <StyledAppBar
@@ -106,6 +112,15 @@ const CustomAppBar = forwardRef((props, ref) => {
           <ReactiveButton
             label='Refresh'
             handleClick={handleRefresh}
+            Icon={LoopIcon}
+            color='primary'
+            variant='outlined'
+          />
+        )}
+        {route === 'audit-log' && (
+          <ReactiveButton
+            label='Refresh'
+            handleClick={handleRefreshAuditLog}
             Icon={LoopIcon}
             color='primary'
             variant='outlined'

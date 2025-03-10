@@ -12,14 +12,15 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 
 recurrings = Blueprint("recurrings", __name__)
 
 
-@handle_exception
 @recurrings.route("/recurrings/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _recurrings(user_id: str):
     if request.method == "POST":
         body = request.json
@@ -47,6 +48,7 @@ def _recurrings(user_id: str):
             paycheck_attributes=body.get("paycheck_attributes"),
             income_attributes=body.get("income_attributes"),
         )
+        log_action(user_id, f"Recurring created: {recurring.name}")
         return success_result(recurring.as_dict())
 
     if request.method == "GET":
@@ -56,10 +58,10 @@ def _recurrings(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @recurrings.route(
     "/recurrings/<user_id>/<recurring_id>", methods=["GET", "PUT", "DELETE"]
 )
+@handle_exception
 def _recurring(user_id: str, recurring_id: str):
     if request.method == "GET":
         return success_result(
@@ -107,10 +109,12 @@ def _recurring(user_id: str, recurring_id: str):
 
         recurring.last_update = datetime.now(timezone.utc)
         recurring.save()
+        log_action(user_id, f"Recurring updated: {recurring.name}")
         return success_result(recurring.as_dict())
 
     if request.method == "DELETE":
         Recurring.get_(user_id=user_id, recurring_id=recurring_id).delete()
+        log_action(user_id, f"Recurring deleted: {recurring_id}")
         return success_result(f"{recurring_id} deleted")
 
     return failure_result()

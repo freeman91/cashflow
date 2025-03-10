@@ -56,7 +56,7 @@ const getBorrows = createAsyncThunk(
       };
     } catch (err) {
       console.error(err);
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -78,7 +78,7 @@ const postBorrow = createAsyncThunk(
         data: [result].concat(borrows),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -100,7 +100,7 @@ const putBorrow = createAsyncThunk(
         data: concat(_borrows, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -122,7 +122,7 @@ const deleteBorrow = createAsyncThunk(
         data: _borrows,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

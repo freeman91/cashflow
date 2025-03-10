@@ -56,7 +56,7 @@ const getPurchases = createAsyncThunk(
       };
     } catch (err) {
       console.error(err);
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -78,7 +78,7 @@ const postPurchase = createAsyncThunk(
         data: [result].concat(purchases),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -100,7 +100,7 @@ const putPurchase = createAsyncThunk(
         data: concat(_purchases, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -120,7 +120,7 @@ const deletePurchase = createAsyncThunk(
       remove(_purchases, { purchase_id: id });
       return { data: _purchases };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

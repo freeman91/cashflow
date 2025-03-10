@@ -24,7 +24,7 @@ const getRecurrings = createAsyncThunk(
         data: await getResourcesAPI(user_id, 'recurrings'),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -46,7 +46,7 @@ const postRecurring = createAsyncThunk(
         data: [result].concat(recurrings),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -68,7 +68,7 @@ const putRecurring = createAsyncThunk(
         data: concat(_recurrings, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -90,7 +90,7 @@ const deleteRecurring = createAsyncThunk(
         data: _recurrings,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -118,7 +118,7 @@ const deactivateRecurring = createAsyncThunk(
         data: concat(_recurrings, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

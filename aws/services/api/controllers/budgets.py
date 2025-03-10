@@ -7,13 +7,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 budgets = Blueprint("budgets", __name__)
 
 
-@handle_exception
 @budgets.route("/budgets/<user_id>", methods=["PUT", "GET"])
+@handle_exception
 def _budgets(user_id: str):
     if request.method == "PUT":
         budget = None
@@ -36,7 +37,7 @@ def _budgets(user_id: str):
                     expenses=body.get("expenses"),
                     savings=body.get("savings"),
                 )
-
+        log_action(user_id, f"Budget created: {budget.month}")
         return success_result(budget.as_dict())
 
     if request.method == "GET":
@@ -47,8 +48,8 @@ def _budgets(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @budgets.route("/budgets/<user_id>/<budget_id>", methods=["GET", "DELETE"])
+@handle_exception
 def _budget(user_id: str, budget_id: str):
     if request.method == "GET":
         print("GET")

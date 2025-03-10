@@ -76,7 +76,7 @@ const putUser = createAsyncThunk(
       }
       return { item: user };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

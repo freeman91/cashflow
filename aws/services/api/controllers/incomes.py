@@ -6,13 +6,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 incomes = Blueprint("incomes", __name__)
 
 
-@handle_exception
 @incomes.route("/incomes/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _incomes(user_id: str):
     if request.method == "POST":
         account = None
@@ -29,7 +30,7 @@ def _incomes(user_id: str):
             recurring_id=body.get("recurring_id"),
             description=body.get("description"),
         )
-
+        log_action(user_id, f"Income created: {income.source}")
         if income.deposit_to_id and not income.pending:
             account = income.update_account()
             if account:
@@ -51,8 +52,8 @@ def _incomes(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @incomes.route("/incomes/<user_id>/<income_id>", methods=["GET", "PUT", "DELETE"])
+@handle_exception
 def _income(user_id: str, income_id: str):
     if request.method == "GET":
         return success_result(
@@ -84,10 +85,12 @@ def _income(user_id: str, income_id: str):
             if account:
                 account = account.as_dict()
 
+        log_action(user_id, f"Income updated: {income.source}")
         return success_result({"income": income.as_dict(), "account": account})
 
     if request.method == "DELETE":
         Income.get_(user_id=user_id, income_id=income_id).delete()
+        log_action(user_id, f"Income deleted: {income_id}")
         return success_result(f"{income_id} deleted")
 
     return failure_result()

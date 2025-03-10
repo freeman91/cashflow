@@ -1,6 +1,7 @@
 """Dynamo submodule"""
 
 from .account import Account
+from .audit import Audit
 from .borrow import Borrow
 from .budget import Budget
 from .categories import Categories

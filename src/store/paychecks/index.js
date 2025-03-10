@@ -52,7 +52,7 @@ const getPaychecks = createAsyncThunk(
       };
     } catch (err) {
       console.error(err);
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -79,7 +79,7 @@ const postPaycheck = createAsyncThunk(
         data: [paycheck].concat(paychecks),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -106,7 +106,7 @@ const putPaycheck = createAsyncThunk(
         data: concat(_paychecks, paycheck),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -126,7 +126,7 @@ const deletePaycheck = createAsyncThunk(
       remove(_paychecks, { paycheck_id: id });
       return { data: _paychecks };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

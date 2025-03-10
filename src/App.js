@@ -12,6 +12,7 @@ import { muiTheme } from './styles/muiTheme';
 import { history, store } from './store/createStore';
 
 import Accounts from './routes/Accounts';
+import Audits from './routes/Audits';
 import Budgets from './routes/Budgets';
 import Dashboard from './routes/Dashboard';
 import Reports from './routes/Reports';
@@ -35,6 +36,7 @@ const AppRoutes = () => {
         <Route path='/reports/:type/:view' element={<Reports />} />
         <Route path='/budgets' element={<Budgets />} />
         <Route path='/settings' element={<Settings />} />
+        <Route path='/audit-log' element={<Audits />} />
         {/* <Route path='/profile' element={<></>} /> */}
       </Route>
       <Route path='*'>

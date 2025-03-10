@@ -58,7 +58,7 @@ const getRepayments = createAsyncThunk(
         end: storeRange.end,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -88,7 +88,7 @@ const postRepayment = createAsyncThunk(
         data: [repayment].concat(repayments),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -121,7 +121,7 @@ const putRepayment = createAsyncThunk(
         data: concat(_repayments, repayment),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -143,7 +143,7 @@ const deleteRepayment = createAsyncThunk(
         data: _repayments,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );

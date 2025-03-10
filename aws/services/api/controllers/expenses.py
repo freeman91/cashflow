@@ -8,13 +8,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 expenses = Blueprint("expenses", __name__)
 
 
-@handle_exception
 @expenses.route("/expenses/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _expenses(user_id: str):
     if request.method == "POST":
         body = request.json
@@ -32,7 +33,7 @@ def _expenses(user_id: str):
             recurring_id=body.get("recurring_id"),
             description=body.get("description"),
         )
-
+        log_action(user_id, f"Expense created: {expense.merchant}")
         account = None
         if not expense.pending and expense.payment_from_id:
             account = expense.update_account()
@@ -56,8 +57,8 @@ def _expenses(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @expenses.route("/expenses/<user_id>/<expense_id>", methods=["GET", "PUT", "DELETE"])
+@handle_exception
 def _expense(user_id: str, expense_id: str):
     if request.method == "GET":
         return success_result(
@@ -91,10 +92,12 @@ def _expense(user_id: str, expense_id: str):
             if account:
                 account = account.as_dict()
 
+        log_action(user_id, f"Expense updated: {expense.merchant}")
         return success_result({"expense": expense.as_dict(), "account": account})
 
     if request.method == "DELETE":
         Expense.get_(user_id=user_id, expense_id=expense_id).delete()
+        log_action(user_id, f"Expense deleted: {expense_id}")
         return success_result(f"{expense_id} deleted")
 
     return failure_result()

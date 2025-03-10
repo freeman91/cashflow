@@ -6,13 +6,14 @@ from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
     success_result,
+    log_action,
 )
 
 sales = Blueprint("sales", __name__)
 
 
-@handle_exception
 @sales.route("/sales/<user_id>", methods=["POST", "GET"])
+@handle_exception
 def _sales(user_id: str):
     if request.method == "POST":
         body = request.json
@@ -32,6 +33,7 @@ def _sales(user_id: str):
             fee=float(body.get("fee")),
             deposit_to_id=body.get("deposit_to_id"),
         )
+        log_action(user_id, f"Sale created: {sale.merchant}")
 
         if sale.security_id:
             withdraw_security = sale.withdraw()
@@ -54,8 +56,8 @@ def _sales(user_id: str):
     return failure_result()
 
 
-@handle_exception
 @sales.route("/sales/<user_id>/<sale_id>", methods=["GET", "PUT", "DELETE"])
+@handle_exception
 def _sale(user_id: str, sale_id: str):
     if request.method == "GET":
         start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")
@@ -82,10 +84,12 @@ def _sale(user_id: str, sale_id: str):
 
         sale.last_update = datetime.now(timezone.utc)
         sale.save()
+        log_action(user_id, f"Sale updated: {sale.merchant}")
         return success_result(sale.as_dict())
 
     if request.method == "DELETE":
         Sale.get_(user_id=user_id, sale_id=sale_id).delete()
+        log_action(user_id, f"Sale deleted: {sale_id}")
         return success_result(f"{sale_id} deleted")
 
     return failure_result()

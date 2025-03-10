@@ -1,10 +1,12 @@
 # pylint: disable = broad-except
 """controller utility functions"""
 
-import traceback
-from datetime import datetime
+from datetime import datetime, timezone
 from http import HTTPStatus
+from flask import request
 from pydash import set_
+
+from services.dynamo import Audit
 
 
 def success_result(payload, status_code: HTTPStatus = HTTPStatus.OK):
@@ -25,17 +27,30 @@ def set_date(item: dict):
     )
 
 
+def log_action(user_id: str, message: str, status: str = "success"):
+    Audit.create(
+        user_id=user_id,
+        action=f"{request.method} - {request.url_rule.rule}",
+        status=status,
+        message=message,
+    )
+
+
 def handle_exception(func):
     """wrap the function in a try/except block"""
 
-    def wrap(*args, **kwargs):
+    def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
         except Exception as err:
-            traceback.print_exc()
+            # traceback.print_exc()
+            user_id = kwargs.get("user_id", "SYSTEM")
+            log_action(user_id, f"Action unsuccessful: {err.args[0]}", status="error")
+
             return failure_result(
                 f"Action unsuccessful: {err}",
                 status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
             )
 
-    return wrap
+    wrapper.__name__ = func.__name__
+    return wrapper

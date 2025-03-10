@@ -21,7 +21,7 @@ const getBudgets = createAsyncThunk(
         data: sortBy(budgets, 'date'),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     } finally {
       dispatch(hideLoading());
     }
@@ -48,7 +48,7 @@ const putBudget = createAsyncThunk(
         data: concat(_budgets, result),
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
@@ -70,7 +70,7 @@ const deleteBudget = createAsyncThunk(
         data: _budgets,
       };
     } catch (err) {
-      dispatch(setSnackbar({ message: `error: ${err}` }));
+      dispatch(setSnackbar({ message: err.message }));
     }
   }
 );
