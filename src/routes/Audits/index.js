@@ -32,7 +32,7 @@ export default function Audits() {
     {
       field: 'timestamp',
       headerName: 'Timestamp',
-      width: 150,
+      width: 160,
       renderCell: (params) => {
         return dayjs(params.row.timestamp).format('MMM Do, YYYY HH:mm');
       },
@@ -53,7 +53,7 @@ export default function Audits() {
     {
       field: 'action',
       headerName: 'Action',
-      width: 150,
+      flex: 1,
     },
     {
       field: 'message',
@@ -61,6 +61,10 @@ export default function Audits() {
       flex: 1,
     },
   ];
+
+  const handleRowClick = (params) => {
+    alert(params.row.message);
+  };
 
   return (
     <Grid
@@ -76,8 +80,13 @@ export default function Audits() {
         pb: 6,
       }}
     >
-      <Grid size={{ xs: 12 }} sx={{ width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} disableRowSelectionOnClick />
+      <Grid size={{ xs: 12 }} sx={{ width: '100%', mr: 1 }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          disableRowSelectionOnClick
+          onRowClick={handleRowClick}
+        />
       </Grid>
     </Grid>
   );

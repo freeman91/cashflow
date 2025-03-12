@@ -224,7 +224,7 @@ export default function IncomeBreakdown(props) {
                     slotProps={{ primary: { align: 'right' } }}
                   />
                 </ListItem>
-                <ListItem sx={{ px: 4 }}>
+                <ListItem disableGutters sx={{ pl: 4 }}>
                   <ListItemText secondary='Take Home' />
                   <ListItemText
                     secondary={numberToCurrency.format(takeHome)}
@@ -232,7 +232,7 @@ export default function IncomeBreakdown(props) {
                   />
                 </ListItem>
                 {employeeContributions > 0 && (
-                  <ListItem sx={{ px: 4 }}>
+                  <ListItem disableGutters sx={{ pl: 4 }}>
                     <ListItemText secondary='Employee Contributions' />
                     <ListItemText
                       secondary={numberToCurrency.format(employeeContributions)}
@@ -241,7 +241,7 @@ export default function IncomeBreakdown(props) {
                   </ListItem>
                 )}
                 {employerContributions > 0 && (
-                  <ListItem sx={{ px: 4 }}>
+                  <ListItem disableGutters sx={{ pl: 4 }}>
                     <ListItemText secondary='Employer Contributions' />
                     <ListItemText
                       secondary={numberToCurrency.format(employerContributions)}

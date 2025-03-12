@@ -1,64 +1,71 @@
-sh```
-docker-compose up -d
+# CashFlow
 
-python -m venv venv
-source venv/bin/activate
-pip3 install -r requirements.txt
-pip3 install -r requirements-dev.txt
+Personal finance management application
+
+## Description
+
+An in-depth paragraph about your project and overview of use.
+
+## Getting Started
+
+### Dependencies
+
+- Poetry
+- yarn
+- docker
+
+### Installing
+
+- create `.env` file
+
+```sh
+APP_ID=cashflow
+ENV=production
+REGION=us-east-2
+FLASK_APP=run.py
+POETRY_VERSION=1.1.12
+PORT=4242
+HOST=localhost
+REACT_APP_API_URL=http://localhost:9000/
+CRYPTO_COMPARE_KEY=
+REACT_APP_USER_ID=
+```
+
+- install poetry & yarn packages
+
+```sh
+poetry install (--no-root)
+yarn install
+```
+
+### Executing program
+
+- Run application in dev
+
+```sh
+# run backend & frontend containers
+docker-compose up -d --build
+
+# build and run backend container only
+docker-compose up -d backend
+
+# tail docker logs
+docker-compose logs -f --tail=100
+
+# run the frontend in dev
+yarn start
 
 # run db workbench
-
-python -i db_workbench.py
-
-````
-
-.env file
-
-sh```
-ENV=dev
-
-FRONTEND_IP=http://localhost:9000
-
-MONGO_URI=
-MONGO_INITDB_DATABASE=database
-MONGO_INITDB_ROOT_USERNAME=admin
-MONGO_INITDB_ROOT_PASSWORD=password
-MONGO_IP=172.19.199.3
-MONGO_PORT=27017
-SECRET_KEY=
-
-````
-
-### Jupiter deploy
-
-- update api/frontend port number?
-
-## docker notes
-
-## Backup
-
-```sh
-# generate a backup
-$ ./mongo-backup
+poetry run python -i aws/main.py workbench
 ```
 
-## Restore
+- Run application in production
 
 ```sh
-# copy backup to mongodb container
-docker cp ~/mongo-backups/cashflow-backup-2022-01-04/database mongodb:/data
-
-# drop database in mongodb container
-# log into shell
-docker exec -it mongodb /bin/bash
-mongo --username admin --password password
-> use database
-> db.dropDatabase()
-
-# restore from backup
-docker exec -i mongodb mongorestore --username admin --password password /data
+# run deploy script to
+# - close any existing frontend server processes
+# - pull latest branch from git
+# - create optimized production build of the server
+# - serve frontend
+./deploy
 ```
-
-## mongo container wont build
-
-if issue is mongod.lock not empty, delete mongo-volume/, rebuild, restore db

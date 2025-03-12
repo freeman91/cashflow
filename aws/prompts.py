@@ -6,6 +6,7 @@ from pydash import sort_by, find
 
 from services.dynamo import (
     Account,
+    Audit,
     Borrow,
     Expense,
     Income,
@@ -147,3 +148,11 @@ def security() -> Security:
     ]
 
     return resource(securities, "Security")
+
+
+def audit() -> Audit:
+    audits = [
+        {"name": f"{audit.timestamp} [{audit.user_id}]", "value": audit}
+        for audit in sort_by(Audit.scan(), "timestamp")
+    ]
+    return resource(audits, "Audit")

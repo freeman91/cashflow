@@ -46,7 +46,7 @@ function RecurringForm(props) {
   const [recurring, setRecurring] = useState({});
 
   useEffect(() => {
-    if (attrs.recurring_id) {
+    if (attrs?.recurring_id) {
       let _recurring = find(recurrings, { recurring_id: attrs.recurring_id });
       setRecurring({
         ..._recurring,
