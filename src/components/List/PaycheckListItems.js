@@ -30,8 +30,8 @@ export default function PaycheckListItems(props) {
       <AutocompleteListItem
         id='employer'
         label='employer'
-        value={recurring.paycheck_attributes.employer}
-        options={[recurring.paycheck_attributes.employer]}
+        value={recurring.paycheck_attributes?.employer}
+        options={[recurring.paycheck_attributes?.employer]}
         onChange={(e, value) => handleChange('employer', value || '')}
       />
       <DecimalFieldListItem

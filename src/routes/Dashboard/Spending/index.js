@@ -350,11 +350,13 @@ export default function Spending() {
         <Typography variant='h5' fontWeight='bold'>
           This Month vs. {startCase(label)}
         </Typography>
-        <Divider sx={{ mt: 2 }} />
+        <Divider sx={{ my: 2 }} />
         <ResponsiveContainer width='100%' height={200}>
           <ComposedChart
+            width='100%'
+            height={200}
             data={chartData}
-            margin={{ top: 15, right: 0, bottom: 0 }}
+            margin={{ top: 5, right: 5, left: 5, bottom: 0 }}
           >
             <XAxis
               dataKey='day'

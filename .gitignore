@@ -8,3 +8,4 @@ node_modules/
 build/
 output.log
 cdk.out/
+.python-version

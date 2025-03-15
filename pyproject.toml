@@ -5,7 +5,7 @@ description = ""
 authors = ["Addison Freeman <addisonfreeman91@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.12"
 Flask = "^2.1.1"
 Flask-Cors = "^3.0.10"
 python-dotenv = "^0.20.0"

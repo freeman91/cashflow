@@ -26,31 +26,21 @@ export default function Transactions() {
           backgroundImage: (theme) => theme.vars.overlays[8],
           boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
-          pt: 1,
         }}
       >
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            mr: 2,
-            py: 1,
+            px: 2,
+            py: 2,
           }}
         >
-          <Typography
-            variant='body1'
-            fontWeight='bold'
-            color='textSecondary'
-            sx={{ px: 2 }}
-          >
-            TRANSACTIONS
+          <Typography variant='h6' fontWeight='bold' color='textSecondary'>
+            Recent Transactions
           </Typography>
           <CreateTransactionButton />
         </Box>
-
-        <Typography variant='h5' fontWeight='bold' sx={{ px: 2, pb: 2 }}>
-          Recent
-        </Typography>
         <TransactionsTable transactionsByDay={transactionsByDay} />
       </Box>
     </Grid>

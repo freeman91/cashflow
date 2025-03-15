@@ -1,14 +1,17 @@
-FROM python:3.10
+FROM python:3.12
 
 WORKDIR /code
 COPY . /code
 
-RUN apt update
-RUN apt install -y python3-dev python3-openssl libpq-dev
-RUN pip install -U pip
-RUN pip install poetry==1.3.2
+RUN apt-get update && apt-get install -y python3-distutils python3-venv
 
-RUN POETRY_VIRTUALENVS_CREATE=false poetry install --no-interaction --no-ansi
+RUN pip install -U pip
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+ENV PATH="/root/.local/bin:$PATH"
+ENV POETRY_VIRTUALENVS_CREATE=false
+
+RUN poetry install --no-interaction --no-ansi --no-root
 
 EXPOSE 9000
 
