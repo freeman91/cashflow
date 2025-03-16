@@ -1,18 +1,19 @@
-FROM python:3.12
+FROM python:3.12-slim
 
 WORKDIR /code
-COPY . /code
 
-RUN apt-get update && apt-get install -y python3-distutils python3-venv
+RUN apt-get update && apt-get install -y python3-distutils python3-venv \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip install -U pip
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN pip install poetry==2.1.1
 
-ENV PATH="/root/.local/bin:$PATH"
-ENV POETRY_VIRTUALENVS_CREATE=false
+ENV POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_CACHE_DIR=/tmp/poetry_cache
 
-RUN poetry install --no-interaction --no-ansi --no-root
+COPY pyproject.toml poetry.lock ./
+RUN poetry install --no-ansi --no-root --without dev && rm -rf $POETRY_CACHE_DIR
 
+COPY . .
 EXPOSE 9000
 
 # Command to run the Flask app
