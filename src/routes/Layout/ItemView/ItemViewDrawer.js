@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import startCase from 'lodash/startCase';
+import dayjs from 'dayjs';
 
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
@@ -17,7 +19,7 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import Popper from '@mui/material/Popper';
 
-import { closeItemView } from '../../../store/itemView';
+import { closeItemView, openItemView } from '../../../store/itemView';
 import AccountForm from '../../../components/Forms/AccountForm';
 import BorrowForm from '../../../components/Forms/BorrowForm';
 import ExpenseForm from '../../../components/Forms/ExpenseForm';
@@ -105,6 +107,16 @@ const OptionsButton = (props) => {
     handleCloseDrawer();
   };
 
+  const handleDuplicate = () => {
+    let _attrs = { ...attrs };
+    _attrs[_attrs._type + '_id'] = null;
+    _attrs.date = dayjs();
+
+    setOpen(false);
+    handleCloseDrawer();
+    dispatch(openItemView({ itemType, mode: 'create', attrs: _attrs }));
+  };
+
   const handleDeactivate = () => {
     if (itemType === 'security') {
       dispatch(deactivateSecurity(attrs.security_id));
@@ -176,9 +188,37 @@ const OptionsButton = (props) => {
                     'repayment',
                     'sale',
                   ].includes(itemType) && (
-                    <MenuItem onClick={() => handleDelete()} sx={{ gap: 2 }}>
+                    <MenuItem
+                      onClick={() => handleDelete()}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        gap: 1,
+                      }}
+                    >
                       Delete
                       <DeleteIcon color='error' />
+                    </MenuItem>
+                  )}
+                  {[
+                    'borrow',
+                    'expense',
+                    'income',
+                    'paycheck',
+                    'purchase',
+                    'repayment',
+                    'sale',
+                  ].includes(itemType) && (
+                    <MenuItem
+                      onClick={() => handleDuplicate()}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        gap: 1,
+                      }}
+                    >
+                      Duplicate
+                      <ContentCopyIcon color='info' fontSize='small' />
                     </MenuItem>
                   )}
                   {['account', 'recurring', 'security'].includes(itemType) && (

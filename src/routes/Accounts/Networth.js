@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
-import reduce from 'lodash/reduce';
 import {
   AreaChart,
   Area,
@@ -24,7 +23,7 @@ import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { findAmount } from '../../helpers/transactions';
-import { ASSET, LIABILITY } from '../../components/Forms/AccountForm';
+import { ASSET } from '../../components/Forms/AccountForm';
 
 function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
@@ -50,38 +49,35 @@ function CustomTooltip({ active, payload, label }) {
   return null;
 }
 
-export default function NetWorth() {
+export default function NetWorth(props) {
+  const { accounts } = props;
   const theme = useTheme();
   const histories = useSelector((state) => state.histories.data);
-  const accounts = useSelector((state) => state.accounts.data);
 
   const [networth, setNetworth] = useState(0);
-  const [assetAccounts, setAssetAccounts] = useState([]);
-  const [liabilityAccounts, setLiabilityAccounts] = useState([]);
+  const [accountsHistories, setAccountsHistories] = useState([]);
   const [days, setDays] = useState([]);
   const [difference, setDifference] = useState(0);
 
   useEffect(() => {
-    const assetAccounts = filter(accounts, { account_type: ASSET });
-    const liabilityAccounts = filter(accounts, { account_type: LIABILITY });
-    setAssetAccounts(assetAccounts);
-    setLiabilityAccounts(liabilityAccounts);
-  }, [accounts]);
-
-  useEffect(() => {
-    const assetSum = reduce(
-      assetAccounts,
-      (sum, account) => sum + findAmount(account),
-      0
+    const [assetSum, liabilitySum] = accounts.reduce(
+      (acc, account) => {
+        if (account.account_type === ASSET) {
+          acc[0] += findAmount(account);
+        } else {
+          acc[1] += findAmount(account);
+        }
+        return acc;
+      },
+      [0, 0]
     );
-    const liabilitySum = reduce(
-      liabilityAccounts,
-      (sum, account) => sum + findAmount(account),
-      0
-    );
-
     setNetworth(assetSum - liabilitySum);
-  }, [assetAccounts, liabilityAccounts]);
+    const accountIds = accounts.map((account) => account.account_id);
+    const historiesForAccounts = filter(histories, (history) =>
+      accountIds.includes(history.item_id)
+    );
+    setAccountsHistories(historiesForAccounts);
+  }, [accounts, histories]);
 
   useEffect(() => {
     const firstDay = find(days, (day) => day.networth !== null);
@@ -103,7 +99,7 @@ export default function NetWorth() {
       let dayLiabilities = 0;
 
       // get all histories for the day
-      const historiesForMonth = filter(histories, (history) => {
+      const historiesForMonth = filter(accountsHistories, (history) => {
         return (
           history.month === date.format('YYYY-MM') &&
           history.item_id.startsWith('account')
@@ -135,7 +131,7 @@ export default function NetWorth() {
     }
 
     setDays(_days);
-  }, [histories]);
+  }, [accountsHistories]);
 
   const differenceAttrs = (() => {
     if (difference === 0) {

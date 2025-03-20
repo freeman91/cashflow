@@ -12,9 +12,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { numberToCurrency } from '../../helpers/currency';
-import { findAmount } from '../../helpers/transactions';
-import { ASSET, LIABILITY } from '../../components/Forms/AccountForm';
+import { numberToCurrency } from '../../../helpers/currency';
+import { findAmount } from '../../../helpers/transactions';
+import { ASSET, LIABILITY } from '../../../components/Forms/AccountForm';
 
 export default function AccountsSummary(props) {
   const { groupedAccounts } = props;

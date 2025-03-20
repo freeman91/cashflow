@@ -8,13 +8,13 @@ import Grid from '@mui/material/Grid2';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
-import { findAmount } from '../../helpers/transactions';
-import { ASSET, LIABILITY } from '../../components/Forms/AccountForm';
+import { findAmount } from '../../../helpers/transactions';
+import { ASSET, LIABILITY } from '../../../components/Forms/AccountForm';
 import AccountsSummary from './Summary';
 import AccountGroupGrid from './AccountGroupGrid';
-import NetWorth from './Networth';
+import NetWorth from '../Networth';
 
-export default function AccountsRoot() {
+export default function AccountsAll() {
   const accounts = useSelector((state) => state.accounts.data);
   const histories = useSelector((state) => state.histories.data);
 
@@ -123,7 +123,7 @@ export default function AccountsRoot() {
         pb: 5,
       }}
     >
-      <NetWorth />
+      <NetWorth accounts={accounts} />
       <Grid size={{ xs: 12, md: 8 }} display='flex' justifyContent='center'>
         <Grid container spacing={2}>
           {groupedAccounts.map((group, idx) => {

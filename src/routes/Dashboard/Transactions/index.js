@@ -33,7 +33,7 @@ export default function Transactions() {
             display: 'flex',
             justifyContent: 'space-between',
             px: 2,
-            py: 2,
+            py: 1,
           }}
         >
           <Typography variant='h6' fontWeight='bold' color='textSecondary'>

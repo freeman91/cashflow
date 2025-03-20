@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'redux-first-history';
 import get from 'lodash/get';
+import startCase from 'lodash/startCase';
 
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -13,12 +14,23 @@ import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
 import { getAccounts } from '../../../store/accounts';
 import { getHistories } from '../../../store/histories';
 import { openItemView } from '../../../store/itemView';
 import ReactiveButton from '../../../components/ReactiveButton';
+
+const ALL = 'all';
+const REAL_ESTATE = 'real-estate';
+const INVESTMENTS = 'investments';
+const VEHICLES = 'vehicles';
+const CASH = 'cash';
+const LOANS = 'loans';
+const CREDIT = 'credit';
+const VIEWS = [ALL, REAL_ESTATE, INVESTMENTS, VEHICLES, CASH, LOANS, CREDIT];
 
 const StyledBreadcrumbs = styled(Breadcrumbs, {
   shouldForwardProp: (prop) => !['isMobile'].includes(prop),
@@ -39,6 +51,7 @@ export default function AccountsAppBar(props) {
   const accounts = useSelector((state) => state.accounts.data);
 
   const [account, setAccount] = useState({});
+  const view = get(location.pathname.split('/'), '2', ALL);
 
   useEffect(() => {
     const _accountName = get(location.pathname.split('/'), 2);
@@ -127,6 +140,28 @@ export default function AccountsAppBar(props) {
           </Box>
         )}
       </StyledBreadcrumbs>
+      {VIEWS.includes(view) && (
+        <Select
+          variant='standard'
+          disableUnderline
+          value={view}
+          onChange={(e) => dispatch(push(`/accounts/${e.target.value}`))}
+          sx={{ mr: 1 }}
+          MenuProps={{
+            MenuListProps: {
+              disablePadding: true,
+            },
+          }}
+        >
+          {VIEWS.map((_view) => (
+            <MenuItem key={_view} value={_view}>
+              <Typography variant='h6' fontWeight='bold'>
+                {startCase(_view)}
+              </Typography>
+            </MenuItem>
+          ))}
+        </Select>
+      )}
       {!account.account_id && (
         <Box
           sx={{
@@ -154,3 +189,5 @@ export default function AccountsAppBar(props) {
     </>
   );
 }
+
+export { ALL, REAL_ESTATE, INVESTMENTS, VEHICLES, CASH, LOANS, CREDIT, VIEWS };
