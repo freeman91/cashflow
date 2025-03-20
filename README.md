@@ -28,7 +28,7 @@ FLASK_APP=run.py
 POETRY_VERSION=1.1.12
 PORT=4242
 HOST=localhost
-CRYPTO_COMPARE_KEY=
+CRYPTO_COMPARE_KEY= # create an api key: https://www.cryptocompare.com/coins/guides/how-to-use-our-api/
 
 REGION=us-east-2
 AWS_ACCESS_KEY_ID=
@@ -67,10 +67,7 @@ print(user.user_id)
 ### Developer Environment
 
 ```sh
-# run backend & frontend containers
-docker-compose up -d --build
-
-# build and run backend container only
+# build and run backend container only with docker
 docker-compose up -d backend
 
 # tail docker logs
@@ -79,7 +76,7 @@ docker-compose logs -f --tail=100
 # run the frontend in dev
 yarn start
 
-# run db workbench
+# run db workbench to open a python shell and interact with ddb data
 poetry run python -i aws/main.py workbench
 ```
 
@@ -111,11 +108,12 @@ Resources should be deployed to AWS first
   - mortgage
   - real estate
   - vehicles (each vehicle is a separate account)
-- Create Recurring items for each transaction that happens with some frequency
+  - etc
+- Create Recurring items for frequent transactions
   - expenses
   - incomes
   - paychecks
-  - repayments (Loan/mortgage repayment transactions)
+  - repayments (Loan/mortgage repayments)
 - When you spend or earn money create the appropriate transaction
   - expenses
   - incomes
@@ -124,7 +122,7 @@ Resources should be deployed to AWS first
 - When you purchase or sell an investment
   - purchase x shares of SPY
   - sell y shares of BTC
-- When create a loan account also create a borrow transaction
+- When you take out a loan or create a loan account also create a borrow transaction
 
 ### Setup cronjobs
 
@@ -132,6 +130,7 @@ There are a number of cronjobs that should run so that
 
 - stock and crypto holding values are periodically updated
 - account values are periodically saved in the History ddb table
-- generate pending transactions for upcoming recurtring items
+- pending transactions are created for upcoming recurtring items
 
 The cronjob are defined in the docstring of each endpoint handler in `aws/services/api/controllers/cronjobs.py`
+Look into how to keep your machine awake so that these cronjobs will always run.
