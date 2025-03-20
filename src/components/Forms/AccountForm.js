@@ -87,7 +87,7 @@ function AccountForm(props) {
   const [account, setAccount] = useState(defaultAccount);
 
   useEffect(() => {
-    if (attrs.account_id) {
+    if (attrs?.account_id) {
       let _account = find(accounts, { account_id: attrs.account_id });
       setAccount(_account);
     } else {

@@ -53,6 +53,11 @@ export default function SelectOption({ label, value, onChange, options = [] }) {
           <MenuItem value=''>
             <em>none</em>
           </MenuItem>
+          {!sortedOptions.includes(value) && (
+            <MenuItem key={value} value={value}>
+              {value}
+            </MenuItem>
+          )}
           {sortedOptions.map((option) => (
             <MenuItem key={option} value={option}>
               {option}

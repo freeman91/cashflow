@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import filter from 'lodash/filter';
 import sortBy from 'lodash/sortBy';
@@ -12,16 +12,25 @@ import Select from '@mui/material/Select';
 function PaymentFromSelect(props) {
   const { accountId, onChange } = props;
 
-  const [cashAccounts, creditAccounts] = useSelector((state) => {
-    let _accounts = state.accounts.data;
-    let cashAccounts = filter(_accounts, (account) => {
-      return account.asset_type === 'Cash';
-    });
-    let creditAccounts = filter(_accounts, (account) => {
-      return account.liability_type === 'Credit';
-    });
-    return [sortBy(cashAccounts, 'name'), sortBy(creditAccounts, 'name')];
-  });
+  const accounts = useSelector((state) => state.accounts.data);
+
+  const [cashAccounts, setCashAccounts] = useState([]);
+  const [creditAccounts, setCreditAccounts] = useState([]);
+
+  useEffect(() => {
+    setCashAccounts(
+      sortBy(
+        filter(accounts, (account) => account.asset_type === 'Cash'),
+        'name'
+      )
+    );
+    setCreditAccounts(
+      sortBy(
+        filter(accounts, (account) => account.liability_type === 'Credit'),
+        'name'
+      )
+    );
+  }, [accounts]);
 
   const handleChange = (e) => {
     onChange(e.target.value);

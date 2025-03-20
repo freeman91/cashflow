@@ -58,6 +58,15 @@ function DepositToSelect(props) {
         <MenuItem key='none' id='none-menu-item' value=''>
           <em>None</em>
         </MenuItem>
+        {!cashAccounts.find((account) => account.account_id === accountId) && (
+          <MenuItem
+            key={accountId}
+            id={`${accountId}-menu-item`}
+            value={accountId}
+          >
+            {accountId}
+          </MenuItem>
+        )}
         {cashAccounts.map((account) => (
           <MenuItem
             key={account.account_id}

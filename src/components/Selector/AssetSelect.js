@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import sortBy from 'lodash/sortBy';
 
@@ -12,9 +12,17 @@ import { ASSET } from '../Forms/AccountForm';
 function AssetSelect(props) {
   const { accountId, onChange } = props;
 
-  const assets = useSelector((state) =>
-    state.accounts.data.filter((account) => account.account_type === ASSET)
-  );
+  const accounts = useSelector((state) => state.accounts.data);
+  const [assets, setAssets] = useState([]);
+
+  useEffect(() => {
+    setAssets(
+      sortBy(
+        accounts.filter((account) => account.account_type === ASSET),
+        'name'
+      )
+    );
+  }, [accounts]);
 
   const handleChangeAsset = (e) => {
     if (e.target.value === '') return;
@@ -56,7 +64,7 @@ function AssetSelect(props) {
         <MenuItem value=''>
           <em>None</em>
         </MenuItem>
-        {sortBy(assets, 'name ').map((asset) => (
+        {assets.map((asset) => (
           <MenuItem
             key={asset.account_id}
             id={`${asset.account_id}-menu-item`}

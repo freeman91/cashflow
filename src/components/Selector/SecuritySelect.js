@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import sortBy from 'lodash/sortBy';
 
@@ -10,11 +10,22 @@ import Select from '@mui/material/Select';
 function SecuritySelect(props) {
   const { accountId, resource, setResource } = props;
 
-  const securities = useSelector((state) =>
-    state.securities.data.filter(
-      (security) => security.account_id === accountId
-    )
-  );
+  const securities = useSelector((state) => state.securities.data);
+  const [accountSecurities, setAccountSecurities] = useState([]);
+
+  useEffect(() => {
+    setAccountSecurities(
+      sortBy(
+        securities.filter((security) => security.account_id === accountId),
+        'name'
+      )
+    );
+  }, [securities, accountId]);
+  // const securities = useSelector((state) =>
+  //   state.securities.data.filter(
+  //     (security) => security.account_id === accountId
+  //   )
+  // );
 
   const handleChangeSecurity = (e) => {
     if (e.target.value === '') return;
@@ -60,7 +71,18 @@ function SecuritySelect(props) {
         <MenuItem value=''>
           <em>None</em>
         </MenuItem>
-        {sortBy(securities, 'name ').map((security) => (
+        {!accountSecurities.find(
+          (security) => security.security_id === resource.security_id
+        ) && (
+          <MenuItem
+            key={resource.security_id}
+            id={`${resource.security_id}-menu-item`}
+            value={resource.security_id}
+          >
+            {resource.security_id}
+          </MenuItem>
+        )}
+        {accountSecurities.map((security) => (
           <MenuItem
             key={security.security_id}
             id={`${security.security_id}-menu-item`}

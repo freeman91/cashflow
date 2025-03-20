@@ -7,6 +7,7 @@ import ArrowForward from '@mui/icons-material/ArrowForward';
 import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function Budgets() {
@@ -65,6 +66,24 @@ export default function Budgets() {
               <ArrowForward />
             </IconButton>
           </Box>
+        </Box>
+      </Grid>
+      <Grid size={{ xs: 12 }}>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            border: '1px solid grey',
+            borderRadius: 2,
+            p: 2,
+            minHeight: 200,
+          }}
+        >
+          <Typography variant='h5' align='center'>
+            Under Construction
+          </Typography>
         </Box>
       </Grid>
     </Grid>

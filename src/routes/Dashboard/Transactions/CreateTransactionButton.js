@@ -13,13 +13,7 @@ import Popper from '@mui/material/Popper';
 import { openItemView } from '../../../store/itemView';
 import ReactiveButton from '../../../components/ReactiveButton';
 
-const DEFAULT_TYPES = [
-  'expense',
-  'income',
-  'paycheck',
-  'repayment',
-  'transfer',
-];
+const DEFAULT_TYPES = ['expense', 'income', 'paycheck', 'repayment'];
 
 export default function CreateTransactionButton(props) {
   const { types = DEFAULT_TYPES, attrs = {} } = props;
