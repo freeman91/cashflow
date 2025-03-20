@@ -25,22 +25,14 @@ class User(BaseModel):
     _type = UnicodeAttribute(default=TYPE)
 
     name = UnicodeAttribute()
-    password = BinaryAttribute()
+    password = BinaryAttribute(null=True)
 
     def __repr__(self):
         return f"User<{self.user_id}, {self.email}, {self.name}>"
 
-    def verify_password(self, input_password: str):
-        return bcrypt.checkpw(input_password.encode("utf-8"), self.password)
-
     @classmethod
-    def create(cls, email: str, name: str, password: str) -> "User":
-        user = cls(
-            user_id=f"user:{uuid4()}",
-            email=email,
-            name=name,
-            password=bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()),
-        )
+    def create(cls, email: str, name: str) -> "User":
+        user = cls(user_id=f"user:{uuid4()}", email=email, name=name)
         user.save()
         return user
 
@@ -49,6 +41,5 @@ class User(BaseModel):
         return next(cls.query(user_id))
 
     def update_(self, body: dict) -> "User":
-
         # self.save()
         return self
