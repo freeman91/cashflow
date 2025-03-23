@@ -27,15 +27,15 @@ def _paychecks(user_id: str):
             employer=body.get("employer"),
             take_home=float(body.get("take_home")),
             pending=body.get("pending"),
-            taxes=float(body.get("taxes")),
+            taxes=float(body.get("taxes") or 0),
             retirement_contribution=ContributionItemAttribute.parse(
                 body.get("retirement_contribution")
             ),
             benefits_contribution=ContributionItemAttribute.parse(
                 body.get("benefits_contribution")
             ),
-            other_benefits=float(body.get("other_benefits")),
-            other=float(body.get("other")),
+            other_benefits=float(body.get("other_benefits") or 0),
+            other=float(body.get("other") or 0),
             deposit_to_id=body.get("deposit_to_id"),
             recurring_id=body.get("recurring_id"),
             description=body.get("description"),

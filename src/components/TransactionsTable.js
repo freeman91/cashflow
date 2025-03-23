@@ -29,6 +29,7 @@ export default function TransactionsTable(props) {
         sx={{
           backgroundColor: 'background.paper',
           backgroundImage: (theme) => theme.vars.overlays[8],
+          boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
           overflow: 'hidden',
         }}
@@ -42,6 +43,7 @@ export default function TransactionsTable(props) {
                   key={idx}
                   sx={{
                     backgroundImage: (theme) => theme.vars.overlays[8],
+                    py: 0,
                   }}
                 >
                   <ListItemText

@@ -40,7 +40,6 @@ def _accounts(user_id: str):
             asset_type=body.get("asset_type"),
             liability_type=body.get("liability_type"),
             subtype=body.get("subtype"),
-            description=body.get("description"),
             amount=body.get("amount"),
             value=body.get("value"),
             balance=body.get("balance"),

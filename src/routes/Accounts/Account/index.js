@@ -182,14 +182,9 @@ export default function Account(props) {
         >
           <Box
             sx={{
-              backgroundColor: 'background.paper',
-              backgroundImage: (theme) => theme.vars.overlays[8],
-              boxShadow: (theme) => theme.shadows[4],
-              borderRadius: 1,
               display: 'flex',
               justifyContent: 'space-between',
-              px: 2,
-              py: 2,
+              py: 1,
               width: '100%',
             }}
           >

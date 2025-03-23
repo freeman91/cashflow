@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
 import Chip from '@mui/material/Chip';
 import { findColor } from '../../../helpers/transactions';
@@ -12,14 +11,13 @@ export default function TypeChip(props) {
   return (
     <Chip
       label={type}
+      size='small'
       sx={{
         width: 100,
         fontWeight: 'bold',
-        backgroundImage: `linear-gradient(to bottom, ${alpha(
-          color,
-          0.5
-        )}, ${alpha(color, 1)})`,
-        color: 'white',
+        border: `1px solid ${color}`,
+        backgroundColor: 'transparent',
+        color,
       }}
     />
   );

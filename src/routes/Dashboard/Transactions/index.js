@@ -22,27 +22,24 @@ export default function Transactions() {
     <Grid size={{ xs: 12 }}>
       <Box
         sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          px: 2,
+          py: 1,
+          mb: 1,
           backgroundColor: 'background.paper',
           backgroundImage: (theme) => theme.vars.overlays[8],
           boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            px: 2,
-            py: 1,
-          }}
-        >
-          <Typography variant='h6' fontWeight='bold' color='textSecondary'>
-            Recent Transactions
-          </Typography>
-          <CreateTransactionButton />
-        </Box>
-        <TransactionsTable transactionsByDay={transactionsByDay} />
+        <Typography variant='body1' fontWeight='bold' color='textSecondary'>
+          RECENT TRANSACTIONS
+        </Typography>
+        <CreateTransactionButton />
       </Box>
+      <TransactionsTable transactionsByDay={transactionsByDay} />
     </Grid>
   );
 }

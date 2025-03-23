@@ -64,7 +64,6 @@ class Account(BaseModel):
         asset_type: str = None,
         liability_type: str = None,
         subtype: str = None,
-        description: str = None,
         amount: float = None,
         value: float = None,
         balance: float = None,
@@ -82,7 +81,6 @@ class Account(BaseModel):
             asset_type=asset_type,
             liability_type=liability_type,
             subtype=subtype,
-            description=description,
             amount=amount,
             value=value,
             balance=balance,
@@ -98,7 +96,16 @@ class Account(BaseModel):
 
     @classmethod
     def name_exists(cls, user_id: str, name: str) -> bool:
-        return len(list(cls.query(user_id, Account.name == name))) > 0
+        return (
+            len(
+                list(
+                    cls.query(
+                        user_id, cls.account_id.startswith("account"), cls.name == name
+                    )
+                )
+            )
+            > 0
+        )
 
     @classmethod
     def list(
