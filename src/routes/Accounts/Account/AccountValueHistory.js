@@ -12,24 +12,22 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-import LoopIcon from '@mui/icons-material/Loop';
-import EditIcon from '@mui/icons-material/Edit';
 import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Icon from '@mui/material/Icon';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../../helpers/currency';
 import { findAmount } from '../../../helpers/transactions';
+import { getHistories } from '../../../store/histories';
 import { ASSET, LIABILITY } from '../../../components/Forms/AccountForm';
-import { openItemView } from '../../../store/itemView';
+import RangeSelect, {
+  RANGE_OPTIONS,
+} from '../../../components/Selector/RangeSelect';
 
 function CustomTooltip({ active, payload, label }) {
   const securities = useSelector((state) => state.securities.data);
@@ -91,7 +89,6 @@ export default function AccountValueHistory(props) {
   const { account } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   let accountValue = findAmount(account);
   if (account.account_type === LIABILITY && accountValue > 0) {
@@ -100,6 +97,8 @@ export default function AccountValueHistory(props) {
 
   const securities = useSelector((state) => state.securities.data);
   const histories = useSelector((state) => state.histories.data);
+
+  const [range, setRange] = useState(RANGE_OPTIONS[3]);
   const [days, setDays] = useState([]);
   const [difference, setDifference] = useState(0);
 
@@ -112,15 +111,14 @@ export default function AccountValueHistory(props) {
   }, [days, accountValue]);
 
   useEffect(() => {
-    const today = dayjs();
-    const start = dayjs().subtract(6, 'month');
+    const start = range.start;
     let _days = [];
     let currentDay = start;
     const accountSecurityIds = securities
       .filter((s) => s.account_id === account.account_id)
       .map((security) => security.security_id);
 
-    while (currentDay <= today) {
+    while (currentDay <= range.end) {
       const date = currentDay.set('hour', 12).set('minute', 0).set('second', 0);
       let dayObj = { timestamp: date.unix() };
 
@@ -160,16 +158,18 @@ export default function AccountValueHistory(props) {
       return Object.keys(day).length > 1;
     });
     setDays(_days);
-  }, [histories, account, securities]);
+  }, [histories, account, securities, range]);
 
-  const openAccountDialog = () => {
+  const handleRangeChange = (_range) => {
     dispatch(
-      openItemView({
-        itemType: 'account',
-        mode: 'edit',
-        attrs: account,
+      getHistories({
+        range: {
+          start: _range.start.format('YYYY-MM'),
+          end: _range.end.format('YYYY-MM'),
+        },
       })
     );
+    setRange(_range);
   };
 
   const differenceAttrs = (() => {
@@ -202,7 +202,49 @@ export default function AccountValueHistory(props) {
           width: '100%',
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            my: 1,
+            mx: 1,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-end',
+              gap: 1,
+            }}
+          >
+            <Typography
+              variant='h6'
+              fontWeight='bold'
+              color='textSecondary'
+              sx={{ mr: 2 }}
+            >
+              Value History
+            </Typography>
+
+            <Typography variant='h5' fontWeight='bold'>
+              {numberToCurrency.format(accountValue)}
+            </Typography>
+            <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
+              {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+            </Icon>
+            <Typography
+              variant='body1'
+              fontWeight='bold'
+              sx={{ color: differenceAttrs.color, mb: 0.25 }}
+            >
+              {numberToCurrency.format(Math.abs(difference))} (
+              {percentDifference.toFixed(2)}%)
+            </Typography>
+          </Box>
+          <RangeSelect range={range} setRange={handleRangeChange} />
+        </Box>
+        {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
           <Typography variant='body1' fontWeight='bold' color='textSecondary'>
             VALUE HISTORY
           </Typography>
@@ -261,7 +303,7 @@ export default function AccountValueHistory(props) {
           >
             PAST 6 MONTHS
           </Typography>
-        </Box>
+        </Box> */}
         <ResponsiveContainer
           width='100%'
           height={200}

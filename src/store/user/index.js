@@ -26,7 +26,7 @@ const fetchAllData = async (user_id, dispatch) => {
     .hour(0)
     .minute(0)
     .second(0);
-  const end = dayjs().add(1, 'month').date(0).hour(0).minute(0).second(0);
+  const end = dayjs().add(1, 'month').endOf('month');
 
   try {
     dispatch(showLoading());
@@ -105,7 +105,7 @@ const refreshTransactions = createAsyncThunk(
       .hour(0)
       .minute(0)
       .second(0);
-    const end = dayjs().add(1, 'month').date(0).hour(0).minute(0).second(0);
+    const end = dayjs().add(1, 'month').endOf('month');
 
     try {
       dispatch(showLoading());

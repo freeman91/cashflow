@@ -19,6 +19,8 @@ const getHistories = createAsyncThunk(
     if (!start) start = dayjs().subtract(6, 'month').format('YYYY-MM');
     if (!end) end = dayjs().format('YYYY-MM');
 
+    // TODO: only fetch histories if needed
+
     try {
       dispatch(showLoading());
       let histories = processResponse(

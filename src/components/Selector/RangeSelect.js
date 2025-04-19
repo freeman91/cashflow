@@ -32,20 +32,44 @@ const RANGE_OPTIONS = [
     start: dayjs().subtract(1, 'month').startOf('month'),
     end: dayjs().subtract(1, 'month').endOf('month'),
   },
-  // {
-  //   id: 3,
-  //   label: 'This Year',
-  //   start: dayjs().startOf('year'),
-  //   end: dayjs().endOf('year'),
-  // },
-  // {
-  //   id: 4,
-  //   label: 'Last Year',
-  //   start: dayjs().subtract(1, 'year').startOf('year'),
-  //   end: dayjs().subtract(1, 'year').endOf('year'),
-  // },
   {
     id: 3,
+    label: 'Past 3 Months',
+    start: dayjs().subtract(3, 'month').startOf('month'),
+    end: dayjs().endOf('month'),
+  },
+  {
+    id: 4,
+    label: 'Past 6 Months',
+    start: dayjs().subtract(6, 'month').startOf('month'),
+    end: dayjs().endOf('month'),
+  },
+  {
+    id: 5,
+    label: 'Past 12 Months',
+    start: dayjs().subtract(12, 'month').startOf('month'),
+    end: dayjs().endOf('month'),
+  },
+  {
+    id: 6,
+    label: 'Past 2 Years',
+    start: dayjs().subtract(2, 'year').startOf('month'),
+    end: dayjs().endOf('month'),
+  },
+  {
+    id: 7,
+    label: 'Past 5 Years',
+    start: dayjs().subtract(5, 'year').startOf('month'),
+    end: dayjs().endOf('month'),
+  },
+  {
+    id: 8,
+    label: 'Past 10 Years',
+    start: dayjs().subtract(10, 'year').startOf('month'),
+    end: dayjs().endOf('month'),
+  },
+  {
+    id: 9,
     label: 'Custom Range',
     start: null,
     end: null,
@@ -59,7 +83,7 @@ export default function RangeSelect(props) {
   const [customRange, setCustomRange] = useState({});
 
   const handleOptionClick = (option) => {
-    if (option.id === 3) {
+    if (option.id === 9) {
       setOpen(true);
     } else {
       setRange(option);
@@ -91,7 +115,7 @@ export default function RangeSelect(props) {
 
   const handleSubmit = () => {
     setRange({
-      id: 3,
+      id: 9,
       label: `${dayjs(customRange.start).format('YYYY/MM/DD')} - ${dayjs(
         customRange.end
       ).format('YYYY/MM/DD')}`,

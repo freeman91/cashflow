@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from flask import Blueprint, request
 
-from services.dynamo import Purchase
+from services.dynamo import Purchase, Security
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -29,7 +29,17 @@ def _purchases(user_id: str):
             account_id=body.get("account_id"),
         )
         log_action(user_id, f"Purchase created: {purchase.merchant}")
-        return success_result(purchase.as_dict())
+
+        # update security
+        security = None
+        if purchase.security_id:
+            security = Security.get_(user_id=user_id, security_id=purchase.security_id)
+            security.shares += purchase.shares
+            security.save()
+
+        return success_result(
+            {"purchase": purchase.as_dict(), "security": security.as_dict()}
+        )
 
     if request.method == "GET":
         start = datetime.strptime(request.args.get("start"), "%Y-%m-%d")

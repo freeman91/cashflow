@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
+import LaunchIcon from '@mui/icons-material/Launch';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import Box from '@mui/material/Box';
@@ -37,7 +38,10 @@ import { deleteExpense } from '../../../store/expenses';
 import { deleteIncome } from '../../../store/incomes';
 import { deletePaycheck } from '../../../store/paychecks';
 import { deletePurchase } from '../../../store/purchases';
-import { deactivateRecurring } from '../../../store/recurrings';
+import {
+  deactivateRecurring,
+  generateNextRecurring,
+} from '../../../store/recurrings';
 import { deleteRepayment } from '../../../store/repayments';
 import { deleteSale } from '../../../store/sales';
 import { deactivateSecurity } from '../../../store/securities';
@@ -125,6 +129,11 @@ const OptionsButton = (props) => {
     } else if (itemType === 'account') {
       dispatch(deactivateAccount(attrs.account_id));
     }
+    handleCloseDrawer();
+  };
+
+  const generateNext = () => {
+    dispatch(generateNextRecurring(attrs.recurring_id));
     handleCloseDrawer();
   };
 
@@ -228,6 +237,12 @@ const OptionsButton = (props) => {
                     >
                       Deactivate
                       <RemoveCircleOutlineIcon color='error' />
+                    </MenuItem>
+                  )}
+                  {itemType === 'recurring' && (
+                    <MenuItem onClick={() => generateNext()} sx={{ gap: 1 }}>
+                      Generate Next
+                      <LaunchIcon color='primary' />
                     </MenuItem>
                   )}
                 </MenuList>

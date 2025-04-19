@@ -284,6 +284,7 @@ export default function Spending() {
     setChartData(_chartData);
   }, [currentMonthExpenses, compareExpenses, label, allRecurrings]);
 
+  const maxLastMonth = Math.max(...chartData.map((item) => item.lastMonth));
   return (
     <Grid size={{ xs: 12 }}>
       <Box
@@ -403,20 +404,35 @@ export default function Spending() {
               y={todayValue}
               label={
                 <Label
-                  content={({ viewBox, value, ...restProps }) => {
+                  content={({ viewBox, value }) => {
+                    const [rectX, rectY, textX, textY] = (() => {
+                      if (
+                        maxLastMonth &&
+                        Math.abs(maxLastMonth - todayValue) < 750
+                      ) {
+                        return [value.length * -5 - 55, -5, -55, 10];
+                      }
+                      if (today.date() < 5) {
+                        return [value.length * -5 + 30, -45, 30, -30];
+                      } else if (today.date() < 25) {
+                        return [value.length * -5, -25, 0, -10];
+                      } else {
+                        return [value.length * -5 - 30, 15, -30, 30];
+                      }
+                    })();
                     return (
                       <g transform={`translate(${viewBox.x}, ${viewBox.y})`}>
                         <rect
-                          x={value.length * -5}
-                          y={-25}
+                          x={rectX}
+                          y={rectY}
                           width={value.length * 10}
                           height={20}
                           fill={alpha(theme.palette.surface[150], 0.45)}
                           rx={4}
                         />
                         <text
-                          x={0}
-                          y={-10}
+                          x={textX}
+                          y={textY}
                           fill={theme.palette.text.primary}
                           fontWeight='bold'
                           fontSize={14}

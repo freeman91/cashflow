@@ -12,7 +12,7 @@ import TransactionTypeSelect from '../../components/Selector/TransactionTypeSele
 export default function TransactionsList() {
   const [types, setTypes] = useState([]);
   const [range, setRange] = useState({
-    id: 2,
+    id: 9,
     label: 'Custom Range',
     start: dayjs().subtract(1, 'month').startOf('month'),
     end: dayjs().add(3, 'day'),

@@ -301,15 +301,15 @@ export default function Account(props) {
                             </Box>
                           )}
                           <ListItemText
-                            primary={
-                              security.ticker +
-                              (security.active ? '' : ' (Inactive)')
-                            }
+                            primary={security.ticker}
                             secondary={security.name}
                             sx={{ maxWidth: 250 }}
                             slotProps={{
                               primary: {
                                 fontWeight: 'bold',
+                                color: !security.active
+                                  ? 'text.disabled'
+                                  : 'text.primary',
                               },
                               secondary: {
                                 sx: {
@@ -442,7 +442,9 @@ export default function Account(props) {
             <ListItem>
               <ListItemText primary='Holdings' />
               <ListItemText
-                primary={holdings.length}
+                primary={
+                  holdings.filter((holding) => holding.shares > 0).length
+                }
                 slotProps={{
                   primary: { align: 'right' },
                 }}

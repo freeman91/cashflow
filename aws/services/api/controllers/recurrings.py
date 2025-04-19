@@ -1,5 +1,7 @@
 from datetime import datetime, timezone
+from dateutil.rrule import rrule
 from flask import Blueprint, request
+from pydash import last
 
 from services.dynamo import (
     Recurring,
@@ -8,6 +10,7 @@ from services.dynamo import (
     PaycheckAttributes,
     IncomeAttributes,
 )
+from services.api.controllers.cronjobs import FREQUENCY_MAP
 from services.api.controllers.__util__ import (
     failure_result,
     handle_exception,
@@ -74,6 +77,8 @@ def _recurring(user_id: str, recurring_id: str):
         next_date = payload.get("next_date")
         if next_date:
             recurring.next_date = datetime.strptime(next_date[:19], "%Y-%m-%dT%H:%M:%S")
+        else:
+            recurring.next_date = None
 
         item_type = payload.get("item_type")
         if item_type == "expense":
@@ -118,3 +123,35 @@ def _recurring(user_id: str, recurring_id: str):
         return success_result(f"{recurring_id} deleted")
 
     return failure_result()
+
+
+@recurrings.route("/recurrings/<user_id>/<recurring_id>/generate_next", methods=["PUT"])
+@handle_exception
+def _generate_next(user_id: str, recurring_id: str):
+    recurring = Recurring.get_(user_id=user_id, recurring_id=recurring_id)
+    if recurring.next_date is None:
+        return failure_result("Next date is not set")
+
+    transaction = recurring.generate(
+        year=recurring.next_date.year,
+        month=recurring.next_date.month,
+        day=recurring.next_date.day,
+    )
+
+    next_dates = rrule(
+        FREQUENCY_MAP[recurring.frequency],
+        dtstart=recurring.next_date,
+        interval=recurring.interval,
+        bymonthday=recurring.day_of_month,
+        byweekday=recurring.day_of_week,
+        bymonth=recurring.month_of_year,
+        count=2,
+    )
+    recurring.next_date = last(next_dates)
+    recurring.save()
+    return success_result(
+        {
+            "recurring": recurring.as_dict(),
+            "transaction": transaction.as_dict(),
+        }
+    )

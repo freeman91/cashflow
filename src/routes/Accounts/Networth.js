@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
@@ -23,7 +23,11 @@ import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { findAmount } from '../../helpers/transactions';
+import { getHistories } from '../../store/histories';
 import { ASSET } from '../../components/Forms/AccountForm';
+import RangeSelect, {
+  RANGE_OPTIONS,
+} from '../../components/Selector/RangeSelect';
 
 function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
@@ -51,9 +55,11 @@ function CustomTooltip({ active, payload, label }) {
 
 export default function NetWorth(props) {
   const { accounts } = props;
+  const dispatch = useDispatch();
   const theme = useTheme();
   const histories = useSelector((state) => state.histories.data);
 
+  const [range, setRange] = useState(RANGE_OPTIONS[3]);
   const [networth, setNetworth] = useState(0);
   const [accountsHistories, setAccountsHistories] = useState([]);
   const [days, setDays] = useState([]);
@@ -88,12 +94,11 @@ export default function NetWorth(props) {
   }, [days, networth]);
 
   useEffect(() => {
-    const today = dayjs();
-    const start = dayjs().subtract(6, 'month');
+    const start = range.start;
     let _days = [];
     let currentDay = start;
 
-    while (currentDay <= today) {
+    while (currentDay <= range.end) {
       const date = currentDay.set('hour', 12).set('minute', 0).set('second', 0);
       let dayAssets = 0;
       let dayLiabilities = 0;
@@ -131,7 +136,19 @@ export default function NetWorth(props) {
     }
 
     setDays(_days);
-  }, [accountsHistories]);
+  }, [accountsHistories, range]);
+
+  const handleRangeChange = (_range) => {
+    dispatch(
+      getHistories({
+        range: {
+          start: _range.start.format('YYYY-MM'),
+          end: _range.end.format('YYYY-MM'),
+        },
+      })
+    );
+    setRange(_range);
+  };
 
   const differenceAttrs = (() => {
     if (difference === 0) {
@@ -159,49 +176,50 @@ export default function NetWorth(props) {
           boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
           px: 1,
-          py: 0.5,
           width: '100%',
         }}
       >
-        <Typography
-          variant='body1'
-          fontWeight='bold'
-          color='textSecondary'
-          sx={{ mt: 1, mx: 1 }}
-        >
-          NET WORTH
-        </Typography>
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-end',
-            gap: 1,
+            justifyContent: 'space-between',
+            my: 1,
             mx: 1,
           }}
         >
-          <Typography variant='h5' fontWeight='bold'>
-            {numberToCurrency.format(networth)}
-          </Typography>
-          <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
-            {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
-          </Icon>
-          <Typography
-            variant='body1'
-            fontWeight='bold'
-            sx={{ color: differenceAttrs.color, mb: 0.25 }}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-end',
+              gap: 1,
+            }}
           >
-            {numberToCurrency.format(Math.abs(difference))} (
-            {percentDifference.toFixed(2)}%)
-          </Typography>
-          <Typography
-            variant='body2'
-            fontWeight='bold'
-            color='textSecondary'
-            sx={{ mb: 0.25, display: { xs: 'none', md: 'block' } }}
-          >
-            PAST 6 MONTHS
-          </Typography>
+            <Typography
+              variant='h6'
+              fontWeight='bold'
+              color='textSecondary'
+              sx={{ mr: 2 }}
+            >
+              Net Worth
+            </Typography>
+
+            <Typography variant='h5' fontWeight='bold'>
+              {numberToCurrency.format(networth)}
+            </Typography>
+            <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
+              {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+            </Icon>
+            <Typography
+              variant='body1'
+              fontWeight='bold'
+              sx={{ color: differenceAttrs.color, mb: 0.25 }}
+            >
+              {numberToCurrency.format(Math.abs(difference))} (
+              {percentDifference.toFixed(2)}%)
+            </Typography>
+          </Box>
+          <RangeSelect range={range} setRange={handleRangeChange} />
         </Box>
         <ResponsiveContainer
           width='100%'
@@ -213,7 +231,7 @@ export default function NetWorth(props) {
             height={200}
             data={days}
             margin={{
-              top: 2,
+              top: 10,
               right: 2,
               left: 2,
               bottom: 0,

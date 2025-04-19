@@ -251,9 +251,7 @@ export default function AccountCategory(props) {
                     </Box>
                     <ListItemText
                       sx={{ width: '40%' }}
-                      primary={
-                        account.name + (!account.active ? ' (Inactive)' : '')
-                      }
+                      primary={account.name}
                       secondary={account.subtype}
                       slotProps={{
                         primary: {
@@ -287,19 +285,21 @@ export default function AccountCategory(props) {
               })}
             </List>
           </Grid>
-          <Grid size={{ xs: 12 }} display='flex' justifyContent='center'>
-            <Link
-              underline='hover'
-              color='text.secondary'
-              onClick={() => {
-                setShowInactive(!showInactive);
-              }}
-            >
-              <Typography variant='h6' sx={{ mr: 1 }}>
-                {showInactive ? 'Hide Inactive' : 'Show Inactive'}
-              </Typography>
-            </Link>
-          </Grid>
+          {accounts.filter((account) => !account.active).length > 0 && (
+            <Grid size={{ xs: 12 }} display='flex' justifyContent='center'>
+              <Link
+                underline='hover'
+                color='text.secondary'
+                onClick={() => {
+                  setShowInactive(!showInactive);
+                }}
+              >
+                <Typography variant='h6' sx={{ mr: 1 }}>
+                  {showInactive ? 'Hide Inactive' : 'Show Inactive'}
+                </Typography>
+              </Link>
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </Grid>

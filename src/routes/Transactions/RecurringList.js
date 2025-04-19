@@ -52,7 +52,8 @@ export default function RecurringList() {
     _groupedRecurrings = Object.entries(_groupedRecurrings).map(
       ([item_type, _recurrings]) => {
         const sum = _recurrings.reduce(
-          (acc, recurring) => acc + findAmount(recurring),
+          (acc, recurring) =>
+            acc + (recurring.active ? findAmount(recurring) : 0),
           0
         );
         // sort recurrings by next_date, if next_date is null, it's last, then by amount
@@ -154,13 +155,14 @@ export default function RecurringList() {
                     }}
                   >
                     <ListItemText
-                      primary={
-                        recurring.name + (recurring.active ? '' : ' (Inactive)')
-                      }
+                      primary={recurring.name}
                       secondary={recurring.frequency}
                       sx={{ width: '30%' }}
                       slotProps={{
                         primary: {
+                          color: recurring.active
+                            ? 'text.primary'
+                            : 'text.disabled',
                           sx: {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',

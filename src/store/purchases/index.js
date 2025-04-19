@@ -16,6 +16,7 @@ import { items as initialState } from '../initialState';
 import { hideLoading, setSnackbar, showLoading } from '../appSettings';
 import { updateRange } from '../../helpers/dates';
 import { mergeResources } from '../../helpers';
+import { setSecurities } from '../securities';
 
 const getPurchases = createAsyncThunk(
   'purchases/getPurchases',
@@ -65,17 +66,27 @@ const getPurchases = createAsyncThunk(
 
 const postPurchase = createAsyncThunk(
   'purchases/postPurchase',
-  async (newPurchase, { dispatch, getState }) => {
+  async (purchase, { dispatch, getState }) => {
     try {
       const { data: purchases } = getState().purchases;
+      const { data: securities } = getState().securities;
       const { user_id } = getState().user.item;
-      const result = await postResourceAPI(user_id, newPurchase);
+      const { purchase: newPurchase, security } = await postResourceAPI(
+        user_id,
+        purchase
+      );
 
-      if (result) {
+      if (newPurchase) {
         dispatch(setSnackbar({ message: 'purchase created' }));
       }
+
+      // replace security in securities
+      const _securities = [...securities];
+      remove(_securities, { security_id: security.security_id });
+      dispatch(setSecurities([..._securities, security]));
+
       return {
-        data: [result].concat(purchases),
+        data: [newPurchase].concat(purchases),
       };
     } catch (err) {
       dispatch(setSnackbar({ message: err.message }));

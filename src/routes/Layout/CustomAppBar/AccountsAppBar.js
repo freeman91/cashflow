@@ -7,7 +7,7 @@ import startCase from 'lodash/startCase';
 
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import LoopIcon from '@mui/icons-material/Loop';
+import EditIcon from '@mui/icons-material/Edit';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import styled from '@mui/material/styles/styled';
 import Box from '@mui/material/Box';
@@ -18,8 +18,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
-import { getAccounts } from '../../../store/accounts';
-import { getHistories } from '../../../store/histories';
 import { openItemView } from '../../../store/itemView';
 import ReactiveButton from '../../../components/ReactiveButton';
 
@@ -69,9 +67,14 @@ export default function AccountsAppBar(props) {
     dispatch(openItemView({ itemType: 'account', mode: 'create' }));
   };
 
-  const handleRefresh = () => {
-    dispatch(getAccounts());
-    dispatch(getHistories());
+  const openAccountDialog = () => {
+    dispatch(
+      openItemView({
+        itemType: 'account',
+        mode: 'edit',
+        attrs: account,
+      })
+    );
   };
 
   return (
@@ -134,8 +137,9 @@ export default function AccountsAppBar(props) {
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
               }}
+              color={!account.active ? 'text.disabled' : 'text.primary'}
             >
-              {account.name + (!account.active ? ' (Inactive)' : '')}
+              {account.name}
             </Typography>
           </Box>
         )}
@@ -162,21 +166,15 @@ export default function AccountsAppBar(props) {
           ))}
         </Select>
       )}
-      {!account.account_id && (
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 1,
-            height: 35,
-          }}
-        >
-          <ReactiveButton
-            label='Refresh'
-            handleClick={handleRefresh}
-            Icon={LoopIcon}
-            color='primary'
-            variant='outlined'
-          />
+
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+          height: 35,
+        }}
+      >
+        {!account.account_id ? (
           <ReactiveButton
             label='Account'
             handleClick={createAccount}
@@ -184,8 +182,16 @@ export default function AccountsAppBar(props) {
             color='primary'
             variant='contained'
           />
-        </Box>
-      )}
+        ) : (
+          <ReactiveButton
+            label='Edit'
+            handleClick={openAccountDialog}
+            Icon={EditIcon}
+            color='primary'
+            variant='outlined'
+          />
+        )}
+      </Box>
     </>
   );
 }

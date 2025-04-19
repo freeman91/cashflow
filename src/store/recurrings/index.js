@@ -14,6 +14,11 @@ import {
 import { buildAsyncReducers } from '../thunkTemplate';
 import { items as initialState } from '../initialState';
 import { hideLoading, setSnackbar, showLoading } from '../appSettings';
+import { openItemView } from '../itemView';
+import { setExpenses } from '../expenses';
+import { setRepayments } from '../repayments';
+import { setIncomes } from '../incomes';
+import { setPaychecks } from '../paychecks';
 
 const getRecurrings = createAsyncThunk(
   'recurrings/getRecurrings',
@@ -70,6 +75,54 @@ const putRecurring = createAsyncThunk(
     } catch (err) {
       dispatch(setSnackbar({ message: err.message }));
     }
+  }
+);
+
+const generateNextRecurring = createAsyncThunk(
+  'recurrings/generateNextRecurring',
+  async (recurring_id, { dispatch, getState }) => {
+    const { data: recurrings } = getState().recurrings;
+    const { user_id } = getState().user.item;
+    const result = await processResponse(
+      await axios.put(`/recurrings/${user_id}/${recurring_id}/generate_next`)
+    );
+
+    if (result) {
+      dispatch(setSnackbar({ message: 'recurring updated' }));
+    }
+    let _recurrings = [...recurrings];
+    remove(_recurrings, { recurring_id: recurring_id });
+    _recurrings.push(result.recurring);
+
+    if (result.transaction._type === 'expense') {
+      let _expenses = [...getState().expenses.data];
+      _expenses.push(result.transaction);
+      dispatch(setExpenses(_expenses));
+    } else if (result.transaction._type === 'repayment') {
+      let _repayments = [...getState().repayments.data];
+      _repayments.push(result.transaction);
+      dispatch(setRepayments(_repayments));
+    } else if (result.transaction._type === 'income') {
+      let _incomes = [...getState().incomes.data];
+      _incomes.push(result.transaction);
+      dispatch(setIncomes(_incomes));
+    } else if (result.transaction._type === 'paycheck') {
+      let _paychecks = [...getState().paychecks.data];
+      _paychecks.push(result.transaction);
+      dispatch(setPaychecks(_paychecks));
+    }
+
+    dispatch(
+      openItemView({
+        itemType: result.transaction._type,
+        mode: 'edit',
+        attrs: result.transaction,
+      })
+    );
+
+    return {
+      data: concat(_recurrings, result),
+    };
   }
 );
 
@@ -136,6 +189,7 @@ const { reducer, actions } = createSlice({
       getRecurrings,
       postRecurring,
       putRecurring,
+      generateNextRecurring,
       deleteRecurring,
       deactivateRecurring,
     ]);
@@ -147,6 +201,7 @@ const { setRecurrings } = actions;
 export {
   postRecurring,
   putRecurring,
+  generateNextRecurring,
   deleteRecurring,
   getRecurrings,
   setRecurrings,

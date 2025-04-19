@@ -193,9 +193,7 @@ export default function AccountGroupGrid(props) {
                   </Box>
                   <ListItemText
                     sx={{ width: '40%' }}
-                    primary={
-                      account.name + (!account.active ? ' (Inactive)' : '')
-                    }
+                    primary={account.name}
                     secondary={account.subtype}
                     slotProps={{
                       primary: {

@@ -17,7 +17,7 @@ export const StyledTabs = styled((props) => (
     height: 0,
   },
   minHeight: 'unset',
-  backgroundColor: theme.palette.surface[400],
+  backgroundColor: theme.palette.surface[300],
   borderRadius: '8px',
   height: 'fit-content',
 }));
