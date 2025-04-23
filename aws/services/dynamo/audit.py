@@ -45,7 +45,7 @@ class Audit(BaseModel):
             action=action,
             status=status,
             message=message,
-            ttl=datetime.now(timezone.utc) + timedelta(days=30),
+            ttl=datetime.now(timezone.utc) + timedelta(days=7),
         )
         audit.save()
         return audit
