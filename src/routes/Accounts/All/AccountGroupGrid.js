@@ -187,7 +187,10 @@ export default function AccountGroupGrid(props) {
                         src={account.icon_url}
                         alt={`${account.name} icon`}
                         height={30}
-                        style={{ marginRight: 10, borderRadius: '10%' }}
+                        style={{
+                          marginRight: 10,
+                          borderRadius: '10%',
+                        }}
                       />
                     )}
                   </Box>
