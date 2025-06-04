@@ -105,8 +105,11 @@ const deactivateAccount = createAsyncThunk(
     try {
       const { data: accounts } = getState().accounts;
       const { user_id } = getState().user.item;
+
+      const account = accounts.find((account) => account.account_id === id);
       const result = processResponse(
         await axios.put(`/accounts/${user_id}/${id}`, {
+          ...account,
           active: false,
         })
       );

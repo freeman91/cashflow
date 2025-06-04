@@ -110,7 +110,10 @@ def _recurring(user_id: str, recurring_id: str):
             "week_interval",
         ]:
             if attr in payload:
-                setattr(recurring, attr, int(payload.get(attr)))
+                if payload.get(attr) == "":
+                    setattr(recurring, attr, None)
+                else:
+                    setattr(recurring, attr, int(payload.get(attr)))
 
         recurring.last_update = datetime.now(timezone.utc)
         recurring.save()

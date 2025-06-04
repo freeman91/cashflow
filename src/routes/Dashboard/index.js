@@ -24,11 +24,11 @@ export default function Dashboard() {
       <Grid size={{ md: 6, xs: 12 }}>
         <Grid container spacing={2}>
           <Transactions />
+          <Budget />
         </Grid>
       </Grid>
       <Grid size={{ md: 6, xs: 12 }}>
         <Grid container spacing={2}>
-          <Budget />
           <Spending />
           <NetWorth />
         </Grid>

@@ -51,6 +51,15 @@ export default function TransactionListItem(props) {
     );
   };
 
+  let transactionType = transaction._type;
+  if (transactionType === 'recurring') {
+    const attributes = Object.keys(transaction).filter((key) =>
+      key.endsWith('_attributes')
+    );
+    const attribute = attributes[0];
+    transactionType = attribute.replace('_attributes', '');
+  }
+
   return (
     <ListItemButton
       ref={parentRef}
@@ -68,7 +77,7 @@ export default function TransactionListItem(props) {
       }}
     >
       <ListItem sx={{ maxWidth: 100, px: 0.5, py: 0 }}>
-        <TypeChip type={transaction._type} />
+        <TypeChip type={transactionType} />
       </ListItem>
       {transaction._type === 'borrow' && (
         <BorrowListItem transaction={transaction} parentWidth={width} />

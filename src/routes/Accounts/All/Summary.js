@@ -167,6 +167,7 @@ export default function AccountsSummary(props) {
             }}
           >
             {assets.map((asset, idx) => {
+              if (asset.sum === 0) return null;
               const color = assetColors[idx % assetColors.length];
               return (
                 <Box
@@ -183,6 +184,7 @@ export default function AccountsSummary(props) {
         </Box>
         <List disablePadding>
           {assets.map((asset, idx) => {
+            if (asset.sum === 0) return null;
             const color = assetColors[idx % assetColors.length];
             return (
               <ListItem key={idx}>
@@ -241,6 +243,7 @@ export default function AccountsSummary(props) {
             }}
           >
             {loanLiabilities.map((liability, idx) => {
+              if (liability.sum === 0) return null;
               const color =
                 loanLiabilityColors[idx % loanLiabilityColors.length];
               return (
@@ -267,6 +270,7 @@ export default function AccountsSummary(props) {
         </Box>
         <List disablePadding>
           {loanLiabilities.map((liability, idx) => {
+            if (liability.sum === 0) return null;
             const color = loanLiabilityColors[idx % loanLiabilityColors.length];
             return (
               <ListItem key={idx}>

@@ -19,14 +19,15 @@ securities = Blueprint("securities", __name__)
 def _securities(user_id: str):
     if request.method == "POST":
         body = request.json
+
         security = Security.create(
-            user_id=body.get("user_id"),
+            user_id=user_id,
             account_id=body.get("account_id"),
             name=body.get("name"),
             ticker=body.get("ticker"),
             security_type=body.get("security_type"),
-            shares=body.get("shares"),
-            price=body.get("price"),
+            shares=float(body.get("shares")),
+            price=float(body.get("price")),
             icon_url=body.get("icon_url"),
         )
         log_action(user_id, f"Security created: {security.name}")
