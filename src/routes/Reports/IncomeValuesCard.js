@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
@@ -7,11 +8,44 @@ import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import IncomeSummary from './IncomeSummary';
+import {
+  findAmount,
+  findPaycheckContributionSum,
+} from '../../helpers/transactions';
 
 export default function IncomeValuesCard(props) {
-  const { earnedIncomes, passiveIncomes, otherIncomes } = props;
+  const { date, earnedIncomes, passiveIncomes, otherIncomes } = props;
   const theme = useTheme();
+  const allIncomes = useSelector((state) => state.incomes.data);
+  const allPaychecks = useSelector((state) => state.paychecks.data);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [pendingIncomeSum, setPendingIncomeSum] = useState(0);
+  const [pendingPaycheckSum, setPendingPaycheckSum] = useState(0);
+
+  useEffect(() => {
+    const pendingIncomes = allIncomes.filter((income) => {
+      return date.isSame(income.date, 'month') && income.pending;
+    });
+    const pendingPaychecks = allPaychecks.filter((paycheck) => {
+      return date.isSame(paycheck.date, 'month') && paycheck.pending;
+    });
+
+    let incomeSum = 0;
+    for (const income of pendingIncomes) {
+      incomeSum += findAmount(income);
+    }
+
+    let paycheckSum = 0;
+    for (const paycheck of pendingPaychecks) {
+      paycheckSum += findAmount(paycheck);
+      paycheckSum += findPaycheckContributionSum(paycheck, 'employee');
+      paycheckSum += findPaycheckContributionSum(paycheck, 'employer');
+    }
+
+    setPendingIncomeSum(incomeSum);
+    setPendingPaycheckSum(paycheckSum);
+  }, [allIncomes, allPaychecks, date]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -24,6 +58,7 @@ export default function IncomeValuesCard(props) {
   const open = Boolean(anchorEl);
   const id = open ? 'summary-popover' : undefined;
   const totalIncome = earnedIncomes.sum + passiveIncomes.sum + otherIncomes.sum;
+  const pendingTotal = pendingIncomeSum + pendingPaycheckSum;
   return (
     <>
       <Box
@@ -48,13 +83,21 @@ export default function IncomeValuesCard(props) {
         <Typography color='textSecondary' variant='h6'>
           Income
         </Typography>
-        <Typography
-          fontWeight='bold'
-          variant='h5'
-          sx={{ color: theme.palette.success.main }}
-        >
-          {numberToCurrency.format(totalIncome)}
-        </Typography>
+        <Box display='flex' alignItems='center' gap={1}>
+          <Typography
+            fontWeight='bold'
+            variant='h5'
+            sx={{ color: theme.palette.success.main }}
+          >
+            {numberToCurrency.format(totalIncome)}
+          </Typography>
+          {pendingTotal > 0 && <Typography variant='h5'>|</Typography>}
+          {pendingTotal > 0 && (
+            <Typography variant='h5' sx={{ color: theme.palette.warning.main }}>
+              {numberToCurrency.format(pendingTotal)}
+            </Typography>
+          )}
+        </Box>
       </Box>
       <Popover
         id={id}

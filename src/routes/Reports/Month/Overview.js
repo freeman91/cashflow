@@ -31,6 +31,7 @@ export default function MonthOverview(props) {
       <ByMonthChart year={date.year()} month={date.month()} />
       <Grid size={{ md: 4, xs: 6 }}>
         <IncomeValuesCard
+          date={date}
           earnedIncomes={earnedIncomes}
           passiveIncomes={passiveIncomes}
           otherIncomes={otherIncomes}
@@ -49,6 +50,7 @@ export default function MonthOverview(props) {
       </Grid>
       <Grid size={{ md: 4, xs: 6 }}>
         <ExpenseValuesCard
+          date={date}
           principalSum={principalSum}
           interestSum={interestSum}
           escrowSum={escrowSum}

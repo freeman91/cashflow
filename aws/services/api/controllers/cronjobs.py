@@ -248,7 +248,7 @@ def generate_transactions():
 
     if request.method == "POST":
         count = 0
-        _date = date.today() + timedelta(days=3)
+        _date = date.today() + timedelta(days=35)
 
         current_app.logger.info("Generating Transactions for :: %s", _date)
 
