@@ -19,9 +19,14 @@ import IncomeBreakdown from '../IncomeBreakdown';
 import ExpenseBreakdown from '../ExpenseBreakdown';
 import SankeyChart from '../SankeyChart';
 
-export default function YearReport() {
+export default function YearReport({ date: propDate, setDate: propSetDate }) {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  const [date, setDate] = useState(dayjs().month(11).date(15));
+  const [localDate, setLocalDate] = useState(dayjs().month(11).date(15));
+
+  // Use prop date if provided, otherwise use local date
+  const date = propDate || localDate;
+  const setDate = propSetDate || setLocalDate;
+
   const { earnedIncomes, passiveIncomes, otherIncomes } = useYearInflows(
     date.year()
   );
@@ -38,6 +43,19 @@ export default function YearReport() {
   const totalIncome = earnedIncomes.sum + passiveIncomes.sum + otherIncomes.sum;
   const totalExpense = principalSum + interestSum + escrowSum + otherExpenseSum;
 
+  const handleDateChange = (value) => {
+    const newDate = value.month(11).date(15);
+    setDate(newDate);
+  };
+
+  const handlePrevYear = () => {
+    setDate(date.subtract(1, 'year'));
+  };
+
+  const handleNextYear = () => {
+    setDate(date.add(1, 'year'));
+  };
+
   return (
     <>
       <Grid size={{ xs: 12 }}>
@@ -53,9 +71,7 @@ export default function YearReport() {
           <DatePicker
             size='medium'
             value={date}
-            onChange={(value) => {
-              setDate(value.month(11).date(15));
-            }}
+            onChange={handleDateChange}
             format='YYYY'
             views={['year']}
             sx={{ width: 160 }}
@@ -71,13 +87,11 @@ export default function YearReport() {
             }}
           />
           <Box>
-            <IconButton onClick={() => setDate(date.subtract(1, 'year'))}>
+            <IconButton onClick={handlePrevYear}>
               <ArrowBack />
             </IconButton>
             <IconButton
-              onClick={() => {
-                setDate(date.add(1, 'year'));
-              }}
+              onClick={handleNextYear}
               disabled={dayjs().year() === date.year()}
             >
               <ArrowForward />
@@ -85,12 +99,14 @@ export default function YearReport() {
           </Box>
         </Box>
       </Grid>
-      <ByMonthChart year={date.year()} month={date.month()} />
+      <ByMonthChart year={date.year()} />
       <Grid size={{ md: 4, xs: 6 }}>
         <IncomeValuesCard
+          date={date}
           earnedIncomes={earnedIncomes}
           passiveIncomes={passiveIncomes}
           otherIncomes={otherIncomes}
+          showPending={false}
         />
       </Grid>
       <Grid size={{ md: 4 }} sx={{ display: { xs: 'none', md: 'block' } }}>
@@ -98,10 +114,12 @@ export default function YearReport() {
       </Grid>
       <Grid size={{ md: 4, xs: 6 }}>
         <ExpenseValuesCard
+          date={date}
           principalSum={principalSum}
           interestSum={interestSum}
           escrowSum={escrowSum}
           otherExpenseSum={otherExpenseSum}
+          showPending={false}
         />
       </Grid>
       <Grid size={{ xs: 12 }} sx={{ display: { xs: 'block', md: 'none' } }}>

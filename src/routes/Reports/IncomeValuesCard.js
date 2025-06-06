@@ -14,7 +14,13 @@ import {
 } from '../../helpers/transactions';
 
 export default function IncomeValuesCard(props) {
-  const { date, earnedIncomes, passiveIncomes, otherIncomes } = props;
+  const {
+    date,
+    earnedIncomes,
+    passiveIncomes,
+    otherIncomes,
+    showPending = true,
+  } = props;
   const theme = useTheme();
   const allIncomes = useSelector((state) => state.incomes.data);
   const allPaychecks = useSelector((state) => state.paychecks.data);
@@ -24,6 +30,12 @@ export default function IncomeValuesCard(props) {
   const [pendingPaycheckSum, setPendingPaycheckSum] = useState(0);
 
   useEffect(() => {
+    if (!showPending) {
+      setPendingIncomeSum(0);
+      setPendingPaycheckSum(0);
+      return;
+    }
+
     const pendingIncomes = allIncomes.filter((income) => {
       return date.isSame(income.date, 'month') && income.pending;
     });
@@ -45,7 +57,7 @@ export default function IncomeValuesCard(props) {
 
     setPendingIncomeSum(incomeSum);
     setPendingPaycheckSum(paycheckSum);
-  }, [allIncomes, allPaychecks, date]);
+  }, [allIncomes, allPaychecks, date, showPending]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -58,7 +70,7 @@ export default function IncomeValuesCard(props) {
   const open = Boolean(anchorEl);
   const id = open ? 'summary-popover' : undefined;
   const totalIncome = earnedIncomes.sum + passiveIncomes.sum + otherIncomes.sum;
-  const pendingTotal = pendingIncomeSum + pendingPaycheckSum;
+  const pendingTotal = showPending ? pendingIncomeSum + pendingPaycheckSum : 0;
   return (
     <>
       <Box

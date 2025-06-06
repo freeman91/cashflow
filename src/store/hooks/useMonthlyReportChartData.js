@@ -15,48 +15,53 @@ import { getSales } from '../sales';
 import { getExpenses } from '../expenses';
 import { getRepayments } from '../repayments';
 
-const findMonthIncomeSum = (incomes, paychecks, sales, month) => {
-  const _transactions = [...incomes, ...paychecks, ...sales];
-  const _transactionsInMonth = filter(_transactions, (transaction) => {
-    const transactionDate = dayjs(transaction.date);
-    return transactionDate.isSame(month, 'month') && !transaction.pending;
-  });
+const findMonthIncomeSum = (incomes, paychecks, sales, date) => {
+  const monthIncomes = filter(
+    [...incomes, ...paychecks, ...sales],
+    (income) => {
+      const incomeDate = dayjs(income.date);
+      return incomeDate.isSame(date, 'month') && !get(income, 'pending', false);
+    }
+  );
+
   return reduce(
-    _transactionsInMonth,
-    (acc, transaction) => {
-      if (transaction._type === 'paycheck') {
-        return (
-          acc +
-          findAmount(transaction) +
-          findPaycheckContributionSum(transaction, 'employee') +
-          findPaycheckContributionSum(transaction, 'employer')
-        );
-      }
-      if (transaction._type === 'sale') {
-        return acc + get(transaction, 'gains', 0);
-      }
-      return acc + findAmount(transaction);
+    monthIncomes,
+    (acc, income) => {
+      if (income._type === 'sale') return acc + get(income, 'gains', 0);
+      return acc + findAmount(income);
     },
     0
   );
 };
 
-const findMonthExpenseSum = (expenses, repayments, sales, month) => {
-  const _transactions = [...expenses, ...repayments, ...sales];
-  const _transactionsInMonth = filter(_transactions, (transaction) => {
-    const transactionDate = dayjs(transaction.date);
-    return transactionDate.isSame(month, 'month') && !transaction.pending;
+const findMonthExpenseSum = (expenses, repayments, sales, date) => {
+  const monthExpenses = filter([...expenses, ...repayments], (expense) => {
+    const expenseDate = dayjs(expense.date);
+    return expenseDate.isSame(date, 'month') && !get(expense, 'pending', false);
   });
-  return reduce(
-    _transactionsInMonth,
-    (acc, transaction) => {
-      if (transaction._type === 'sale') {
-        return acc + get(transaction, 'losses', 0);
-      }
-      return acc + findAmount(transaction);
+
+  const monthSales = filter(sales, (sale) => {
+    const saleDate = dayjs(sale.date);
+    return saleDate.isSame(date, 'month') && get(sale, 'losses', 0) > 0;
+  });
+
+  const expenseSum = reduce(
+    monthExpenses,
+    (acc, expense) => {
+      return acc + findAmount(expense);
     },
     0
   );
+
+  const saleLosses = reduce(
+    monthSales,
+    (acc, sale) => {
+      return acc + get(sale, 'losses', 0);
+    },
+    0
+  );
+
+  return expenseSum + saleLosses;
 };
 
 export const useMonthlyReportChartData = (year, month) => {
@@ -73,14 +78,24 @@ export const useMonthlyReportChartData = (year, month) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    if (!year || isNaN(month)) return;
+    if (!year) return;
 
-    let _end = dayjs()
-      .set('year', year)
-      .set('month', month - 1)
-      .set('date', 15)
-      .endOf('month');
-    let _start = _end.subtract(11, 'month').startOf('month');
+    let _start = null;
+    let _end = null;
+
+    if (isNaN(month)) {
+      // Year view - show all months of the year
+      _start = dayjs().set('year', year).startOf('year');
+      _end = dayjs().set('year', year).endOf('year');
+    } else {
+      // Month view - show 12 months ending at the selected month
+      _end = dayjs()
+        .set('year', year)
+        .set('month', month - 1)
+        .set('date', 15)
+        .endOf('month');
+      _start = _end.subtract(11, 'month').startOf('month');
+    }
 
     setStart(_start);
     setEnd(_end);
@@ -97,7 +112,6 @@ export const useMonthlyReportChartData = (year, month) => {
     let _chartData = [];
     let _currentMonth = start;
     while (_currentMonth.isSameOrBefore(end, 'month')) {
-      _currentMonth = _currentMonth.add(1, 'month');
       let _incomeSum = findMonthIncomeSum(
         allIncomes,
         allPaychecks,
@@ -116,6 +130,7 @@ export const useMonthlyReportChartData = (year, month) => {
         expense: _expenseSum * -1,
         net: _incomeSum - _expenseSum,
       });
+      _currentMonth = _currentMonth.add(1, 'month');
     }
     setChartData(_chartData);
   }, [

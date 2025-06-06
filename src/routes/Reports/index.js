@@ -14,8 +14,8 @@ export default function Reports() {
   const location = useLocation();
 
   const [date, setDate] = useState(dayjs());
-
   const view = get(location.pathname.split('/'), '2', MONTH);
+
   return (
     <Grid
       container

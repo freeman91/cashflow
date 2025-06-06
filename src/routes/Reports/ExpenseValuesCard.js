@@ -12,7 +12,14 @@ import ExpenseSummary from './ExpenseSummary';
 import { findAmount } from '../../helpers/transactions';
 
 export default function ExpenseValuesCard(props) {
-  const { date, principalSum, interestSum, escrowSum, otherExpenseSum } = props;
+  const {
+    date,
+    principalSum,
+    interestSum,
+    escrowSum,
+    otherExpenseSum,
+    showPending = true,
+  } = props;
   const theme = useTheme();
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
@@ -24,6 +31,14 @@ export default function ExpenseValuesCard(props) {
   const [pendingEscrowSum, setPendingEscrowSum] = useState(0);
 
   useEffect(() => {
+    if (!showPending) {
+      setPendingExpenseSum(0);
+      setPendingPrincipalSum(0);
+      setPendingInterestSum(0);
+      setPendingEscrowSum(0);
+      return;
+    }
+
     const pendingExpenses = allExpenses.filter((expense) => {
       return date.isSame(expense.date, 'month') && expense.pending;
     });
@@ -49,7 +64,7 @@ export default function ExpenseValuesCard(props) {
     setPendingPrincipalSum(principalSum);
     setPendingInterestSum(interestSum);
     setPendingEscrowSum(escrowSum);
-  }, [allExpenses, allRepayments, date]);
+  }, [allExpenses, allRepayments, date, showPending]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,11 +77,12 @@ export default function ExpenseValuesCard(props) {
   const open = Boolean(anchorEl);
   const id = open ? 'summary-popover' : undefined;
   const totalExpense = principalSum + interestSum + escrowSum + otherExpenseSum;
-  const pendingTotal =
-    pendingExpenseSum +
-    pendingPrincipalSum +
-    pendingInterestSum +
-    pendingEscrowSum;
+  const pendingTotal = showPending
+    ? pendingExpenseSum +
+      pendingPrincipalSum +
+      pendingInterestSum +
+      pendingEscrowSum
+    : 0;
   return (
     <>
       <Box
