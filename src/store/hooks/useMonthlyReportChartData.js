@@ -5,10 +5,7 @@ import filter from 'lodash/filter';
 import get from 'lodash/get';
 import reduce from 'lodash/reduce';
 
-import {
-  findAmount,
-  findPaycheckContributionSum,
-} from '../../helpers/transactions';
+import { findAmount } from '../../helpers/transactions';
 import { getIncomes } from '../incomes';
 import { getPaychecks } from '../paychecks';
 import { getSales } from '../sales';

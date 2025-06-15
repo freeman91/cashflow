@@ -43,7 +43,6 @@ export default function TransactionFilters({
       const newTypes = TRANSACTION_TYPES.filter(
         (t) => !selectedTypes.includes(t.value)
       );
-      console.log('newTypes: ', newTypes);
       setFilters({
         ...filters,
         types: [newTypes[0].value],

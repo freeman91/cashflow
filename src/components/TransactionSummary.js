@@ -150,12 +150,42 @@ export default function TransactionSummary({ transactionsByDay }) {
             </Grid>
           )}
         </Grid>
+        <Grid size={{ xs: 2, sm: 2, md: 2 }}>
+          <Typography variant='body2' align='center' sx={{ mb: 1 }}>
+            Net
+          </Typography>
+          <Typography
+            variant='h6'
+            align='center'
+            sx={{
+              color: (theme) =>
+                totals.incomeTotal +
+                  totals.employeeContributionTotal +
+                  totals.employerContributionTotal -
+                  totals.expenseTotal >=
+                0
+                  ? theme.palette.success.main
+                  : theme.palette.error.main,
+            }}
+          >
+            {numberToCurrency.format(
+              totals.incomeTotal +
+                totals.employeeContributionTotal +
+                totals.employerContributionTotal -
+                totals.expenseTotal
+            )}
+          </Typography>
+        </Grid>
         <Grid size={{ xs: 5, sm: 5, md: 5 }}>
           <Typography variant='body2' align='center' sx={{ mb: 1 }}>
             Income
           </Typography>
           <Typography variant='h6' align='center'>
-            {numberToCurrency.format(totals.incomeTotal)}
+            {numberToCurrency.format(
+              totals.incomeTotal +
+                totals.employeeContributionTotal +
+                totals.employerContributionTotal
+            )}
           </Typography>
           {expanded && (
             <Grid container spacing={1} sx={{ mt: 1 }}>
@@ -178,23 +208,23 @@ export default function TransactionSummary({ transactionsByDay }) {
             </Grid>
           )}
         </Grid>
-        <Grid size={{ xs: 2, sm: 2, md: 2 }}>
-          <Typography variant='body2' align='center' sx={{ mb: 1 }}>
-            Net
-          </Typography>
+        {expanded && (
           <Typography
-            variant='h6'
-            align='center'
+            variant='body2'
             sx={{
-              color: (theme) =>
-                totals.incomeTotal - totals.expenseTotal >= 0
-                  ? theme.palette.success.main
-                  : theme.palette.error.main,
+              position: 'absolute',
+              top: 8,
+              left: 0,
+              px: 0.5,
+              mx: 0.5,
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              borderRadius: 1,
             }}
+            color='text.secondary'
           >
-            {numberToCurrency.format(totals.incomeTotal - totals.expenseTotal)}
+            Actual
           </Typography>
-        </Grid>
+        )}
       </Grid>
 
       {hasPendingValues && expanded && (
@@ -225,9 +255,36 @@ export default function TransactionSummary({ transactionsByDay }) {
                 </Grid>
               </Grid>
             </Grid>
+            <Grid size={{ xs: 2, sm: 2, md: 2 }}>
+              <Typography
+                variant='h6'
+                align='center'
+                sx={{
+                  color: (theme) =>
+                    pendingTotals.incomeTotal +
+                      pendingTotals.employeeContributionTotal +
+                      pendingTotals.employerContributionTotal -
+                      pendingTotals.expenseTotal >=
+                    0
+                      ? theme.palette.success.main
+                      : theme.palette.error.main,
+                }}
+              >
+                {numberToCurrency.format(
+                  pendingTotals.incomeTotal +
+                    pendingTotals.employeeContributionTotal +
+                    pendingTotals.employerContributionTotal -
+                    pendingTotals.expenseTotal
+                )}
+              </Typography>
+            </Grid>
             <Grid size={{ xs: 5, sm: 5, md: 5 }}>
               <Typography variant='h6' align='center'>
-                {numberToCurrency.format(pendingTotals.incomeTotal)}
+                {numberToCurrency.format(
+                  pendingTotals.incomeTotal +
+                    pendingTotals.employeeContributionTotal +
+                    pendingTotals.employerContributionTotal
+                )}
               </Typography>
               <Grid container spacing={1} sx={{ mt: 1 }}>
                 <Grid size={6}>
@@ -252,22 +309,7 @@ export default function TransactionSummary({ transactionsByDay }) {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid size={{ xs: 2, sm: 2, md: 2 }}>
-              <Typography
-                variant='h6'
-                align='center'
-                sx={{
-                  color: (theme) =>
-                    pendingTotals.incomeTotal - pendingTotals.expenseTotal >= 0
-                      ? theme.palette.success.main
-                      : theme.palette.error.main,
-                }}
-              >
-                {numberToCurrency.format(
-                  pendingTotals.incomeTotal - pendingTotals.expenseTotal
-                )}
-              </Typography>
-            </Grid>
+
             <Typography
               variant='body2'
               color='warning.main'
@@ -275,7 +317,10 @@ export default function TransactionSummary({ transactionsByDay }) {
                 position: 'absolute',
                 top: 0,
                 left: -24,
-                px: 1,
+                px: 0.5,
+                mx: 0.5,
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 1,
               }}
             >
               Pending
@@ -308,9 +353,36 @@ export default function TransactionSummary({ transactionsByDay }) {
                 </Grid>
               </Grid>
             </Grid>
+            <Grid size={{ xs: 2, sm: 2, md: 2 }}>
+              <Typography
+                variant='h6'
+                align='center'
+                sx={{
+                  color: (theme) =>
+                    estimatedTotals.incomeTotal +
+                      estimatedTotals.employeeContributionTotal +
+                      estimatedTotals.employerContributionTotal -
+                      estimatedTotals.expenseTotal >=
+                    0
+                      ? theme.palette.success.main
+                      : theme.palette.error.main,
+                }}
+              >
+                {numberToCurrency.format(
+                  estimatedTotals.incomeTotal +
+                    estimatedTotals.employeeContributionTotal +
+                    estimatedTotals.employerContributionTotal -
+                    estimatedTotals.expenseTotal
+                )}
+              </Typography>
+            </Grid>
             <Grid size={{ xs: 5, sm: 5, md: 5 }}>
               <Typography variant='h6' align='center'>
-                {numberToCurrency.format(estimatedTotals.incomeTotal)}
+                {numberToCurrency.format(
+                  estimatedTotals.incomeTotal +
+                    estimatedTotals.employeeContributionTotal +
+                    estimatedTotals.employerContributionTotal
+                )}
               </Typography>
               <Grid container spacing={1} sx={{ mt: 1 }}>
                 <Grid size={6}>
@@ -335,31 +407,17 @@ export default function TransactionSummary({ transactionsByDay }) {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid size={{ xs: 2, sm: 2, md: 2 }}>
-              <Typography
-                variant='h6'
-                align='center'
-                sx={{
-                  color: (theme) =>
-                    estimatedTotals.incomeTotal -
-                      estimatedTotals.expenseTotal >=
-                    0
-                      ? theme.palette.success.main
-                      : theme.palette.error.main,
-                }}
-              >
-                {numberToCurrency.format(
-                  estimatedTotals.incomeTotal - estimatedTotals.expenseTotal
-                )}
-              </Typography>
-            </Grid>
+
             <Typography
               variant='body2'
               sx={{
                 position: 'absolute',
                 top: 0,
                 left: -24,
-                px: 1,
+                px: 0.5,
+                mx: 0.5,
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: 1,
               }}
               color='text.secondary'
             >

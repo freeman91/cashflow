@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Grid from '@mui/material/Grid2';
 
 import IncomeValuesCard from '../IncomeValuesCard';
@@ -29,14 +28,12 @@ export default function MonthOverview(props) {
   return (
     <>
       <ByMonthChart year={date.year()} month={date.month()} />
-      <Grid size={{ md: 4, xs: 6 }}>
-        <IncomeValuesCard
-          date={date}
-          earnedIncomes={earnedIncomes}
-          passiveIncomes={passiveIncomes}
-          otherIncomes={otherIncomes}
-        />
-      </Grid>
+      <IncomeValuesCard
+        date={date}
+        earnedIncomes={earnedIncomes}
+        passiveIncomes={passiveIncomes}
+        otherIncomes={otherIncomes}
+      />
       <Grid
         size={{ md: 4 }}
         sx={{
@@ -48,15 +45,13 @@ export default function MonthOverview(props) {
       >
         <NetValuesCard totalIncome={totalIncome} totalExpense={totalExpense} />
       </Grid>
-      <Grid size={{ md: 4, xs: 6 }}>
-        <ExpenseValuesCard
-          date={date}
-          principalSum={principalSum}
-          interestSum={interestSum}
-          escrowSum={escrowSum}
-          otherExpenseSum={otherExpenseSum}
-        />
-      </Grid>
+      <ExpenseValuesCard
+        date={date}
+        principalSum={principalSum}
+        interestSum={interestSum}
+        escrowSum={escrowSum}
+        otherExpenseSum={otherExpenseSum}
+      />
       <Grid
         size={{ xs: 12 }}
         sx={{

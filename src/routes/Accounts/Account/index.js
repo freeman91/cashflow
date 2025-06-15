@@ -25,11 +25,23 @@ import CreateTransactionButton from '../../Dashboard/Transactions/CreateTransact
 import AccountValueHistory from './AccountValueHistory';
 import ReactiveButton from '../../../components/ReactiveButton';
 import TransactionsTable from '../../../components/TransactionsTable';
+import RangeSelect, {
+  RANGE_OPTIONS,
+} from '../../../components/Selector/RangeSelect';
+import TransactionFilters from '../../../components/Selector/TransactionFilters';
+import { useTransactionFilters } from '../../../store/hooks/useTransactionFilters';
+import { getExpenses } from '../../../store/expenses';
+import { getIncomes } from '../../../store/incomes';
+import { getPaychecks } from '../../../store/paychecks';
+import { getRepayments } from '../../../store/repayments';
+import { getPurchases } from '../../../store/purchases';
+import { getSales } from '../../../store/sales';
+import { getBorrows } from '../../../store/borrows';
 
 export default function Account(props) {
   const { account } = props;
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const securities = useSelector((state) => state.securities.data);
   const allBorrows = useSelector((state) => state.borrows.data);
   const allExpenses = useSelector((state) => state.expenses.data);
@@ -39,15 +51,48 @@ export default function Account(props) {
   const allPurchases = useSelector((state) => state.purchases.data);
   const allSales = useSelector((state) => state.sales.data);
 
-  const [range] = useState({
-    start: dayjs().date(1).subtract(3, 'month').hour(0),
-    end: dayjs().add(3, 'day'),
-  });
+  const [range, setRange] = useState(RANGE_OPTIONS[2]); // Default to "Past 3 Months"
   const [tab, setTab] = useState('Transactions');
   const [transactionsByDay, setTransactionsByDay] = useState([]);
+  const [filters, setFilters] = useState({
+    types: [],
+    amountOperator: '',
+    amountValue: '',
+    keyword: '',
+    category: '',
+  });
   const [holdings, setHoldings] = useState([]);
   const [groupedHoldings, setGroupedHoldings] = useState([]);
 
+  // Get filtered transactions
+  const { filteredTransactions, categories } = useTransactionFilters(
+    transactionsByDay.flatMap((day) => day.transactions),
+    filters
+  );
+
+  // Group filtered transactions back into days
+  const filteredDays = transactionsByDay.map((day) => ({
+    ...day,
+    transactions: day.transactions.filter((transaction) =>
+      filteredTransactions.includes(transaction)
+    ),
+  }));
+
+  // Fetch transactions when range changes
+  useEffect(() => {
+    if (!range?.start || !range?.end) return;
+
+    // Fetch all transaction types for the selected range
+    dispatch(getExpenses({ range }));
+    dispatch(getIncomes({ range }));
+    dispatch(getPaychecks({ range }));
+    dispatch(getRepayments({ range }));
+    dispatch(getPurchases({ range }));
+    dispatch(getSales({ range }));
+    dispatch(getBorrows({ range }));
+  }, [dispatch, range]);
+
+  // Process transactions into days when any transaction data changes
   useEffect(() => {
     if (!range?.start || !range?.end) return;
     let _days = [];
@@ -378,7 +423,30 @@ export default function Account(props) {
             </List>
           )}
           {tab === 'Transactions' && (
-            <TransactionsTable transactionsByDay={transactionsByDay} />
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                  backgroundColor: 'background.paper',
+                  backgroundImage: (theme) => theme.vars.overlays[8],
+                  boxShadow: (theme) => theme.shadows[4],
+                  borderRadius: 1,
+                  px: 1,
+                  py: 0.5,
+                }}
+              >
+                <RangeSelect range={range} setRange={setRange} />
+                <TransactionFilters
+                  filters={filters}
+                  setFilters={setFilters}
+                  categories={categories}
+                />
+              </Box>
+              <TransactionsTable transactionsByDay={filteredDays} />
+            </>
           )}
         </Box>
       </Grid>

@@ -4,9 +4,9 @@ import get from 'lodash/get';
 
 import useTheme from '@mui/material/styles/useTheme';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid2';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-
 import { numberToCurrency } from '../../helpers/currency';
 import ExpenseSummary from './ExpenseSummary';
 import { findAmount } from '../../helpers/transactions';
@@ -84,7 +84,7 @@ export default function ExpenseValuesCard(props) {
       pendingEscrowSum
     : 0;
   return (
-    <>
+    <Grid size={{ md: 4, xs: pendingTotal > 0 ? 12 : 6 }}>
       <Box
         sx={{
           backgroundColor: 'background.paper',
@@ -144,6 +144,6 @@ export default function ExpenseValuesCard(props) {
           otherExpenseSum={otherExpenseSum}
         />
       </Popover>
-    </>
+    </Grid>
   );
 }
