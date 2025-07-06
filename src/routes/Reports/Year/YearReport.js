@@ -100,28 +100,24 @@ export default function YearReport({ date: propDate, setDate: propSetDate }) {
         </Box>
       </Grid>
       <ByMonthChart year={date.year()} />
-      <Grid size={{ md: 4, xs: 6 }}>
-        <IncomeValuesCard
-          date={date}
-          earnedIncomes={earnedIncomes}
-          passiveIncomes={passiveIncomes}
-          otherIncomes={otherIncomes}
-          showPending={false}
-        />
-      </Grid>
+      <IncomeValuesCard
+        date={date}
+        earnedIncomes={earnedIncomes}
+        passiveIncomes={passiveIncomes}
+        otherIncomes={otherIncomes}
+        showPending={false}
+      />
       <Grid size={{ md: 4 }} sx={{ display: { xs: 'none', md: 'block' } }}>
         <NetValuesCard totalIncome={totalIncome} totalExpense={totalExpense} />
       </Grid>
-      <Grid size={{ md: 4, xs: 6 }}>
-        <ExpenseValuesCard
-          date={date}
-          principalSum={principalSum}
-          interestSum={interestSum}
-          escrowSum={escrowSum}
-          otherExpenseSum={otherExpenseSum}
-          showPending={false}
-        />
-      </Grid>
+      <ExpenseValuesCard
+        date={date}
+        principalSum={principalSum}
+        interestSum={interestSum}
+        escrowSum={escrowSum}
+        otherExpenseSum={otherExpenseSum}
+        showPending={false}
+      />
       <Grid size={{ xs: 12 }} sx={{ display: { xs: 'block', md: 'none' } }}>
         <NetValuesCard totalIncome={totalIncome} totalExpense={totalExpense} />
       </Grid>

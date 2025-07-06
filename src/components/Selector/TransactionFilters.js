@@ -39,7 +39,6 @@ export default function TransactionFilters({
       filters.types.length === 0 ||
       filters.types.length === TRANSACTION_TYPES.length
     ) {
-      console.log('event.target: ', event.target);
       const newTypes = TRANSACTION_TYPES.filter(
         (t) => !selectedTypes.includes(t.value)
       );

@@ -47,12 +47,24 @@ export default function TransactionsCalendar() {
   useEffect(() => {
     let firstDayOfMonth = month.date(1).hour(12).minute(0).second(0);
     setRange({
-      start: firstDayOfMonth.day(0).hour(12).minute(0).second(0),
-      end: firstDayOfMonth.add(1, 'month').subtract(1, 'day').day(6),
+      start: firstDayOfMonth.hour(12).minute(0).second(0),
+      end: firstDayOfMonth.add(1, 'month').subtract(1, 'day'),
     });
   }, [month]);
 
-  const numWeeks = Math.ceil(filteredDays.length / 7);
+  const numEmptyDaysBeforeFirstDay = filteredDays[0]?.date.day() || 0;
+  const numEmptyDaysAfterLastDay =
+    6 - (filteredDays[filteredDays.length - 1]?.date.day() || 0);
+  const numRows = Math.ceil(
+    (filteredDays.length +
+      numEmptyDaysBeforeFirstDay +
+      numEmptyDaysAfterLastDay) /
+      7
+  );
+
+  if ((range.start === null && range.end === null) || days.length === 0) {
+    return null;
+  }
   return (
     <>
       <Grid size={{ xs: 12 }}>
@@ -120,7 +132,7 @@ export default function TransactionsCalendar() {
         <TransactionSummary transactionsByDay={filteredDays} />
       </Grid>
 
-      <Grid size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }} sx={{ mb: 8 }}>
         <Box
           sx={{
             backgroundColor: 'background.paper',
@@ -147,16 +159,35 @@ export default function TransactionsCalendar() {
                 </Typography>
               </Grid>
             ))}
-            {filteredDays.map((day, idx) => {
+            {numEmptyDaysBeforeFirstDay > 0 && (
+              <>
+                {_range(numEmptyDaysBeforeFirstDay).map((idx) => (
+                  <Grid
+                    key={`empty-day-${idx}`}
+                    size={{ xs: 1 }}
+                    sx={{
+                      borderRight: (theme) =>
+                        `1px solid ${theme.palette.divider}`,
+                      borderBottom: (theme) =>
+                        `1px solid ${theme.palette.divider}`,
+                    }}
+                  />
+                ))}
+              </>
+            )}
+            {filteredDays.map((day) => {
               return (
                 <Grid
                   key={`day-${day.date.format('YYYY-MM-DD')}`}
                   size={{ xs: 1 }}
                   sx={{
                     borderRight: (theme) =>
-                      idx % 7 !== 6 ? `1px solid ${theme.palette.divider}` : '',
+                      day.date.day() % 7 !== 6
+                        ? `1px solid ${theme.palette.divider}`
+                        : '',
                     borderBottom: (theme) =>
-                      idx / 7 < numWeeks - 1
+                      (numEmptyDaysBeforeFirstDay + day.date.date()) / 7 <=
+                      numRows - 1
                         ? `1px solid ${theme.palette.divider}`
                         : '',
                   }}
@@ -169,6 +200,30 @@ export default function TransactionsCalendar() {
                 </Grid>
               );
             })}
+            {numEmptyDaysAfterLastDay > 0 && (
+              <>
+                {_range(numEmptyDaysAfterLastDay).map((idx) => (
+                  <Grid
+                    key={`empty-day-${idx}`}
+                    size={{ xs: 1 }}
+                    sx={{
+                      borderRight: (theme) => {
+                        // if last grid item, don't add border
+                        if (
+                          idx ===
+                          6 -
+                            filteredDays[filteredDays.length - 1].date.day() -
+                            1
+                        ) {
+                          return '';
+                        }
+                        return `1px solid ${theme.palette.divider}`;
+                      },
+                    }}
+                  />
+                ))}
+              </>
+            )}
           </Grid>
         </Box>
       </Grid>

@@ -26,7 +26,7 @@ export default function AccountGroupGrid(props) {
   const { type, sum, items, lastMonthSum, showInactive } = props;
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);

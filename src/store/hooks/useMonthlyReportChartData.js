@@ -5,7 +5,10 @@ import filter from 'lodash/filter';
 import get from 'lodash/get';
 import reduce from 'lodash/reduce';
 
-import { findAmount } from '../../helpers/transactions';
+import {
+  findAmount,
+  findPaycheckContributionSum,
+} from '../../helpers/transactions';
 import { getIncomes } from '../incomes';
 import { getPaychecks } from '../paychecks';
 import { getSales } from '../sales';
@@ -13,13 +16,22 @@ import { getExpenses } from '../expenses';
 import { getRepayments } from '../repayments';
 
 const findMonthIncomeSum = (incomes, paychecks, sales, date) => {
-  const monthIncomes = filter(
-    [...incomes, ...paychecks, ...sales],
-    (income) => {
-      const incomeDate = dayjs(income.date);
-      return incomeDate.isSame(date, 'month') && !get(income, 'pending', false);
-    }
-  );
+  let monthIncomes = filter([...incomes, ...paychecks, ...sales], (income) => {
+    const incomeDate = dayjs(income.date);
+    return incomeDate.isSame(date, 'month') && !get(income, 'pending', false);
+  });
+
+  // update paychecks to include employer & employee contributions
+  monthIncomes = monthIncomes.map((income) => {
+    if (income._type !== 'paycheck') return income;
+    return {
+      ...income,
+      _amount:
+        findAmount(income) +
+        findPaycheckContributionSum(income, 'employer') +
+        findPaycheckContributionSum(income, 'employee'),
+    };
+  });
 
   return reduce(
     monthIncomes,
@@ -88,7 +100,7 @@ export const useMonthlyReportChartData = (year, month) => {
       // Month view - show 12 months ending at the selected month
       _end = dayjs()
         .set('year', year)
-        .set('month', month - 1)
+        .set('month', month)
         .set('date', 15)
         .endOf('month');
       _start = _end.subtract(11, 'month').startOf('month');
