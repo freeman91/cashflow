@@ -231,6 +231,7 @@ class Recurring(BaseModel):
                 account_id=self.repayment_attributes.account_id,
                 recurring_id=self.recurring_id,
                 payment_from_id=self.repayment_attributes.payment_from_id,
+                description=self.name,
             )
 
         if self.item_type == "expense":
@@ -244,6 +245,7 @@ class Recurring(BaseModel):
                 subcategory=self.expense_attributes.subcategory,
                 recurring_id=self.recurring_id,
                 payment_from_id=self.expense_attributes.payment_from_id,
+                description=self.name,
             )
 
         if self.item_type == "paycheck":
@@ -260,6 +262,7 @@ class Recurring(BaseModel):
                 other_benefits=self.paycheck_attributes.other_benefits,
                 other=self.paycheck_attributes.other,
                 deposit_to_id=self.paycheck_attributes.deposit_to_id,
+                description=self.name,
             )
 
         if self.item_type == "income":
@@ -272,6 +275,7 @@ class Recurring(BaseModel):
                 category=self.income_attributes.category,
                 deposit_to_id=self.income_attributes.deposit_to_id,
                 recurring_id=self.recurring_id,
+                description=self.name,
             )
 
         raise ValueError(f"Invalid item type: {self.item_type}")
