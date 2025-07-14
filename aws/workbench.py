@@ -1,33 +1,15 @@
-# pylint: disable=wrong-import-position, wrong-import-order, unused-import, wildcard-import
-"""Dev workbench for aws"""
+"""Workbench for development and testing"""
 
 import os
-import json
-import csv
-from datetime import date, datetime, timedelta, timezone
-from pprint import pprint
+import sys
+from datetime import datetime, timezone
 from typing import List
-from uuid import uuid4
-from pydash import (
-    find,
-    group_by,
-    get,
-    head,
-    map_,
-    uniq,
-    sort_by,
-    filter_,
-    remove,
-    reduce_,
-    last,
-    find_index,
-)
+import inquirer
+from pydash import sort_by, find, filter_
 
-import prompts
-from services import dynamo
-from services.api.controllers.cronjobs import get_stock_prices
-from services.dynamo.categories import Subcategory, LABELS
-from services.dynamo import *
+from dotenv import load_dotenv
+
+from src.services import dynamo
 
 ENV = os.getenv("ENV")
 REGION = os.getenv("REGION")

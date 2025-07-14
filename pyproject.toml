@@ -4,26 +4,31 @@ version = "1.1.1"
 description = ""
 authors = ["Addison Freeman <addisonfreeman91@gmail.com>"]
 
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
+
 [tool.poetry.dependencies]
 python = "^3.12"
 Flask = "^2.1.1"
 Flask-Cors = "^3.0.10"
 python-dotenv = "^1.0.1"
+
+[tool.poetry.group.lambda.dependencies]
 cryptocompare = "^0.7.5"
 pydash = "^5.1.0"
-bcrypt = "^4.0.1"
-yfinance = "^0.2.54"
+pynamodb = "^5.5.0"
+pynamodb-attributes = "^0.4.0"
 
 [tool.poetry.group.dev.dependencies]
 inquirer = "^2.10.0"
 black = "^22.3.0"
 fabric = "^2.7.0"
 pylint = "^2.13.4"
+aws-cdk-lib = "^2.204.0"
 
-[tool.poetry.group.aws.dependencies]
-aws-cdk-lib = "^2.102.0"
-pynamodb = "^5.5.0"
-pynamodb-attributes = "^0.4.0"
+
+[tool.poetry.group.docker.dependencies]
+boto3 = "^1.39.4"
 
 [build-system]
 requires = ["poetry>=1.1.12"]

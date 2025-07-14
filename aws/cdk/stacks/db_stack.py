@@ -14,7 +14,12 @@ class DynamoDBTable:
     """Create a DynamoDB table construct"""
 
     def __init__(
-        self, scope, item_type: str, partition_key: str, sort_key: str, time_to_live_attribute: Optional[str] = None
+        self,
+        scope,
+        item_type: str,
+        partition_key: str,
+        sort_key: str,
+        time_to_live_attribute: Optional[str] = None,
     ) -> None:
         self.id = f"{APP_ID}-{ENV}-{item_type}s"
         print(f"\tDynamoDBTable: {self.id}")

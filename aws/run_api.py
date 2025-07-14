@@ -3,7 +3,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 
-from services.api import controllers
+from src.services.api import controllers
 
 
 class Config:
@@ -16,7 +16,6 @@ def blueprints(app):
     app.register_blueprint(controllers.borrows.borrows)
     app.register_blueprint(controllers.budgets.budgets)
     app.register_blueprint(controllers.categories.categories)
-    app.register_blueprint(controllers.cronjobs.cronjobs)
     app.register_blueprint(controllers.expenses.expenses)
     app.register_blueprint(controllers.histories.histories)
     app.register_blueprint(controllers.incomes.incomes)
