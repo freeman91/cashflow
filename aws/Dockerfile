@@ -2,7 +2,7 @@ FROM python:3.12-slim
 
 WORKDIR /code
 
-RUN apt-get update && apt-get install -y python3-distutils python3-venv \
+RUN apt-get update && apt-get install -y python3-venv \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pip install poetry==2.1.1
