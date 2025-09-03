@@ -1,8 +1,7 @@
 """Initiate the root of the CDK construct tree. App entry point"""
 
 import os
-from pathlib import Path
-from aws_cdk import App, Stack, Duration
+from aws_cdk import App, Stack
 from aws_cdk import aws_lambda as lambda_
 from stacks.db_stack import DyanmoDbStack
 from stacks.cronjobs_stack import CronjobsStack
@@ -22,11 +21,11 @@ class RootStack(Stack):
         print(f"RootStack: {self.id}")
         super().__init__(scope, self.id)
 
-        # Create shared Lambda layer
+        # Create shared Lambda layer, role, and config
         self.lambda_layer = self._create_lambda_layer()
 
         DyanmoDbStack(self)
-        CronjobsStack(self, self.lambda_layer)
+        CronjobsStack(self)
         # ApiGatewayStack(self, self.lambda_layer)
 
     def _create_lambda_layer(self) -> lambda_.LayerVersion:

@@ -7,37 +7,59 @@ from aws_cdk import aws_iam as iam
 from aws_cdk import aws_logs as logs
 from aws_cdk import aws_events as events
 from aws_cdk import aws_events_targets as targets
-from aws_cdk import aws_ssm as ssm
 from stacks.__util__ import get_top_level_path
 
 ENV: str = os.getenv("ENV")
 APP_ID: str = os.getenv("APP_ID")
 REGION: str = os.getenv("REGION")
+SOURCE_EMAIL: str = os.getenv("SOURCE_EMAIL")
 
 
 class CronjobsStack(NestedStack):
     """Stack for EventBridge rules and Lambda functions for cronjobs"""
 
-    def __init__(self, scope: Stack, lambda_layer: lambda_.LayerVersion) -> None:
+    def __init__(self, scope: Stack) -> None:
         self.id = f"{APP_ID}-{ENV}-cronjobs-stack"
         print(f"CronjobsStack: {self.id}")
         super().__init__(scope, self.id)
 
-        self.lambda_layer = lambda_layer
+        self.lambda_role = self._create_lambda_role()
+        self.common_lambda_config = self._create_lambda_config(scope)
 
         # Create Lambda functions for each cronjob
-        self._create_cronjob_functions()
+        self._create_cronjob_functions(scope)
 
         # Create EventBridge rules
         self._create_eventbridge_rules()
 
-    def _create_cronjob_functions(self) -> None:
-        """Create Lambda functions for each cronjob"""
+    def _create_lambda_config(self, scope: Stack) -> dict:
+        """Create a common Lambda configuration"""
 
-        # Create Lambda execution role with necessary permissions
+        return {
+            "runtime": lambda_.Runtime.PYTHON_3_12,
+            "role": self.lambda_role,
+            "timeout": Duration.seconds(300),  # 5 minutes for cronjobs
+            "memory_size": 512,
+            "layers": [scope.lambda_layer],
+            "environment": {
+                "ENV": ENV,
+                "APP_ID": APP_ID,
+                "REGION": REGION,
+                "SOURCE_EMAIL": SOURCE_EMAIL,
+                "ALPHAVANTAGE_PARAM_NAME": "/alpha-vantage/api-key",
+                "CRYPTO_COMPARE_PARAM_NAME": "/crypto-compare/api-key",
+            },
+            "code": lambda_.Code.from_asset(
+                os.path.join(get_top_level_path(), "aws/src")
+            ),
+        }
+
+    def _create_lambda_role(self) -> iam.Role:
+        """Create a Lambda execution role with necessary permissions"""
+
         lambda_role = iam.Role(
             self,
-            f"{APP_ID}-{ENV}-cronjobs-lambda-role",
+            f"{APP_ID}-{ENV}-lambda-role",
             assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
             managed_policies=[
                 iam.ManagedPolicy.from_aws_managed_policy_name(
@@ -45,7 +67,6 @@ class CronjobsStack(NestedStack):
                 )
             ],
         )
-
         # Add DynamoDB permissions
         lambda_role.add_to_policy(
             iam.PolicyStatement(
@@ -62,7 +83,14 @@ class CronjobsStack(NestedStack):
             )
         )
 
-        # Add SSM Parameter Store permissions
+        lambda_role.add_to_policy(
+            iam.PolicyStatement(
+                effect=iam.Effect.ALLOW,
+                actions=["ses:SendEmail"],
+                resources=["arn:aws:ses:*:*:identity/*"],
+            )
+        )
+
         lambda_role.add_to_policy(
             iam.PolicyStatement(
                 effect=iam.Effect.ALLOW,
@@ -76,25 +104,10 @@ class CronjobsStack(NestedStack):
                 ],
             )
         )
+        return lambda_role
 
-        # Common Lambda configuration
-        common_config = {
-            "runtime": lambda_.Runtime.PYTHON_3_12,
-            "role": lambda_role,
-            "timeout": Duration.seconds(300),  # 5 minutes for cronjobs
-            "memory_size": 512,
-            "layers": [self.lambda_layer],
-            "environment": {
-                "ENV": ENV,
-                "APP_ID": APP_ID,
-                "REGION": REGION,
-                "ALPHAVANTAGE_PARAM_NAME": "/alpha-vantage/api-key",
-                "CRYPTO_COMPARE_PARAM_NAME": "/crypto-compare/api-key",
-            },
-            "code": lambda_.Code.from_asset(
-                os.path.join(get_top_level_path(), "aws/src")
-            ),
-        }
+    def _create_cronjob_functions(self, scope: Stack) -> None:
+        """Create Lambda functions for each cronjob"""
 
         # Create Lambda function for update_crypto_prices
         crypto_function_name = f"{APP_ID}-{ENV}-update-crypto-prices"
@@ -109,7 +122,7 @@ class CronjobsStack(NestedStack):
                 log_group_name=f"/aws/lambda/{APP_ID}-{ENV}-update-crypto-prices",
                 retention=logs.RetentionDays.ONE_MONTH,
             ),
-            **common_config,
+            **self.common_lambda_config,
         )
         print(f"\tLambda Function: {crypto_function_name}")
 
@@ -126,7 +139,7 @@ class CronjobsStack(NestedStack):
                 log_group_name=f"/aws/lambda/{APP_ID}-{ENV}-update-stock-prices",
                 retention=logs.RetentionDays.ONE_MONTH,
             ),
-            **common_config,
+            **self.common_lambda_config,
         )
         print(f"\tLambda Function: {stock_function_name}")
 
@@ -143,7 +156,7 @@ class CronjobsStack(NestedStack):
                 log_group_name=f"/aws/lambda/{APP_ID}-{ENV}-save-value-histories",
                 retention=logs.RetentionDays.ONE_MONTH,
             ),
-            **common_config,
+            **self.common_lambda_config,
         )
         print(f"\tLambda Function: {history_function_name}")
 
@@ -160,9 +173,26 @@ class CronjobsStack(NestedStack):
                 log_group_name=f"/aws/lambda/{APP_ID}-{ENV}-generate-transactions",
                 retention=logs.RetentionDays.ONE_MONTH,
             ),
-            **common_config,
+            **self.common_lambda_config,
         )
         print(f"\tLambda Function: {transactions_function_name}")
+
+        # Create Lambda function for daily_user_email
+        daily_user_email_name = f"{APP_ID}-{ENV}-daily-user-email"
+        self.daily_user_email = lambda_.Function(
+            self,
+            daily_user_email_name,
+            handler="lambdas.daily_notification.handler",
+            function_name=daily_user_email_name,
+            log_group=logs.LogGroup(
+                self,
+                f"{APP_ID}-{ENV}-daily-notification-log-group",
+                log_group_name=f"/aws/lambda/{APP_ID}-{ENV}-daily-notification",
+                retention=logs.RetentionDays.ONE_MONTH,
+            ),
+            **self.common_lambda_config,
+        )
+        print(f"\tLambda Function: {daily_user_email_name}")
 
     def _create_eventbridge_rules(self) -> None:
         """Create EventBridge rules for each cronjob"""
@@ -228,3 +258,15 @@ class CronjobsStack(NestedStack):
             targets.LambdaFunction(self.generate_transactions_function)
         )
         print(f"\tEventBridge Rule: {transactions_rule_name}")
+
+        # Rule for daily_user_email (12:00 UTC daily)
+        daily_user_email_rule_name = f"{APP_ID}-{ENV}-daily-user-email-rule"
+        daily_user_email_rule = events.Rule(
+            self,
+            daily_user_email_rule_name,
+            rule_name=daily_user_email_rule_name,
+            description="Trigger daily user email at 12:00 UTC daily",
+            schedule=events.Schedule.cron(minute="0", hour="12"),  # 12:00 UTC
+        )
+        daily_user_email_rule.add_target(targets.LambdaFunction(self.daily_user_email))
+        print(f"\tEventBridge Rule: {daily_user_email_rule_name}")

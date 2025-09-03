@@ -6,7 +6,7 @@ from cryptocompare import cryptocompare
 
 from services.dynamo import Account, Security
 from services.ssm import get_parameter
-from services.api.controllers.__util__ import log_action
+from .__util__ import log_action
 
 
 def get_crypto_prices(tickers: set):
@@ -73,9 +73,11 @@ def handler(event, context):
             account.save()
 
         message = "Crypto securities updated"
-        log_action("SYSTEM", message)
+        print(message)
+        log_action("Update Crypto Prices", message)
         return {"statusCode": 200, "body": message}
 
     except Exception as e:
         print(f"Error updating crypto prices: {str(e)}")
+        log_action("Update Crypto Prices", f"Error: {str(e)}", status="error")
         return {"statusCode": 500, "body": f"Error: {str(e)}"}

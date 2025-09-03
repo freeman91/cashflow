@@ -111,7 +111,7 @@ def _recurring(user_id: str, recurring_id: str):
             "week_interval",
         ]:
             if attr in payload:
-                if payload.get(attr) == "":
+                if payload.get(attr) == "" or payload.get(attr) is None:
                     setattr(recurring, attr, None)
                 else:
                     setattr(recurring, attr, int(payload.get(attr)))

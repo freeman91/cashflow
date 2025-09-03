@@ -8,7 +8,7 @@ import inquirer
 from pydash import sort_by, find, filter_
 
 from dotenv import load_dotenv
-
+import prompts
 from src.services import dynamo
 
 ENV = os.getenv("ENV")

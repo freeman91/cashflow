@@ -26,7 +26,7 @@ def parse_arguments():
     parser.add_argument(
         "command",
         help="",
-        choices=["run_api", "deploy", "workbench", "zip_layer"],
+        choices=["run_api", "deploy", "workbench", "zip_layer", "create_expenses"],
     )
     parser.add_argument(
         "-q",

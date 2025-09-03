@@ -5,7 +5,7 @@ from pydash import last
 from dateutil.rrule import rrule, YEARLY, MONTHLY, WEEKLY
 
 from services.dynamo import Recurring
-from services.api.controllers.__util__ import log_action
+from .__util__ import log_action
 
 FREQUENCY_MAP = {"yearly": YEARLY, "monthly": MONTHLY, "weekly": WEEKLY}
 
@@ -51,9 +51,11 @@ def handler(event, context):
                 count += 1
 
         message = f"{_date} :: {count} transactions generated"
-        log_action("SYSTEM", message)
+        print(message)
+        log_action("Generate Transactions", message)
         return {"statusCode": 200, "body": message}
 
     except Exception as e:
         print(f"Error generating transactions: {str(e)}")
+        log_action("Generate Transactions", f"Error: {str(e)}", status="error")
         return {"statusCode": 500, "body": f"Error: {str(e)}"}

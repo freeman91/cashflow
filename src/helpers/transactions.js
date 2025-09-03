@@ -49,6 +49,7 @@ const findSource = (transaction) => {
     return transaction.paycheck_attributes.employer;
   if (transaction.item_type === 'repayment')
     return transaction.repayment_attributes.merchant;
+  if (transaction.description) return transaction.description;
   return '';
 };
 

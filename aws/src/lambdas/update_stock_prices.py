@@ -2,12 +2,12 @@
 
 from datetime import datetime, timezone
 from typing import List
-from pydash import filter_, map_
+from pydash import filter_, map_, uniq
 import requests
 
 from services.dynamo import Account, Security
 from services.ssm import get_parameter
-from services.api.controllers.__util__ import log_action
+from .__util__ import log_action
 
 ALPHA_ADVANTAGE_URL = "https://www.alphavantage.co/query"
 
@@ -18,7 +18,7 @@ def get_stock_prices(tickers: List):
     alpha_vantage_key = get_parameter("ALPHAVANTAGE_PARAM_NAME")
     prices = {}
 
-    for symbol in tickers:
+    for symbol in uniq(tickers):
         url = f"{ALPHA_ADVANTAGE_URL}?function=GLOBAL_QUOTE&symbol={symbol}&apikey={alpha_vantage_key}"
         response = requests.get(url).json()
         try:
@@ -89,9 +89,11 @@ def handler(event, context):
             account.save()
 
         message = "Stock securities updated"
-        log_action("SYSTEM", message)
+        print(message)
+        log_action("Update Stock Prices", message)
         return {"statusCode": 200, "body": message}
 
     except Exception as e:
         print(f"Error updating stock prices: {str(e)}")
+        log_action("Update Stock Prices", f"Error: {str(e)}", status="error")
         return {"statusCode": 500, "body": f"Error: {str(e)}"}

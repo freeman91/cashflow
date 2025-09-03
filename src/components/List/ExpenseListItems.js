@@ -34,10 +34,15 @@ export default function ExpenseListItems(props) {
   }, [categories, recurring?.expense_attributes?.category]);
 
   const handleChange = (key, value) => {
-    setRecurring((prevRecurring) => ({
-      ...prevRecurring,
-      expense_attributes: { ...prevRecurring.expense_attributes, [key]: value },
-    }));
+    setRecurring((prevRecurring) => {
+      return {
+        ...prevRecurring,
+        expense_attributes: {
+          ...prevRecurring.expense_attributes,
+          [key]: value,
+        },
+      };
+    });
   };
 
   return (
@@ -56,13 +61,15 @@ export default function ExpenseListItems(props) {
         label='merchant'
         value={recurring?.expense_attributes?.merchant || ''}
         options={merchants}
-        onChange={handleChange}
+        onChange={(e, value) => handleChange('merchant', value)}
       />
       <SelectOption
         id='category'
         label='Category'
         value={recurring?.expense_attributes?.category || ''}
-        onChange={(value) => handleChange('category', value)}
+        onChange={(value) => {
+          handleChange('category', value);
+        }}
         options={categories?.map((category) => category.name)}
       />
       <SelectOption

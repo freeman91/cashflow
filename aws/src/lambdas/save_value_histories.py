@@ -6,7 +6,7 @@ from pydash import find_index, sort_by
 
 from services.dynamo import Account, Security
 from services.dynamo.history import History, ValueItem
-from services.api.controllers.__util__ import log_action
+from .__util__ import log_action
 
 
 def update_or_create_history(
@@ -84,9 +84,11 @@ def handler(event, context):
                 )
 
         message = "Value Histories created/updated successfully"
-        log_action("SYSTEM", message)
+        print(message)
+        log_action("Save Value Histories", message)
         return {"statusCode": 200, "body": message}
 
     except Exception as e:
         print(f"Error saving value histories: {str(e)}")
+        log_action("Save Value Histories", f"Error: {str(e)}", status="error")
         return {"statusCode": 500, "body": f"Error: {str(e)}"}
