@@ -48,6 +48,7 @@ class CronjobsStack(NestedStack):
                 "SOURCE_EMAIL": SOURCE_EMAIL,
                 "ALPHAVANTAGE_PARAM_NAME": "/alpha-vantage/api-key",
                 "CRYPTO_COMPARE_PARAM_NAME": "/crypto-compare/api-key",
+                "RENTCAST_API_KEY": os.getenv("RENTCAST_API_KEY"),
             },
             "code": lambda_.Code.from_asset(
                 os.path.join(get_top_level_path(), "aws/src")
@@ -194,6 +195,23 @@ class CronjobsStack(NestedStack):
         )
         print(f"\tLambda Function: {daily_user_email_name}")
 
+        # Create Lambda function for update_real_estate_values
+        real_estate_function_name = f"{APP_ID}-{ENV}-update-real-estate-values"
+        self.update_real_estate_values_function = lambda_.Function(
+            self,
+            real_estate_function_name,
+            handler="lambdas.update_real_estate_values.handler",
+            function_name=real_estate_function_name,
+            log_group=logs.LogGroup(
+                self,
+                f"{APP_ID}-{ENV}-update-real-estate-values-log-group",
+                log_group_name=f"/aws/lambda/{APP_ID}-{ENV}-update-real-estate-values",
+                retention=logs.RetentionDays.ONE_MONTH,
+            ),
+            **self.common_lambda_config,
+        )
+        print(f"\tLambda Function: {real_estate_function_name}")
+
     def _create_eventbridge_rules(self) -> None:
         """Create EventBridge rules for each cronjob"""
 
@@ -270,3 +288,19 @@ class CronjobsStack(NestedStack):
         )
         daily_user_email_rule.add_target(targets.LambdaFunction(self.daily_user_email))
         print(f"\tEventBridge Rule: {daily_user_email_rule_name}")
+
+        # Rule for update_real_estate_values (weekly on Sundays at 2:00 AM UTC)
+        real_estate_rule_name = f"{APP_ID}-{ENV}-real-estate-values-rule"
+        real_estate_rule = events.Rule(
+            self,
+            real_estate_rule_name,
+            rule_name=real_estate_rule_name,
+            description="Trigger real estate value updates weekly on Sundays at 2:00 AM UTC",
+            schedule=events.Schedule.cron(
+                minute="0", hour="2", week_day="SUN"
+            ),  # Weekly on Sunday at 2:00 AM UTC
+        )
+        real_estate_rule.add_target(
+            targets.LambdaFunction(self.update_real_estate_values_function)
+        )
+        print(f"\tEventBridge Rule: {real_estate_rule_name}")

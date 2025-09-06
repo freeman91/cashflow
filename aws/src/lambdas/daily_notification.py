@@ -11,13 +11,12 @@ SOURCE_EMAIL: str = os.getenv("SOURCE_EMAIL")
 def handler(event, context):
     """Lambda handler for daily notification"""
 
-    print("Event: ", event)
     ses = boto3.client("ses")
 
     responses = []
     users = User.scan()
     for user in users:
-        print(user)
+        print(f"Processing user: {user.email}")
 
         # find pending expenses over the next 3 days
         now = datetime.now()
@@ -83,6 +82,9 @@ def handler(event, context):
             *[f"{warning}" for warning in account_overdraw_warnings],
         ]
         body_text = "\n".join(lines)
+
+        if len(lines) == 0:
+            continue
 
         # send the notification
         response = ses.send_email(

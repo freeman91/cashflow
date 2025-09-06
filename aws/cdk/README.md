@@ -43,6 +43,7 @@ lambda-layer/
    export ENV=production
    export APP_ID=cashflow
    export CRYPTO_COMPARE_KEY=your-key
+   export RENTCAST_API_KEY=your-rentcast-api-key
    ```
 
 2. Deploy the infrastructure:
@@ -67,3 +68,4 @@ The following scheduled tasks are configured:
 - **Stock Price Updates**: 6:30 PM daily
 - **Value History Saves**: 10:50 AM and 11:50 PM daily
 - **Transaction Generation**: Midnight daily
+- **Real Estate Value Updates**: Weekly on Sundays at 2:00 AM UTC (using RentCast API)
