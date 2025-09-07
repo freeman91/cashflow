@@ -25,16 +25,16 @@ def handler(event, context):
             if recurring.next_date is None:
                 continue
 
-            if (
-                recurring.next_date.day == _date.day
-                and recurring.next_date.month == _date.month
-                and recurring.next_date.year == _date.year
-            ):
+            # Generate transactions for all recurrings where next_date is before the given date
+            while recurring.next_date.date() <= _date:
                 transaction = recurring.generate(
-                    year=_date.year, month=_date.month, day=_date.day
+                    year=recurring.next_date.year,
+                    month=recurring.next_date.month,
+                    day=recurring.next_date.day,
                 )
                 print(f"Generating :: {recurring.name} :: {transaction}")
 
+                # Calculate the next occurrence
                 next_dates = rrule(
                     FREQUENCY_MAP[recurring.frequency],
                     dtstart=recurring.next_date,
