@@ -5,6 +5,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid2';
+import Typography from '@mui/material/Typography';
 
 import TransactionListItem from '../routes/Transactions/ListItems/TransactionListItem';
 
@@ -34,6 +35,15 @@ export default function TransactionsTable(props) {
           overflow: 'hidden',
         }}
       >
+        <Typography
+          variant='body1'
+          fontWeight='bold'
+          color='textSecondary'
+          align='center'
+          sx={{ px: 2, py: 1 }}
+        >
+          TRANSACTIONS
+        </Typography>
         <List disablePadding>
           {transactionsByDay.map((day, idx) => {
             if (day.transactions.length === 0) return null;

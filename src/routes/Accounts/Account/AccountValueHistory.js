@@ -14,6 +14,7 @@ import {
 
 import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import Box from '@mui/material/Box';
@@ -88,6 +89,7 @@ function CustomTooltip({ active, payload, label }) {
 export default function AccountValueHistory(props) {
   const { account } = props;
   const theme = useTheme();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
 
   let accountValue = findAmount(account);
@@ -202,108 +204,102 @@ export default function AccountValueHistory(props) {
           width: '100%',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            my: 1,
-            mx: 1,
-          }}
-        >
+        {isMobile ? (
+          // Mobile Layout: Two rows
           <Box
             sx={{
               display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'flex-end',
+              flexDirection: 'column',
               gap: 1,
+              my: 1,
+              mx: 1,
             }}
           >
-            <Typography
-              variant='h6'
-              fontWeight='bold'
-              color='textSecondary'
-              sx={{ mr: 2 }}
+            {/* Row 1: "VALUE HISTORY" left, RangeSelect right */}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
             >
-              Value History
-            </Typography>
+              <Typography variant='h6' fontWeight='bold' color='textSecondary'>
+                VALUE HISTORY
+              </Typography>
+              <RangeSelect range={range} setRange={handleRangeChange} />
+            </Box>
 
-            <Typography variant='h5' fontWeight='bold'>
-              {numberToCurrency.format(accountValue)}
-            </Typography>
-            <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
-              {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
-            </Icon>
-            <Typography
-              variant='body1'
-              fontWeight='bold'
-              sx={{ color: differenceAttrs.color, mb: 0.25 }}
+            {/* Row 2: Account value left, difference info right */}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+              }}
             >
-              {numberToCurrency.format(Math.abs(difference))} (
-              {percentDifference.toFixed(2)}%)
-            </Typography>
+              <Typography variant='h5' fontWeight='bold'>
+                {numberToCurrency.format(accountValue)}
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 0.5 }}>
+                <Icon sx={{ color: differenceAttrs.color, mb: 0.5 }}>
+                  {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+                </Icon>
+                <Typography
+                  variant='body1'
+                  fontWeight='bold'
+                  sx={{ color: differenceAttrs.color, mb: 0.25 }}
+                >
+                  {numberToCurrency.format(Math.abs(difference))} (
+                  {percentDifference.toFixed(2)}%)
+                </Typography>
+              </Box>
+            </Box>
           </Box>
-          <RangeSelect range={range} setRange={handleRangeChange} />
-        </Box>
-        {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-          <Typography variant='body1' fontWeight='bold' color='textSecondary'>
-            VALUE HISTORY
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            {isMobile ? (
-              <IconButton>
-                <LoopIcon />
-              </IconButton>
-            ) : (
-              <Button variant='outlined' startIcon={<LoopIcon />}>
-                Refresh
-              </Button>
-            )}
-            {isMobile ? (
-              <IconButton onClick={openAccountDialog}>
-                <EditIcon />
-              </IconButton>
-            ) : (
-              <Button
-                variant='contained'
-                startIcon={<EditIcon />}
-                onClick={openAccountDialog}
+        ) : (
+          // Desktop Layout: Single row
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              my: 1,
+              mx: 1,
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-end',
+                gap: 1,
+              }}
+            >
+              <Typography
+                variant='h6'
+                fontWeight='bold'
+                color='textSecondary'
+                sx={{ mr: 2 }}
               >
-                Edit
-              </Button>
-            )}
+                VALUE HISTORY
+              </Typography>
+
+              <Typography variant='h5' fontWeight='bold'>
+                {numberToCurrency.format(accountValue)}
+              </Typography>
+              <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
+                {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+              </Icon>
+              <Typography
+                variant='body1'
+                fontWeight='bold'
+                sx={{ color: differenceAttrs.color, mb: 0.25 }}
+              >
+                {numberToCurrency.format(Math.abs(difference))} (
+                {percentDifference.toFixed(2)}%)
+              </Typography>
+            </Box>
+            <RangeSelect range={range} setRange={handleRangeChange} />
           </Box>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-end',
-            gap: 1,
-          }}
-        >
-          <Typography variant='h5' fontWeight='bold'>
-            {numberToCurrency.format(accountValue)}
-          </Typography>
-          <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
-            {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
-          </Icon>
-          <Typography
-            variant='body1'
-            fontWeight='bold'
-            sx={{ color: differenceAttrs.color, mb: 0.25 }}
-          >
-            {numberToCurrency.format(Math.abs(difference))} (
-            {percentDifference.toFixed(2)}%)
-          </Typography>
-          <Typography
-            variant='body2'
-            fontWeight='bold'
-            color='textSecondary'
-            sx={{ mb: 0.25, display: { xs: 'none', md: 'block' } }}
-          >
-            PAST 6 MONTHS
-          </Typography>
-        </Box> */}
+        )}
         <ResponsiveContainer
           width='100%'
           height={200}

@@ -203,7 +203,12 @@ export default function RecurringList() {
           </Grid>
         );
       })}
-      <Grid size={{ xs: 12 }} display='flex' justifyContent='center'>
+      <Grid
+        size={{ xs: 12 }}
+        display='flex'
+        justifyContent='center'
+        sx={{ mb: 8 }}
+      >
         <Link
           underline='hover'
           color='text.secondary'

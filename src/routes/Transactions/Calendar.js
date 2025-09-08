@@ -79,41 +79,41 @@ export default function TransactionsCalendar() {
           }}
         >
           <Grid container spacing={2} alignItems='center'>
-            <Grid size={{ xs: 6, sm: 3 }}>
-              <DatePicker
-                openTo='month'
-                views={['year', 'month']}
-                sx={{ width: '100%' }}
-                value={month}
-                onChange={(newValue) => setMonth(newValue)}
-                slotProps={{
-                  textField: {
-                    variant: 'standard',
-                    inputProps: {
-                      readOnly: true,
+            <Grid size={{ xs: 9, sm: 6 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <DatePicker
+                  openTo='month'
+                  views={['year', 'month']}
+                  sx={{ flexGrow: 1, maxWidth: { xs: 'none', sm: 200 } }}
+                  value={month}
+                  onChange={(newValue) => setMonth(newValue)}
+                  slotProps={{
+                    textField: {
+                      variant: 'standard',
+                      inputProps: {
+                        readOnly: true,
+                      },
+                      InputProps: { disableUnderline: true },
                     },
-                    InputProps: { disableUnderline: true },
-                  },
-                  inputAdornment: {
-                    position: 'start',
-                  },
-                }}
-              />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3 }}>
-              <Box sx={{ display: 'flex', gap: 1 }}>
-                <IconButton
-                  onClick={() => setMonth(month.subtract(1, 'month'))}
-                >
-                  <ArrowBack />
-                </IconButton>
-                <IconButton onClick={() => setMonth(month.add(1, 'month'))}>
-                  <ArrowForward />
-                </IconButton>
+                    inputAdornment: {
+                      position: 'start',
+                    },
+                  }}
+                />
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <IconButton
+                    onClick={() => setMonth(month.subtract(1, 'month'))}
+                  >
+                    <ArrowBack />
+                  </IconButton>
+                  <IconButton onClick={() => setMonth(month.add(1, 'month'))}>
+                    <ArrowForward />
+                  </IconButton>
+                </Box>
               </Box>
             </Grid>
             <Grid
-              size={{ xs: 12, sm: 6 }}
+              size={{ xs: 3, sm: 6 }}
               sx={{ display: 'flex', justifyContent: 'flex-end' }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

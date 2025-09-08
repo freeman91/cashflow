@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
@@ -17,6 +18,7 @@ import {
 
 export default function TransactionSummary({ transactionsByDay }) {
   const [expanded, setExpanded] = useState(false);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   // Calculate totals from all transactions
   const { totals, pendingTotals } = transactionsByDay.reduce(
@@ -121,12 +123,16 @@ export default function TransactionSummary({ transactionsByDay }) {
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </IconButton>
 
-      <Grid container spacing={2} sx={{ mx: 2 }}>
-        <Grid size={{ xs: 5, sm: 5, md: 5 }}>
+      <Grid
+        container
+        spacing={isMobile ? 1 : 2}
+        sx={{ mx: 2, pt: expanded && isMobile ? 3 : 0 }}
+      >
+        <Grid size={{ xs: 4, sm: 5, md: 5 }}>
           <Typography variant='body2' align='center' sx={{ mb: 1 }}>
             Expenses
           </Typography>
-          <Typography variant='h6' align='center'>
+          <Typography variant={isMobile ? 'body1' : 'h6'} align='center'>
             {numberToCurrency.format(totals.expenseTotal)}
           </Typography>
           {expanded && (
@@ -150,12 +156,12 @@ export default function TransactionSummary({ transactionsByDay }) {
             </Grid>
           )}
         </Grid>
-        <Grid size={{ xs: 2, sm: 2, md: 2 }}>
+        <Grid size={{ xs: 4, sm: 2, md: 2 }}>
           <Typography variant='body2' align='center' sx={{ mb: 1 }}>
             Net
           </Typography>
           <Typography
-            variant='h6'
+            variant={isMobile ? 'body1' : 'h6'}
             align='center'
             sx={{
               color: (theme) =>
@@ -176,11 +182,11 @@ export default function TransactionSummary({ transactionsByDay }) {
             )}
           </Typography>
         </Grid>
-        <Grid size={{ xs: 5, sm: 5, md: 5 }}>
+        <Grid size={{ xs: 4, sm: 5, md: 5 }}>
           <Typography variant='body2' align='center' sx={{ mb: 1 }}>
             Income
           </Typography>
-          <Typography variant='h6' align='center'>
+          <Typography variant={isMobile ? 'body1' : 'h6'} align='center'>
             {numberToCurrency.format(
               totals.incomeTotal +
                 totals.employeeContributionTotal +
@@ -213,8 +219,8 @@ export default function TransactionSummary({ transactionsByDay }) {
             variant='body2'
             sx={{
               position: 'absolute',
-              top: 8,
-              left: 0,
+              top: isMobile ? 8 : 8,
+              left: isMobile ? 8 : 0,
               px: 0.5,
               mx: 0.5,
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -231,9 +237,13 @@ export default function TransactionSummary({ transactionsByDay }) {
         <>
           <Divider sx={{ my: 1 }} />
 
-          <Grid container spacing={2} sx={{ position: 'relative', mx: 2 }}>
-            <Grid size={{ xs: 5, sm: 5, md: 5 }}>
-              <Typography variant='h6' align='center'>
+          <Grid
+            container
+            spacing={isMobile ? 1 : 2}
+            sx={{ position: 'relative', mx: 2, pt: isMobile ? 3 : 0 }}
+          >
+            <Grid size={{ xs: 4, sm: 5, md: 5 }}>
+              <Typography variant={isMobile ? 'body1' : 'h6'} align='center'>
                 {numberToCurrency.format(pendingTotals.expenseTotal)}
               </Typography>
               <Grid container spacing={1} sx={{ mt: 1 }}>
@@ -255,9 +265,9 @@ export default function TransactionSummary({ transactionsByDay }) {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid size={{ xs: 2, sm: 2, md: 2 }}>
+            <Grid size={{ xs: 4, sm: 2, md: 2 }}>
               <Typography
-                variant='h6'
+                variant={isMobile ? 'body1' : 'h6'}
                 align='center'
                 sx={{
                   color: (theme) =>
@@ -278,8 +288,8 @@ export default function TransactionSummary({ transactionsByDay }) {
                 )}
               </Typography>
             </Grid>
-            <Grid size={{ xs: 5, sm: 5, md: 5 }}>
-              <Typography variant='h6' align='center'>
+            <Grid size={{ xs: 4, sm: 5, md: 5 }}>
+              <Typography variant={isMobile ? 'body1' : 'h6'} align='center'>
                 {numberToCurrency.format(
                   pendingTotals.incomeTotal +
                     pendingTotals.employeeContributionTotal +
@@ -316,7 +326,7 @@ export default function TransactionSummary({ transactionsByDay }) {
               sx={{
                 position: 'absolute',
                 top: 0,
-                left: -24,
+                left: isMobile ? -16 : -24,
                 px: 0.5,
                 mx: 0.5,
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -329,9 +339,13 @@ export default function TransactionSummary({ transactionsByDay }) {
 
           <Divider sx={{ my: 1 }} />
 
-          <Grid container spacing={2} sx={{ position: 'relative', mx: 2 }}>
-            <Grid size={{ xs: 5, sm: 5, md: 5 }}>
-              <Typography variant='h6' align='center'>
+          <Grid
+            container
+            spacing={isMobile ? 1 : 2}
+            sx={{ position: 'relative', mx: 2, pt: isMobile ? 3 : 0 }}
+          >
+            <Grid size={{ xs: 4, sm: 5, md: 5 }}>
+              <Typography variant={isMobile ? 'body1' : 'h6'} align='center'>
                 {numberToCurrency.format(estimatedTotals.expenseTotal)}
               </Typography>
               <Grid container spacing={1} sx={{ mt: 1 }}>
@@ -353,9 +367,9 @@ export default function TransactionSummary({ transactionsByDay }) {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid size={{ xs: 2, sm: 2, md: 2 }}>
+            <Grid size={{ xs: 4, sm: 2, md: 2 }}>
               <Typography
-                variant='h6'
+                variant={isMobile ? 'body1' : 'h6'}
                 align='center'
                 sx={{
                   color: (theme) =>
@@ -376,8 +390,8 @@ export default function TransactionSummary({ transactionsByDay }) {
                 )}
               </Typography>
             </Grid>
-            <Grid size={{ xs: 5, sm: 5, md: 5 }}>
-              <Typography variant='h6' align='center'>
+            <Grid size={{ xs: 4, sm: 5, md: 5 }}>
+              <Typography variant={isMobile ? 'body1' : 'h6'} align='center'>
                 {numberToCurrency.format(
                   estimatedTotals.incomeTotal +
                     estimatedTotals.employeeContributionTotal +
@@ -413,7 +427,7 @@ export default function TransactionSummary({ transactionsByDay }) {
               sx={{
                 position: 'absolute',
                 top: 0,
-                left: -24,
+                left: isMobile ? -16 : -24,
                 px: 0.5,
                 mx: 0.5,
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',

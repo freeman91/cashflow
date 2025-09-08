@@ -7,14 +7,12 @@ import styled from '@mui/material/styles/styled';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalanceOutlined';
 import AssessmentIcon from '@mui/icons-material/AssessmentOutlined';
 import AssignmentIcon from '@mui/icons-material/AssignmentOutlined';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonthOutlined';
+import TableRowsIcon from '@mui/icons-material/TableRowsOutlined';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import PersonIcon from '@mui/icons-material/PersonOutlined';
-import SearchIcon from '@mui/icons-material/SearchOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/HomeOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVertOutlined';
-import TrendingUpIcon from '@mui/icons-material/TrendingUpOutlined';
+import GradingIcon from '@mui/icons-material/GradingOutlined';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Box from '@mui/material/Box';
@@ -37,7 +35,7 @@ const Puller = styled('div')(({ theme }) => ({
 const CustomListItemButton = (props) => {
   const { Icon, text, onClick } = props;
   return (
-    (<ListItemButton
+    <ListItemButton
       onClick={onClick}
       sx={{ my: 2, bgcolor: 'surface.200', borderRadius: 1 }}
     >
@@ -48,13 +46,13 @@ const CustomListItemButton = (props) => {
         primary={text}
         sx={{ ml: 3 }}
         slotProps={{
-          primary: { align: 'left' }
+          primary: { align: 'left' },
         }}
       />
       <ListItemIcon sx={{ minWidth: 'unset' }}>
         <ChevronRightIcon />
       </ListItemIcon>
-    </ListItemButton>)
+    </ListItemButton>
   );
 };
 
@@ -107,24 +105,28 @@ export default function MobileBottomNavigation() {
         onChange={onChange}
         showLabels
       >
-        <BottomNavigationAction label='home' value='home' icon={<HomeIcon />} />
         <BottomNavigationAction
-          label='accounts'
+          label='Dashboard'
+          value='dashboard'
+          icon={<HomeIcon />}
+        />
+        <BottomNavigationAction
+          label='Accounts'
           value='accounts'
           icon={<AccountBalanceIcon />}
         />
         <BottomNavigationAction
-          label='calendar'
-          value='calendar'
-          icon={<CalendarMonthIcon />}
+          label='Transactions'
+          value='transactions'
+          icon={<TableRowsIcon />}
         />
         <BottomNavigationAction
-          label='summary'
-          value='summary'
+          label='Reports'
+          value='reports'
           icon={<AssessmentIcon />}
         />
         <BottomNavigationAction
-          label='more'
+          label='More'
           value='more'
           icon={<MoreVertIcon />}
         />
@@ -148,29 +150,19 @@ export default function MobileBottomNavigation() {
         <Puller />
         <List disablePadding sx={{ px: 1, pt: 1, bgcolor: 'unset' }}>
           <CustomListItemButton
-            Icon={TrendingUpIcon}
-            text='networth'
-            onClick={() => handleNavigate('networth')}
-          />
-          <CustomListItemButton
-            Icon={SearchIcon}
-            text='search'
-            onClick={() => handleNavigate('search')}
-          />
-          <CustomListItemButton
             Icon={AssignmentIcon}
-            text='budgets'
+            text='Budgets'
             onClick={() => handleNavigate('budgets')}
           />
           <CustomListItemButton
-            Icon={SettingsIcon}
-            text='settings'
-            onClick={() => handleNavigate('settings')}
+            Icon={GradingIcon}
+            text='Audit Log'
+            onClick={() => handleNavigate('audit-log')}
           />
           <CustomListItemButton
-            Icon={PersonIcon}
-            text='user settings'
-            onClick={() => handleNavigate('user')}
+            Icon={SettingsIcon}
+            text='Settings'
+            onClick={() => handleNavigate('settings')}
           />
         </List>
       </SwipeableDrawer>

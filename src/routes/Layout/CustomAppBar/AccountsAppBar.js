@@ -6,19 +6,22 @@ import get from 'lodash/get';
 import startCase from 'lodash/startCase';
 
 import AddIcon from '@mui/icons-material/Add';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import styled from '@mui/material/styles/styled';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
 import { openItemView } from '../../../store/itemView';
+import { setShowInactive } from '../../../store/accounts';
 import ReactiveButton from '../../../components/ReactiveButton';
 
 const ALL = 'all';
@@ -49,6 +52,9 @@ export default function AccountsAppBar(props) {
   const accounts = useSelector((state) => state.accounts.data);
 
   const [account, setAccount] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
+  const showInactive = useSelector((state) => state.accounts.showInactive);
+  const open = Boolean(anchorEl);
   const view = get(location.pathname.split('/'), '2', ALL);
 
   useEffect(() => {
@@ -77,121 +83,234 @@ export default function AccountsAppBar(props) {
     );
   };
 
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleViewChange = (newView) => {
+    dispatch(push(`/accounts/${newView}`));
+    handleMenuClose();
+  };
+
+  const handleShowInactiveToggle = () => {
+    dispatch(setShowInactive(!showInactive));
+    handleMenuClose();
+  };
+
   return (
     <>
-      <StyledBreadcrumbs
-        isMobile={isMobile}
-        sx={{
-          ml: isMobile ? 0 : 1,
-          width: '100%',
-        }}
-      >
-        {!isMobile && (
-          <Link
-            underline='hover'
-            color='text.primary'
-            onClick={() => {
-              dispatch(push('/accounts'));
+      {isMobile ? (
+        // Mobile Layout: Center title + Right ellipsis menu
+        <>
+          <Typography
+            variant='h5'
+            fontWeight='bold'
+            sx={{
+              position: 'absolute',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              maxWidth: '60%',
             }}
           >
-            <Typography variant='h5' fontWeight='bold' sx={{ mr: 1 }}>
-              Accounts
-            </Typography>
-          </Link>
-        )}
-        {account.account_id && (
-          <Box
+            {account.account_id
+              ? account.name
+              : view === ALL
+              ? 'Accounts'
+              : startCase(view)}
+          </Typography>
+          <IconButton onClick={handleMenuClick} sx={{ ml: 'auto' }}>
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleMenuClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+          >
+            {VIEWS.includes(view) && (
+              <>
+                {VIEWS.map((_view) => (
+                  <MenuItem key={_view} onClick={() => handleViewChange(_view)}>
+                    <Typography variant='body2'>{startCase(_view)}</Typography>
+                  </MenuItem>
+                ))}
+                <MenuItem divider />
+              </>
+            )}
+            {!account.account_id && (
+              <MenuItem
+                onClick={() => {
+                  createAccount();
+                  handleMenuClose();
+                }}
+              >
+                <AddIcon sx={{ mr: 1 }} />
+                <Typography variant='body2'>Create Account</Typography>
+              </MenuItem>
+            )}
+            {account.account_id && (
+              <MenuItem
+                onClick={() => {
+                  openAccountDialog();
+                  handleMenuClose();
+                }}
+              >
+                <EditIcon sx={{ mr: 1 }} />
+                <Typography variant='body2'>Edit Account</Typography>
+              </MenuItem>
+            )}
+            <MenuItem onClick={handleShowInactiveToggle}>
+              {showInactive ? (
+                <VisibilityOffIcon sx={{ mr: 1 }} />
+              ) : (
+                <VisibilityIcon sx={{ mr: 1 }} />
+              )}
+              <Typography variant='body2'>
+                {showInactive ? 'Hide Inactive' : 'Show Inactive'}
+              </Typography>
+            </MenuItem>
+          </Menu>
+        </>
+      ) : (
+        // Desktop Layout: Original layout
+        <>
+          <StyledBreadcrumbs
+            isMobile={isMobile}
             sx={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
+              ml: isMobile ? 0 : 1,
               width: '100%',
             }}
           >
-            {account.icon_url && (
+            <Link
+              underline='hover'
+              color='text.primary'
+              onClick={() => {
+                dispatch(push('/accounts'));
+              }}
+            >
+              <Typography variant='h5' fontWeight='bold' sx={{ mr: 1 }}>
+                Accounts
+              </Typography>
+            </Link>
+            {account.account_id && (
               <Box
                 sx={{
-                  mx: 1,
                   display: 'flex',
-                  justifyContent: 'center',
+                  justifyContent: 'flex-start',
                   alignItems: 'center',
+                  width: '100%',
                 }}
               >
-                {isMobile && (
-                  <IconButton onClick={() => dispatch(push('/accounts'))}>
-                    <ArrowBackIcon />
-                  </IconButton>
+                {account.icon_url && (
+                  <Box
+                    sx={{
+                      mx: 1,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <img
+                      src={account.icon_url}
+                      alt={`${account.name} icon`}
+                      height={30}
+                      style={{ marginRight: 10, borderRadius: '10%' }}
+                    />
+                  </Box>
                 )}
-                <img
-                  src={account.icon_url}
-                  alt={`${account.name} icon`}
-                  height={30}
-                  style={{ marginRight: 10, borderRadius: '10%' }}
-                />
+                <Typography
+                  variant='h5'
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                  color={!account.active ? 'text.disabled' : 'text.primary'}
+                >
+                  {account.name}
+                </Typography>
               </Box>
             )}
-            <Typography
-              variant='h5'
-              sx={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-              color={!account.active ? 'text.disabled' : 'text.primary'}
-            >
-              {account.name}
-            </Typography>
+          </StyledBreadcrumbs>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 1,
+              height: 35,
+            }}
+          >
+            {!account.account_id && (
+              <ReactiveButton
+                label='Account'
+                handleClick={createAccount}
+                Icon={AddIcon}
+                color='primary'
+                variant='contained'
+              />
+            )}
+            {account.account_id && (
+              <ReactiveButton
+                label='Edit'
+                handleClick={openAccountDialog}
+                Icon={EditIcon}
+                color='primary'
+                variant='outlined'
+              />
+            )}
+            <IconButton onClick={handleMenuClick}>
+              <MoreVertIcon />
+            </IconButton>
           </Box>
-        )}
-      </StyledBreadcrumbs>
-      {VIEWS.includes(view) && (
-        <Select
-          variant='standard'
-          disableUnderline
-          value={view}
-          onChange={(e) => dispatch(push(`/accounts/${e.target.value}`))}
-          sx={{ mr: 1 }}
-          MenuProps={{
-            MenuListProps: {
-              disablePadding: true,
-            },
-          }}
-        >
-          {VIEWS.map((_view) => (
-            <MenuItem key={_view} value={_view}>
-              <Typography variant='h6' fontWeight='bold'>
-                {startCase(_view)}
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleMenuClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+          >
+            {VIEWS.includes(view) && (
+              <>
+                {VIEWS.map((_view) => (
+                  <MenuItem key={_view} onClick={() => handleViewChange(_view)}>
+                    <Typography variant='body2'>{startCase(_view)}</Typography>
+                  </MenuItem>
+                ))}
+                <MenuItem divider />
+              </>
+            )}
+            <MenuItem onClick={handleShowInactiveToggle}>
+              {showInactive ? (
+                <VisibilityOffIcon sx={{ mr: 1 }} />
+              ) : (
+                <VisibilityIcon sx={{ mr: 1 }} />
+              )}
+              <Typography variant='body2'>
+                {showInactive ? 'Hide Inactive' : 'Show Inactive'}
               </Typography>
             </MenuItem>
-          ))}
-        </Select>
+          </Menu>
+        </>
       )}
-
-      <Box
-        sx={{
-          display: 'flex',
-          gap: 1,
-          height: 35,
-        }}
-      >
-        {!account.account_id ? (
-          <ReactiveButton
-            label='Account'
-            handleClick={createAccount}
-            Icon={AddIcon}
-            color='primary'
-            variant='contained'
-          />
-        ) : (
-          <ReactiveButton
-            label='Edit'
-            handleClick={openAccountDialog}
-            Icon={EditIcon}
-            color='primary'
-            variant='outlined'
-          />
-        )}
-      </Box>
     </>
   );
 }

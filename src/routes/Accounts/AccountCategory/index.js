@@ -11,13 +11,11 @@ import TrendingUp from '@mui/icons-material/TrendingUp';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import Icon from '@mui/material/Icon';
-import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 
 import { LIABILITY } from '../../../components/Forms/AccountForm';
 import { findAmount } from '../../../helpers/transactions';
@@ -26,7 +24,12 @@ import { timeSinceLastUpdate } from '../../../helpers/dates';
 import NetWorth from '../Networth';
 
 export default function AccountCategory(props) {
-  const { accountType, assetType = null, liabilityType = null } = props;
+  const {
+    accountType,
+    assetType = null,
+    liabilityType = null,
+    showInactive,
+  } = props;
   const dispatch = useDispatch();
   const allAccounts = useSelector((state) => state.accounts.data);
   const histories = useSelector((state) => state.histories.data);
@@ -34,7 +37,6 @@ export default function AccountCategory(props) {
   const [lastMonthValue, setLastMonthValue] = useState(0);
   const [currentValue, setCurrentValue] = useState(0);
   const [accounts, setAccounts] = useState([]);
-  const [showInactive, setShowInactive] = useState(false);
 
   useEffect(() => {
     let _accounts = allAccounts.filter(
@@ -285,21 +287,6 @@ export default function AccountCategory(props) {
               })}
             </List>
           </Grid>
-          {accounts.filter((account) => !account.active).length > 0 && (
-            <Grid size={{ xs: 12 }} display='flex' justifyContent='center'>
-              <Link
-                underline='hover'
-                color='text.secondary'
-                onClick={() => {
-                  setShowInactive(!showInactive);
-                }}
-              >
-                <Typography variant='h6' sx={{ mr: 1 }}>
-                  {showInactive ? 'Hide Inactive' : 'Show Inactive'}
-                </Typography>
-              </Link>
-            </Grid>
-          )}
         </Grid>
       </Grid>
     </Grid>

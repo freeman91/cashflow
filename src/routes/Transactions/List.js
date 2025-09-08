@@ -71,6 +71,7 @@ export default function TransactionsList() {
         <TransactionSummary transactionsByDay={filteredDays} />
       </Grid>
       <TransactionsTable transactionsByDay={filteredDays} />
+      <Grid size={{ xs: 12 }} sx={{ mb: 10 }} />
     </>
   );
 }

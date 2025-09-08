@@ -12,6 +12,7 @@ import CustomAppBar from './CustomAppBar';
 import CustomDrawer from './CustomDrawer';
 import ItemView from './ItemView';
 import CustomSnackbar from './CustomSnackbar';
+import MobileBottomNavigation from './MobileBottomNavigation';
 
 const USER_ID = process.env.REACT_APP_USER_ID;
 
@@ -65,11 +66,19 @@ function Layout() {
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
       />
-      <Box component='main' sx={{ mt: marginTop + 'px', width: '100%' }}>
+      <Box
+        component='main'
+        sx={{
+          mt: marginTop + 'px',
+          width: '100%',
+          // pb: isMobile ? 12 : 0, // Add bottom padding on mobile for bottom navigation
+        }}
+      >
         <Outlet context={{ toolbarRef }} />
       </Box>
       <ItemView />
       <CustomSnackbar />
+      {isMobile && <MobileBottomNavigation />}
     </Box>
   );
 }

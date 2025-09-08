@@ -5,12 +5,15 @@ import get from 'lodash/get';
 import startCase from 'lodash/startCase';
 
 import ListIcon from '@mui/icons-material/List';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -30,6 +33,7 @@ const TABS = [REPAYMENTS, CATEGORIES, MERCHANTS];
 export default function ExpenseBreakdown(props) {
   const { expenses, repayments } = props;
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const accounts = useSelector((state) => state.accounts.data);
   const [selectedTab, setSelectedTab] = useState(REPAYMENTS);
@@ -103,36 +107,58 @@ export default function ExpenseBreakdown(props) {
         alignItems='center'
         sx={{ width: '100%', mt: 0.5, px: 1 }}
       >
-        {TABS.map((tab) => (
-          <Box
-            key={tab}
-            onClick={() => setSelectedTab(tab)}
-            sx={{
-              backgroundColor: 'background.paper',
-              backgroundImage: (theme) =>
-                selectedTab === tab
-                  ? theme.vars.overlays[24]
-                  : theme.vars.overlays[8],
-              boxShadow: (theme) =>
-                selectedTab === tab ? theme.shadows[4] : 'unset',
-              borderRadius: 4,
-              py: 0.5,
-              px: 3,
-              cursor: 'pointer',
-              '&:hover': {
-                backgroundColor: 'background.paper',
-                backgroundImage: (theme) => theme.vars.overlays[24],
-              },
-            }}
+        {isMobile ? (
+          // Mobile Layout: Select dropdown
+          <Select
+            value={selectedTab}
+            onChange={(e) => setSelectedTab(e.target.value)}
+            variant='standard'
+            size='small'
+            sx={{ minWidth: 120 }}
           >
-            <Typography
-              variant='body2'
-              color={selectedTab === tab ? 'text.primary' : 'text.secondary'}
-            >
-              {startCase(tab)}
-            </Typography>
-          </Box>
-        ))}
+            {TABS.map((tab) => (
+              <MenuItem key={tab} value={tab}>
+                <Typography variant='body2'>{startCase(tab)}</Typography>
+              </MenuItem>
+            ))}
+          </Select>
+        ) : (
+          // Desktop Layout: Original tabs
+          <>
+            {TABS.map((tab) => (
+              <Box
+                key={tab}
+                onClick={() => setSelectedTab(tab)}
+                sx={{
+                  backgroundColor: 'background.paper',
+                  backgroundImage: (theme) =>
+                    selectedTab === tab
+                      ? theme.vars.overlays[24]
+                      : theme.vars.overlays[8],
+                  boxShadow: (theme) =>
+                    selectedTab === tab ? theme.shadows[4] : 'unset',
+                  borderRadius: 4,
+                  py: 0.5,
+                  px: 3,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    backgroundColor: 'background.paper',
+                    backgroundImage: (theme) => theme.vars.overlays[24],
+                  },
+                }}
+              >
+                <Typography
+                  variant='body2'
+                  color={
+                    selectedTab === tab ? 'text.primary' : 'text.secondary'
+                  }
+                >
+                  {startCase(tab)}
+                </Typography>
+              </Box>
+            ))}
+          </>
+        )}
         <OptionsButton
           expenses={expenses}
           repayments={repayments}

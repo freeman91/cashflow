@@ -21,6 +21,7 @@ export default function Accounts() {
   const location = useLocation();
 
   const accounts = useSelector((state) => state.accounts.data);
+  const showInactive = useSelector((state) => state.accounts.showInactive);
   const [account, setAccount] = useState(null);
   const [view, setView] = useState(ALL);
 
@@ -41,17 +42,53 @@ export default function Accounts() {
   }, [location, accounts]);
 
   if (account) return <Account account={account} />;
-  if (view === ALL) return <AccountsAll />;
+  if (view === ALL) return <AccountsAll showInactive={showInactive} />;
   if (view === REAL_ESTATE)
-    return <AccountCategory accountType={ASSET} assetType='Real Estate' />;
+    return (
+      <AccountCategory
+        accountType={ASSET}
+        assetType='Real Estate'
+        showInactive={showInactive}
+      />
+    );
   if (view === INVESTMENTS)
-    return <AccountCategory accountType={ASSET} assetType='Investment' />;
+    return (
+      <AccountCategory
+        accountType={ASSET}
+        assetType='Investment'
+        showInactive={showInactive}
+      />
+    );
   if (view === VEHICLES)
-    return <AccountCategory accountType={ASSET} assetType='Vehicle' />;
+    return (
+      <AccountCategory
+        accountType={ASSET}
+        assetType='Vehicle'
+        showInactive={showInactive}
+      />
+    );
   if (view === CASH)
-    return <AccountCategory accountType={ASSET} assetType='Cash' />;
+    return (
+      <AccountCategory
+        accountType={ASSET}
+        assetType='Cash'
+        showInactive={showInactive}
+      />
+    );
   if (view === LOANS)
-    return <AccountCategory accountType={LIABILITY} liabilityType='Loan' />;
+    return (
+      <AccountCategory
+        accountType={LIABILITY}
+        liabilityType='Loan'
+        showInactive={showInactive}
+      />
+    );
   if (view === CREDIT)
-    return <AccountCategory accountType={LIABILITY} liabilityType='Credit' />;
+    return (
+      <AccountCategory
+        accountType={LIABILITY}
+        liabilityType='Credit'
+        showInactive={showInactive}
+      />
+    );
 }

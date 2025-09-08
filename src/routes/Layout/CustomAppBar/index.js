@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import startCase from 'lodash/startCase';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -10,24 +10,23 @@ import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import styled from '@mui/material/styles/styled';
 import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import { getAudits } from '../../../store/audits';
-import { refreshAllData } from '../../../store/user';
-import ReactiveButton from '../../../components/ReactiveButton';
+import LogoImg from '../../../components/LogoImg';
 import AccountsAppBar from './AccountsAppBar';
+import DashboardAppBar from './DashboardAppBar';
 import ReportsAppBar from './ReportsAppBar';
 import TransactionsAppBar from './TransactionsAppBar';
+import ReactiveButton from '../../../components/ReactiveButton';
 
-const DASHBOARD = 'dashboard';
-const REPORTS = 'reports';
 const BUDGETS = 'budgets';
 const SETTINGS = 'settings';
 const PROFILE = 'profile';
 const AUDIT_LOG = 'audit-log';
-const ROUTES = [DASHBOARD, REPORTS, BUDGETS, SETTINGS, PROFILE, AUDIT_LOG];
 
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => !['expanded', 'drawerWidth'].includes(prop),
@@ -55,12 +54,11 @@ const DrawerToggleButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const CustomAppBar = forwardRef((props, ref) => {
-  const { drawerExpanded, setDrawerExpanded, setMobileOpen } = props;
+  const { drawerExpanded, setDrawerExpanded } = props;
   const theme = useTheme();
   const dispatch = useDispatch();
   const location = useLocation();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  const user = useSelector((state) => state.user.item);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [route, setRoute] = useState('dashboard');
 
   useEffect(() => {
@@ -69,12 +67,7 @@ const CustomAppBar = forwardRef((props, ref) => {
   }, [location]);
 
   const toggleMenu = () => {
-    if (isMobile) setMobileOpen((currentOpen) => !currentOpen);
-    else setDrawerExpanded((currentExpanded) => !currentExpanded);
-  };
-
-  const handleRefresh = () => {
-    dispatch(refreshAllData(user.user_id));
+    setDrawerExpanded((currentExpanded) => !currentExpanded);
   };
 
   const handleRefreshAuditLog = () => {
@@ -91,15 +84,26 @@ const CustomAppBar = forwardRef((props, ref) => {
     >
       <Toolbar>
         <DrawerToggleButton color='inherit' edge='start' onClick={toggleMenu}>
-          {!isMobile && drawerExpanded ? <ArrowBackIcon /> : <MenuIcon />}
+          {isMobile ? (
+            <LogoImg />
+          ) : !drawerExpanded ? (
+            <MenuIcon />
+          ) : (
+            <ArrowBackIcon />
+          )}
         </DrawerToggleButton>
-        {ROUTES.includes(route) && (
+        {[BUDGETS, SETTINGS, PROFILE, AUDIT_LOG].includes(route) && (
           <Typography
             variant='h5'
             fontWeight='bold'
             sx={{
-              flexGrow: isMobile ? 0.5 : 1,
+              flexGrow: isMobile ? 0 : 1,
               ml: 1,
+              ...(isMobile && {
+                position: 'absolute',
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }),
             }}
           >
             {startCase(route)}
@@ -108,15 +112,11 @@ const CustomAppBar = forwardRef((props, ref) => {
         {route === 'accounts' && <AccountsAppBar />}
         {route === 'transactions' && <TransactionsAppBar />}
         {route === 'reports' && <ReportsAppBar />}
-        {[DASHBOARD].includes(route) && (
-          <ReactiveButton
-            label='Refresh'
-            handleClick={handleRefresh}
-            Icon={LoopIcon}
-            color='primary'
-            variant='outlined'
-          />
-        )}
+        {route === 'dashboard' && <DashboardAppBar />}
+        {isMobile &&
+          [BUDGETS, SETTINGS, PROFILE, AUDIT_LOG].includes(route) && (
+            <Box sx={{ flexGrow: 1 }} />
+          )}
         {route === 'audit-log' && (
           <ReactiveButton
             label='Refresh'

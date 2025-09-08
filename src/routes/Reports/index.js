@@ -27,7 +27,8 @@ export default function Reports() {
         maxWidth: '1500px',
         margin: 'auto',
         px: 1,
-        pb: 6,
+        mb: 12,
+        // pb: 8,
       }}
     >
       {view === 'month' && <MonthReport date={date} setDate={setDate} />}

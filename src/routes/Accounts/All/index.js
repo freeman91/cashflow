@@ -5,8 +5,6 @@ import groupBy from 'lodash/groupBy';
 import find from 'lodash/find';
 import get from 'lodash/get';
 import Grid from '@mui/material/Grid2';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
 
 import { findAmount } from '../../../helpers/transactions';
 import { ASSET, LIABILITY } from '../../../components/Forms/AccountForm';
@@ -14,11 +12,10 @@ import AccountsSummary from './Summary';
 import AccountGroupGrid from './AccountGroupGrid';
 import NetWorth from '../Networth';
 
-export default function AccountsAll() {
+export default function AccountsAll({ showInactive }) {
   const accounts = useSelector((state) => state.accounts.data);
   const histories = useSelector((state) => state.histories.data);
 
-  const [showInactive, setShowInactive] = useState(false);
   const [groupedAccounts, setGroupedAccounts] = useState([]);
 
   useEffect(() => {
@@ -120,7 +117,7 @@ export default function AccountsAll() {
         maxWidth: '1500px',
         margin: 'auto',
         px: 1,
-        pb: 5,
+        pb: 12,
       }}
     >
       <NetWorth accounts={accounts} />
@@ -139,19 +136,6 @@ export default function AccountsAll() {
               />
             );
           })}
-          <Grid size={{ xs: 12 }} display='flex' justifyContent='center'>
-            <Link
-              underline='hover'
-              color='text.secondary'
-              onClick={() => {
-                setShowInactive(!showInactive);
-              }}
-            >
-              <Typography variant='h6' sx={{ mr: 1 }}>
-                {showInactive ? 'Hide Inactive' : 'Show Inactive'}
-              </Typography>
-            </Link>
-          </Grid>
         </Grid>
       </Grid>
       <AccountsSummary groupedAccounts={groupedAccounts} />

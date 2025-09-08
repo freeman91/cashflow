@@ -14,6 +14,7 @@ import {
 
 import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import Box from '@mui/material/Box';
@@ -57,6 +58,7 @@ export default function NetWorth(props) {
   const { accounts } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const histories = useSelector((state) => state.histories.data);
 
   const [range, setRange] = useState(RANGE_OPTIONS[3]);
@@ -182,44 +184,115 @@ export default function NetWorth(props) {
         <Box
           sx={{
             display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
             justifyContent: 'space-between',
             my: 1,
             mx: 1,
+            gap: isMobile ? 1 : 0,
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'flex-end',
-              gap: 1,
-            }}
-          >
-            <Typography
-              variant='h6'
-              fontWeight='bold'
-              color='textSecondary'
-              sx={{ mr: 2 }}
-            >
-              Net Worth
-            </Typography>
+          {isMobile ? (
+            // Mobile Layout: 2 rows
+            <>
+              {/* Row 1: Net Worth title (left) and value (right) */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-end',
+                }}
+              >
+                <Typography
+                  variant='h6'
+                  fontWeight='bold'
+                  color='textSecondary'
+                >
+                  Net Worth
+                </Typography>
+                <Typography variant='h5' fontWeight='bold'>
+                  {numberToCurrency.format(networth)}
+                </Typography>
+              </Box>
+              {/* Row 2: Difference (left) and RangeSelect (right) */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                  }}
+                >
+                  <Icon sx={{ color: differenceAttrs.color }}>
+                    {difference >= 0 ? (
+                      <TrendingUpIcon />
+                    ) : (
+                      <TrendingDownIcon />
+                    )}
+                  </Icon>
+                  <Typography
+                    variant='body1'
+                    fontWeight='bold'
+                    sx={{ color: differenceAttrs.color }}
+                  >
+                    {numberToCurrency.format(Math.abs(difference))} (
+                    {percentDifference.toFixed(2)}%)
+                  </Typography>
+                </Box>
+                <RangeSelect range={range} setRange={handleRangeChange} />
+              </Box>
+            </>
+          ) : (
+            // Desktop Layout: Original layout
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-end',
+                  gap: 1,
+                }}
+              >
+                <Typography
+                  variant='h6'
+                  fontWeight='bold'
+                  color='textSecondary'
+                  sx={{ mr: 2 }}
+                >
+                  Net Worth
+                </Typography>
 
-            <Typography variant='h5' fontWeight='bold'>
-              {numberToCurrency.format(networth)}
-            </Typography>
-            <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
-              {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
-            </Icon>
-            <Typography
-              variant='body1'
-              fontWeight='bold'
-              sx={{ color: differenceAttrs.color, mb: 0.25 }}
-            >
-              {numberToCurrency.format(Math.abs(difference))} (
-              {percentDifference.toFixed(2)}%)
-            </Typography>
-          </Box>
-          <RangeSelect range={range} setRange={handleRangeChange} />
+                <Typography variant='h5' fontWeight='bold'>
+                  {numberToCurrency.format(networth)}
+                </Typography>
+                <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
+                  {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+                </Icon>
+                <Typography
+                  variant='body1'
+                  fontWeight='bold'
+                  sx={{ color: differenceAttrs.color, mb: 0.25 }}
+                >
+                  {numberToCurrency.format(Math.abs(difference))} (
+                  {percentDifference.toFixed(2)}%)
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                }}
+              >
+                <RangeSelect range={range} setRange={handleRangeChange} />
+              </Box>
+            </>
+          )}
         </Box>
         <ResponsiveContainer
           width='100%'

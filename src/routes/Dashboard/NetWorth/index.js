@@ -15,6 +15,7 @@ import {
 
 import { alpha } from '@mui/material/styles';
 import useTheme from '@mui/material/styles/useTheme';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import Box from '@mui/material/Box';
@@ -53,6 +54,7 @@ function CustomTooltip({ active, payload, label }) {
 
 export default function NetWorth() {
   const theme = useTheme();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const histories = useSelector((state) => state.histories.data);
   const accounts = useSelector((state) => state.accounts.data);
 
@@ -173,45 +175,103 @@ export default function NetWorth() {
           py: 1,
         }}
       >
-        <Typography
-          variant='body1'
-          fontWeight='bold'
-          color='textSecondary'
-          sx={{ py: 1 }}
-        >
-          NET WORTH
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-end',
-            gap: 1,
-          }}
-        >
-          <Typography variant='h5' fontWeight='bold'>
-            {numberToCurrency.format(networth)}
-          </Typography>
-          <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
-            {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
-          </Icon>
-          <Typography
-            variant='body1'
-            fontWeight='bold'
-            sx={{ color: differenceAttrs.color, mb: 0.25 }}
-          >
-            {numberToCurrency.format(Math.abs(difference))} (
-            {percentDifference.toFixed(2)}%)
-          </Typography>
-          <Typography
-            variant='body2'
-            fontWeight='bold'
-            color='textSecondary'
-            sx={{ mb: 0.25 }}
-          >
-            PAST MONTH
-          </Typography>
-        </Box>
+        {isMobile ? (
+          // Mobile Layout: Two rows
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            {/* Row 1: "NET WORTH" left, "PAST MONTH" right */}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Typography
+                variant='body1'
+                fontWeight='bold'
+                color='textSecondary'
+              >
+                NET WORTH
+              </Typography>
+              <Typography
+                variant='body2'
+                fontWeight='bold'
+                color='textSecondary'
+              >
+                PAST MONTH
+              </Typography>
+            </Box>
+
+            {/* Row 2: Net worth value left, difference info right */}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+              }}
+            >
+              <Typography variant='h5' fontWeight='bold'>
+                {numberToCurrency.format(networth)}
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 0.5 }}>
+                <Icon sx={{ color: differenceAttrs.color, mb: 0.5 }}>
+                  {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+                </Icon>
+                <Typography
+                  variant='body1'
+                  fontWeight='bold'
+                  sx={{ color: differenceAttrs.color, mb: 0.25 }}
+                >
+                  {numberToCurrency.format(Math.abs(difference))} (
+                  {percentDifference.toFixed(2)}%)
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        ) : (
+          // Desktop Layout: Title + Single row
+          <>
+            <Typography
+              variant='body1'
+              fontWeight='bold'
+              color='textSecondary'
+              sx={{ py: 1 }}
+            >
+              NET WORTH
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-end',
+                gap: 1,
+              }}
+            >
+              <Typography variant='h5' fontWeight='bold'>
+                {numberToCurrency.format(networth)}
+              </Typography>
+              <Icon sx={{ color: differenceAttrs.color, mb: 0.5, ml: 1 }}>
+                {difference >= 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+              </Icon>
+              <Typography
+                variant='body1'
+                fontWeight='bold'
+                sx={{ color: differenceAttrs.color, mb: 0.25 }}
+              >
+                {numberToCurrency.format(Math.abs(difference))} (
+                {percentDifference.toFixed(2)}%)
+              </Typography>
+              <Typography
+                variant='body2'
+                fontWeight='bold'
+                color='textSecondary'
+                sx={{ mb: 0.25 }}
+              >
+                PAST MONTH
+              </Typography>
+            </Box>
+          </>
+        )}
 
         <Divider sx={{ my: 2 }} />
         <Box sx={{ width: '100%' }}>

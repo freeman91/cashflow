@@ -450,7 +450,12 @@ export default function Account(props) {
           )}
         </Box>
       </Grid>
-      <Grid size={{ xs: 12, md: 4 }} display='flex' justifyContent='center'>
+      <Grid
+        size={{ xs: 12, md: 4 }}
+        display='flex'
+        justifyContent='center'
+        sx={{ mb: 8 }}
+      >
         <Box
           sx={{
             backgroundColor: 'background.paper',

@@ -75,7 +75,7 @@ export default function MonthOverview(props) {
       </Grid>
       <Grid
         size={{ xs: 12 }}
-        sx={{ px: 2, pb: 10, display: { xs: 'none', md: 'block' } }}
+        sx={{ px: 2, display: { xs: 'none', md: 'block' } }}
       >
         <SankeyChart
           earnedIncomes={earnedIncomes}
@@ -85,6 +85,7 @@ export default function MonthOverview(props) {
           repayments={repayments}
         />
       </Grid>
+      <Grid size={{ xs: 12 }} sx={{ mb: 10 }} />
     </>
   );
 }

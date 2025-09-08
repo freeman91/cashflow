@@ -33,7 +33,7 @@ export default function Dashboard() {
           <NetWorth />
         </Grid>
       </Grid>
-      <Grid size={{ xs: 12 }} mb={5} />
+      <Grid size={{ xs: 12 }} mb={10} />
     </Grid>
   );
 }

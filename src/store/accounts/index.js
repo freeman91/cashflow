@@ -132,7 +132,10 @@ const deactivateAccount = createAsyncThunk(
 
 const { reducer, actions } = createSlice({
   name: 'accounts',
-  initialState,
+  initialState: {
+    ...initialState,
+    showInactive: false,
+  },
   reducers: {
     setAccounts: (state, action) => {
       state.data = action.payload;
@@ -147,6 +150,9 @@ const { reducer, actions } = createSlice({
       _accounts[index] = action.payload;
       state.data = _accounts;
     },
+    setShowInactive: (state, action) => {
+      state.showInactive = action.payload;
+    },
   },
   extraReducers: (builder) => {
     buildAsyncReducers(builder, [
@@ -159,7 +165,7 @@ const { reducer, actions } = createSlice({
   },
 });
 
-const { setAccounts, updateAccount } = actions;
+const { setAccounts, updateAccount, setShowInactive } = actions;
 
 export {
   getAccounts,
@@ -169,5 +175,6 @@ export {
   deactivateAccount,
   setAccounts,
   updateAccount,
+  setShowInactive,
 };
 export default reducer;
