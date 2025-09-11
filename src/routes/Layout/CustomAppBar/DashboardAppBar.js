@@ -19,6 +19,7 @@ import Typography from '@mui/material/Typography';
 import { openItemView } from '../../../store/itemView';
 import { refreshAllData } from '../../../store/user';
 import ReactiveButton from '../../../components/ReactiveButton';
+import TransactionTypeDrawer from './TransactionTypeDrawer';
 
 const DEFAULT_TYPES = ['expense', 'income', 'paycheck', 'repayment'];
 
@@ -47,6 +48,7 @@ export default function DashboardAppBar() {
 
   const handleTransactionMenuToggle = () => {
     setTransactionMenuOpen((prevOpen) => !prevOpen);
+    handleMenuClose(); // Close the main menu when opening transaction drawer
   };
 
   const handleTransactionMenuClose = (event) => {
@@ -116,49 +118,10 @@ export default function DashboardAppBar() {
             <Box>Create Transaction</Box>
           </MenuItem>
         </Menu>
-        <Popper
-          sx={{ zIndex: 1 }}
+        <TransactionTypeDrawer
           open={transactionMenuOpen}
-          anchorEl={transactionAnchorRef.current}
-          role={undefined}
-          transition
-          disablePortal
-        >
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin:
-                  placement === 'bottom' ? 'center top' : 'center bottom',
-              }}
-            >
-              <Box>
-                <ClickAwayListener onClickAway={handleTransactionMenuClose}>
-                  <MenuList
-                    id='transaction-menu'
-                    autoFocusItem
-                    disablePadding
-                    sx={{
-                      bgcolor: 'surface.300',
-                      borderRadius: 1,
-                      overflow: 'hidden',
-                      boxShadow: (theme) => theme.shadows[4],
-                    }}
-                  >
-                    {DEFAULT_TYPES.map((type) => (
-                      <MenuItem
-                        key={type}
-                        onClick={() => handleMenuItemClick(type)}
-                      >
-                        {startCase(type)}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </ClickAwayListener>
-              </Box>
-            </Grow>
-          )}
-        </Popper>
+          onClose={() => setTransactionMenuOpen(false)}
+        />
       </>
     );
   }
