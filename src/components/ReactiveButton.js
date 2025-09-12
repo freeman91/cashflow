@@ -4,10 +4,16 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
 const ReactiveButton = forwardRef((props, ref) => {
-  const { label, handleClick, Icon, ...restProps } = props;
+  const {
+    label,
+    handleClick,
+    Icon,
+    useButtonOnMobile = false,
+    ...restProps
+  } = props;
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
-  if (isMobile) {
+  if (isMobile && !useButtonOnMobile) {
     return (
       <IconButton
         ref={ref}

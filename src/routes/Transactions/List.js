@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
 
+import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
-
+import useMediaQuery from '@mui/material/useMediaQuery';
 import useTransactionsInRange from '../../store/hooks/useTransactions';
 import TransactionsTable from '../../components/TransactionsTable';
 import TransactionSummary from '../../components/TransactionSummary';
 import RangeSelect from '../../components/Selector/RangeSelect';
 import TransactionFilters from '../../components/Selector/TransactionFilters';
 import { useTransactionFilters } from '../../store/hooks/useTransactionFilters';
+import TransactionTypeDrawer from '../Layout/CustomAppBar/TransactionTypeDrawer';
 
 export default function TransactionsList() {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [filters, setFilters] = useState({
     types: [],
     amountOperator: '',
@@ -28,6 +32,9 @@ export default function TransactionsList() {
     start: defaultStart,
     end: defaultEnd,
   });
+
+  const [mobileTransactionMenuOpen, setMobileTransactionMenuOpen] =
+    useState(false);
   const days = useTransactionsInRange(filters.types, range);
   const { filteredTransactions, categories } = useTransactionFilters(
     days.flatMap((day) => day.transactions),
@@ -44,6 +51,25 @@ export default function TransactionsList() {
 
   return (
     <>
+      {isMobile && (
+        <Grid size={{ xs: 12 }}>
+          <Button
+            variant='contained'
+            startIcon={<AddIcon />}
+            onClick={() => setMobileTransactionMenuOpen(true)}
+            sx={{
+              width: '100%',
+              py: 1,
+              backgroundColor: 'primary.main',
+              '&:hover': {
+                backgroundColor: 'primary.dark',
+              },
+            }}
+          >
+            Create Transaction
+          </Button>
+        </Grid>
+      )}
       <Grid size={{ xs: 12 }}>
         <Box
           sx={{
@@ -70,8 +96,17 @@ export default function TransactionsList() {
       <Grid size={{ xs: 12 }}>
         <TransactionSummary transactionsByDay={filteredDays} />
       </Grid>
-      <TransactionsTable transactionsByDay={filteredDays} />
+      <TransactionsTable
+        transactionsByDay={filteredDays}
+        showHeader={!isMobile}
+      />
       <Grid size={{ xs: 12 }} sx={{ mb: 10 }} />
+      {isMobile && (
+        <TransactionTypeDrawer
+          open={mobileTransactionMenuOpen}
+          onClose={() => setMobileTransactionMenuOpen(false)}
+        />
+      )}
     </>
   );
 }

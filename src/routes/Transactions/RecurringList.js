@@ -6,14 +6,14 @@ import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 import startCase from 'lodash/startCase';
 
+import AddIcon from '@mui/icons-material/Add';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
-import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import Typography from '@mui/material/Typography';
 
 import { numberToCurrency } from '../../helpers/currency';
 import { openItemView } from '../../store/itemView';
@@ -26,15 +26,24 @@ function findAmount(recurring) {
   return get(recurring, `${recurring.item_type}_attributes.amount`);
 }
 
-export default function RecurringList() {
+export default function RecurringList({ showInactive = false }) {
   const dispatch = useDispatch();
   const parentRef = useRef(null);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const recurrings = useSelector((state) => state.recurrings.data);
 
-  const [showInactive, setShowInactive] = useState(false);
   const [groupedRecurrings, setGroupedRecurrings] = useState([]);
   const [width, setWidth] = useState(0);
+
+  const handleCreateRecurringClick = () => {
+    dispatch(
+      openItemView({
+        itemType: 'recurring',
+        mode: 'create',
+        attrs: {},
+      })
+    );
+  };
 
   useEffect(() => {
     const element = parentRef.current;
@@ -92,11 +101,30 @@ export default function RecurringList() {
   return (
     <Grid
       container
-      spacing={2}
+      spacing={1}
       size={{ xs: 12 }}
       ref={parentRef}
-      sx={{ width: '100%', pb: 5 }}
+      sx={{ width: '100%', mb: 12 }}
     >
+      {isMobile && (
+        <Grid size={{ xs: 12 }}>
+          <Button
+            variant='contained'
+            startIcon={<AddIcon />}
+            onClick={handleCreateRecurringClick}
+            sx={{
+              width: '100%',
+              py: 1,
+              backgroundColor: 'primary.main',
+              '&:hover': {
+                backgroundColor: 'primary.dark',
+              },
+            }}
+          >
+            Create Recurring
+          </Button>
+        </Grid>
+      )}
       {groupedRecurrings.map((group, idx) => {
         return (
           <Grid key={idx} size={{ xs: 12 }}>
@@ -203,24 +231,6 @@ export default function RecurringList() {
           </Grid>
         );
       })}
-      <Grid
-        size={{ xs: 12 }}
-        display='flex'
-        justifyContent='center'
-        sx={{ mb: 8 }}
-      >
-        <Link
-          underline='hover'
-          color='text.secondary'
-          onClick={() => {
-            setShowInactive(!showInactive);
-          }}
-        >
-          <Typography variant='h6' sx={{ mr: 1 }}>
-            {showInactive ? 'Hide Inactive' : 'Show Inactive'}
-          </Typography>
-        </Link>
-      </Grid>
     </Grid>
   );
 }

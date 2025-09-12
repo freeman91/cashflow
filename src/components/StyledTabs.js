@@ -18,7 +18,7 @@ export const StyledTabs = styled((props) => (
   },
   minHeight: 'unset',
   backgroundColor: theme.palette.surface[300],
-  borderRadius: '8px',
+  borderRadius: '4px',
   height: 'fit-content',
 }));
 
@@ -27,7 +27,7 @@ export const StyledTab = styled((props) => <Tab {...props} />)(({ theme }) => ({
   paddingBottom: 10,
   minHeight: 'unset',
   fontWeight: 'bold',
-  borderRadius: '8px',
+  borderRadius: '4px',
   color: theme.palette.primary.contrastText,
   transition: 'background-color 0.3s ease, color 0.3s ease',
   '&.Mui-selected': {

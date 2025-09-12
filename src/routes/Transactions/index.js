@@ -9,6 +9,10 @@ import TransactionsList from './List';
 
 export default function Transactions() {
   const tab = useSelector((state) => state.appSettings.transactions.tab);
+  const showInactive = useSelector(
+    (state) => state.appSettings.transactions.showInactive
+  );
+
   return (
     <Grid
       container
@@ -19,7 +23,7 @@ export default function Transactions() {
     >
       {tab === 'calendar' && <TransactionsCalendar />}
       {tab === 'list' && <TransactionsList />}
-      {tab === 'recurring' && <RecurringList />}
+      {tab === 'recurring' && <RecurringList showInactive={showInactive} />}
     </Grid>
   );
 }

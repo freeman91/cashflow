@@ -3,14 +3,21 @@ import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import filter from 'lodash/filter';
 
+import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import TransactionsTable, {
   TRANSACTION_ORDER,
 } from '../../../components/TransactionsTable';
 import { findAmount } from '../../../helpers/transactions';
+import TransactionTypeDrawer from '../../../routes/Layout/CustomAppBar/TransactionTypeDrawer';
 
 export default function Transactions() {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const [mobileTransactionMenuOpen, setMobileTransactionMenuOpen] =
+    useState(false);
   const allBorrows = useSelector((state) => state.borrows.data);
   const allExpenses = useSelector((state) => state.expenses.data);
   const allRepayments = useSelector((state) => state.repayments.data);
@@ -97,8 +104,38 @@ export default function Transactions() {
   ]);
 
   return (
-    <Grid size={{ xs: 12 }}>
-      <TransactionsTable transactionsByDay={transactionsByDay} />
-    </Grid>
+    <>
+      {isMobile && (
+        <Grid size={{ xs: 12 }}>
+          <Button
+            variant='contained'
+            startIcon={<AddIcon />}
+            onClick={() => setMobileTransactionMenuOpen(true)}
+            sx={{
+              width: '100%',
+              py: 1,
+              backgroundColor: 'primary.main',
+              '&:hover': {
+                backgroundColor: 'primary.dark',
+              },
+            }}
+          >
+            Create Transaction
+          </Button>
+        </Grid>
+      )}
+      <Grid size={{ xs: 12 }}>
+        <TransactionsTable
+          transactionsByDay={transactionsByDay}
+          showHeader={!isMobile}
+        />
+      </Grid>
+      {isMobile && (
+        <TransactionTypeDrawer
+          open={mobileTransactionMenuOpen}
+          onClose={() => setMobileTransactionMenuOpen(false)}
+        />
+      )}
+    </>
   );
 }

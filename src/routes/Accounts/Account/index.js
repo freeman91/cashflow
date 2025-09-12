@@ -210,7 +210,7 @@ export default function Account(props) {
   return (
     <Grid
       container
-      spacing={2}
+      spacing={isMobile ? 1 : 2}
       justifyContent='center'
       alignItems='flex-start'
       sx={{ width: '100%', px: 1, pb: 5 }}
@@ -229,7 +229,7 @@ export default function Account(props) {
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
-              py: 1,
+              py: isMobile ? 0.5 : 1,
               width: '100%',
             }}
           >
@@ -251,6 +251,7 @@ export default function Account(props) {
               <CreateTransactionButton
                 types={transactionTypes}
                 attrs={{ account_id: account.account_id }}
+                useButtonOnMobile={true}
               />
             )}
           </Box>

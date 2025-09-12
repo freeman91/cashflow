@@ -27,6 +27,7 @@ export const appSettings = {
   loading: 0,
   transactions: {
     tab: 'calendar',
+    showInactive: false,
   },
   recurring: {
     tab: 'calendar',

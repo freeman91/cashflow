@@ -1,23 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import _range from 'lodash/range';
+import startCase from 'lodash/startCase';
 
+import AddIcon from '@mui/icons-material/Add';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid2';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
+import Popper from '@mui/material/Popper';
 import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import { openItemView } from '../../store/itemView';
 import useTransactionsInRange from '../../store/hooks/useTransactions';
 import { useTransactionFilters } from '../../store/hooks/useTransactionFilters';
 import Day from './Day';
 import TransactionFilters from '../../components/Selector/TransactionFilters';
 import TransactionSummary from '../../components/TransactionSummary';
+import ReactiveButton from '../../components/ReactiveButton';
+import TransactionTypeDrawer from '../Layout/CustomAppBar/TransactionTypeDrawer';
+
+const DEFAULT_TYPES = ['expense', 'income', 'paycheck', 'repayment'];
 
 export default function TransactionsCalendar() {
+  const dispatch = useDispatch();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [month, setMonth] = useState(dayjs());
@@ -29,6 +44,36 @@ export default function TransactionsCalendar() {
     keyword: '',
     category: '',
   });
+
+  const [transactionMenuOpen, setTransactionMenuOpen] = useState(false);
+  const [mobileTransactionMenuOpen, setMobileTransactionMenuOpen] =
+    useState(false);
+  const transactionAnchorRef = useRef(null);
+
+  const handleTransactionMenuToggle = () => {
+    setTransactionMenuOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleTransactionMenuClose = (event) => {
+    if (
+      transactionAnchorRef.current &&
+      transactionAnchorRef.current.contains(event.target)
+    ) {
+      return;
+    }
+    setTransactionMenuOpen(false);
+  };
+
+  const handleMenuItemClick = (type) => {
+    dispatch(
+      openItemView({
+        itemType: type,
+        mode: 'create',
+        attrs: {},
+      })
+    );
+    setTransactionMenuOpen(false);
+  };
 
   const days = useTransactionsInRange(filters.types, range);
   const { filteredTransactions, categories } = useTransactionFilters(
@@ -67,6 +112,25 @@ export default function TransactionsCalendar() {
   }
   return (
     <>
+      {isMobile && (
+        <Grid size={{ xs: 12 }}>
+          <Button
+            variant='contained'
+            startIcon={<AddIcon />}
+            onClick={() => setMobileTransactionMenuOpen(true)}
+            sx={{
+              width: '100%',
+              py: 1,
+              backgroundColor: 'primary.main',
+              '&:hover': {
+                backgroundColor: 'primary.dark',
+              },
+            }}
+          >
+            Create Transaction
+          </Button>
+        </Grid>
+      )}
       <Grid size={{ xs: 12 }}>
         <Box
           sx={{
@@ -117,6 +181,15 @@ export default function TransactionsCalendar() {
               sx={{ display: 'flex', justifyContent: 'flex-end' }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                {!isMobile && (
+                  <ReactiveButton
+                    ref={transactionAnchorRef}
+                    label='Transaction'
+                    handleClick={handleTransactionMenuToggle}
+                    Icon={AddIcon}
+                    color='primary'
+                  />
+                )}
                 <TransactionFilters
                   filters={filters}
                   setFilters={setFilters}
@@ -226,7 +299,64 @@ export default function TransactionsCalendar() {
             )}
           </Grid>
         </Box>
+        {!isMobile && (
+          <Popper
+            sx={{ zIndex: 1 }}
+            open={transactionMenuOpen}
+            anchorEl={transactionAnchorRef.current}
+            role={undefined}
+            transition
+            disablePortal
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                style={{
+                  transformOrigin:
+                    placement === 'bottom' ? 'center top' : 'center bottom',
+                }}
+              >
+                <Box>
+                  <ClickAwayListener onClickAway={handleTransactionMenuClose}>
+                    <MenuList
+                      id='transaction-menu'
+                      autoFocusItem
+                      disablePadding
+                      sx={{
+                        bgcolor: 'surface.300',
+                        borderRadius: 1,
+                        overflow: 'hidden',
+                        boxShadow: (theme) => theme.shadows[4],
+                      }}
+                    >
+                      {DEFAULT_TYPES.map((type) => (
+                        <MenuItem
+                          key={type}
+                          onClick={() => handleMenuItemClick(type)}
+                        >
+                          {startCase(type)}
+                        </MenuItem>
+                      ))}
+                    </MenuList>
+                  </ClickAwayListener>
+                </Box>
+              </Grow>
+            )}
+          </Popper>
+        )}
+        {isMobile && (
+          <TransactionTypeDrawer
+            open={transactionMenuOpen}
+            onClose={() => setTransactionMenuOpen(false)}
+          />
+        )}
       </Grid>
+      {isMobile && (
+        <TransactionTypeDrawer
+          open={mobileTransactionMenuOpen}
+          onClose={() => setMobileTransactionMenuOpen(false)}
+        />
+      )}
     </>
   );
 }
