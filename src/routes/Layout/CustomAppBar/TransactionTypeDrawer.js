@@ -7,8 +7,6 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
 import { openItemView } from '../../../store/itemView';
 
@@ -20,6 +18,7 @@ const Puller = styled('div')(({ theme }) => ({
   position: 'absolute',
   top: 8,
   left: 'calc(50% - 20px)',
+  zIndex: 1,
 }));
 
 const DEFAULT_TYPES = ['expense', 'income', 'paycheck', 'repayment'];
@@ -56,12 +55,7 @@ export default function TransactionTypeDrawer({ open, onClose }) {
       }}
     >
       <Puller />
-      <Box sx={{ px: 2, pt: 2, pb: 1 }}>
-        <Typography variant='h6' sx={{ textAlign: 'center', mb: 1 }}>
-          Create Transaction
-        </Typography>
-      </Box>
-      <List disablePadding sx={{ px: 1, bgcolor: 'unset' }}>
+      <List disablePadding sx={{ px: 1, pt: 4, bgcolor: 'unset' }}>
         {DEFAULT_TYPES.map((type) => (
           <ListItemButton
             key={type}

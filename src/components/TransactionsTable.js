@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -60,6 +61,12 @@ export default function TransactionsTable(props) {
                     primary={day.date.format('MMM Do, YYYY')}
                     slotProps={{
                       primary: { fontWeight: 'bold' },
+                    }}
+                  />
+                  <ListItemText
+                    secondary={day.date.isSame(dayjs(), 'day') ? 'Today' : ''}
+                    slotProps={{
+                      secondary: { align: 'right' },
                     }}
                   />
                 </ListItem>

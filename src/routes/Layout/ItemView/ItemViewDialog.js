@@ -18,7 +18,6 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import { closeItemView, openItemView } from '../../../store/itemView';
@@ -45,6 +44,7 @@ const Puller = styled('div')(({ theme }) => ({
   position: 'absolute',
   top: 8,
   left: 'calc(50% - 20px)',
+  zIndex: 1,
 }));
 
 const OptionsButton = (props) => {
@@ -144,12 +144,7 @@ const OptionsButton = (props) => {
         }}
       >
         <Puller />
-        <Box sx={{ px: 2, pt: 2, pb: 1 }}>
-          <Typography variant='h6' sx={{ textAlign: 'center', mb: 1 }}>
-            Options
-          </Typography>
-        </Box>
-        <List disablePadding sx={{ px: 1, bgcolor: 'unset' }}>
+        <List disablePadding sx={{ px: 1, pt: 4, bgcolor: 'unset' }}>
           {[
             'borrow',
             'expense',
@@ -165,19 +160,46 @@ const OptionsButton = (props) => {
                 my: 1,
                 bgcolor: 'surface.200',
                 borderRadius: 1,
+                position: 'relative',
+                minHeight: 48,
+                py: 1,
                 '&:hover': {
                   bgcolor: 'surface.300',
                 },
               }}
             >
-              <DeleteIcon color='error' sx={{ mr: 2 }} />
+              <DeleteIcon
+                color='error'
+                sx={{
+                  position: 'absolute',
+                  left: 16,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+              />
               <ListItemText
                 primary='Delete'
-                sx={{ textAlign: 'center' }}
+                sx={{
+                  textAlign: 'center',
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
                 slotProps={{
                   primary: {
                     align: 'center',
-                    sx: { fontWeight: 500 },
+                    sx: {
+                      fontWeight: 500,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                    },
                   },
                 }}
               />
@@ -198,19 +220,46 @@ const OptionsButton = (props) => {
                 my: 1,
                 bgcolor: 'surface.200',
                 borderRadius: 1,
+                position: 'relative',
+                minHeight: 48,
+                py: 1,
                 '&:hover': {
                   bgcolor: 'surface.300',
                 },
               }}
             >
-              <ContentCopyIcon color='info' sx={{ mr: 2 }} />
+              <ContentCopyIcon
+                color='info'
+                sx={{
+                  position: 'absolute',
+                  left: 16,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+              />
               <ListItemText
                 primary='Duplicate'
-                sx={{ textAlign: 'center' }}
+                sx={{
+                  textAlign: 'center',
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
                 slotProps={{
                   primary: {
                     align: 'center',
-                    sx: { fontWeight: 500 },
+                    sx: {
+                      fontWeight: 500,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                    },
                   },
                 }}
               />
@@ -223,19 +272,46 @@ const OptionsButton = (props) => {
                 my: 1,
                 bgcolor: 'surface.200',
                 borderRadius: 1,
+                position: 'relative',
+                minHeight: 48,
+                py: 1,
                 '&:hover': {
                   bgcolor: 'surface.300',
                 },
               }}
             >
-              <RemoveCircleOutlineIcon color='error' sx={{ mr: 2 }} />
+              <RemoveCircleOutlineIcon
+                color='error'
+                sx={{
+                  position: 'absolute',
+                  left: 16,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+              />
               <ListItemText
                 primary='Deactivate'
-                sx={{ textAlign: 'center' }}
+                sx={{
+                  textAlign: 'center',
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
                 slotProps={{
                   primary: {
                     align: 'center',
-                    sx: { fontWeight: 500 },
+                    sx: {
+                      fontWeight: 500,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                    },
                   },
                 }}
               />
@@ -248,19 +324,46 @@ const OptionsButton = (props) => {
                 my: 1,
                 bgcolor: 'surface.200',
                 borderRadius: 1,
+                position: 'relative',
+                minHeight: 48,
+                py: 1,
                 '&:hover': {
                   bgcolor: 'surface.300',
                 },
               }}
             >
-              <LaunchIcon color='primary' sx={{ mr: 2 }} />
+              <LaunchIcon
+                color='primary'
+                sx={{
+                  position: 'absolute',
+                  left: 16,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+              />
               <ListItemText
                 primary='Generate Next'
-                sx={{ textAlign: 'center' }}
+                sx={{
+                  textAlign: 'center',
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
                 slotProps={{
                   primary: {
                     align: 'center',
-                    sx: { fontWeight: 500 },
+                    sx: {
+                      fontWeight: 500,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                    },
                   },
                 }}
               />
