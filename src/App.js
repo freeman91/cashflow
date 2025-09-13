@@ -15,6 +15,7 @@ import Accounts from './routes/Accounts';
 import Audits from './routes/Audits';
 import Budgets from './routes/Budgets';
 import Dashboard from './routes/Dashboard';
+import Landing from './routes/Landing';
 import Reports from './routes/Reports';
 import Settings from './routes/Settings';
 import Transactions from './routes/Transactions';
@@ -24,29 +25,30 @@ import './styles/index.css';
 console.log('_package.version: ', _package.version);
 
 const AppRoutes = () => {
+  console.log('AppRoutes rendering...');
   return (
     <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/accounts' element={<Accounts />} />
-        <Route path='/accounts/:accountName' element={<Accounts />} />
-        <Route path='/transactions' element={<Transactions />} />
-        <Route path='/reports' element={<Reports />} />
-        <Route path='/reports/:type' element={<Reports />} />
-        <Route path='/reports/:type/:view' element={<Reports />} />
-        <Route path='/budgets' element={<Budgets />} />
-        <Route path='/settings' element={<Settings />} />
-        <Route path='/audit-log' element={<Audits />} />
-        {/* <Route path='/profile' element={<></>} /> */}
+      <Route path='/' element={<Landing />} />
+      <Route path='/app' element={<Layout />}>
+        <Route path='/app/dashboard' element={<Dashboard />} />
+        <Route path='/app/accounts' element={<Accounts />} />
+        <Route path='/app/accounts/:accountName' element={<Accounts />} />
+        <Route path='/app/transactions' element={<Transactions />} />
+        <Route path='/app/reports' element={<Reports />} />
+        <Route path='/app/reports/:type' element={<Reports />} />
+        <Route path='/app/reports/:type/:view' element={<Reports />} />
+        <Route path='/app/budgets' element={<Budgets />} />
+        <Route path='/app/settings' element={<Settings />} />
+        <Route path='/app/audit-log' element={<Audits />} />
+        {/* <Route path='/app/profile' element={<></>} /> */}
       </Route>
-      <Route path='*'>
-        <Route index element={<Navigate to='/dashboard' />} />
-      </Route>
+      <Route path='*' element={<Navigate to='/' />} />
     </Routes>
   );
 };
 
 function App() {
+  console.log('App component rendering...');
   return (
     <React.StrictMode>
       <ReduxProvider store={store}>

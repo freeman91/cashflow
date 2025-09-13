@@ -114,7 +114,7 @@ export default function OptionsButton(props) {
                   )}
                   <MenuItem
                     onClick={() =>
-                      dispatch(push(`/reports/${type}/${selectedTab}`))
+                      dispatch(push(`/app/reports/${type}/${selectedTab}`))
                     }
                   >
                     {startCase(selectedTab)} Page

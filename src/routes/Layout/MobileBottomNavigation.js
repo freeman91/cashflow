@@ -65,12 +65,12 @@ export default function MobileBottomNavigation() {
 
   useEffect(() => {
     let path = location.pathname.split('/');
-    let _pageName = path[1];
+    let _pageName = path[1] === 'app' ? path[2] : path[1];
     setPageName(_pageName);
   }, [location]);
 
   const handleNavigate = (path) => {
-    dispatch(push(`/${path}`));
+    dispatch(push(`/app/${path}`));
     setOpen(false);
   };
 

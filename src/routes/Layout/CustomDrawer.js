@@ -70,7 +70,7 @@ const PageButton = (props) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(push(`/${pageName.toLowerCase().replace(' ', '-')}`, {}));
+    dispatch(push(`/app/${pageName.toLowerCase().replace(' ', '-')}`, {}));
   };
 
   return (
@@ -107,7 +107,8 @@ const DrawerContent = () => {
   const [page, setPage] = useState('');
 
   useEffect(() => {
-    const _page = location.pathname.split('/')[1];
+    const pathParts = location.pathname.split('/');
+    const _page = pathParts[1] === 'app' ? pathParts[2] : pathParts[1];
     setPage(_page);
   }, [location]);
 
@@ -125,7 +126,7 @@ const DrawerContent = () => {
           >
             {mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
           </IconButton>
-          <IconButton onClick={() => dispatch(push('/settings'))}>
+          <IconButton onClick={() => dispatch(push('/app/settings'))}>
             <SettingsIcon />
           </IconButton>
         </Box>

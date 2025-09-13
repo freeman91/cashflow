@@ -62,7 +62,8 @@ const CustomAppBar = forwardRef((props, ref) => {
   const [route, setRoute] = useState('dashboard');
 
   useEffect(() => {
-    const _route = location.pathname.split('/')[1];
+    const pathParts = location.pathname.split('/');
+    const _route = pathParts[1] === 'app' ? pathParts[2] : pathParts[1];
     setRoute(_route);
   }, [location]);
 

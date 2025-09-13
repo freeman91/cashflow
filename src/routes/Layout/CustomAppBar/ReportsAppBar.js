@@ -38,8 +38,9 @@ export default function ReportsAppBar() {
   const location = useLocation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-  const type = get(location.pathname.split('/'), '2', MONTH);
-  const view = get(location.pathname.split('/'), '3', OVERVIEW);
+  const pathParts = location.pathname.split('/');
+  const type = get(pathParts, pathParts[1] === 'app' ? '3' : '2', MONTH);
+  const view = get(pathParts, pathParts[1] === 'app' ? '4' : '3', OVERVIEW);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -53,12 +54,12 @@ export default function ReportsAppBar() {
   };
 
   const handleViewChange = (newView) => {
-    dispatch(push(`/reports/${type}/${newView}`));
+    dispatch(push(`/app/reports/${type}/${newView}`));
     handleMenuClose();
   };
 
   const handleTypeChange = (newType) => {
-    dispatch(push(`/reports/${newType}`));
+    dispatch(push(`/app/reports/${newType}`));
     handleMenuClose();
   };
 
@@ -132,7 +133,9 @@ export default function ReportsAppBar() {
         variant='standard'
         disableUnderline
         value={view}
-        onChange={(e) => dispatch(push(`/reports/${type}/${e.target.value}`))}
+        onChange={(e) =>
+          dispatch(push(`/app/reports/${type}/${e.target.value}`))
+        }
         MenuProps={{
           MenuListProps: {
             disablePadding: true,
@@ -151,7 +154,7 @@ export default function ReportsAppBar() {
         <Box
           key={_type}
           onClick={() => {
-            dispatch(push(`/reports/${_type}`));
+            dispatch(push(`/app/reports/${_type}`));
           }}
           sx={{
             backgroundColor: 'background.paper',
