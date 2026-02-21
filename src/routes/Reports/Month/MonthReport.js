@@ -42,7 +42,7 @@ export default function MonthReport() {
   const [date, setDate] = useState(dayjs());
   const location = useLocation();
 
-  const view = get(location.pathname.split('/'), '3', OVERVIEW);
+  const view = get(location.pathname.split('/'), '4', OVERVIEW);
 
   const { earnedIncomes, passiveIncomes, otherIncomes } = useMonthInflows(
     date.year(),
