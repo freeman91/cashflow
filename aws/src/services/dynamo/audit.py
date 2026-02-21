@@ -4,7 +4,7 @@
 import os
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
-from pynamodb.attributes import UnicodeAttribute, UTCDateTimeAttribute
+from pynamodb.attributes import UnicodeAttribute, UTCDateTimeAttribute, NumberAttribute
 
 from .base import BaseModel
 
@@ -26,7 +26,7 @@ class Audit(BaseModel):
     action = UnicodeAttribute()
     status = UnicodeAttribute()
     message = UnicodeAttribute()
-    ttl = UTCDateTimeAttribute()
+    ttl = NumberAttribute()
 
     def __repr__(self):
         return f"Audit<{self.user_id}, {self.timestamp}, {self.action}>"
@@ -39,13 +39,14 @@ class Audit(BaseModel):
         status: str,
         message: str,
     ) -> "Audit":
+        expire_time = int((datetime.now(timezone.utc) + timedelta(days=7)).timestamp())
         audit = cls(
             user_id=user_id,
             timestamp=datetime.now(timezone.utc),
             action=action,
             status=status,
             message=message,
-            ttl=datetime.now(timezone.utc) + timedelta(days=7),
+            ttl=expire_time,
         )
         audit.save()
         return audit
