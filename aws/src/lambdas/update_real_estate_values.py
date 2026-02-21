@@ -104,9 +104,11 @@ def handler(event, context):
                     old_value = account.value
                     account.value = new_value
                     account.last_update = now
-                    account.save()
+                    # account.save()
 
-                    print(f"Updated {account.name}: ${old_value} -> ${new_value}")
+                    message = f"{account.name}: ${old_value} -> ${new_value}"
+                    print(f"Updated {message}")
+                    log_action("Update Real Estate Values", message)
                     updated_count += 1
                 else:
                     print(f"Could not get value estimate for {account.name}")
@@ -119,7 +121,7 @@ def handler(event, context):
 
         message = f"Real estate values updated: {updated_count} successful, {error_count} errors"
         print(message)
-        log_action("Update Real Estate Values", message)
+        # log_action("Update Real Estate Values", message)
 
         return {
             "statusCode": 200,

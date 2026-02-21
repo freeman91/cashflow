@@ -228,7 +228,7 @@ export default function AccountsSummary(props) {
             align='left'
             color='textSecondary'
           >
-            {numberToCurrency.format(liabilitySum + creditSum)}
+            {numberToCurrency.format(liabilitySum)}
           </Typography>
         </Box>
         <Box sx={{ width: '100%', px: 2, my: 1 }}>

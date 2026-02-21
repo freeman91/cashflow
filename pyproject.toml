@@ -26,6 +26,9 @@ black = "^22.3.0"
 fabric = "^2.7.0"
 pylint = "^2.13.4"
 aws-cdk-lib = "^2.204.0"
+pytest = "^8.4.2"
+pytest-mock = "^3.15.0"
+moto = "^5.1.12"
 
 
 [tool.poetry.group.docker.dependencies]

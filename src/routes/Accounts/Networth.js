@@ -174,9 +174,11 @@ export default function NetWorth(props) {
       <Box
         sx={{
           backgroundColor: 'background.paper',
-          backgroundImage: (theme) => theme.vars.overlays[8],
-          boxShadow: (theme) => theme.shadows[4],
+          backgroundImage: (theme) => theme.vars.overlays[1],
+          // boxShadow: (theme) => theme.shadows[4],
           borderRadius: 1,
+          border: '1px solid',
+          borderColor: 'divider',
           px: 1,
           width: '100%',
         }}

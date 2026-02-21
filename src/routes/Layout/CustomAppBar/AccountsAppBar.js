@@ -55,10 +55,10 @@ export default function AccountsAppBar(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const showInactive = useSelector((state) => state.accounts.showInactive);
   const open = Boolean(anchorEl);
-  const view = get(location.pathname.split('/'), '2', ALL);
+  const view = get(location.pathname.split('/'), '3', ALL);
 
   useEffect(() => {
-    const _accountName = get(location.pathname.split('/'), 2);
+    const _accountName = get(location.pathname.split('/'), 3);
     const _account = accounts.find(
       (a) => a.name === _accountName?.replace(/%20/g, ' ')
     );
@@ -92,7 +92,7 @@ export default function AccountsAppBar(props) {
   };
 
   const handleViewChange = (newView) => {
-    dispatch(push(`/accounts/${newView}`));
+    dispatch(push(`/app/accounts/${newView}`));
     handleMenuClose();
   };
 
@@ -199,7 +199,7 @@ export default function AccountsAppBar(props) {
               underline='hover'
               color='text.primary'
               onClick={() => {
-                dispatch(push('/accounts'));
+                dispatch(push('/app/accounts'));
               }}
             >
               <Typography variant='h5' fontWeight='bold' sx={{ mr: 1 }}>

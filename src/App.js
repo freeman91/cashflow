@@ -21,11 +21,11 @@ import Settings from './routes/Settings';
 import Transactions from './routes/Transactions';
 import Layout from './routes/Layout';
 import './styles/index.css';
+import '@ncdai/react-wheel-picker/style.css';
 
 console.log('_package.version: ', _package.version);
 
 const AppRoutes = () => {
-  console.log('AppRoutes rendering...');
   return (
     <Routes>
       <Route path='/' element={<Landing />} />
@@ -48,7 +48,6 @@ const AppRoutes = () => {
 };
 
 function App() {
-  console.log('App component rendering...');
   return (
     <React.StrictMode>
       <ReduxProvider store={store}>

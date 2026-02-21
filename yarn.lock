@@ -1748,6 +1748,11 @@
     "@babel/runtime" "^7.25.7"
     "@mui/utils" "^5.16.6 || ^6.0.0"
 
+"@ncdai/react-wheel-picker@^1.0.17":
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/@ncdai/react-wheel-picker/-/react-wheel-picker-1.0.17.tgz#fe1680997f80ba33467718355184a086db4280f1"
+  integrity sha512-fnKwMDla0yAnBA5tRq9GRLl6+wiyuzkGKfaN6pn1VM2o6aElB4HWRwITRMBmdTfZOYdPE0BAf6ZYbmMeaogucQ==
+
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz#dbf733a965ca47b1973177dc0bb6c889edcfb129"
