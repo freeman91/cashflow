@@ -26,16 +26,15 @@ export default function Accounts() {
   const [view, setView] = useState(ALL);
 
   useEffect(() => {
-    let path2 = get(location.pathname.split('/'), 2);
-    path2 = path2?.replace(/%20/g, ' ');
-
-    if (path2) {
-      const _account = accounts.find((a) => a.name === path2);
+    let accountName = get(location.pathname.split('/'), 3);
+    accountName = accountName?.replace(/%20/g, ' ');
+    if (accountName) {
+      const _account = accounts.find((a) => a.name === accountName);
       if (_account) {
         setAccount(_account);
         return;
       } else {
-        setView(path2);
+        setView(accountName);
       }
     }
     setAccount(null);

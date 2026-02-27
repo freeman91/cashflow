@@ -33,7 +33,7 @@ export default function AccountGroupGrid(props) {
   };
 
   const openAccount = (account) => {
-    dispatch(push(`/accounts/${account.name}`));
+    dispatch(push(`/app/accounts/${account.name}`));
   };
 
   const [monthDiff, diffPercent, color] = (() => {
