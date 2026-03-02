@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import LogoImg from '../../components/LogoImg';
-import topo from './topography.svg';
+import topo from '../../assets/topography.svg';
 
 // Combined layout to reduce duplication for mobile and desktop
 const LandingContent = ({ theme, handleGetStarted, isMobile }) => {
@@ -31,7 +31,7 @@ const LandingContent = ({ theme, handleGetStarted, isMobile }) => {
         width: '100%',
         minHeight: '100vh',
         position: 'relative',
-        backgroundColor: theme.palette.surface[200],
+        backgroundColor: theme.palette.surface[100],
         overflow: 'hidden',
       }}
     >
@@ -99,9 +99,7 @@ const LandingContent = ({ theme, handleGetStarted, isMobile }) => {
             mx: isMobile ? 'auto' : 'auto',
           }}
         >
-          Comprehensive personal finance management with real-time tracking,
-          automated transactions, and powerful analytics to help you take
-          control of your financial future.
+          Comprehensive personal finance management tool to track expenses, set budgets, and achieve your financial goals.
         </Typography>
 
         <Button
