@@ -37,6 +37,7 @@ class Sale(BaseModel):
     losses = NumberAttribute(null=True)
     cost_basis_per_share = NumberAttribute(null=True)
     deposit_to_id = UnicodeAttribute(null=True)
+    pending = NumberAttribute(null=True, default=False)
 
     def __repr__(self):
         return f"Sale<{self.user_id}, {self.security_id}, {self.date}, {self.amount}>"
@@ -54,6 +55,7 @@ class Sale(BaseModel):
         merchant: str,
         fee: float,
         deposit_to_id: str,
+        pending: bool = False,
     ) -> "Sale":
         sale = cls(
             user_id=user_id,
@@ -67,6 +69,7 @@ class Sale(BaseModel):
             price=price,
             fee=fee,
             deposit_to_id=deposit_to_id,
+            pending=pending,
         )
 
         # Lazy import to avoid circular dependency

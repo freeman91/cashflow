@@ -2,8 +2,9 @@
 
 from datetime import datetime, timezone
 from typing import List
-from pydash import filter_, map_, uniq
+from pydash import filter_, map_, uniq, get
 import requests
+from pprint import pprint
 
 from services.dynamo import Account, Security
 from services.ssm import get_parameter
@@ -22,7 +23,11 @@ def get_stock_prices(tickers: List):
         url = f"{ALPHA_ADVANTAGE_URL}?function=GLOBAL_QUOTE&symbol={symbol}&apikey={alpha_vantage_key}"
         response = requests.get(url).json()
         try:
-            prices[symbol] = float(response["Global Quote"]["05. price"])
+            pprint(response)
+            price = get(response, "Global Quote.05. price")
+            previous_close = get(response, "Global Quote.08. previous close")
+            prices[symbol] = float(price or previous_close) if price or previous_close else None
+
         except (KeyError, TypeError):
             prices[symbol] = None  # Handle missing or malformed data
     return prices

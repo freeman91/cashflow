@@ -32,6 +32,7 @@ class Purchase(BaseModel):
     shares = NumberAttribute(null=True)
     price = NumberAttribute(null=True)
     payment_from_id = UnicodeAttribute(null=True)
+    pending = NumberAttribute(null=True, default=False)
 
     def __repr__(self):
         return (
@@ -49,6 +50,7 @@ class Purchase(BaseModel):
         merchant: str,
         shares: str = None,
         price: str = None,
+        pending: bool = False,
     ) -> "Purchase":
         purchase = cls(
             user_id=user_id,
@@ -60,6 +62,7 @@ class Purchase(BaseModel):
             merchant=merchant,
             shares=shares,
             price=price,
+            pending=pending,
         )
         purchase.save()
         return purchase

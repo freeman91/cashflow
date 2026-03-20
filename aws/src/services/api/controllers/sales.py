@@ -34,6 +34,7 @@ def _sales(user_id: str):
             merchant=body.get("merchant"),
             fee=float(body.get("fee")),
             deposit_to_id=body.get("deposit_to_id"),
+            pending=body.get("pending", False),
         )
         log_action(user_id, f"Sale created: {sale.merchant}")
 
@@ -81,7 +82,7 @@ def _sale(user_id: str, sale_id: str):
         sale.price = float(request.json.get("price"))
         sale.fee = float(request.json.get("fee"))
 
-        for attr in ["account_id", "security_id", "merchant", "deposit_to_id"]:
+        for attr in ["account_id", "security_id", "merchant", "deposit_to_id", "pending"]:
             setattr(sale, attr, request.json.get(attr))
 
         sale.last_update = datetime.now(timezone.utc)
