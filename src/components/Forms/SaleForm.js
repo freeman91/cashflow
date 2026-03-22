@@ -6,6 +6,8 @@ import find from 'lodash/find';
 import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postSale, putSale } from '../../store/sales';
@@ -29,6 +31,7 @@ const defaultSale = {
   price: '',
   deposit_to_id: '',
   fee: '',
+  pending: true,
 };
 
 function SaleForm(props) {
@@ -116,6 +119,17 @@ function SaleForm(props) {
           readOnly: true,
         }}
       />
+      <ListItem disableGutters>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={sale.pending || false}
+              onChange={(e) => handleChange('pending', e.target.checked)}
+            />
+          }
+          label='pending'
+        />
+      </ListItem>
       <ListItem disableGutters>
         <DepositToSelect
           accountId={sale.deposit_to_id}

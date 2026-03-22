@@ -5,6 +5,8 @@ import find from 'lodash/find';
 
 import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postPurchase, putPurchase } from '../../store/purchases';
@@ -24,6 +26,7 @@ const defaultPurchase = {
   shares: '',
   price: '',
   _type: 'purchase',
+  pending: true,
 };
 
 function PurchaseDialog(props) {
@@ -128,6 +131,17 @@ function PurchaseDialog(props) {
           readOnly: true,
         }}
       />
+      <ListItem disableGutters>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={purchase.pending || false}
+              onChange={(e) => handleChange('pending', e.target.checked)}
+            />
+          }
+          label='pending'
+        />
+      </ListItem>
       <ListItem
         key='buttons'
         disableGutters
