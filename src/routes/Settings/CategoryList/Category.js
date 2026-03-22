@@ -35,7 +35,6 @@ export default function Category(props) {
   const {
     category,
     setCategories,
-    idx,
     expandedCategory,
     setExpandedCategory,
     handleSaveCategory,
@@ -68,7 +67,7 @@ export default function Category(props) {
   const updateCategory = () => {
     let _category = cloneDeep(category);
     _category.name = categoryName;
-    handleSaveCategory(idx, _category);
+    handleSaveCategory(_category);
   };
 
   const updateSubactegory = (subcategory, subcategoryLabel, subIdx) => {
@@ -77,7 +76,7 @@ export default function Category(props) {
       name: subcategory,
       label: subcategoryLabel,
     };
-    handleSaveCategory(idx, _category);
+    handleSaveCategory(_category);
   };
 
   const deleteSubcategory = (subcategoryName) => {
@@ -85,14 +84,14 @@ export default function Category(props) {
     _category.subcategories = _category.subcategories.filter(
       (item) => item.name !== subcategoryName
     );
-    handleSaveCategory(idx, _category);
+    handleSaveCategory(_category);
     setSelectedSubcategory(null);
   };
 
   const setColor = (color) => {
     let _category = cloneDeep(category);
     _category.color = color;
-    handleSaveCategory(idx, _category);
+    handleSaveCategory(_category);
   };
 
   const color = category?.color;

@@ -92,7 +92,7 @@ export default function AccountsAppBar(props) {
   };
 
   const handleViewChange = (newView) => {
-    dispatch(push(`/accounts/${newView}`));
+    dispatch(push(`/app/accounts/${newView}`));
     handleMenuClose();
   };
 
@@ -199,7 +199,7 @@ export default function AccountsAppBar(props) {
               underline='hover'
               color='text.primary'
               onClick={() => {
-                dispatch(push('/accounts'));
+                dispatch(push('/app/accounts'));
               }}
             >
               <Typography variant='h5' fontWeight='bold' sx={{ mr: 1 }}>

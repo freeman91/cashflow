@@ -27,9 +27,15 @@ export default function CategoryList(props) {
     setCategories(categoriesItem?.categories || []);
   }, [categoriesItem]);
 
-  const handleSaveCategory = (idx, category) => {
+  const handleSaveCategory = (category) => {
     let item = cloneDeep(categoriesItem);
-    item.categories[idx] = category;
+    const originalIdx = item.categories.findIndex(c => c.name === category.name);
+    if (originalIdx === -1) {
+      // new category
+      item.categories.push(category);
+    } else {
+      item.categories[originalIdx] = category;
+    }
     dispatch(putCategories(item));
   };
 
@@ -77,7 +83,6 @@ export default function CategoryList(props) {
       {sortBy(categories, 'name')?.map((category, idx) => (
         <Category
           key={category.name + idx}
-          idx={idx}
           category={category}
           setCategories={setCategories}
           expandedCategory={expandedCategory}

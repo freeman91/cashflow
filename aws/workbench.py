@@ -17,9 +17,5 @@ APP_ID = os.getenv("APP_ID")
 USER_ID = os.getenv("REACT_APP_USER_ID")
 
 
-def test():
-    pass
-
-
 def main():
     pass
