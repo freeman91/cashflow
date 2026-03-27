@@ -1,6 +1,7 @@
 """Lambda handler for updating stock prices"""
 
 from datetime import datetime, timezone
+from time import sleep
 from typing import List
 from pydash import filter_, map_, uniq, get
 import requests
@@ -30,6 +31,7 @@ def get_stock_prices(tickers: List):
 
         except (KeyError, TypeError):
             prices[symbol] = None  # Handle missing or malformed data
+        sleep(2)  # To respect API rate limits
     return prices
 
 
