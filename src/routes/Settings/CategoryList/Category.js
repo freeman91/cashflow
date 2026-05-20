@@ -189,7 +189,7 @@ export default function Category(props) {
               </IconButton>
             </Tooltip>
             <Tooltip placement='top' title='delete'>
-              <IconButton onClick={deleteCategory} color='info'>
+              <IconButton onClick={() => { if (window.confirm('Delete this category?')) deleteCategory(category.name); }} color='error'>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
