@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 from typing import Optional
 from uuid import uuid4
-from pynamodb.attributes import NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
+from pynamodb.attributes import BooleanAttribute, NumberAttribute, UnicodeAttribute, UTCDateTimeAttribute
 
 from .base import BaseModel
 
@@ -32,7 +32,7 @@ class Purchase(BaseModel):
     shares = NumberAttribute(null=True)
     price = NumberAttribute(null=True)
     payment_from_id = UnicodeAttribute(null=True)
-    pending = NumberAttribute(null=True, default=False)
+    pending = BooleanAttribute(null=True, default=False)
 
     def __repr__(self):
         return (
