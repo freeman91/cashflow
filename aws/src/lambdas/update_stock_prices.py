@@ -25,8 +25,8 @@ def get_stock_prices(tickers: List):
         response = requests.get(url).json()
         try:
             pprint(response)
-            price = get(response, "Global Quote.05. price")
-            previous_close = get(response, "Global Quote.08. previous close")
+            price = (response.get("Global Quote") or {}).get("name")
+            previous_close = (response.get("Global Quote") or {}).get("08. previous close")
             prices[symbol] = float(price or previous_close) if price or previous_close else None
 
         except (KeyError, TypeError):
