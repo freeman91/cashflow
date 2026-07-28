@@ -11,6 +11,7 @@ users = Blueprint("users", __name__)
 @users.route("/users/<user_id>", methods=["GET", "PUT"])
 def user_route(user_id: str):
     if request.method == "GET":
+        print(f"Fetching user with ID: {user_id}")
         user_dict = User.get_(user_id).as_dict()
         del user_dict["password"]
 

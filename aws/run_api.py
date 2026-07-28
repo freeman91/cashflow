@@ -44,6 +44,8 @@ def main():
     def site_map():
         return jsonify(list(map(lambda x: x.rule, app.url_map.iter_rules())))
 
+    print("Starting API...")
+
     app = blueprints(app)
 
     app.run(host="0.0.0.0", port=9000)
